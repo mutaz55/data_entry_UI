@@ -7,7 +7,7 @@ These files could be classified into two main Categories, based on which Applica
 
 1. Cateogry one: Input for The main Application
 and would be used for:
-+ Building up a course hierachy (The side menu)
++ Building up a course hierarchy (The side menu)
 + Building up the scene interface and layout.
 
 2. Cateogry two: Input for the Task Management App. (Asisstent tool)
