@@ -16,4 +16,5 @@ and would be used for:
 
 # Version 0.1 
 
+Need to add Database for Spaced repetition.
 
