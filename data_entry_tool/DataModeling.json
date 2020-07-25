@@ -1,0 +1,101 @@
+{
+  "Course-Object": {
+    "couseID": "",
+    "course-title": "ArabicA1",
+    "Modules-Numbers": 8,
+    "catagory": "Paid/Free",
+    "Modules": ["", ""],
+    "Lessons": ["", ""],
+    "Concepts": ["", ""],
+    "Skills": ["", ""],
+
+    "Scene-Type (without repetition)": ["", ""]
+  },
+
+  "Scene-Header  (Col per Course per unit)": {
+    "Modules": "",
+    "Lesson": "",
+    "Scene-Title": "",
+    "SerialNumber": 1,
+    "SceneType": ""
+  },
+
+  "Scene (Col per Course per unit)": {
+    "Concepts": ["concept1", "concept2"],
+    "Skills": ["skills1", "skills2"],
+    "ExerciseType": "",
+    "ExerciseText": "",
+    "Translation": "",
+    "ExerciseHint": ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
+    "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"],
+    "SendToTeacher": 0,
+    "Book": "Course/Or/Workbook"
+  },
+
+  "HintObj": {
+    "Text": "",
+    "draggable-text": ["draggable text 1", "dragabble text 2"],
+    "Previous-help": {
+      "description": "",
+      "filename": ""
+    }
+  },
+
+  "Question": {
+    "Id": "",
+    "DataMedia": "Mediaobj",
+    "Statement": [
+      "statement text with tokins (E, C, T)",
+      "Statement text with tokins (E, C, T)",
+      "Statement text with tokins (E, C, T)",
+      "Statement text with tokins (E, C, T)"
+    ],
+    "Answers": ["AnsObj", "AnsObj", "AnsObj", "AnsObj"]
+  },
+
+  "Mediaobj": {
+    "Id": "",
+    "Pic": "PicObj",
+    "text-tobe-recorded": "text-tobe-recordedObj",
+    "SoundEffect": "SoundObj",
+    "Video": "VideoObj",
+    "Text": "Text"
+  },
+
+  "Pictures": {
+    "Id": "",
+    "Description": "",
+    "Filename": "",
+    "Type": ["Photo", "Drawing"]
+  },
+
+  "text-tobe-recorded": {
+    "Id": "",
+    "Text": "",
+    "Filename": ""
+  },
+
+  "SoundEffect": {
+    "Id": "",
+    "Description": "",
+    "Filename": ""
+  },
+
+  "Videos": {
+    "Id": "",
+    "Description": "",
+    "Filename": "",
+    "Type": ["RealVideo", "Animation", "SlideShow"]
+  },
+
+  "AnsObj": {
+    "Id": "",
+    "text": "Answer Text with tokins",
+    "text-arr": ["Answer Text with tokins", "Answer Text with tokins"],
+    "text-tobe-recorded-arr": [
+      "text-tobe-recordedObj",
+      "text-tobe-recordedObj"
+    ],
+    "Pic-arr": ["PicObj", "PicObj"]
+  }
+}

@@ -1,0 +1,12 @@
+Courses collection has:
+An info Document for each course. (e.g. course title, Modules numbers, visibility.. etc)
+
+
+Every course has:
+Two collections for each module
+a collection of module headers ($CourseName$ModuleNumberHeaders) e.g. A1Module1Headers
+has one info Document (0-index) and many scene headers Documents.  
+
+a collection of module scenes ($CourseName$ModuleNumberScenes) e.g. A1Module1Scenes
+has many scene Documents.
+
