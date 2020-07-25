@@ -20,9 +20,12 @@
     "Modules": "",
     "Lesson": "",
     "Scene-Title": "",
-    "SerialNumber": 1,
+    "SceneID": 1,
     "SceneType": "",
     "SendToTeacher": 0,
+    "flag_finished": false,
+    "flag_available": false,
+    "flag_refresh": false,
     "Book": "Course/Or/Workbook"
   },
 
