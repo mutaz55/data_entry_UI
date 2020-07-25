@@ -21,19 +21,39 @@
     "Lesson": "",
     "Scene-Title": "",
     "SerialNumber": 1,
-    "SceneType": ""
+    "SceneType": "",
+    "SendToTeacher": 0,
+    "Book": "Course/Or/Workbook"
   },
 
+  
+  
+  "FillInQuestion (Col per Course per unit)": {
+    "Concepts": ["concept1", "concept2"],
+    "Skills": ["skills1", "skills2"],
+    "ExerciseText": "",
+    "Translation": "",
+    "ExerciseHint": {
+                  "Text": "",
+                  "Previous-help": {
+                  "description": "",
+                  "filename": ""
+                  }
+    ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
+    "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"],
+   
+  },
+  
+  
   "Scene (Col per Course per unit)": {
     "Concepts": ["concept1", "concept2"],
     "Skills": ["skills1", "skills2"],
-    "ExerciseType": "",
+    //"ExerciseType": "",
     "ExerciseText": "",
     "Translation": "",
     "ExerciseHint": ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
     "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"],
-    "SendToTeacher": 0,
-    "Book": "Course/Or/Workbook"
+   
   },
 
   "HintObj": {
