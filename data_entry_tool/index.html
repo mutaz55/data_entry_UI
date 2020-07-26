@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,10 +16,50 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
 
+    <!-- ############################### Link to bootstrap ################################### -->
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- ############################### Link to Css file ################################### -->
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- ############################### Link to font awesome ################################### -->
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+      integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
+      crossorigin="anonymous"
+    />
+
+    <!-- ############################### title ################################### -->
+
     <title>ArabicLang Tools - Data Entry UI</title>
   </head>
 
-  <body class="grey lighten-3">
+  <body class="grey lighten-2">
     <!-- Navbar -->
     <nav class="z-depth-0 grey lighten-4">
       <div class="nav-wrapper">
@@ -87,13 +127,13 @@
     </div>
 
     <div class="row" style="margin-top: 50px;" id="mainMsg">
-      <div class="col s3  offset-s5">
-        <div class="card blue-grey darken-1" >
+      <div class="col s3 offset-s5">
+        <div class="card blue-grey darken-1">
           <div class="card-content white-text">
             <span class="card-title">Warning</span>
             <p>
-              This app is designd to be used only in LLF.
-              If you already have an account and cannot log in, please contact the administrator.
+              This app is designd to be used only in LLF. If you already have an
+              account and cannot log in, please contact the administrator.
             </p>
           </div>
           <div class="card-action">
@@ -104,6 +144,249 @@
       </div>
     </div>
 
+    <!-- ############################### Main Tab Section ################################### -->
+    <div class="MTS-wrapper">
+      <div class="maintab">
+        <ul class="nav nav-pills nav-fill navtop itemtab exband">
+          <li class="nav-item">
+            <a class="nav-link active" href="#menu1" data-toggle="tab"
+              >المعلومات الأساسية للمشروع
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#menu2" data-toggle="tab"
+              >معلومات المشهد</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#menu3" data-toggle="tab"
+              >تفاصيل المشهد</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="tab-content col-lg-12">
+          <div
+            class="tab-pane fade show active paneltab"
+            role="tabpanel"
+            id="menu1"
+          >
+            <!-- ################## Main Project information ##################### -->
+
+            <!-- Level Selection -->
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-course-title"
+                >اختيار الكورس</label
+              >
+              <select class="form-control col-lg-8" id="id-course-title">
+              </select>
+            </div>
+
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-course-description"
+                >مقدمة عن الكورس</label
+              >
+              <textarea
+                class="control-text form-control col-lg-8"
+                id="id-course-description"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div>
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-course-description"
+                >نوع الكورس</label
+              >
+              <div class="radio-catagory col-lg-8">
+                <label class="lbl-radio">
+                  <input name="group1" type="radio" id="id-cat-paid" />
+
+                  <span style="font-size: 30px;">مدفوع</span>
+                </label>
+
+                <label class="lbl-radio">
+                  <input name="group1" type="radio" id="id-cat-free" />
+                  <span style="font-size: 30px;">مجاني</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- text input 
+              <div class="form-group">
+                <label for="Course1">الكورس</label>
+                <input type="select" class="form-control" id="Course1" />
+              </div> 
+                  
+
+              check-box 
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="exampleCheck1"
+                />
+
+                <label class="form-check-label" for="exampleCheck1"
+                  >Check me out</label
+                >
+              </div>
+               text Area
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1"
+                  >Example textarea</label
+                >
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                ></textarea>
+              </div>
+              -->
+
+          <div class="tab-pane fade paneltab" role="tabpanel" id="menu2">
+            <!-- ################## Scene header information ##################### -->
+
+            <!-- Unit Selection -->
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-unit"
+                >اختيار الوحدة</label
+              >
+              <select class="form-control col-lg-8" id="id-unit"> </select>
+            </div>
+
+            <!-- Lesson Selection -->
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-lesson"
+                >اختيار الدرس</label
+              >
+              <select class="form-control col-lg-8" id="lesson"> </select>
+            </div>
+            <!-- Scene Serial number -->
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-sr"
+                >رقم المشهد</label
+              >
+              <input
+                type="number"
+                class="form-control col-lg-8"
+                value="1"
+                min="1"
+                max="50"
+                step="1"
+                id="id-sr"
+              />
+            </div>
+            <!-- Select Exercise type -->
+
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-scene-type"
+                >اختيار نوع المشهد</label
+              >
+              <select class="form-control col-lg-8" id="id-scene-type">
+              </select>
+            </div>
+
+            <!-- text input -->
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-scene-title"
+                >عنوان المشهد</label
+              >
+              <input
+                type="select"
+                class="form-control col-lg-8"
+                id="id-scene-title"
+              />
+            </div>
+
+            <div>
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-SendToTeacher"
+                >ارسال للتصحيح</label
+              >
+              <div class="radio-catagory col-lg-8">
+                <label class="lbl-radio">
+                  <input name="group1" type="radio" id="id-SendToTeacher" />
+
+                  <span style="font-size: 30px;">نعم</span>
+                </label>
+
+                <label class="lbl-radio">
+                  <input name="group1" type="radio" id="id-SendToTeacherNot" />
+                  <span style="font-size: 30px;"> لا </span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-SendToTeacher"
+                >نوع الكتاب</label
+              >
+              <div class="radio-catagory col-lg-8">
+                <label class="lbl-radio">
+                  <input name="group1" type="radio" id="id-SendToTeacher" />
+
+                  <span style="font-size: 30px;">كتاب كورس</span>
+                </label>
+
+                <label class="lbl-radio">
+                  <input name="group1" type="radio" id="id-SendToTeacherNot" />
+                  <span style="font-size: 30px;"> كتاب تدريبات </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-concept"
+                >اختيار المفهوم</label
+              >
+              <select class="form-control col-lg-8" id="id-concept"> </select>
+            </div>
+
+            <div class="form-group group-element">
+              <label
+                class="label-course col-lg-3 blue-grey darken-1"
+                for="id-skill"
+                >اختيارالمهارة</label
+              >
+              <select class="form-control col-lg-8" id="id-skill"> </select>
+            </div>
+          </div>
+          <div class="tab-pane fade paneltab" role="tabpanel" id="menu3">
+            تفاصيل المشهد
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ############################### Hidden Tab Section ################################### -->
+    <!-- ############################### QTHint Section ################################### -->
+    <!-- ############################### Media Section ################################### -->
+    <!-- ############################### Statement & Answer Section ################################### -->
+    <!-- ############################### Footer Section ################################### -->
+
+    <!-- ############################### Scripts ################################### -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
@@ -148,5 +431,6 @@
 
     <script src="auth.js"></script>
     <script src="index.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>

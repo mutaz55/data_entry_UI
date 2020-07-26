@@ -1,0 +1,97 @@
+/* ############################### Main Tab Section ###################################  */
+.MTS-wrapper {
+  margin: 3% 15%;
+}
+.maintab {
+  direction: rtl;
+}
+.itemtab {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 1.7rem;
+  font-weight: bold;
+  text-align: center;
+  /* background-color: red; */
+}
+
+.control-text {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 1.5rem;
+  margin-top: 0px;
+  direction: rtl;
+  color: black;
+  text-align: right;
+}
+
+.lbl-radio {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 2rem;
+  direction: rtl;
+  color: black;
+  text-align: right;
+}
+
+.span-radio {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 2rem;
+}
+.paneltab {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 1.5rem;
+  padding: 3rsem;
+  /* background-color: red; */
+}
+.group-element {
+  padding: 0.3rem;
+}
+.navtop {
+  margin-top: 50px;
+}
+.tab-content {
+  padding: 40px;
+  margin-top: -20px;
+}
+
+.label-course {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 1.5rem;
+  color: #f5f5f5;
+  border: 1px solid gray;
+  /* background-color: #616161; */
+  /* height: 20px;
+  width: 200px; */
+  margin-top: 0px;
+  margin-left: 10px;
+  text-align: right;
+  /* clear: both; */
+  float: right;
+  margin-right: 15px;
+}
+
+.radio-catagory {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  /* direction: rtl; */
+  /* float: right; */
+  /* margin-right: 15%; */
+}
+
+/* CSS REQUIRED */
+.state-icon {
+  left: -5px;
+}
+.list-group-item-primary {
+  color: rgb(255, 255, 255);
+  background-color: rgb(66, 139, 202);
+}
+
+/* DEMO ONLY - REMOVES UNWANTED MARGIN */
+.well .list-group {
+  margin-bottom: 0px;
+}
+
+/* ############################### Hidden Tab Section ################################### */
+/* ############################### QTHint Section ################################### */
+/* ############################### Media Section ################################### */
+/* ############################### Statement & Answer Section ################################### */
+/* ############################### Footer Section ################################### */
