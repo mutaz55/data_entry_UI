@@ -39,11 +39,12 @@
     "ExerciseHint": {
                   "Text": "",
                   "Previous-help": {
-                  "description": "",
-                  "filename": ""
-                  }
-    ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
-    "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"],
+                                  "description": "",
+                                  "filename": ""
+                                   }
+                    },
+    "Hint" : ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
+    "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"]
    
   },
   
@@ -51,11 +52,10 @@
   "Scene (Col per Course per unit)": {
     "Concepts": ["concept1", "concept2"],
     "Skills": ["skills1", "skills2"],
-    //"ExerciseType": "",
     "ExerciseText": "",
     "Translation": "",
     "ExerciseHint": ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
-    "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"],
+    "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"]
    
   },
 

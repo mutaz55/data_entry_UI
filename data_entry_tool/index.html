@@ -167,21 +167,28 @@
     
 
     <!-- ############################### Main Tab Section ################################### -->
+<<<<<<< HEAD
     <div class="MTS-wrapper logged-in" style="display: none;">
      
       <div class="maintab" >
         <ul class="nav nav-pills nav-fill navtop itemtab exband">
           <li class="nav-item">
+=======
+    <div class="MTS-wrapper">
+      <div class="row maintab">
+        <ul class="nav nav-pills nav-fill navtop itemtab exband col-lg-12">
+          <li class="nav-item col-lg-4">
+>>>>>>> 18001b2de3ad76836693fae3ec200255e6e0b514
             <a class="nav-link active" href="#menu1" data-toggle="tab"
               >المعلومات الأساسية للمشروع
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item col-lg-4">
             <a class="nav-link" href="#menu2" data-toggle="tab"
               >معلومات المشهد</a
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item col-lg-4">
             <a class="nav-link" href="#menu3" data-toggle="tab"
               >تفاصيل المشهد</a
             >
@@ -385,7 +392,14 @@
                 for="id-concept"
                 >اختيار المفهوم</label
               >
-              <select class="form-control col-lg-8" id="id-concept"> </select>
+
+              <select
+                style="height: 300px;"
+                multiple
+                class="form-control col-lg-8"
+                id="id-concept"
+              >
+              </select>
             </div>
 
             <div class="form-group group-element">
@@ -394,7 +408,13 @@
                 for="id-skill"
                 >اختيارالمهارة</label
               >
-              <select class="form-control col-lg-8" id="id-skill"> </select>
+              <select
+                style="height: 300px;"
+                multiple
+                class="form-control col-lg-8"
+                id="id-skill"
+              >
+              </select>
             </div>
           </div>
           <div class="tab-pane fade paneltab" role="tabpanel" id="menu3">
