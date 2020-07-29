@@ -386,13 +386,20 @@
                 >اختيار المفهوم</label
               >
 
-              <select
+              <select 
                 style="height: 300px;"
                 multiple
                 class="form-control col-lg-8"
                 id="id-concept"
               >
               </select>
+              <form>
+              <div   id="list-concepts" dir="rtl">
+              
+                  
+
+              </div>
+            </form>
             </div>
 
             <div class="form-group group-element">
@@ -453,7 +460,14 @@
       // make references for auth and firestore
       const auth = firebase.auth();
       const db = firebase.firestore();
+
+      // initialize Array of our data objects
       var Courses = new Array();
+      var Modules = new Array();
+      var Concepts = new Array();
+      var Skills = new Array();
+      var SceneTypes = new Array();
+      var Lessons = new Array();
     </script>
 
     <!-- JQuery CDN -->
