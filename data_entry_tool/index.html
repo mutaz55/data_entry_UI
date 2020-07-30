@@ -59,15 +59,17 @@
     <title>ArabicLang Tools - Data Entry UI</title>
   </head>
 
-  <body class="grey lighten-2">
+  <body >
+    
     <!-- Navbar -->
+    <div style="margin:0 auto;">
     <nav class="z-depth-0 grey lighten-4">
       <div class="nav-wrapper">
-        <div class="container">
+   
           <a href="#" class="logo-bran">
             <img
               src="img/data_entry_app_logo.PNG"
-              style="width: 180px; margin-top: 15px;"
+              style="width: 180px; margin-left: 20px;"
             />
           </a>
           <a href="#" class="sidenav-trigger" data-target="mobile-links">
@@ -91,10 +93,10 @@
               >
             </li>
           </ul>
-        </div>
+    
       </div>
     </nav>
-
+  </div>
     <ul class="sidenav" id="mobile-links">
       <li class="logged-in"><a href="#" class="grey-text">Accounts</a></li>
       <li class="logged-in"><a href="#" class="grey-text">Log Out</a></li>
@@ -150,7 +152,7 @@
 
     <!--  Action Bar includes /load/store  -->
 
-    <div class="container">
+    <div style="margin:0 auto;">
 
       <nav>
         <div class="nav-wrapper">
@@ -167,13 +169,14 @@
     
 
     <!-- ############################### Main Tab Section ################################### -->
-    <div class="MTS-wrapper logged-in" style="display: none;">
+    
+     <div class="MTS-wrapper logged-in" style="display: none;">
      
       <div class="maintab" >
         <ul class="nav nav-pills nav-fill navtop itemtab exband">
           <li class="nav-item">
             <a class="nav-link active" href="#menu1" data-toggle="tab"
-              >المعلومات الأساسية للمشروع
+              >المعلومات الأساسية للكورس
             </a>
           </li>
           <li class="nav-item col-lg-4">
@@ -200,22 +203,22 @@
             <!-- Level Selection -->
             <div class="form-group group-element">
               <label
-                class="label-course col-lg-3 blue-grey darken-1"
+                class="label-course col-lg-3 "
                 for="id-course-title"
                 >اختيار الكورس</label
               >
-              <select class="form-control col-lg-8" id="id-course-title">
+              <select class="form-control under-label" id="id-course-title">
               </select>
             </div>
-
-            <div class="form-group group-element">
+            
+            <div class="form-group group-element" style="margin-top: 30px;">
               <label
-                class="label-course col-lg-3 blue-grey darken-1"
+                class="label-course col-lg-3"
                 for="id-course-description"
                 >مقدمة عن الكورس</label
               >
               <textarea
-                class="control-text form-control col-lg-8"
+                class="form-control under-label"
                 id="id-course-description"
                 rows="3"
               ></textarea>
@@ -223,23 +226,39 @@
 
             <div>
               <label
-                class="label-course col-lg-3 blue-grey darken-1"
+                class="label-course col-lg-3"
                 for="id-course-description"
                 >نوع الكورس</label
               >
-              <div class="radio-catagory col-lg-8">
-                <label class="lbl-radio">
-                  <input name="group1" type="radio" id="id-cat-paid" />
+              <div class="form-control under-label">
+                <label>
+                  <input name="courseTypeRdbtn" type="radio" id="id-cat-paid" />
 
-                  <span style="font-size: 30px;">مدفوع</span>
+                  <span style="font-size: 2em;color: rgb(68, 67, 67);">مدفوع</span>
                 </label>
 
-                <label class="lbl-radio">
-                  <input name="group1" type="radio" id="id-cat-free" />
-                  <span style="font-size: 30px;">مجاني</span>
+                <label style="margin-right: 30px;">
+                  <input name="courseTypeRdbtn" type="radio" id="id-cat-free" />
+                  <span style="font-size: 2em;color: rgb(68, 67, 67);">مجاني</span>
                 </label>
               </div>
             </div>
+            
+            
+              <label 
+                class="label-course col-lg-3"
+                for="id-concepts"
+                > المفاهيم</label
+              > 
+            
+
+            <div class="list-group col-lg-3"  id="id-concepts">
+                <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
+                <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
+                <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
+            </div>
+          
+
           </div>
 
           <!-- text input 
@@ -422,7 +441,7 @@
           </div>
         </div>
       </div>
-    </div>
+  </div>
     <!-- ############################### Hidden Tab Section ################################### -->
     <!-- ############################### QTHint Section ################################### -->
     <!-- ############################### Media Section ################################### -->

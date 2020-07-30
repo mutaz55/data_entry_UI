@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.querySelector('#load-btn').addEventListener('click', (e)=> {
 e.preventDefault();
-//loadDataFromFireStore();
+loadDataFromFireStore();
 
 
 // fill courses Info
@@ -93,11 +93,11 @@ function fillCourseInfo(){
 
     const courseCombo = document.getElementById('id-course-title');
     const courseTitleOption = document.createElement("option");
-    courseTitleOption.text = " HELLO ";
+    courseTitleOption.text = " مرحبا ";
     courseCombo.add(courseTitleOption,courseCombo[0]);
 
     const textAreaCourseDesc = document.getElementById('id-course-description');
-    textAreaCourseDesc.value = "JJJJ";
+    textAreaCourseDesc.value = "السلام عليكم ورحمة الله وبركاته";
 
     const chkBoxCourseType = document.getElementById('id-cat-paid');
     chkBoxCourseType.checked = true;
