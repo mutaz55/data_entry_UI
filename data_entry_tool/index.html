@@ -56,16 +56,21 @@
 
     <!-- ############################### title ################################### -->
 
+    <style>
+      a.active.nav-link {
+        background-color: #26a69a !important;
+      }
+    </style>
+    s
+
     <title>ArabicLang Tools - Data Entry UI</title>
   </head>
 
-  <body >
-    
+  <body>
     <!-- Navbar -->
-    <div style="margin:0 auto;">
-    <nav class="z-depth-0 grey lighten-4">
-      <div class="nav-wrapper">
-   
+    <div style="margin: 0 auto;">
+      <nav class="z-depth-0 grey lighten-4">
+        <div class="nav-wrapper">
           <a href="#" class="logo-bran">
             <img
               src="img/data_entry_app_logo.PNG"
@@ -93,10 +98,9 @@
               >
             </li>
           </ul>
-    
-      </div>
-    </nav>
-  </div>
+        </div>
+      </nav>
+    </div>
     <ul class="sidenav" id="mobile-links">
       <li class="logged-in"><a href="#" class="grey-text">Accounts</a></li>
       <li class="logged-in"><a href="#" class="grey-text">Log Out</a></li>
@@ -127,16 +131,13 @@
         </form>
       </div>
     </div>
-    
-    
 
     <!-- The Welcome Message-->
 
-
-    <div class="logged-out welMsg" style="display: none;"  id="mainMsg">
+    <div class="logged-out welMsg" style="display: none;" id="mainMsg">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-         <span class="card-title">Warning</span>
+          <span class="card-title">Warning</span>
           <p>
             This app is designd to be used only in LLF. If you already have an
             account and cannot log in, please contact the administrator.
@@ -149,48 +150,49 @@
       </div>
     </div>
 
-
     <!--  Action Bar includes /load/store  -->
 
-    <div style="margin:0 auto;">
-
+    <div style="margin: 0 auto;">
       <nav>
         <div class="nav-wrapper">
-          
           <ul class="right">
             <li><a class="waves-effect waves-light btn">بعدين</a></li>
-            <li><a class="waves-effect waves-light btn" id="load-btn">تحميل البيانات <i class="material-icons right">cloud</i></a></li>
-            <li><a class="waves-effect waves-light btn-large" >حفظ البيانات</a></li>
+            <li>
+              <a class="waves-effect waves-light btn" id="load-btn"
+                >تحميل البيانات <i class="material-icons right">cloud</i></a
+              >
+            </li>
+            <li>
+              <a class="waves-effect waves-light btn-large">حفظ البيانات</a>
+            </li>
           </ul>
         </div>
       </nav>
-
     </div>
-    
 
     <!-- ############################### Main Tab Section ################################### -->
-    
-     <div class="MTS-wrapper logged-in" style="display: none;">
-     
-      <div class="maintab" >
+
+    <div class="MTS-wrapper logged-in" style="display: none;">
+      <div class="maintab">
         <ul class="nav nav-pills nav-fill navtop itemtab exband">
           <li class="nav-item">
-            <a class="nav-link active" href="#menu1" data-toggle="tab"
+            <a class="nav-link tab-color active" href="#menu1" data-toggle="tab"
               >المعلومات الأساسية للكورس
             </a>
           </li>
           <li class="nav-item col-lg-4">
-            <a class="nav-link" href="#menu2" data-toggle="tab"
+            <a class="nav-link tab-color" href="#menu2" data-toggle="tab"
               >معلومات المشهد</a
             >
           </li>
           <li class="nav-item col-lg-4">
-            <a class="nav-link" href="#menu3" data-toggle="tab"
+            <a class="nav-link tab-color" href="#menu3" data-toggle="tab"
               >تفاصيل المشهد</a
             >
           </li>
         </ul>
       </div>
+
       <div class="row">
         <div class="tab-content col-lg-12">
           <div
@@ -202,19 +204,15 @@
 
             <!-- Level Selection -->
             <div class="form-group group-element">
-              <label
-                class="label-course col-lg-3 "
-                for="id-course-title"
+              <label class="label-course col-lg-3" for="id-course-title"
                 >اختيار الكورس</label
               >
               <select class="form-control under-label" id="id-course-title">
               </select>
             </div>
-            
+
             <div class="form-group group-element" style="margin-top: 30px;">
-              <label
-                class="label-course col-lg-3"
-                for="id-course-description"
+              <label class="label-course col-lg-3" for="id-course-description"
                 >مقدمة عن الكورس</label
               >
               <textarea
@@ -225,185 +223,391 @@
             </div>
 
             <div>
-              <label
-                class="label-course col-lg-3"
-                for="id-course-description"
+              <label class="label-course col-lg-3" for="id-course-description"
                 >نوع الكورس</label
               >
               <div class="form-control under-label">
                 <label>
                   <input name="courseTypeRdbtn" type="radio" id="id-cat-paid" />
 
-                  <span style="font-size: 2em;color: rgb(68, 67, 67);">مدفوع</span>
+                  <span style="font-size: 2em; color: rgb(68, 67, 67);"
+                    >مدفوع</span
+                  >
                 </label>
 
                 <label style="margin-right: 30px;">
                   <input name="courseTypeRdbtn" type="radio" id="id-cat-free" />
-                  <span style="font-size: 2em;color: rgb(68, 67, 67);">مجاني</span>
+                  <span style="font-size: 2em; color: rgb(68, 67, 67);"
+                    >مجاني</span
+                  >
                 </label>
               </div>
             </div>
-            
-            
-           
+
             <div>
-              <label 
-                class="label-course col-lg-3"
-                for="id-concepts"
-                > المفاهيم</label
-              > 
-              
-           
-                <div class="list-group col align-self-end" style="scroll-behavior: auto;" id="id-concepts">
-                    <button type="button"  class="list-group-item list-group-item-action">المفهوم الأول</button>
-                    <button type="button" class="list-group-item list-group-item-action">المفهوم الثاني</button>
-                    <button type="button" class="list-group-item list-group-item-action">المفهوم الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">المفهوم الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">المفهوم الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">المفهوم الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">المفهوم الثالث</button>
-              
-           
+              <label class="label-course col-lg-3" for="id-concepts">
+                المفاهيم</label
+              >
+
+              <div
+                class="list-group col align-self-end"
+                style="scroll-behavior: auto;"
+                id="id-concepts"
+              >
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المفهوم الأول
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المفهوم الثاني
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المفهوم الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المفهوم الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المفهوم الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المفهوم الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المفهوم الثالث
+                </button>
               </div>
 
-
               <div class="input-group mb-3">
-                <input type="text" class="form-control input-concepts" style="direction: rtl;font-size: larger;" placeholder="إدخال المفهوم" aria-label="إدخال المفهوم">
+                <input
+                  type="text"
+                  class="form-control input-concepts"
+                  style="direction: rtl; font-size: larger;"
+                  placeholder="إدخال المفهوم"
+                  aria-label="إدخال المفهوم"
+                />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">إضافة</button>
-                  <button class="btn btn-outline-secondary" type="button">حذف</button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    إضافة
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    حذف
+                  </button>
                 </div>
               </div>
             </div>
 
-
             <div>
-              <label 
-                class="label-course col-lg-3"
-                for="id-concepts"
-                > الوحدات</label
-              > 
-              
-           
-                <div class="list-group col align-self-end" style="scroll-behavior: auto;" id="id-concepts">
-                    <button type="button"  class="list-group-item list-group-item-action">الوحدة الأول</button>
-                    <button type="button" class="list-group-item list-group-item-action">الوحدة الثاني</button>
-                    <button type="button" class="list-group-item list-group-item-action">الوحدة الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">الوحدة الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">الوحدة الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">الوحدة الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">الوحدة الثالث</button>
-              
-           
+              <label class="label-course col-lg-3" for="id-concepts">
+                الوحدات</label
+              >
+
+              <div
+                class="list-group col align-self-end"
+                style="scroll-behavior: auto;"
+                id="id-concepts"
+              >
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الوحدة الأول
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الوحدة الثاني
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الوحدة الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الوحدة الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الوحدة الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الوحدة الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الوحدة الثالث
+                </button>
               </div>
 
-
               <div class="input-group mb-3">
-                <input type="text" class="form-control input-concepts" style="direction: rtl;font-size: larger;" placeholder="إدخال الوحدة" aria-label="إدخال الوحدة">
+                <input
+                  type="text"
+                  class="form-control input-concepts"
+                  style="direction: rtl; font-size: larger;"
+                  placeholder="إدخال الوحدة"
+                  aria-label="إدخال الوحدة"
+                />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">إضافة</button>
-                  <button class="btn btn-outline-secondary" type="button">حذف</button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    إضافة
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    حذف
+                  </button>
                 </div>
               </div>
             </div>
 
-
             <div>
-              <label 
-                class="label-course col-lg-3"
-                for="id-concepts"
-                > الدروس</label
-              > 
-              
-           
-                <div class="list-group col align-self-end" style="scroll-behavior: auto;" id="id-concepts">
-                    <button type="button"  class="list-group-item list-group-item-action">الدرس الأول</button>
-                    <button type="button" class="list-group-item list-group-item-action">الدرس الثاني</button>
-                    <button type="button" class="list-group-item list-group-item-action">الدرس الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">الدرس الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">الدرس الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">الدرس الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">الدرس الثالث</button>
-              
-           
+              <label class="label-course col-lg-3" for="id-concepts">
+                الدروس</label
+              >
+
+              <div
+                class="list-group col align-self-end"
+                style="scroll-behavior: auto;"
+                id="id-concepts"
+              >
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الدرس الأول
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الدرس الثاني
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الدرس الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الدرس الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الدرس الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الدرس الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  الدرس الثالث
+                </button>
               </div>
 
-
               <div class="input-group mb-3">
-                <input type="text" class="form-control input-concepts" style="direction: rtl;font-size: larger;" placeholder="إدخال الدرس" aria-label="إدخال الدرس">
+                <input
+                  type="text"
+                  class="form-control input-concepts"
+                  style="direction: rtl; font-size: larger;"
+                  placeholder="إدخال الدرس"
+                  aria-label="إدخال الدرس"
+                />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">إضافة</button>
-                  <button class="btn btn-outline-secondary" type="button">حذف</button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    إضافة
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    حذف
+                  </button>
                 </div>
               </div>
             </div>
 
-
             <div>
-              <label 
-                class="label-course col-lg-3"
-                for="id-concepts"
-                > المهارات</label
-              > 
-              
-           
-                <div class="list-group col align-self-end" style="scroll-behavior: auto;" id="id-concepts">
-                    <button type="button"  class="list-group-item list-group-item-action">المهارة </button>
-                    <button type="button" class="list-group-item list-group-item-action">المهارة </button>
-                    <button type="button" class="list-group-item list-group-item-action">المهارة </button>
-                    <button type="button" class="list-group-item list-group-item-action">المهارة </button>
-                    <button type="button" class="list-group-item list-group-item-action">المهارة </button>
-                    <button type="button" class="list-group-item list-group-item-action">المهارة </button>
-                    <button type="button" class="list-group-item list-group-item-action">المهارة </button>
-              
-           
+              <label class="label-course col-lg-3" for="id-concepts">
+                المهارات</label
+              >
+
+              <div
+                class="list-group col align-self-end"
+                style="scroll-behavior: auto;"
+                id="id-concepts"
+              >
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المهارة
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المهارة
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المهارة
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المهارة
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المهارة
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المهارة
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  المهارة
+                </button>
               </div>
 
-
               <div class="input-group mb-3">
-                <input type="text" class="form-control input-concepts" style="direction: rtl;font-size: larger;" placeholder="إدخال المهارة" aria-label="إدخال المهارة">
+                <input
+                  type="text"
+                  class="form-control input-concepts"
+                  style="direction: rtl; font-size: larger;"
+                  placeholder="إدخال المهارة"
+                  aria-label="إدخال المهارة"
+                />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">إضافة</button>
-                  <button class="btn btn-outline-secondary" type="button">حذف</button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    إضافة
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    حذف
+                  </button>
                 </div>
               </div>
             </div>
 
-
             <div>
-              <label 
-                class="label-course col-lg-3"
-                for="id-concepts"
-                > أنواع المشاهد</label
-              > 
-              
-           
-                <div class="list-group col align-self-end" style="scroll-behavior: auto;" id="id-concepts">
-                    <button type="button"  class="list-group-item list-group-item-action">النوع الأول</button>
-                    <button type="button" class="list-group-item list-group-item-action">النوع الثاني</button>
-                    <button type="button" class="list-group-item list-group-item-action">النوع الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">النوع الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">النوع الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">النوع الثالث</button>
-                    <button type="button" class="list-group-item list-group-item-action">النوع الثالث</button>
-              
-           
+              <label class="label-course col-lg-3" for="id-concepts">
+                أنواع المشاهد</label
+              >
+
+              <div
+                class="list-group col align-self-end"
+                style="scroll-behavior: auto;"
+                id="id-concepts"
+              >
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  النوع الأول
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  النوع الثاني
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  النوع الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  النوع الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  النوع الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  النوع الثالث
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action"
+                >
+                  النوع الثالث
+                </button>
               </div>
 
-
               <div class="input-group mb-3">
-                <input type="text" class="form-control input-concepts" style="direction: rtl;font-size: larger;" placeholder="إدخال نوع المشهد" aria-label="إدخال نوع المشهد">
+                <input
+                  type="text"
+                  class="form-control input-concepts"
+                  style="direction: rtl; font-size: larger;"
+                  placeholder="إدخال نوع المشهد"
+                  aria-label="إدخال نوع المشهد"
+                />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">إضافة</button>
-                  <button class="btn btn-outline-secondary" type="button">حذف</button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    إضافة
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button">
+                    حذف
+                  </button>
                 </div>
               </div>
             </div>
-
-
-
-          </div>
-
           </div>
 
           <!-- text input 
@@ -511,13 +715,21 @@
               >
               <div class="radio-catagory col-lg-8">
                 <label class="lbl-radio">
-                  <input name="group_sendOTeacher" type="radio" id="id-SendToTeacher" />
+                  <input
+                    name="group_sendOTeacher"
+                    type="radio"
+                    id="id-SendToTeacher"
+                  />
 
                   <span style="font-size: 1em;">نعم</span>
                 </label>
 
                 <label class="lbl-radio">
-                  <input name="group_sendOTeacher" type="radio" id="id-SendToTeacherNot" />
+                  <input
+                    name="group_sendOTeacher"
+                    type="radio"
+                    id="id-SendToTeacherNot"
+                  />
                   <span style="font-size: 1em;"> لا </span>
                 </label>
               </div>
@@ -531,13 +743,21 @@
               >
               <div class="radio-catagory col-lg-8">
                 <label class="lbl-radio">
-                  <input name="group_bookType" type="radio" id="id-Arbeitsbuch" />
+                  <input
+                    name="group_bookType"
+                    type="radio"
+                    id="id-Arbeitsbuch"
+                  />
 
                   <span style="font-size: 1em;">كتاب كورس</span>
                 </label>
 
                 <label class="lbl-radio">
-                  <input name="group_bookType" type="radio" id="id-Arbeitskurs" />
+                  <input
+                    name="group_bookType"
+                    type="radio"
+                    id="id-Arbeitskurs"
+                  />
                   <span style="font-size: 1em;"> كتاب تدريبات </span>
                 </label>
               </div>
@@ -550,7 +770,7 @@
                 >اختيار المفهوم</label
               >
 
-              <select 
+              <select
                 style="height: 300px;"
                 multiple
                 class="form-control col-lg-8"
@@ -558,12 +778,8 @@
               >
               </select>
               <form>
-              <div   id="list-concepts" dir="rtl">
-              
-                  
-
-              </div>
-            </form>
+                <div id="list-concepts" dir="rtl"></div>
+              </form>
             </div>
 
             <div class="form-group group-element">
@@ -586,7 +802,7 @@
           </div>
         </div>
       </div>
-  </div>
+    </div>
     <!-- ############################### Hidden Tab Section ################################### -->
     <!-- ############################### QTHint Section ################################### -->
     <!-- ############################### Media Section ################################### -->
@@ -603,11 +819,10 @@
      https://firebase.google.com/docs/web/setup#available-libraries -->
 
     <script>
-
       //const firebase = require("firebase");
       // Required for side-effects
       //require("firebase/firestore");
-      
+
       // Your web app's Firebase configuration
       var firebaseConfig = {
         apiKey: "AIzaSyAFpD1e9Y1RSK9PNAQ84WI6lWAJQophybc",
