@@ -29,10 +29,6 @@ e.preventDefault();
 loadDataFromFireStore();
 
 
-// fill courses Info
-fillCourseInfo();
-
-
 });
 
 
@@ -83,6 +79,14 @@ function loadDataFromFireStore() {
                     SceneTypes.unshift(storeDataLocally(doc.id, scType, 'sceneTypes'));
                 });
         });
+
+        
+        // fill courses Info
+        fillCourseInfo();
+
+        console.log(Concepts.length);
+        fillConcepts(Concepts);
+
     });
     
   
@@ -136,3 +140,5 @@ function fillCourseInfo(){
     //divConceptsList.innerHTML += '<input type="checkbox" id="vehicle1" value="Bike"><label for="vehicle1"> I have a bike</label><br>';
     
 }
+
+

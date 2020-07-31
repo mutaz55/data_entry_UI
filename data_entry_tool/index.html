@@ -251,7 +251,7 @@
 
               <div
                 class="list-group col align-self-end"
-                style="scroll-behavior: auto;"
+                style="scroll-behavior: auto;text-align: right;"
                 id="id-concepts"
               >
                 <button
@@ -260,42 +260,7 @@
                 >
                   المفهوم الأول
                 </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المفهوم الثاني
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المفهوم الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المفهوم الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المفهوم الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المفهوم الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المفهوم الثالث
-                </button>
+               
               </div>
 
               <div class="input-group mb-3">
@@ -305,12 +270,13 @@
                   style="direction: rtl; font-size: larger;"
                   placeholder="إدخال المفهوم"
                   aria-label="إدخال المفهوم"
+                  id="txt_concept"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-success" type="button" id="add_concept">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-danger" type="button" id="remove_concept">
                     حذف
                   </button>
                 </div>
@@ -324,7 +290,7 @@
 
               <div
                 class="list-group col align-self-end"
-                style="scroll-behavior: auto;"
+                style="scroll-behavior: auto; text-align: right;"
                 id="id-concepts"
               >
                 <button
@@ -380,10 +346,10 @@
                   aria-label="إدخال الوحدة"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-success" type="button">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-danger" type="button">
                     حذف
                   </button>
                 </div>
@@ -397,7 +363,7 @@
 
               <div
                 class="list-group col align-self-end"
-                style="scroll-behavior: auto;"
+                style="scroll-behavior: auto;text-align: right;"
                 id="id-concepts"
               >
                 <button
@@ -453,10 +419,10 @@
                   aria-label="إدخال الدرس"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-success" type="button">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-danger" type="button">
                     حذف
                   </button>
                 </div>
@@ -470,45 +436,11 @@
 
               <div
                 class="list-group col align-self-end"
-                style="scroll-behavior: auto;"
+                style="scroll-behavior: auto;text-align: right;"
                 id="id-concepts"
               >
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المهارة
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المهارة
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المهارة
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المهارة
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المهارة
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المهارة
-                </button>
+                
+                
                 <button
                   type="button"
                   class="list-group-item list-group-item-action"
@@ -526,10 +458,10 @@
                   aria-label="إدخال المهارة"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-success" type="button">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-danger" type="button">
                     حذف
                   </button>
                 </div>
@@ -543,7 +475,7 @@
 
               <div
                 class="list-group col align-self-end"
-                style="scroll-behavior: auto;"
+                style="scroll-behavior: auto; text-align: right;"
                 id="id-concepts"
               >
                 <button
@@ -599,10 +531,10 @@
                   aria-label="إدخال نوع المشهد"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-success" type="button">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-secondary" type="button">
+                  <button class="btn btn-outline-danger" type="button">
                     حذف
                   </button>
                 </div>
@@ -847,6 +779,7 @@
       var Skills = new Array();
       var SceneTypes = new Array();
       var Lessons = new Array();
+      
     </script>
 
     <!-- JQuery CDN -->
@@ -867,5 +800,6 @@
     <script src="auth.js"></script>
     <script src="index.js"></script>
     <script src="script.js"></script>
+    <script src="controls.js"></script>
   </body>
 </html>
