@@ -61,7 +61,6 @@
         background-color: #26a69a !important;
       }
     </style>
-    s
 
     <title>ArabicLang Tools - Data Entry UI</title>
   </head>
@@ -251,7 +250,7 @@
 
               <div
                 class="list-group col align-self-end"
-                style="scroll-behavior: auto;text-align: right;"
+                style="scroll-behavior: auto; text-align: right;"
                 id="id-concepts"
               >
                 <button
@@ -260,7 +259,6 @@
                 >
                   المفهوم الأول
                 </button>
-               
               </div>
 
               <div class="input-group mb-3">
@@ -273,10 +271,18 @@
                   id="txt_concept"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button" id="add_concept">
+                  <button
+                    class="btn btn-outline-success"
+                    type="button"
+                    id="add_concept"
+                  >
                     إضافة
                   </button>
-                  <button class="btn btn-outline-danger" type="button" id="remove_concept">
+                  <button
+                    class="btn btn-outline-danger"
+                    type="button"
+                    id="remove_concept"
+                  >
                     حذف
                   </button>
                 </div>
@@ -363,7 +369,7 @@
 
               <div
                 class="list-group col align-self-end"
-                style="scroll-behavior: auto;text-align: right;"
+                style="scroll-behavior: auto; text-align: right;"
                 id="id-concepts"
               >
                 <button
@@ -436,11 +442,9 @@
 
               <div
                 class="list-group col align-self-end"
-                style="scroll-behavior: auto;text-align: right;"
+                style="scroll-behavior: auto; text-align: right;"
                 id="id-concepts"
               >
-                
-                
                 <button
                   type="button"
                   class="list-group-item list-group-item-action"
@@ -579,33 +583,27 @@
 
             <!-- Unit Selection -->
             <div class="form-group group-element">
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-unit"
+              <label class="label-course col-lg-3" for="id-unit"
                 >اختيار الوحدة</label
               >
-              <select class="form-control col-lg-8" id="id-unit"> </select>
+              <select class="form-control under-label" id="id-unit"> </select>
             </div>
 
             <!-- Lesson Selection -->
             <div class="form-group group-element">
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-lesson"
+              <label class="label-course col-lg-3" for="id-lesson"
                 >اختيار الدرس</label
               >
-              <select class="form-control col-lg-8" id="lesson"> </select>
+              <select class="form-control under-label" id="lesson"> </select>
             </div>
             <!-- Scene Serial number -->
             <div class="form-group group-element">
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-sr"
+              <label class="label-course col-lg-3" for="id-sr"
                 >رقم المشهد</label
               >
               <input
                 type="number"
-                class="form-control col-lg-8"
+                class="form-control under-label"
                 value="1"
                 min="1"
                 max="50"
@@ -615,127 +613,169 @@
             </div>
             <!-- Select Exercise type -->
 
-            <div class="form-group group-element">
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-scene-type"
-                >اختيار نوع المشهد</label
+            <div>
+              <label class="label-course col-lg-3" for="id-scene-type">
+                اختيار نوع المشهد</label
               >
-              <select class="form-control col-lg-8" id="id-scene-type">
-              </select>
+
+              <div
+                class="list-group col align-self-end"
+                style="scroll-behavior: auto; text-align: right;"
+                id="id-scene-type"
+              >
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action select-scene-click"
+                  value="1"
+                >
+                  النوع الأول
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action select-scene-click"
+                  value="2"
+                >
+                  النوع الثاني
+                </button>
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action select-scene-click"
+                  value="3"
+                >
+                  النوع الثالث
+                </button>
+              </div>
             </div>
 
             <!-- text input -->
             <div class="form-group group-element">
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-scene-title"
+              <label class="label-course col-lg-3" for="id-scene-title"
                 >عنوان المشهد</label
               >
               <input
-                type="select"
-                class="form-control col-lg-8"
+                type="text"
+                class="form-control under-label"
                 id="id-scene-title"
               />
             </div>
 
             <div>
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-SendToTeacher"
-                >ارسال للتصحيح</label
+              <label class="label-course col-lg-3" for="id-send-to-teacher"
+                >ارسال إلى التصحيح</label
               >
-              <div class="radio-catagory col-lg-8">
-                <label class="lbl-radio">
+              <div class="form-control under-label">
+                <label>
                   <input
-                    name="group_sendOTeacher"
+                    name="courseTypeRdbtn"
                     type="radio"
-                    id="id-SendToTeacher"
+                    id="id-send-to-teacher"
                   />
 
-                  <span style="font-size: 1em;">نعم</span>
+                  <span style="font-size: 2em; color: rgb(68, 67, 67);"
+                    >نعم</span
+                  >
                 </label>
 
-                <label class="lbl-radio">
+                <label style="margin-right: 30px;">
                   <input
-                    name="group_sendOTeacher"
+                    name="courseTypeRdbtn"
                     type="radio"
-                    id="id-SendToTeacherNot"
+                    id="id-send-to-teacher-not"
                   />
-                  <span style="font-size: 1em;"> لا </span>
+                  <span style="font-size: 2em; color: rgb(68, 67, 67);"
+                    >لا</span
+                  >
                 </label>
               </div>
             </div>
 
             <div>
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-SendToTeacher"
+              <label class="label-course col-lg-3" for="id-book-type"
                 >نوع الكتاب</label
               >
-              <div class="radio-catagory col-lg-8">
-                <label class="lbl-radio">
-                  <input
-                    name="group_bookType"
-                    type="radio"
-                    id="id-Arbeitsbuch"
-                  />
+              <div class="form-control under-label">
+                <label>
+                  <input name="courseTypeRdbtn" type="radio" id="id-kursbook" />
 
-                  <span style="font-size: 1em;">كتاب كورس</span>
+                  <span style="font-size: 2em; color: rgb(68, 67, 67);"
+                    >كتاب كورس</span
+                  >
                 </label>
 
-                <label class="lbl-radio">
+                <label style="margin-right: 30px;">
                   <input
-                    name="group_bookType"
+                    name="courseTypeRdbtn"
                     type="radio"
-                    id="id-Arbeitskurs"
+                    id="id-Arbeitbook"
                   />
-                  <span style="font-size: 1em;"> كتاب تدريبات </span>
+                  <span style="font-size: 2em; color: rgb(68, 67, 67);"
+                    >كتاب تدريبات</span
+                  >
                 </label>
               </div>
             </div>
+            <br />
 
-            <div class="form-group group-element">
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-concept"
-                >اختيار المفهوم</label
+            <div>
+              <label class="label-course col-lg-3" for="id-select-concept">
+                اختيار المفهوم</label
               >
 
               <select
                 style="height: 300px;"
                 multiple
-                class="form-control col-lg-8"
+                class="form-control"
                 id="id-concept"
               >
               </select>
-              <form>
-                <div id="list-concepts" dir="rtl"></div>
-              </form>
             </div>
 
             <div class="form-group group-element">
-              <label
-                class="label-course col-lg-3 blue-grey darken-1"
-                for="id-skill"
-                >اختيارالمهارة</label
+              <label class="label-course col-lg-3" for="id-select-skill">
+                اختيارالمهارة</label
               >
               <select
                 style="height: 300px;"
                 multiple
-                class="form-control col-lg-8"
+                class="form-control"
                 id="id-skill"
               >
               </select>
             </div>
           </div>
           <div class="tab-pane fade paneltab" role="tabpanel" id="menu3">
-            تفاصيل المشهد
+            <div class="tab">
+              <button class="tablinks">
+                تفاصيل نوع السؤال الأول
+              </button>
+              <button class="tablinks">
+                تفاصيل نوع السؤال الثاني
+              </button>
+              <button class="tablinks">
+                تفاصيل نوع السؤال الثالث
+              </button>
+
+              <div id="Q-type-1" class="tabcontent">
+                <h3>النوع الأول</h3>
+                <p>تفاصيل نوع السؤال الأول</p>
+              </div>
+
+              <div id="Q-type-2" class="tabcontent">
+                <h3>النوع الثاني</h3>
+                <p>تفاصيل نوع السؤال الثاني</p>
+              </div>
+
+              <div id="Q-type-3" class="tabcontent">
+                <h3>النوع الثالث</h3>
+                <p>تفاصيل نوع السؤال الثالث</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- ############################### Hidden Tab Section ################################### -->
+    <!-- ############################### Insert Question Tab Section ################################### -->
+
     <!-- ############################### QTHint Section ################################### -->
     <!-- ############################### Media Section ################################### -->
     <!-- ############################### Statement & Answer Section ################################### -->
@@ -779,7 +819,6 @@
       var Skills = new Array();
       var SceneTypes = new Array();
       var Lessons = new Array();
-      
     </script>
 
     <!-- JQuery CDN -->
