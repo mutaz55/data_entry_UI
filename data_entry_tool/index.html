@@ -628,23 +628,28 @@
                   class="list-group-item list-group-item-action select-scene-click"
                   value="1"
                 >
-                  النوع الأول
+                  ملخص
                 </button>
                 <button
                   type="button"
                   class="list-group-item list-group-item-action select-scene-click"
                   value="2"
                 >
-                  النوع الثاني
+                  اختبار
                 </button>
                 <button
                   type="button"
                   class="list-group-item list-group-item-action select-scene-click"
                   value="3"
                 >
-                  النوع الثالث
+                  تمرين املأ الفراغ
                 </button>
               </div>
+              <label
+                class="label-selected-value col-lg-10"
+                id="id-scene-selected"
+                >اختيار</label
+              >
             </div>
 
             <!-- text input -->
@@ -743,31 +748,377 @@
               </select>
             </div>
           </div>
+
           <div class="tab-pane fade paneltab" role="tabpanel" id="menu3">
             <div class="tab">
-              <button class="tablinks">
-                تفاصيل نوع السؤال الأول
-              </button>
-              <button class="tablinks">
-                تفاصيل نوع السؤال الثاني
-              </button>
-              <button class="tablinks">
-                تفاصيل نوع السؤال الثالث
-              </button>
-
-              <div id="Q-type-1" class="tabcontent">
-                <h3>النوع الأول</h3>
-                <p>تفاصيل نوع السؤال الأول</p>
+              <div id="S-type-1" class="tabcontent col-lg-12">
+                <h3>ملخص</h3>
+                <p>تفاصيل الملخص</p>
               </div>
 
-              <div id="Q-type-2" class="tabcontent">
-                <h3>النوع الثاني</h3>
-                <p>تفاصيل نوع السؤال الثاني</p>
+              <div id="S-type-2" class="tabcontent col-lg-12">
+                <h3>اختبار</h3>
+                <p>تفاصيل الاختبار</p>
               </div>
 
-              <div id="Q-type-3" class="tabcontent">
-                <h3>النوع الثالث</h3>
-                <p>تفاصيل نوع السؤال الثالث</p>
+              <div id="S-type-3" class="tabcontent col-lg-12">
+                <!-- ****************** Section Question Main Infor********************* -->
+                <section class="genSection">
+                  <h3><strong> المشهد </strong>تمرين املأ الفراغ</h3>
+                  <!-- ***** -->
+                  <div
+                    class="form-group group-element"
+                    style="margin-top: 30px;"
+                  >
+                    <label class="label-course col-lg-3" for="id-ExerciseText">
+                      صيغة السؤال</label
+                    >
+                    <textarea
+                      class="form-control under-label"
+                      id="id-ExerciseText"
+                      rows="3"
+                    ></textarea>
+                  </div>
+                  <!-- ***** -->
+
+                  <!-- ***** -->
+                  <div
+                    class="form-group group-element"
+                    style="margin-top: 30px;"
+                  >
+                    <label class="label-course col-lg-3" for="id-Translation">
+                      ترجمة السؤال</label
+                    >
+                    <textarea
+                      class="form-control under-label"
+                      id="id-Translation"
+                      rows="3"
+                    ></textarea>
+                  </div>
+                  <!-- ***** -->
+                  <div class="form-group group-element">
+                    <label
+                      class="label-course col-lg-3"
+                      for="id-ExerciseHint-text"
+                      >مساعدة نصية مقروءة</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control under-label"
+                      id="id-ExerciseHint-text"
+                    />
+                  </div>
+
+                  <!-- ***** -->
+                  <div
+                    class="form-group group-element"
+                    style="margin-top: 30px;"
+                  >
+                    <label
+                      class="label-course col-lg-3"
+                      for="id-ExerciseHint-Previous-help"
+                    >
+                      مراجعات سابقة</label
+                    >
+                    <textarea
+                      class="form-control under-label"
+                      id="id-ExerciseHint-Previous-help"
+                      rows="3"
+                    ></textarea>
+                  </div>
+                  <!-- ***** -->
+                </section>
+                <!-- ****************** End of Section Question Main Infor********************* -->
+                <!-- ****************** Media Section ***************************************** -->
+                <section class="genSection">
+                  <!-- ****************** Pic subSection of Media ***************** -->
+                  <section>
+                    <div>
+                      <label class="label-course col-lg-3"> صورة</label>
+                      <div class="form-control under-label">
+                        <label id="id-main-pic-label">
+                          <input
+                            id="id-main-pic-checkbox"
+                            name="courseTypeRdbtn"
+                            type="checkbox"
+                          />
+
+                          <span style="font-size: 2em; color: rgb(68, 67, 67);"
+                            >ادخال صورة</span
+                          >
+                        </label>
+                      </div>
+                      <div id="div-pic-hidden" class="hidden-tab">
+                        <!-- ***** -->
+                        <div
+                          class="form-group group-element"
+                          style="margin-top: 30px;"
+                        >
+                          <label
+                            class="label-hidden col-lg-2"
+                            for="id-main-pic-des"
+                          >
+                            وصف الصورة</label
+                          >
+                          <textarea
+                            class="form-control control-hidden"
+                            id="id-main-pic-des"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                        <!-- ***** -->
+                        <!-- ***** -->
+
+                        <div class="form-control control-hidden">
+                          <label class="radio-margin">
+                            <input
+                              name="main-photo-type"
+                              type="radio"
+                              id="id-main-photo-type-photo"
+                            />
+                            <span
+                              style="font-size: 2em; color: rgb(68, 67, 67);"
+                            >
+                              تصوير فوتوغرافي</span
+                            >
+                          </label>
+
+                          <label class="radio-margin">
+                            <input
+                              name="main-photo-type"
+                              type="radio"
+                              id="id-main-photo-type-drawing"
+                            />
+                            <span
+                              style="font-size: 2em; color: rgb(68, 67, 67);"
+                            >
+                              رسومات
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      <!-- ***** -->
+                    </div>
+                  </section>
+                  <!-- ****************** End of Pic subSection of Media ***************** -->
+
+                  <!-- ****************** Recorded Sound subSection of Media ***************** -->
+                  <section>
+                    <div>
+                      <label class="label-course col-lg-3"> نص صوتي</label>
+                      <div class="form-control under-label">
+                        <label id="id-main-sound-label">
+                          <input
+                            id="id-main-sound-checkbox"
+                            name="courseTypeRdbtn"
+                            type="checkbox"
+                          />
+
+                          <span style="font-size: 2em; color: rgb(68, 67, 67);">
+                            ادخال النص الصوتي</span
+                          >
+                        </label>
+                      </div>
+                      <div id="div-sound-hidden" class="hidden-tab">
+                        <!-- ***** -->
+                        <div
+                          class="form-group group-element"
+                          style="margin-top: 30px;"
+                        >
+                          <label
+                            class="label-hidden col-lg-2"
+                            for="id-main-sound-des"
+                          >
+                            ادخال النص الصوتي
+                          </label>
+                          <textarea
+                            class="form-control control-hidden"
+                            id="id-main-sound-des"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                        <!-- ***** -->
+                      </div>
+                      <!-- ***** -->
+                    </div>
+                  </section>
+                  <!-- ****************** End of Recorded Sound subSection of Media ***************** -->
+
+                  <!-- ****************** Sound Effect subSection of Media ***************** -->
+                  <section>
+                    <div>
+                      <label
+                        class="label-course col-lg-3"
+                        for="id-main-soundeffect-label"
+                      >
+                        نص صوتي</label
+                      >
+                      <div class="form-control under-label">
+                        <label id="id-main-soundeffect-label">
+                          <input
+                            id="id-main-soundeffect-checkbox"
+                            name="soundeffect"
+                            type="checkbox"
+                          />
+
+                          <span style="font-size: 2em; color: rgb(68, 67, 67);">
+                            ادخال الموثرات الصوتية
+                          </span>
+                        </label>
+                      </div>
+                      <div id="div-soundeffect-hidden" class="hidden-tab">
+                        <!-- ***** -->
+                        <div
+                          class="form-group group-element"
+                          style="margin-top: 30px;"
+                        >
+                          <label
+                            class="label-hidden col-lg-2"
+                            for="id-main-soundeffect-des"
+                          >
+                            وصف المؤثرات الصوتية
+                          </label>
+                          <textarea
+                            class="form-control control-hidden"
+                            id="id-main-soundeffect-des"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                        <!-- ***** -->
+                      </div>
+                      <!-- ***** -->
+                    </div>
+                  </section>
+                  <!-- ****************** End of Sound Effect subSection of Media ***************** -->
+
+                  <!-- ****************** Video subSection of Media ***************** -->
+                  <section>
+                    <div>
+                      <label class="label-course col-lg-3"> صورة</label>
+                      <div class="form-control under-label">
+                        <label id="id-main-video-label">
+                          <input
+                            id="id-main-video-checkbox"
+                            name="VieoCheckbox"
+                            type="checkbox"
+                          />
+
+                          <span style="font-size: 2em; color: rgb(68, 67, 67);"
+                            >ادخال فيديو</span
+                          >
+                        </label>
+                      </div>
+                      <div id="div-video-hidden" class="hidden-tab">
+                        <!-- ***** -->
+                        <div
+                          class="form-group group-element"
+                          style="margin-top: 30px;"
+                        >
+                          <label
+                            class="label-hidden col-lg-2"
+                            for="id-main-video-des"
+                          >
+                            وصف الفيديو</label
+                          >
+                          <textarea
+                            class="form-control control-hidden"
+                            id="id-main-video-des"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                        <!-- ***** -->
+                        <!-- ***** -->
+
+                        <div class="form-control control-hidden">
+                          <label class="radio-margin">
+                            <input
+                              name="main-video-type"
+                              type="radio"
+                              id="id-main-video-type-photographic"
+                            />
+                            <span
+                              style="font-size: 2em; color: rgb(68, 67, 67);"
+                            >
+                              فيديو فوتوغرافي</span
+                            >
+                          </label>
+
+                          <label class="radio-margin">
+                            <input
+                              name="main-video-type"
+                              type="radio"
+                              id="id-main-video-type-animation"
+                            />
+                            <span
+                              style="font-size: 2em; color: rgb(68, 67, 67);"
+                            >
+                              أنيماشن
+                            </span>
+                          </label>
+
+                          <label class="radio-margin">
+                            <input
+                              name="main-video-type"
+                              type="radio"
+                              id="id-main-video-type-slideshow"
+                            />
+                            <span
+                              style="font-size: 2em; color: rgb(68, 67, 67);"
+                            >
+                              عرض صور مع صوت
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      <!-- ***** -->
+                    </div>
+                  </section>
+                  <!-- ****************** End of video subSection of Media ***************** -->
+
+                  <!-- ****************** Read Text subSection of Media ***************** -->
+                  <section>
+                    <div>
+                      <label class="label-course col-lg-3"> نصوص قراءة </label>
+                      <div class="form-control under-label">
+                        <label id="id-main-text-label">
+                          <input
+                            id="id-main-text-checkbox"
+                            name="textcheckbox"
+                            type="checkbox"
+                          />
+
+                          <span style="font-size: 2em; color: rgb(68, 67, 67);">
+                            ادخال نصوص القراءة</span
+                          >
+                        </label>
+                      </div>
+                      <div id="div-text-hidden" class="hidden-tab">
+                        <!-- ***** -->
+                        <div
+                          class="form-group group-element"
+                          style="margin-top: 30px;"
+                        >
+                          <label
+                            class="label-hidden col-lg-2"
+                            for="id-main-text-des"
+                          >
+                            ادخال نصوص القراءة
+                          </label>
+                          <textarea
+                            class="form-control control-hidden"
+                            id="id-main-text-des"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                        <!-- ***** -->
+                      </div>
+                      <!-- ***** -->
+                    </div>
+                  </section>
+                  <!-- ****************** End of Recorded Sound subSection of Media ***************** -->
+
+                  <!-- ****************** Endof Media Section ***************************************** -->
+                </section>
               </div>
             </div>
           </div>
