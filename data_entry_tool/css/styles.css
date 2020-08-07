@@ -101,6 +101,23 @@ body {
   margin-bottom: 0;
 }
 
+.label-war {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 2.5rem;
+  color: #fff;
+  border-right: 10px solid red;
+  background-color: #e9c9c9;
+  border-radius: 10px 0px 10px 0px;
+  /* height: 20px;
+  width: 200px; */
+  margin-top: 30px;
+  margin-left: 10px;
+  text-align: right;
+  /* clear: both; */
+  float: right;
+  margin-right: 10px;
+  margin-bottom: 0;
+}
 .label-hidden {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 1.5rem;
@@ -123,13 +140,22 @@ body {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 2rem;
   text-align: right;
+  margin-top: 10px;
 
-  margin-left: 10px;
   /* clear: both; */
   float: right;
   margin-right: 30px;
 }
+.answer-control-hidden {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 2rem;
+  text-align: right;
 
+  margin-left: 10px;
+  /* clear: both; */
+  float: right;
+  margin-right: 10px;
+}
 /* CSS REQUIRED */
 .state-icon {
   left: -5px;
@@ -222,6 +248,8 @@ body {
   padding: 20px 40px 30px;
   margin: 30px;
   border: 1px solid black;
+  display: flex;
+  flex-direction: column;
 
   overflow: auto;
 }
@@ -230,4 +258,74 @@ body {
 }
 /* ############################### Media Section ################################### */
 /* ############################### Statement & Answer Section ################################### */
-/* ############################### Footer Section ################################### */
+.list-col {
+  display: flex;
+  flex-direction: column;
+}
+.list-answer-statement {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #fff;
+  border-right: 10px solid #26a69a;
+  background-color: #ee6e73;
+  border-radius: 10px 0px 0px 0px;
+
+  /* height: 20px;
+  width: 200px; */
+  margin-top: 0px;
+  margin-left: 0px;
+  text-align: right;
+  /* clear: both; */
+  float: right;
+  margin-right: 0px;
+  margin-bottom: 0;
+}
+
+.list-answer-statement:hover {
+  color: #fff;
+  background-color: #e9c9c9;
+  text-decoration: none;
+}
+
+/* .list-answer-statement:active {
+  color: #fff;
+  background-color: #f0a6a6;
+  text-decoration: none;
+} */
+
+.tap-pane-answer {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-right: 0px;
+  height: auto;
+
+  border: 1px solid black;
+  background-color: #fff;
+}
+.fill-in-blank {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin: 20px;
+  color: #fff;
+  border-right: 10px solid #ee6e73;
+  background-color: #1bc01b;
+  border-radius: 10px 0px 0px 0px;
+
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+}
+
+.input-fill-in-blank {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin: 10px;
+  font-size: 1.5rem;
+  color: black;
+}
+.multi-answers {
+  border: 2px solid #ee6e73;
+  padding: 10px;
+  margin: 10px;
+}
+/* .//////////////////////// */

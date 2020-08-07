@@ -102,6 +102,15 @@ $("#id-main-text-label").click(function () {
   }
 });
 
+//Media General - click on insert empty
+$("#id-insert-empty").click(function () {
+  // console.log("entered function checkbox click");
+  console.log("Hello");
+  var contentTxt = document.getElementById("id-statement").value;
+  console.log(contentTxt);
+  document.getElementById("id-statement").value = contentTxt + " E ";
+});
+
 /* ############################### QTHint Section ################################### */
 /* ############################### Media Section ################################### */
 /* ############################### Statement & Answer Section ################################### */

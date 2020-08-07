@@ -3,10 +3,10 @@
     "couseID": "",
     "course-title": "ArabicA1",
     "Modules-Numbers": 8,
-    "Description":"",
-    "MediaType":"",
-    "MediaFilename":"",
-    "Progress":"",
+    "Description": "",
+    "MediaType": "",
+    "MediaFilename": "",
+    "Progress": "",
     "catagory": "Paid/Free",
     "Modules": ["", ""],
     "Lessons": ["", ""],
@@ -29,26 +29,22 @@
     "Book": "Course/Or/Workbook"
   },
 
-  
-  
   "FillInQuestion (Col per Course per unit)": {
     "Concepts": ["concept1", "concept2"],
     "Skills": ["skills1", "skills2"],
     "ExerciseText": "",
     "Translation": "",
     "ExerciseHint": {
-                  "Text": "",
-                  "Previous-help": {
-                                  "description": "",
-                                  "filename": ""
-                                   }
-                    },
-    "Hint" : ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
+      "Text": "",
+      "Previous-help": {
+        "description": "",
+        "filename": ""
+      }
+    },
+    "Hint": ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
     "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"]
-   
   },
-  
-  
+
   "Scene (Col per Course per unit)": {
     "Concepts": ["concept1", "concept2"],
     "Skills": ["skills1", "skills2"],
@@ -56,7 +52,6 @@
     "Translation": "",
     "ExerciseHint": ["HintObj1", "HintObj2", "HintObj3", "HintObj4"],
     "Questions": ["QuestionObj", "QuestionObj", "QuestionObj", "QuestionObj"]
-   
   },
 
   "HintObj": {
