@@ -1,3 +1,5 @@
+var currentCourse;
+
 const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 //const mainMsg = document.querySelector('#mainMsg');
@@ -26,6 +28,13 @@ document.querySelector("#load-btn").addEventListener("click", (e) => {
   loadDataFromFireStore();
 });
 
+
+
+// Course combo box
+const courseCombo = document.getElementById("id-course-title");
+
+
+
 function loadDataFromFireStore() {
   // re-initialize = when user clicks on load button while there are already data into objects.
   Courses = [];
@@ -34,6 +43,11 @@ function loadDataFromFireStore() {
   Concepts = [];
   Skills = [];
   SceneTypes = [];
+
+  // Clear Course combo box
+  clearCombo(courseCombo);
+  // Clear concepts list
+  clearConceptsLst();
 
   var docRef = db.collection("courses");
   docRef.get().then(function (querySnapshot) {
@@ -75,22 +89,80 @@ function loadDataFromFireStore() {
     // fill courses Info
     fillCourseInfo();
 
-    console.log(Concepts.length);
-    fillConcepts(Concepts);
+ 
+   
   });
 }
 
+
+
+function clearCombo(combo){
+  const length = combo.options.length;
+  for (i = length-1; i >= 0; i--) {
+          combo.options[i] = null;
+
+}
+
+
+
+}
 function fillCourseInfo() {
-  const courseCombo = document.getElementById("id-course-title");
-  const courseTitleOption = document.createElement("option");
-  courseTitleOption.text = " مرحبا ";
-  courseCombo.add(courseTitleOption, courseCombo[0]);
+  
+  // clear the course in combobox if there is any
+  clearCombo(courseCombo);
+  if (Courses.length != 0) {
+    Courses.forEach( x => {
+      const newOption = document.createElement('option');
+      const optionText = document.createTextNode(x.CourseTitle);
+      // set option text
+      newOption.appendChild(optionText);
+      // and option value
+      newOption.setAttribute('value',x.id);
+      // add the option to the select box
+      courseCombo.appendChild(newOption);
 
-  const textAreaCourseDesc = document.getElementById("id-course-description");
-  textAreaCourseDesc.value = "السلام عليكم ورحمة الله وبركاته";
+    });
 
-  const chkBoxCourseType = document.getElementById("id-cat-paid");
-  chkBoxCourseType.checked = true;
+    courseCombo.addEventListener('change', (event)=> {
+
+      console.log('change');
+      // Clear concepts list
+      clearConceptsLst();
+      
+      currentCourse = Courses.find( courseID => courseID.id == event.target.value);
+      const textAreaCourseDesc = document.getElementById("id-course-description");
+      textAreaCourseDesc.value = currentCourse.Description;
+
+
+      if (currentCourse.Category == 1) {
+
+        const chkBoxCourseTypePaid = document.getElementById("id-cat-paid");
+        chkBoxCourseTypePaid.checked = true;
+
+      }else {
+
+        const chkBoxCourseTypeFree = document.getElementById("id-cat-free");
+        chkBoxCourseTypeFree.checked = true;
+
+      }
+      
+   
+      fillConcepts(Concepts.filter( con => con.id == currentCourse.id ));
+    
+      
+      
+    });
+    
+    if (courseCombo.options.length > 0) {
+        courseCombo.dispatchEvent(new Event('change'));
+      
+    }
+      
+  }
+  
+
+
+  
 
   // const divConceptsList = document.getElementById('list-concepts');
   //const x = document.createElement("input");

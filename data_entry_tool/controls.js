@@ -5,6 +5,9 @@ const lst_concepts = document.querySelector('#id-concepts');
 
 let selected_concept_index = "-1";
 
+
+
+
 // TODO: 
 
 
@@ -63,22 +66,25 @@ btn_add_concept.addEventListener('click', (e)=> {
     const txt_concept_entry = document.getElementById("txt_concept").value;
     
     if (txt_concept_entry != 0) {
-        let id_con = Math.max.apply(Math, Concepts.map(function(conId) { return (conId.ConceptID).substring(4,Concepts[0]['ConceptID'].length); })) + 1;
-        let id_con_key = "A11C" + id_con;
+        let id_con = Math.max.apply(Math, Concepts.map(function(conId) { return (conId.ConceptID).substring(conId.ConceptID.indexOf('C') + 1,conId.ConceptID.length); })) + 1;
+        let id_con_key = currentCourse.CourseTitle + "C" + id_con;
         // to change later  >> Courses[0] for all courses
-        Concepts.unshift(new Concept(Courses[0]['id'],id_con_key, txt_concept_entry));
+        Concepts.unshift(new Concept(currentCourse.id,id_con_key, txt_concept_entry));
         addNewConceptItem(txt_concept_entry, id_con_key).focus();
         document.getElementById("txt_concept").value = "";
-        
+        console.log(Concepts);
     }
     selected_concept_index = "-1";
         
     });
 
-
-function fillConcepts(con){
-    
+function clearConceptsLst () {
+      
     lst_concepts.innerHTML = "";
+    console.log('clear');
+}
+function fillConcepts(con){
+  
     if (con.length != 0) {
         con.forEach(element => {
             addNewConceptItem(element.ConceptText, element.ConceptID);
