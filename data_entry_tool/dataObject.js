@@ -58,13 +58,13 @@ class Lesson {
 }
 
 class SceneType {
-    constructor(id, SceneID, SceneDesc) {
+    constructor(id, SceneTypeID, SceneTypeDesc) {
         this.id = id;
-        this.SceneID = SceneID;
-        this.SceneDesc;
+        this.SceneTypeID = SceneTypeID;
+        this.SceneTypeDesc = SceneTypeDesc;
     }
     toString() {
-        return this.id + ', ' + this.SceneID + ', ' + this.SceneDesc;
+        return this.id + ', ' + this.SceneTypeID + ', ' + this.SceneTypeDesc;
     }
 }
 
@@ -76,10 +76,10 @@ function storeDataLocally(id, data, type) {
         switch (type){
             case 'courses':  return new Course(id,data['Course-Title'],data.Description,data.Category,data['Modules-Numbers']);
             case 'modules':  return new Module(id, data['Module-ID'], data['Module-Title']);
-            case 'lessons':  return new Lesson(id, data['Lesson-ID', data['Lesson-Title']]);
+            case 'lessons':  return new Lesson(id, data['Lesson-ID'], data['Lesson-Title']);
             case 'concepts': return new Concept(id, data['Concept-ID'],data['Concept-Text']);
             case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text']);
-            case 'sceneTypes': return new SceneType(id, data['scene-ID'], data['scene-Desc']);
+            case 'sceneTypes': return new SceneType(id, data['sceneType-ID'], data['sceneType-Text']);
                 
         }
         

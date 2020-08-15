@@ -66,6 +66,10 @@
         color: #fff;
         border-right: 10px solid #26a69a;
       }
+
+      
+      
+
     </style>
 
     <title>ArabicLang Tools - Data Entry UI</title>
@@ -259,12 +263,7 @@
                 style="scroll-behavior: auto; text-align: right;"
                 id="id-concepts"
               >
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المفهوم الأول
-                </button>
+                
               </div>
 
               <div class="input-group mb-3">
@@ -303,50 +302,9 @@
               <div
                 class="list-group col align-self-end"
                 style="scroll-behavior: auto; text-align: right;"
-                id="id-concepts"
+                id="id-modules"
               >
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الوحدة الأول
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الوحدة الثاني
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الوحدة الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الوحدة الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الوحدة الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الوحدة الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الوحدة الثالث
-                </button>
+                
               </div>
 
               <div class="input-group mb-3">
@@ -354,14 +312,15 @@
                   type="text"
                   class="form-control input-concepts"
                   style="direction: rtl; font-size: larger;"
+                  id = "txt_module"
                   placeholder="إدخال الوحدة"
                   aria-label="إدخال الوحدة"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button">
+                  <button class="btn btn-outline-success" type="button" id="add_module">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-danger" type="button">
+                  <button class="btn btn-outline-danger" type="button" id="remove_module">
                     حذف
                   </button>
                 </div>
@@ -369,57 +328,16 @@
             </div>
 
             <div>
-              <label class="label-course col-lg-3" for="id-concepts">
+              <label class="label-course col-lg-3" for="id-lessons">
                 الدروس</label
               >
 
               <div
                 class="list-group col align-self-end"
                 style="scroll-behavior: auto; text-align: right;"
-                id="id-concepts"
+                id="id-lessons"
               >
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الدرس الأول
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الدرس الثاني
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الدرس الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الدرس الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الدرس الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الدرس الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  الدرس الثالث
-                </button>
+               
               </div>
 
               <div class="input-group mb-3">
@@ -429,12 +347,13 @@
                   style="direction: rtl; font-size: larger;"
                   placeholder="إدخال الدرس"
                   aria-label="إدخال الدرس"
+                  id="txt_lesson"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button">
+                  <button class="btn btn-outline-success" type="button" id="add_lesson">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-danger" type="button">
+                  <button class="btn btn-outline-danger" type="button" id="remove_lesson">
                     حذف
                   </button>
                 </div>
@@ -442,21 +361,17 @@
             </div>
 
             <div>
-              <label class="label-course col-lg-3" for="id-concepts">
+              <label class="label-course col-lg-3" for="id-skills">
                 المهارات</label
               >
 
               <div
                 class="list-group col align-self-end"
                 style="scroll-behavior: auto; text-align: right;"
-                id="id-concepts"
+                id="id-skills"
               >
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  المهارة
-                </button>
+               
+
               </div>
 
               <div class="input-group mb-3">
@@ -466,12 +381,13 @@
                   style="direction: rtl; font-size: larger;"
                   placeholder="إدخال المهارة"
                   aria-label="إدخال المهارة"
+                  id="txt_skill"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button">
+                  <button class="btn btn-outline-success" type="button" id="add_skill">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-danger" type="button">
+                  <button class="btn btn-outline-danger" type="button" id="remove_skill">
                     حذف
                   </button>
                 </div>
@@ -479,57 +395,17 @@
             </div>
 
             <div>
-              <label class="label-course col-lg-3" for="id-concepts">
+              <label class="label-course col-lg-3" for="id-sceneTypes">
                 أنواع المشاهد</label
               >
 
               <div
                 class="list-group col align-self-end"
                 style="scroll-behavior: auto; text-align: right;"
-                id="id-concepts"
+                id="id-sceneTypes"
               >
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  النوع الأول
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  النوع الثاني
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  النوع الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  النوع الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  النوع الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  النوع الثالث
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action"
-                >
-                  النوع الثالث
-                </button>
+                
+                
               </div>
 
               <div class="input-group mb-3">
@@ -539,12 +415,13 @@
                   style="direction: rtl; font-size: larger;"
                   placeholder="إدخال نوع المشهد"
                   aria-label="إدخال نوع المشهد"
+                  id="txt_sceneType"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button">
+                  <button class="btn btn-outline-success" type="button" id="add_sceneType">
                     إضافة
                   </button>
-                  <button class="btn btn-outline-danger" type="button">
+                  <button class="btn btn-outline-danger" type="button" id="remove_sceneType">
                     حذف
                   </button>
                 </div>
@@ -552,37 +429,7 @@
             </div>
           </div>
 
-          <!-- text input 
-              <div class="form-group">
-                <label for="Course1">الكورس</label>
-                <input type="select" class="form-control" id="Course1" />
-              </div> 
-                  
-
-              check-box 
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                />
-
-                <label class="form-check-label" for="exampleCheck1"
-                  >Check me out</label
-                >
-              </div>
-               text Area
-              <div class="form-group">
-                <label for="exampleFormControlTextarea1"
-                  >Example textarea</label
-                >
-                <textarea
-                  class="form-control"
-                  id="exampleFormControlTextarea1"
-                  rows="3"
-                ></textarea>
-              </div>
-              -->
+          
 
           <div class="tab-pane fade paneltab" role="tabpanel" id="menu2">
             <!-- ################## Scene header information ##################### -->
@@ -597,37 +444,42 @@
 
             <!-- Lesson Selection -->
             <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-lesson"
+              <label class="label-course col-lg-3" for="id-lessons-tab2"
                 >اختيار الدرس</label
               >
-              <select class="form-control under-label" id="lesson"> </select>
+              <select class="form-control under-label" id="id-lessons-tab2"> </select>
             </div>
             <!-- Scene Serial number -->
             <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-sr"
+              <label class="label-course col-lg-3" for="id-scene-no"
                 >رقم المشهد</label
               >
               <input
                 type="number"
                 class="form-control under-label"
+                style="margin: 0 10px 0 0;
+                  font-size: larger;
+                  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                  color:darkred;
+                  background-color: white;"
                 value="1"
                 min="1"
                 max="50"
                 step="1"
-                id="id-sr"
+                id="id-scene-no"
               />
             </div>
             <!-- Select Exercise type -->
 
             <div>
-              <label class="label-course col-lg-3" for="id-scene-type">
+              <label class="label-course col-lg-3" for="lst_scenesType_tab2">
                 اختيار نوع المشهد</label
               >
 
               <div
                 class="list-group col align-self-end"
                 style="scroll-behavior: auto; text-align: right;"
-                id="id-scene-type"
+                id="lst_scenesType_tab2"
               >
                 <button
                   type="button"
@@ -735,8 +587,8 @@
               <select
                 style="height: 300px;"
                 multiple
-                class="form-control"
-                id="id-concept"
+                class="form-control under-label"
+                id="id-select-concept"
               >
               </select>
             </div>
@@ -748,8 +600,8 @@
               <select
                 style="height: 300px;"
                 multiple
-                class="form-control"
-                id="id-skill"
+                class="form-control under-label"
+                id="id-select-skill"
               >
               </select>
             </div>
@@ -1275,7 +1127,7 @@
                             </label>
                             <input
                               class="input-fill-in-blank col-lg-2"
-                              id="id-fill-in-blank-s1-answer2"
+                              id="id-fill-in-blank-s1-answer1"
                               type="text"
                             />
                           </div>

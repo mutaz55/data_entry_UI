@@ -48,6 +48,9 @@ function loadDataFromFireStore() {
   clearCombo(courseCombo);
   // Clear concepts list
   clearConceptsLst();
+  // Clear modules list
+  clearModulesLst();
+
 
   var docRef = db.collection("courses");
   docRef.get().then(function (querySnapshot) {
@@ -125,9 +128,18 @@ function fillCourseInfo() {
 
     courseCombo.addEventListener('change', (event)=> {
 
-      console.log('change');
+      
       // Clear concepts list
       clearConceptsLst();
+      // Clear Modules list
+      clearModulesLst();
+      // Clear Lessons list
+      clearLessonsLst();
+      // Clear Skills list
+      clearSkillsLst();
+      // Clear Scene Types List
+      clearSceneTypes();
+
       
       currentCourse = Courses.find( courseID => courseID.id == event.target.value);
       const textAreaCourseDesc = document.getElementById("id-course-description");
@@ -148,8 +160,10 @@ function fillCourseInfo() {
       
    
       fillConcepts(Concepts.filter( con => con.id == currentCourse.id ));
-    
-      
+      fillModules(Modules.filter(mod => mod.id == currentCourse.id));
+      fillLessons(Lessons.filter(les => les.id == currentCourse.id));
+      fillSkills(Skills.filter(sk => sk.id == currentCourse.id));
+      fillSceneTypes(SceneTypes.filter(sT => sT.id == currentCourse.id));
       
     });
     
