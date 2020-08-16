@@ -1,5 +1,6 @@
 var currentCourse;
 
+
 const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 //const mainMsg = document.querySelector('#mainMsg');
@@ -29,6 +30,47 @@ document.querySelector("#load-btn").addEventListener("click", (e) => {
 });
 
 
+// save data into database
+document.querySelector('#save-btn').addEventListener("click", (event)=> {
+  event.preventDefault();
+
+  if (Courses.length <= 0) return console.log("Nothing to save");
+
+    // Check if the Course Description or Course Category have been changed
+    // And update the new values into the database.
+    Courses.forEach(function (cour) {
+        if (cour.Description != originalCourses.find(courID => courID.id == cour.id).Description) {
+            db.collection("courses").doc(cour.id).update({
+                "Description": cour.Description
+            })
+            .then(function() {
+                originalCourses.find(courID => courID.id == cour.id).Description = cour.Description;
+                console.log("Course Description successfully updated!" + " / Course ID = " + cour.id);
+            }).catch(function(error) {
+              // The document probably doesn't exist.
+              console.error("Error updaing Course Description! " + " / Course ID = " + cour.id);
+            });
+
+        }
+        
+         if (cour.Category != originalCourses.find(courID => courID.id == cour.id).Category) {
+          db.collection("courses").doc(cour.id).update({
+            "Category": cour.Category
+          })
+          .then(function() {
+            originalCourses.find(courID => courID.id == cour.id).Category = cour.Category;
+            console.log("Course Category successfully updated!" + " / Course ID = " + cour.id);
+          }).catch(function(error) {
+            // The document probably doesn't exist.
+            console.error("Error updaing Course Category! " + " / Course ID = " + cour.id);
+          });
+
+         }
+         
+
+    });
+    ////////////// END of updating course info///////////////////////
+});
 
 // Course combo box
 const courseCombo = document.getElementById("id-course-title");
@@ -38,9 +80,12 @@ const courseCombo = document.getElementById("id-course-title");
 function loadDataFromFireStore() {
   // re-initialize = when user clicks on load button while there are already data into objects.
   Courses = [];
+  originalCourses = [];
+
   Lessons = [];
   Modules = [];
   Concepts = [];
+  originalConcepts = [];
   Skills = [];
   SceneTypes = [];
 
@@ -57,11 +102,13 @@ function loadDataFromFireStore() {
     querySnapshot.forEach(function (doc) {
       // get Courses Info
       Courses.unshift(storeDataLocally(doc.id, doc.data(), "courses"));
+      originalCourses.unshift(storeDataLocally(doc.id, doc.data(), "courses"));
 
       // get Concept Info
       if (doc.data()["Concepts"])
         doc.data()["Concepts"].forEach(function (con) {
           Concepts.unshift(storeDataLocally(doc.id, con, "concepts"));
+          originalConcepts.unshift(storeDataLocally(doc.id, con, "concepts"));
         });
 
       // get Modules Info
@@ -89,6 +136,8 @@ function loadDataFromFireStore() {
         });
     });
 
+    //originalConcepts = JSON.parse(JSON.stringify(Concepts));
+    // console.log(originalCourses);
     // fill courses Info
     fillCourseInfo();
 
@@ -165,6 +214,8 @@ function fillCourseInfo() {
       fillSkills(Skills.filter(sk => sk.id == currentCourse.id));
       fillSceneTypes(SceneTypes.filter(sT => sT.id == currentCourse.id));
       
+
+    
     });
     
     if (courseCombo.options.length > 0) {

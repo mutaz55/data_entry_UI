@@ -172,7 +172,7 @@
               >
             </li>
             <li>
-              <a class="waves-effect waves-light btn-large">حفظ البيانات</a>
+              <a class="waves-effect waves-light btn-large" id="save-btn">حفظ البيانات</a>
             </li>
           </ul>
         </div>
@@ -232,7 +232,7 @@
             </div>
 
             <div>
-              <label class="label-course col-lg-3" for="id-course-description"
+              <label class="label-course col-lg-3" for="id-cat-paid"
                 >نوع الكورس</label
               >
               <div class="form-control under-label">
@@ -1845,11 +1845,13 @@
 
       // initialize Array of our data objects
       var Courses = new Array();
+      var originalCourses = new Array();
       var Modules = new Array();
       var Concepts = new Array();
       var Skills = new Array();
       var SceneTypes = new Array();
       var Lessons = new Array();
+      var originalConcepts = new Array();
     </script>
 
     <!-- JQuery CDN -->

@@ -42,7 +42,34 @@ let selected_sceneType_index = "-1";
 
 ///////////////////////////////////////////////////////////////
 
+// Input fields - Course Description / Category
+const txtbox_course_description = document.querySelector("#id-course-description");
+const radiobtn_course_category_paid = document.querySelector("#id-cat-paid");
+const radiobtn_course_category_free = document.querySelector("#id-cat-free");
 
+
+
+
+///// Listener for Course Description and Category
+
+txtbox_course_description.addEventListener('input', (e) => {
+
+    if (Courses.length > 0 ) 
+        currentCourse.Description = e.target.value;
+});
+
+radiobtn_course_category_paid.addEventListener('change', ()=> {
+
+    if (Courses.length > 0 ) 
+        currentCourse.Category = 1;
+});
+
+radiobtn_course_category_free.addEventListener('change', ()=> {
+    if (Courses.length > 0 ) 
+        currentCourse.Category = 0;
+});
+
+/////
 
 
 // Remove Concept (Button)
@@ -526,7 +553,7 @@ btn_remove_sceneType.addEventListener("click", (e) => {
             ) + 1;
         }
     
-        let id_st_key = currentCourse.CourseTitle + "T" + id_st;
+        let id_st_key = currentCourse.CourseTitle + "gT" + id_st;
     
         SceneTypes.unshift(
           new SceneType(currentCourse.id, id_st_key, txt_sceneType_entry)
