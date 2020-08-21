@@ -329,5 +329,10 @@ body {
   margin: 10px;
 }
 
-
+.toast-style {
+  background-color: red;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.5rem;
+  color : white;
+}
 /* .//////////////////////// */

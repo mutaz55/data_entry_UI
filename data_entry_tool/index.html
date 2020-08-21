@@ -383,6 +383,14 @@
                   aria-label="إدخال المهارة"
                   id="txt_skill"
                 />
+                <input
+                  type="text"
+                  class="form-control input-concepts"
+                  style="direction: rtl; font-size: larger;"
+                  placeholder="إدخال كود المهارة"
+                  aria-label="إدخال كود المهارة"
+                  id="txt_skill_code"
+                />
                 <div class="input-group-append">
                   <button class="btn btn-outline-success" type="button" id="add_skill">
                     إضافة
@@ -417,6 +425,14 @@
                   aria-label="إدخال نوع المشهد"
                   id="txt_sceneType"
                 />
+                <input
+                type="text"
+                class="form-control input-concepts"
+                style="direction: rtl; font-size: larger;"
+                placeholder="إدخال كود نوع المشهد"
+                aria-label="إدخال كود نوع المشهد"
+                id="txt_sceneType_code"
+              />
                 <div class="input-group-append">
                   <button class="btn btn-outline-success" type="button" id="add_sceneType">
                     إضافة
@@ -1836,24 +1852,40 @@
         messagingSenderId: "271833257572",
         appId: "1:271833257572:web:68071f6a0bead4a499b171",
       };
+
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
 
       // make references for auth and firestore
       const auth = firebase.auth();
       const db = firebase.firestore();
+      
+ 
 
       // initialize Array of our data objects
       var Courses = new Array();
       var originalCourses = new Array();
+
       var Modules = new Array();
+      var originalModules = new Array();
+
       var Concepts = new Array();
-      var Skills = new Array();
-      var SceneTypes = new Array();
-      var Lessons = new Array();
       var originalConcepts = new Array();
+
+      var Lessons = new Array();
+      var originalLessons = new Array();
+      
+      var Skills = new Array();
+      var originalSkills = new Array();
+      txt_sceneType
+      var SceneTypes = new Array();
+      var originalSceneTypes = new Array();
+      
+      
     </script>
 
+
+    
     <!-- JQuery CDN -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
