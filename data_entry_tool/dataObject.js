@@ -79,7 +79,7 @@ function storeDataLocally(id, data, type) {
             case 'lessons':  return new Lesson(id, data['Lesson-ID'], data['Lesson-Title']);
             case 'concepts': return new Concept(id, data['Concept-ID'],data['Concept-Text']);
             case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text']);
-            case 'sceneTypes': return new SceneType(id, data['sceneType-ID'], data['sceneType-Text']);
+            case 'sceneTypes': return new SceneType(id, data['sceneT-ID'], data['sceneT-Text']);
                 
         }
         

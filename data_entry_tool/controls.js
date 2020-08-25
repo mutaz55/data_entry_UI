@@ -48,7 +48,13 @@ const radiobtn_course_category_paid = document.querySelector("#id-cat-paid");
 const radiobtn_course_category_free = document.querySelector("#id-cat-free");
 
 
+// Toast
 
+function showError(msg)
+{
+    M.toast({html: msg, classes: 'toast-style'});
+
+}
 
 ///// Listener for Course Description and Category
 
@@ -297,7 +303,8 @@ function fillSkills(sk) {
     
     if (sk.length != 0) {
         sk.forEach((element) => {
-            addNewItems(element.SkillText, element.SkillID, "skills_lst", false);
+            const txt = `(${element.SkillID}) | ${element.SkillText}`;
+            addNewItems(txt, element.SkillID, "skills_lst", false);
             
         });
     }
@@ -309,7 +316,8 @@ function fillSceneTypes(sceneT) {
 
     if (sceneT.length != 0) {
         sceneT.forEach((element) => { 
-            addNewItems(element.SceneTypeDesc, element.SceneTypeID, "sceneType_lst", false)
+            const txt = `(${element.SceneTypeID}) | ${element.SceneTypeDesc}`;
+            addNewItems(txt, element.SceneTypeID, "sceneType_lst", false)
         });
     }
 
@@ -470,36 +478,17 @@ btn_remove_skill.addEventListener("click", (e) => {
   // Add Skill (Button)
   btn_add_skill.addEventListener("click", (e) => {
       const txt_skill_entry = document.getElementById("txt_skill").value;
-    
-      if (txt_skill_entry != 0) {
-        let id_sk = 1;
-    
-        if (
-          Skills.filter(function (item) {
-            return item.id == currentCourse.id;
-          }).length > 0
-        ) {
-            id_sk =
-            Math.max.apply(
-              Math,
-              Skills.filter(function (item) {
-                return item.id == currentCourse.id;
-              }).map(function (skId) {
-                return skId.SkillID.substring(
-                    skId.SkillID.indexOf("S") + 1,
-                    skId.SkillID.length
-                );
-              })
-            ) + 1;
-        }
-    
-        let id_sk_key = currentCourse.CourseTitle + "S" + id_sk;
-    
+      const txt_skill_code_entry = document.getElementById("txt_skill_code").value;
+
+      if ((txt_skill_entry != 0) && (txt_skill_code_entry != 0) && (!txt_skill_code_entry.match(/^\d/))){
+        
         Skills.unshift(
-          new Skill(currentCourse.id, id_sk_key, txt_skill_entry)
+          new Skill(txt_skill_code_entry, txt_skill_code_entry, txt_skill_entry)
         );
-        addNewItems(txt_skill_entry, id_sk_key, "skills_lst", true).focus();
+        const txt = `(${txt_skill_code_entry}) | ${txt_skill_entry}`;
+        addNewItems(txt, txt_skill_code_entry, "skills_lst", true).focus();
         document.getElementById("txt_skill").value = "";
+        document.getElementById("txt_skill_code").value = "";
       }
       selected_skill_index = "-1";
     });
@@ -530,36 +519,28 @@ btn_remove_sceneType.addEventListener("click", (e) => {
   // Add SceneType (Button)
   btn_add_sceneType.addEventListener("click", (e) => {
       const txt_sceneType_entry = document.getElementById("txt_sceneType").value;
-    
-      if (txt_sceneType_entry != 0) {
-        let id_st = 1;
-    
-        if (
-          SceneTypes.filter(function (item) {
-            return item.id == currentCourse.id;
-          }).length > 0
-        ) {
-            id_st =
-            Math.max.apply(
-              Math,
-              SceneTypes.filter(function (item) {
-                return item.id == currentCourse.id;
-              }).map(function (stId) {
-                return stId.SceneTypeID.substring(
-                    stId.SceneTypeID.indexOf("T") + 1,
-                    stId.SceneTypeID.length
-                );
-              })
-            ) + 1;
+      const txt_sceneType_code = document.getElementById("txt_sceneType_code").value;
+
+      if ((txt_sceneType_entry != 0) && (txt_sceneType_code != 0) && (!txt_sceneType_code.match(/^\d/))) {
+            
+        if (SceneTypes.find( st => st.SceneTypeID == txt_sceneType_code ) == undefined) {
+
+            SceneTypes.unshift(
+                new SceneType(txt_sceneType_code, txt_sceneType_code, txt_sceneType_entry)
+              );
+      
+              const txt = `(${txt_sceneType_code }) | ${txt_sceneType_entry}`;
+              addNewItems(txt, txt_sceneType_code , "sceneType_lst", true).focus();
+              document.getElementById("txt_sceneType").value = "";
+              document.getElementById("txt_sceneType_code").value = "";
+
+        }else {
+
+            showError('The Code is already used!');
+            
         }
-    
-        let id_st_key = currentCourse.CourseTitle + "gT" + id_st;
-    
-        SceneTypes.unshift(
-          new SceneType(currentCourse.id, id_st_key, txt_sceneType_entry)
-        );
-        addNewItems(txt_sceneType_entry, id_st_key, "sceneType_lst", true).focus();
-        document.getElementById("txt_sceneType").value = "";
+        
+        
       }
       selected_sceneType_index = "-1";
     });
