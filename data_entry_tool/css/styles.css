@@ -185,8 +185,15 @@ body {
 /* ############################### Hidden Tab Section ################################### */
 .hidden-tab {
   display: none;
-  animation: fadeEffect 1s;
+  animation: showInEffect 1s;
 }
+
+.shown-tab {
+  
+  animation: showInEffect 1s;
+  /* display: block; */
+}
+
 /* Style the tab */
 .tab {
   overflow: hidden;
@@ -239,11 +246,11 @@ body {
 }
 
 .tabcontent {
-  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+  animation: showInEffect 1s; /* Fading effect takes 1 second */
 }
 
 /* Go from zero to full opacity */
-@keyframes fadeEffect {
+@keyframes showInEffect {
   from {
     opacity: 0;
   }
@@ -251,6 +258,16 @@ body {
     opacity: 1;
   }
 }
+
+@keyframes fadeEffect {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 
 /* ############################### QTHint Section ################################### */
 .genSection {
@@ -266,6 +283,16 @@ body {
   margin: 0px 20px 0px;
 }
 /* ############################### Media Section ################################### */
+
+
+.media-checkbox-span{
+  font-size: 1rem; 
+  color: rgb(68, 67, 67);
+ 
+}
+
+
+
 /* ############################### Statement & Answer Section ################################### */
 .list-col {
   display: flex;
