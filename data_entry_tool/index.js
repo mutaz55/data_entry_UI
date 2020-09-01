@@ -620,7 +620,7 @@ function fillCourseInfo() {
       // Clear Scene Types List
       clearSceneTypes();
 
-      لهف
+      
       currentCourse = Courses.find( courseID => courseID.id == event.target.value);
       const textAreaCourseDesc = document.getElementById("id-course-description");
       textAreaCourseDesc.value = currentCourse.Description;

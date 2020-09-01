@@ -486,6 +486,45 @@
                 id="id-lessons-tab2"
               ></select>
             </div>
+
+            <div>
+              <label class="label-course col-lg-3" for="id-scene-title">
+                المشاهد</label
+              >
+
+              <div
+                class="list-group col align-self-end"
+                style="scroll-behavior: auto; text-align: right"
+                id="id-scene-title"
+              ></div>
+
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control input-concepts"
+                  style="direction: rtl; font-size: larger"
+                  placeholder="إدخال عنوان المشهد"
+                  aria-label="إدخال عنوان المشهد"
+                  id="txt_sceneTitle"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-success"
+                    type="button"
+                    id="add_sceneTitle"
+                  >
+                    إضافة
+                  </button>
+                  <button
+                    class="btn btn-outline-danger"
+                    type="button"
+                    id="remove_sceneTitle"
+                  >
+                    حذف
+                  </button>
+                </div>
+              </div>
+            </div>
             <!-- Scene Serial number -->
             <div class="form-group group-element">
               <label class="label-course col-lg-3" for="id-scene-no"
@@ -623,18 +662,7 @@
               >
             </div>
 
-            <!-- text input -->
-            <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-scene-title"
-                >عنوان المشهد</label
-              >
-              <input
-                type="text"
-                class="form-control under-label"
-                id="id-scene-title"
-              />
-            </div>
-
+           
             <div>
               <label class="label-course col-lg-3" for="id-send-to-teacher"
                 >ارسال إلى التصحيح</label
