@@ -2,6 +2,7 @@ body {
   background-color: #d1cdcd;
 }
 
+
 /* ############################### Main Tab Section ###################################  */
 .tab-color {
   background-color: #ee6e73;
@@ -183,6 +184,27 @@ body {
 }
 
 /* ############################### Hidden Tab Section ################################### */
+.statement-btn{
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 1.5rem;
+  color: #fff;
+  border-right: 10px solid #ee6e73;
+  background-color: #26a69a;
+  border-radius: 10px 0px 0px 0px;
+  /* height: 20px;*/
+  width: 200px; 
+  margin-top: 30px;
+  margin-left: 40px;
+  text-align: right;
+  /* clear: both; */
+  float: right;
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+.statement-btn:hover{
+  background-color: #09e6cf;
+  cursor:pointer;
+}
 .hidden-tab {
   display: none;
   animation: showInEffect 1s;

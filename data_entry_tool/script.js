@@ -175,6 +175,290 @@ class RadioOfHiddenMediaDiv {
   }
 }
 
+////////////////////// Organize Statements Class ////////////////////////////////////
+class OrganizeStatements {
+  constructor() {
+    this.divWarning = document.createElement("div");
+    this.labelWarning = document.createElement("label");
+    this.divOrganizeInsertStatement = document.createElement("div");
+    this.labelOrganizeInsertStatement = document.createElement("label");
+    this.textOrganizeInsertStatement = document.createElement("input");
+    this.divOverall = document.createElement("div");
+    this.insertOrganizeStatement = document.createElement("a");
+  }
+  AssingNamesAndAttr() {
+    this.divWarning.id = "div-label-warning";
+    this.divWarning.classList.add("form-group");
+    this.divWarning.classList.add("group-element");
+
+    this.labelWarning.id = "id-label-warning";
+    this.labelWarning.classList.add("label-war");
+    this.labelWarning.classList.add("col-lg-12");
+    this.labelWarning.textContent = "الرجاء ادخال العبارات بالترتيب الصحيح";
+
+    this.divOrganizeInsertStatement.id = "div-org-statement";
+    this.divOrganizeInsertStatement.classList.add("form-group");
+    this.divOrganizeInsertStatement.classList.add("group-element");
+
+    this.labelOrganizeInsertStatement.classList.add("label-course");
+    this.labelOrganizeInsertStatement.classList.add("col-lg-3");
+    this.labelOrganizeInsertStatement.textContent = "أدخل العبارة";
+
+    this.textOrganizeInsertStatement.id = "id-org-statement";
+    this.textOrganizeInsertStatement.type = "text";
+    this.textOrganizeInsertStatement.classList.add("form-control");
+    this.textOrganizeInsertStatement.classList.add("under-label");
+
+    this.insertOrganizeStatement.id = "id-insert";
+    this.insertOrganizeStatement.classList.add("statement-btn");
+    this.insertOrganizeStatement.innerHTML = " موافق ";
+    this.insertOrganizeStatement.style.color = "#fff";
+  }
+  Build() {
+    this.divWarning.appendChild(this.labelWarning);
+    this.divOrganizeInsertStatement.appendChild(
+      this.labelOrganizeInsertStatement
+    );
+    this.divOrganizeInsertStatement.appendChild(
+      this.textOrganizeInsertStatement
+    );
+    this.divOrganizeInsertStatement.appendChild(this.insertOrganizeStatement);
+    this.divOverall.appendChild(this.divWarning);
+    this.divOverall.appendChild(this.divOrganizeInsertStatement);
+  }
+  ReturnContainerDiv() {
+    return this.divOverall;
+  }
+}
+
+////////////////////// common Class statement ////////////////////////////////////
+
+class CommonClassStatements {
+  constructor() {
+    this.divCommonStatement = document.createElement("div");
+    this.labelCommonStatement = document.createElement("label");
+    this.textCommonStatement = document.createElement("input");
+    this.insertCommonStatement = document.createElement("a");
+  }
+  AssingNamesAndAttr() {
+    this.divCommonStatement.id = "div-common-statement";
+    this.divCommonStatement.classList.add("form-group");
+    this.divCommonStatement.classList.add("group-element");
+
+    this.labelCommonStatement.classList.add("label-course");
+    this.labelCommonStatement.classList.add("col-lg-3");
+    this.labelCommonStatement.textContent = "أدخل العبارة";
+
+    this.textCommonStatement.id = "id-common-statement";
+    this.textCommonStatement.type = "text";
+    this.textCommonStatement.classList.add("form-control");
+    this.textCommonStatement.classList.add("under-label");
+
+    this.insertCommonStatement.id = "id-insert";
+    this.insertCommonStatement.classList.add("statement-btn");
+    this.insertCommonStatement.innerHTML = " موافق ";
+    this.insertCommonStatement.style.color = "#fff";
+  }
+  Build() {
+    this.divCommonStatement.appendChild(this.labelCommonStatement);
+    this.divCommonStatement.appendChild(this.textCommonStatement);
+    this.divCommonStatement.appendChild(this.insertCommonStatement);
+  }
+  ReturnContainerDiv() {
+    return this.divCommonStatement;
+  }
+}
+
+////////////////////// Fill in blank Class statement ////////////////////////////////////
+class FillinBlankStatement {
+  constructor() {
+    this.divFillinBlankStatement = document.createElement("div");
+    this.labelFillinBlankStatement = document.createElement("label");
+    this.insertEmptyFillingBlankStatement = document.createElement("a");
+    this.inputFillinBlankStatement = document.createElement("input");
+    this.insertFillingBlankStatement = document.createElement("a");
+
+    // this.divRadioDraggable = document.createElement("div");
+    // this.labelRadioDraggable = document.createElement("label");
+    // this.radioDraggable = document.createElement("input");
+    // this.spanDraggable = document.createElement("span");
+
+    // this.labelRadioWrite = document.createElement("label");
+    // this.radioWrite = document.createElement("input");
+    // this.spanWrite = document.createElement("span");
+  }
+  AssingNamesAndAttr() {
+    this.divFillinBlankStatement.id = "div-FiB-statement";
+    this.divFillinBlankStatement.classList.add("form-group");
+    this.divFillinBlankStatement.classList.add("group-element");
+
+    this.labelFillinBlankStatement.classList.add("label-course");
+    this.labelFillinBlankStatement.classList.add("col-lg-3");
+    this.labelFillinBlankStatement.textContent = "أدخل العبارة";
+
+    this.insertEmptyFillingBlankStatement.id = "id-insert-empty";
+    this.insertEmptyFillingBlankStatement.classList.add("btn");
+    this.insertEmptyFillingBlankStatement.classList.add("btn-info");
+    this.insertEmptyFillingBlankStatement.textContent = "أدخل فراغ";
+
+    this.inputFillinBlankStatement.type = "text";
+    this.inputFillinBlankStatement.id = "id-FiB-statement";
+    this.inputFillinBlankStatement.classList.add("form-control");
+    this.inputFillinBlankStatement.classList.add("under-label");
+
+    this.insertFillingBlankStatement.id = "id-insert";
+    this.insertFillingBlankStatement.classList.add("statement-btn");
+    this.insertFillingBlankStatement.innerHTML = " موافق ";
+    this.insertFillingBlankStatement.style.color = "#fff";
+
+    // this.divRadioDraggable.classList.add("form-control");
+    // this.divRadioDraggable.classList.add("control-hidden");
+
+    // this.labelRadioDraggable.classList.add("radio-margin");
+
+    // this.radioDraggable.id = "id-draggable";
+    // this.radioDraggable.name = "FiB-DraggableOrWrite";
+    // this.radioDraggable.type = "radio";
+    // this.spanDraggable.style.fontSize = "2rem";
+    // this.spanDraggable.style.color = "rgb(68, 67, 67)";
+    // this.spanDraggable.textContent = "سحب وادراج";
+
+    // this.labelRadioWrite.classList.add("radio-margin");
+
+    // this.radioWrite.id = "id-draggable";
+    // this.radioWrite.name = "FiB-DraggableOrWrite";
+    // this.radioWrite.type = "radio";
+    // this.spanWrite.style.fontSize = "2rem";
+    // this.spanWrite.style.color = "rgb(68, 67, 67)";
+    // this.spanWrite.textContent = "ادخال كتابي";
+  }
+  Build() {
+    this.divFillinBlankStatement.appendChild(this.labelFillinBlankStatement);
+    this.divFillinBlankStatement.appendChild(this.inputFillinBlankStatement);
+    // this.divFillinBlankStatement.appendChild(this.divRadioDraggable);
+    this.divFillinBlankStatement.appendChild(this.insertFillingBlankStatement);
+
+    this.labelFillinBlankStatement.appendChild(
+      this.insertEmptyFillingBlankStatement
+    );
+
+    // this.divRadioDraggable.appendChild(this.labelRadioDraggable);
+    // this.divRadioDraggable.appendChild(this.labelRadioWrite);
+
+    // this.labelRadioDraggable.appendChild(this.radioDraggable);
+    // this.labelRadioDraggable.appendChild(this.spanDraggable);
+
+    // this.labelRadioWrite.appendChild(this.radioWrite);
+    // this.labelRadioWrite.appendChild(this.spanWrite);
+  }
+  ReturnContainerDiv() {
+    return this.divFillinBlankStatement;
+  }
+}
+////////////////////// DragDrop Class statement ////////////////////////////////////
+
+class DragAndDropClassStatements {
+  constructor() {
+    this.divDragAndDropStatement = document.createElement("div");
+
+    this.labelDragAndDropStatement1 = document.createElement("label");
+    this.textDragAndDropStatement1 = document.createElement("input");
+
+    this.labelDragAndDropStatement2 = document.createElement("label");
+    this.textDragAndDropStatement2 = document.createElement("input");
+
+    this.insertDragAndDropStatement = document.createElement("a");
+    this.br = document.createElement("br");
+  }
+  AssingNamesAndAttr() {
+    this.divDragAndDropStatement.id = "div-dragAnddrop1-statement";
+    this.divDragAndDropStatement.classList.add("form-group");
+    this.divDragAndDropStatement.classList.add("group-element");
+
+    this.labelDragAndDropStatement1.classList.add("label-course");
+    this.labelDragAndDropStatement1.classList.add("col-lg-3");
+    this.labelDragAndDropStatement1.textContent = "أدخل العبارة";
+
+    this.labelDragAndDropStatement2.classList.add("label-course");
+    this.labelDragAndDropStatement2.classList.add("col-lg-3");
+    this.labelDragAndDropStatement2.textContent = "أدخل العبارة المقابلة";
+
+    this.textDragAndDropStatement1.id = "id-dragAnddrop1-statement";
+    this.textDragAndDropStatement1.type = "text";
+    this.textDragAndDropStatement1.classList.add("form-control");
+    this.textDragAndDropStatement1.classList.add("under-label");
+
+    this.textDragAndDropStatement2.id = "id-dragAnddrop2-statement";
+    this.textDragAndDropStatement2.type = "text";
+    this.textDragAndDropStatement2.classList.add("form-control");
+    this.textDragAndDropStatement2.classList.add("under-label");
+
+    this.insertDragAndDropStatement.id = "id-insert";
+    this.insertDragAndDropStatement.classList.add("statement-btn");
+    this.insertDragAndDropStatement.innerHTML = " موافق ";
+    this.insertDragAndDropStatement.style.color = "#fff";
+  }
+  Build() {
+    this.divDragAndDropStatement.appendChild(this.labelDragAndDropStatement1);
+    this.divDragAndDropStatement.appendChild(this.textDragAndDropStatement1);
+    this.divDragAndDropStatement.appendChild(this.br);
+    this.divDragAndDropStatement.appendChild(this.labelDragAndDropStatement2);
+    this.divDragAndDropStatement.appendChild(this.textDragAndDropStatement2);
+
+    this.divDragAndDropStatement.appendChild(this.insertDragAndDropStatement);
+  }
+  ReturnContainerDiv() {
+    return this.divDragAndDropStatement;
+  }
+}
+
+////////////////////// Catagories Class statement ////////////////////////////////////
+
+class CatagoriesClassStatements {
+  constructor() {
+    this.divCategory = document.createElement("div");
+
+    this.labelCategory = document.createElement("label");
+
+    this.divListCategory = document.createElement("div");
+    this.ulListCategory = document.createElement("ul");
+    this.ilListTitle = document.createElement("il");
+    this.deleteCategory = document.createElement("a");
+
+    this.divCategoryStatement = document.createElement("div");
+    this.labelCategoryStatement = document.createElement("label");
+    this.inputCategoryStatement = document.createElement("input");
+
+    this.selectCategory = document.createElement("input");
+    this.insertCategoryStatement = document.createElement("a");
+  }
+  AssingNamesAndAttr() {
+    this.divCategory.id = "div-category";
+    this.divCategory.classList.add("form-group");
+    this.divCategory.classList.add("group-element");
+
+    this.labelCategory.classList.add("label-course");
+    this.labelCategory.classList.add("col-lg-3");
+    this.labelCategory.textContent = "أدخل التصنيف";
+
+    this.textCategory.id = "id-category";
+    this.textCategory.type = "text";
+    this.textCategory.classList.add("form-control");
+    this.textCategory.classList.add("under-label");
+
+    this.divListCategory.id = "div-list-category";
+    this.divListCategory.classList.add("form-group");
+    this.divListCategory.classList.add("group-element");
+
+    this.deleteCategory.id = "id-insert";
+    this.deleteCategory.classList.add("statement-btn");
+    this.deleteCategory.innerHTML = " موافق ";
+    this.deleteCategory.style.color = "#fff";
+  }
+  Build() {}
+  ReturnContainerDiv() {}
+}
+
 /* ############################### Main Tab Section ###################################  */
 
 /* ############################### Hidden Tab Section ################################### */
@@ -341,16 +625,206 @@ function openSceneType(scenetype, sceneTypeNumber) {
   newRecordedSoundMedia.addListener(newRecordedSoundMedia);
 
   //**************************EndOf Recorded Sound Media Object******************************** */
+
   //**************************Sound Effect Media Object******************************** */
+
+  const newSoundEffectMedia = new MediaObject();
+  const newSoundEffectHiddenMedia = new HiddenMediaDiv();
+
+  newSoundEffectMedia.AssingNamesAndAttr(
+    "الؤثرات الصوتية",
+    "ادخال المؤثرات الصوتية",
+    "id-main-soundeffect-label",
+    "id-main-soundeffect-checkbox"
+  );
+
+  newSoundEffectHiddenMedia.AssingNamesAndAttr(
+    "div-soundeffect-hidden",
+    "وصف المؤثرات الصوتية",
+    "id-main-soundeffect-des"
+  );
+
+  newSoundEffectMedia.Build();
+  newSoundEffectHiddenMedia.Build();
+
+  MediaSection.appendChild(newSoundEffectMedia.ReturnContainerDiv());
+  newSoundEffectMedia.addHiddenDiv(
+    newSoundEffectHiddenMedia.ReturnContainerDiv()
+  );
+
+  newSoundEffectMedia.addListener(newSoundEffectMedia);
+
   //**************************EndOf Sound Effect Media Object******************************** */
   //**************************Video Media Object******************************** */
+  const newVideoMedia = new MediaObject();
+  const newVideoHiddenMedia = new HiddenMediaDiv();
+
+  newVideoMedia.AssingNamesAndAttr(
+    "الفيديو",
+    "ادخال الفيديو",
+    "id-main-video-label",
+    "id-main-video-checkbox"
+  );
+
+  newVideoHiddenMedia.AssingNamesAndAttr(
+    "div-video-hidden",
+    "وصف الفيديو",
+    "id-main-video-des"
+  );
+
+  // 3 Options for Video types
+  const newRadioOfVideoHiddenMediaDiv1 = new RadioOfHiddenMediaDiv();
+  const newRadioOfVideoHiddenMediaDiv2 = new RadioOfHiddenMediaDiv();
+  const newRadioOfVideoHiddenMediaDiv3 = new RadioOfHiddenMediaDiv();
+
+  newRadioOfVideoHiddenMediaDiv1.AssingNamesAndAttr(
+    "main-video-type",
+    "id-main-video-type-photographic",
+    "تصوير فوتوغرافي"
+  );
+  newRadioOfVideoHiddenMediaDiv2.AssingNamesAndAttr(
+    "main-video-type",
+    "id-main-video-type-animation",
+    "أنيماشن"
+  );
+
+  newRadioOfVideoHiddenMediaDiv3.AssingNamesAndAttr(
+    "main-video-type",
+    "id-main-video-type-slideshow",
+    "عرض صور مع صوت"
+  );
+
+  newVideoMedia.Build();
+  newVideoHiddenMedia.Build();
+  newRadioOfVideoHiddenMediaDiv1.Build();
+  newRadioOfVideoHiddenMediaDiv2.Build();
+  newRadioOfVideoHiddenMediaDiv3.Build();
+
+  MediaSection.appendChild(newVideoMedia.ReturnContainerDiv());
+  newVideoMedia.addHiddenDiv(newVideoHiddenMedia.ReturnContainerDiv());
+
+  newVideoHiddenMedia.AddRadioOfHiddenMediaDiv(
+    newRadioOfVideoHiddenMediaDiv1.ReturnContainerDiv()
+  );
+  newVideoHiddenMedia.AddRadioOfHiddenMediaDiv(
+    newRadioOfVideoHiddenMediaDiv2.ReturnContainerDiv()
+  );
+
+  newVideoHiddenMedia.AddRadioOfHiddenMediaDiv(
+    newRadioOfVideoHiddenMediaDiv3.ReturnContainerDiv()
+  );
+  newVideoMedia.addListener(newVideoMedia);
+
   //**************************EndOf Video Media Object******************************** */
   //**************************Read Text Media Object******************************** */
+
+  const newTextMedia = new MediaObject();
+  const newTextHiddenMedia = new HiddenMediaDiv();
+
+  newTextMedia.AssingNamesAndAttr(
+    "نصوص القراءة",
+    "ادخال نصوص القراءة",
+    "id-main-text-label",
+    "id-main-text-checkbox"
+  );
+
+  newTextHiddenMedia.AssingNamesAndAttr(
+    "div-text-hidden",
+    "وصف النص المقروء",
+    "id-main-text-des"
+  );
+
+  newTextMedia.Build();
+  newTextHiddenMedia.Build();
+
+  MediaSection.appendChild(newTextMedia.ReturnContainerDiv());
+  newTextMedia.addHiddenDiv(newTextHiddenMedia.ReturnContainerDiv());
+
+  newTextMedia.addListener(newTextMedia);
+
   //**************************EndOf Read Text Media Object******************************** */
   ////////////////////////////////////////////
   const StatementSection = document.createElement("Section");
   StatementSection.classList.add("genSection");
   selectedSceneTab.appendChild(StatementSection);
+  console.log(scenetype.trim());
+
+  switch (scenetype.trim()) {
+    case "تمرين صح أم خطأ":
+    case "تمرين خيارات متعددة":
+    case "تمرين ترتيب الأحرف":
+      const newCommonStatement = new CommonClassStatements();
+      newCommonStatement.AssingNamesAndAttr();
+      newCommonStatement.Build();
+      StatementSection.appendChild(newCommonStatement.ReturnContainerDiv());
+      newCommonStatement.insertCommonStatement.addEventListener(
+        "click",
+        function () {
+          console.log("Listner Added to Common button");
+        }
+      );
+
+      break;
+    case "تمرين توصيل":
+      const newDragAndDropStatement = new DragAndDropClassStatements();
+      newDragAndDropStatement.AssingNamesAndAttr();
+      newDragAndDropStatement.Build();
+      StatementSection.appendChild(
+        newDragAndDropStatement.ReturnContainerDiv()
+      );
+      newDragAndDropStatement.insertDragAndDropStatement.addEventListener(
+        "click",
+        function () {
+          console.log("Listner added to DragAndDrop button");
+        }
+      );
+
+      break;
+
+    case "تمرين املأ الفراغ":
+      const newFillinBlankStatement = new FillinBlankStatement();
+      newFillinBlankStatement.AssingNamesAndAttr();
+      newFillinBlankStatement.Build();
+      StatementSection.appendChild(
+        newFillinBlankStatement.ReturnContainerDiv()
+      );
+      newFillinBlankStatement.insertEmptyFillingBlankStatement.addEventListener(
+        "click",
+        function () {
+          console.log(document.getElementById("id-FiB-statement").innerHTML);
+          let contentTxt = document.getElementById("id-FiB-statement").value;
+          document.getElementById("id-FiB-statement").value =
+            contentTxt + "  ... E ...  ";
+        }
+      );
+      newFillinBlankStatement.insertFillingBlankStatement.addEventListener(
+        "click",
+        function () {
+          console.log("Listner added to Fill in Blank button");
+        }
+      );
+      break;
+
+    case "تمرين تصنيف":
+      break;
+
+    case "تمرين ترتيب جمل":
+      // console.log(scenetype.trim());
+      const newOrganizeStatements = new OrganizeStatements();
+      newOrganizeStatements.AssingNamesAndAttr();
+      newOrganizeStatements.Build();
+      StatementSection.appendChild(newOrganizeStatements.ReturnContainerDiv());
+      newOrganizeStatements.insertOrganizeStatement.addEventListener(
+        "click",
+        function () {
+          console.log("Listner Added to Organize button");
+        }
+      );
+      break;
+
+    default:
+      console.log("Hello");
+  }
 
   ////////////////////////////////////////////
   const AnswerSection = document.createElement("Section");
