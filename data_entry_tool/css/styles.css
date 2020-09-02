@@ -2,6 +2,18 @@ body {
   background-color: #d1cdcd;
 }
 
+.list_background{
+  background-color: #fff;
+  /* border: 1px solid gray; */
+  padding: 10px;
+}
+
+.list_buttons{
+  background-color: rgb(204, 117, 117);
+  border: 2px solid gray;
+  padding: 10px;
+}
+
 
 /* ############################### Main Tab Section ###################################  */
 .tab-color {
