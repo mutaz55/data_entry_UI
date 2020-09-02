@@ -163,6 +163,7 @@ function addNewItems(txt, id_c, lst_type, added) {
           selected_sceneType_index = id_c;
           break;
     }
+    
   });
   new_item.appendChild(new_item_txt);
 
@@ -390,6 +391,9 @@ btn_add_module.addEventListener("click", (e) => {
 
 // Add Lesson (Button)
 btn_add_lesson.addEventListener("click", (e) => {
+  
+  if (selected_module_index == -1) return;
+  
   const txt_lesson_entry = document.getElementById("txt_lesson").value;
 
   if (txt_lesson_entry != 0) {
@@ -416,12 +420,13 @@ btn_add_lesson.addEventListener("click", (e) => {
 
     let id_less_key = currentCourse.CourseTitle + "L" + id_les;
     Lessons.unshift(
-      new Lesson(currentCourse.id, id_less_key, txt_lesson_entry)
+      new Lesson(currentCourse.id, id_less_key, txt_lesson_entry, selected_module_index)
     );
     addNewItems(txt_lesson_entry, id_less_key, "lessons_lst", true).focus();
     addNewItemsTab2(txt_lesson_entry, id_less_key,"lessons_lst", true);
     document.getElementById("txt_lesson").value = "";
   }
+
   selected_lesson_index = "-1";
 });
 
@@ -545,3 +550,9 @@ btn_remove_sceneType.addEventListener("click", (e) => {
       selected_sceneType_index = "-1";
     });
   
+
+    // Tab 2 -  Combobox Modules
+    lst_modules_tab2.addEventListener('change', (e)=> {
+
+      console.log(lst_modules_tab2.value);
+    });

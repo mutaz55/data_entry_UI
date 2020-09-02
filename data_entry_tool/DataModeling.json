@@ -1,13 +1,13 @@
 {
   "Course-Object": {
     "couseID": "",
-    "course-title": "ArabicA1",
+    "Course-Title": "ArabicA1",
     "Modules-Numbers": 8,
     "Description": "",
-    "MediaType": "",
-    "MediaFilename": "",
+    "Media-Type": "",
+    "Media-filename": "",
     "Progress": "",
-    "catagory": "Paid/Free",
+    "Catagory": "Paid/Free",
     "Modules": ["", ""],
     "Lessons": ["", ""],
     "Concepts": ["", ""],
@@ -17,16 +17,21 @@
   },
 
   "Scene-Header  (Col per Course per unit)": {
-    "Module": "",
-    "Lesson": "",
+    "Module-ID": "",
+    "Lesson-ID": "",
     "Scene-Title": "",
-    "SceneID": 1,
-    "SceneType": "",
-    "SendToTeacher": 0,
+    "Scene-Desc": "",
+    "Scene-seq": 1,
+    "Scene-Type": "",
+    "Send-To-Teacher": 0,
     "flag_finished": false,
     "flag_available": false,
-    "flag_refresh": false,
-    "Book": "Course/Or/Workbook"
+    "flag_review": false,
+    "Concepts": ["", ""],
+    "Skills": ["", ""],
+    "Book-Type": "Course/Or/Workbook",
+    "Points": 0,
+    "Score" : 0
   },
 
   "FillInQuestion (Col per Course per unit)": {

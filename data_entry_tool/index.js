@@ -187,11 +187,12 @@ function addLesson() {
       db.collection("courses").doc(les.id).update({
         'Lessons': firebase.firestore.FieldValue.arrayUnion({
           'Lesson-ID': les.LessonID,
-          'Lesson-Title': les.LessonTitle
+          'Lesson-Title': les.LessonTitle,
+          'Module-ID': les.ModuleID
         })
       }).then(() => {
 
-        originalLessons.unshift(new Lesson(les.id, les.LessonID, les.LessonTitle));
+        originalLessons.unshift(new Lesson(les.id, les.LessonID, les.LessonTitle, les.ModuleID));
         console.log(`Lesson with Id : ${les.LessonID} has been successuflly added!`);
       }).catch(err => 
         console.log(`Error while deleting lesson with Id ${les.LessonID}  
