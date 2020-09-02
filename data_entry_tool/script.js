@@ -416,47 +416,135 @@ class DragAndDropClassStatements {
 
 class CatagoriesClassStatements {
   constructor() {
-    this.divCategory = document.createElement("div");
-
+    this.divOverall = document.createElement("div");
+    this.br = document.createElement("br");
+    this.selectedItem = "";
     this.labelCategory = document.createElement("label");
 
-    this.divListCategory = document.createElement("div");
-    this.ulListCategory = document.createElement("ul");
-    this.ilListTitle = document.createElement("il");
-    this.deleteCategory = document.createElement("a");
+    this.divCategorylist = document.createElement("div");
+
+    this.buttonIndexlist = [];
+
+    this.divCategoryinput = document.createElement("div");
+    this.textCategory = document.createElement("input");
+
+    this.divButtonns = document.createElement("div");
+    this.addCategoryButton = document.createElement("button");
+    this.deleteCategoryButton = document.createElement("button");
+
+    // this.divListCategory = document.createElement("div");
+    // this.ulListCategory = document.createElement("ul");
+    // this.ilListTitle = document.createElement("il");
+    // this.deleteCategory = document.createElement("a");
+    // this.divButtons = document.createElement("div");
 
     this.divCategoryStatement = document.createElement("div");
     this.labelCategoryStatement = document.createElement("label");
     this.inputCategoryStatement = document.createElement("input");
 
-    this.selectCategory = document.createElement("input");
+    // this.divSelectCategory = document.createElement("div");
+    // this.selectCategory = document.createElement("select");
     this.insertCategoryStatement = document.createElement("a");
   }
   AssingNamesAndAttr() {
-    this.divCategory.id = "div-category";
-    this.divCategory.classList.add("form-group");
-    this.divCategory.classList.add("group-element");
+    this.divOverall.classList.add("list-col");
 
     this.labelCategory.classList.add("label-course");
     this.labelCategory.classList.add("col-lg-3");
-    this.labelCategory.textContent = "أدخل التصنيف";
+    this.labelCategory.textContent = "إدخال التصنيف";
+
+    this.divCategorylist.id = "div-category-list";
+    // this.divCategorylist.classList.add("form-control");
+
+    this.divCategorylist.classList.add("list-group");
+    this.divCategorylist.classList.add("col-lg-12");
+    this.divCategorylist.classList.add("align-self-end");
+    this.divCategorylist.classList.add("list_background");
+    this.divCategorylist.style.scrollBehavior = "auto";
+    this.divCategorylist.style.textAlign = "right";
+
+    this.divCategoryinput.classList.add("input-group");
+    this.divCategoryinput.classList.add("mb-3");
 
     this.textCategory.id = "id-category";
     this.textCategory.type = "text";
     this.textCategory.classList.add("form-control");
-    this.textCategory.classList.add("under-label");
+    this.textCategory.classList.add("input-concepts");
+    this.textCategory.style.direction = "rtl";
+    this.textCategory.style.fontSize = "larger";
+    this.textCategory.placeholder = "إدخال التصنيف";
+    // this.textCategory.aria.label = "إدخال التصنيف";
 
-    this.divListCategory.id = "div-list-category";
-    this.divListCategory.classList.add("form-group");
-    this.divListCategory.classList.add("group-element");
+    this.divButtonns.id = "div-add-delete-category";
+    this.divButtonns.classList.add("input-group-append");
 
-    this.deleteCategory.id = "id-insert";
-    this.deleteCategory.classList.add("statement-btn");
-    this.deleteCategory.innerHTML = " موافق ";
-    this.deleteCategory.style.color = "#fff";
+    this.addCategoryButton.id = "id-add-category";
+    this.addCategoryButton.classList.add("btn");
+    this.addCategoryButton.classList.add("btn-outline-success");
+    this.addCategoryButton.textContent = "اضافة";
+
+    this.deleteCategoryButton.id = "id-delete-category";
+    this.deleteCategoryButton.classList.add("btn");
+    this.deleteCategoryButton.classList.add("btn-outline-danger");
+    this.deleteCategoryButton.textContent = "حذف";
+
+    // this.deleteCategory.id = "id-delete-category";
+    // this.deleteCategory.classList.add("statement-btn");
+    // this.deleteCategory.innerHTML = " حذف ";
+    // this.deleteCategory.style.color = "#fff";
+
+    this.inputCategoryStatement.id = "id-category-statement";
+    this.inputCategoryStatement.type = "text";
+    this.inputCategoryStatement.classList.add("form-control");
+    this.inputCategoryStatement.classList.add("input-concepts");
+    this.inputCategoryStatement.style.direction = "rtl";
+    this.inputCategoryStatement.style.fontSize = "larger";
+    this.inputCategoryStatement.placeholder = "أدخل العبارة";
+
+    this.divCategoryStatement.id = "div-category-statement";
+    this.divCategoryStatement.classList.add("form-group");
+    this.divCategoryStatement.classList.add("group-element");
+
+    this.labelCategoryStatement.classList.add("label-course");
+    this.labelCategoryStatement.classList.add("col-lg-3");
+    this.labelCategoryStatement.textContent = "أدخل العبارة";
+
+    // this.divSelectCategory.classList.add("form-group");
+    // this.divSelectCategory.classList.add("group-element");
+
+    // this.selectCategory.id = "id-select-category";
+    // this.selectCategory.classList.add("form-control");
+    // this.selectCategory.classList.add("under-label");
+
+    this.insertCategoryStatement.id = "id-delete-category";
+    this.insertCategoryStatement.classList.add("statement-btn");
+    this.insertCategoryStatement.innerHTML = " موافق ";
+    this.insertCategoryStatement.style.color = "#fff";
   }
-  Build() {}
-  ReturnContainerDiv() {}
+  Build() {
+    this.divOverall.appendChild(this.labelCategory);
+
+    this.divOverall.appendChild(this.divCategorylist);
+    this.divOverall.appendChild(this.divCategoryinput);
+    this.divOverall.appendChild(this.divCategoryStatement);
+
+    this.divCategoryinput.appendChild(this.textCategory);
+    this.divCategoryinput.appendChild(this.divButtonns);
+
+    this.divButtonns.appendChild(this.addCategoryButton);
+    this.divButtonns.appendChild(this.deleteCategoryButton);
+
+    this.divCategoryStatement.appendChild(this.labelCategoryStatement);
+    this.divCategoryStatement.appendChild(this.inputCategoryStatement);
+    // this.divCategoryStatement.appendChild(this.divSelectCategory);
+    this.divCategoryStatement.appendChild(this.insertCategoryStatement);
+    // this.ulListCategory.appendChild(this.ilListTitle);
+    // this.divSelectCategory.appendChild(this.selectCategory);
+  }
+
+  ReturnContainerDiv() {
+    return this.divOverall;
+  }
 }
 
 /* ############################### Main Tab Section ###################################  */
@@ -806,6 +894,65 @@ function openSceneType(scenetype, sceneTypeNumber) {
       break;
 
     case "تمرين تصنيف":
+      const newCategoryStatement = new CatagoriesClassStatements();
+      newCategoryStatement.AssingNamesAndAttr();
+      newCategoryStatement.Build();
+
+      StatementSection.appendChild(newCategoryStatement.ReturnContainerDiv());
+
+      newCategoryStatement.addCategoryButton.addEventListener(
+        "click",
+        function () {
+          const new_item = document.createElement("button");
+          const new_item_txt = document.createTextNode(
+            document.getElementById("id-category").value
+          );
+
+          newCategoryStatement.buttonIndexlist.push(
+            newCategoryStatement.buttonIndexlist.length + 1
+          );
+
+          new_item.id =
+            "id-category-button-" + newCategoryStatement.buttonIndexlist.length;
+
+          new_item.type = "button";
+          new_item.classList.add("list-group-item");
+          new_item.classList.add("list-group-item-action");
+          new_item.classList.add("list_buttons");
+
+          // new_item.id = id_c;
+          new_item.appendChild(new_item_txt);
+
+          document.getElementById("div-category-list").appendChild(new_item);
+          console.log(new_item.id);
+          let buttonClickedInCategoryList = document.getElementById(
+            new_item.id
+          );
+
+          buttonClickedInCategoryList.addEventListener("click", function () {
+            newCategoryStatement.selectedItem = this.id;
+
+            console.log(newCategoryStatement.selectedItem);
+          });
+        }
+      );
+
+      newCategoryStatement.deleteCategoryButton.addEventListener(
+        "click",
+        function () {
+          // console.log(this);
+          if (newCategoryStatement.selectedItem !== "") {
+            const parentlist = document.getElementById("div-category-list");
+            const buttonToBeRemoved = document.getElementById(
+              newCategoryStatement.selectedItem
+            );
+
+            parentlist.removeChild(buttonToBeRemoved);
+            s;
+          }
+        }
+      );
+
       break;
 
     case "تمرين ترتيب جمل":
