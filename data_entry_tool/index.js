@@ -1,5 +1,7 @@
 
 var currentCourse;
+var currentScene;
+
 var logMsgs = [];
 const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
@@ -420,7 +422,8 @@ function deleteLessonFromDB(del) {
   return db.collection("courses").doc(del.id).update({
     'Lessons': firebase.firestore.FieldValue.arrayRemove({
       'Lesson-ID': del.LessonID,
-      'Lesson-Title': del.LessonTitle
+      'Lesson-Title': del.LessonTitle,
+      'Module-ID': del.ModuleID
     })
   });
 }
@@ -491,6 +494,9 @@ function loadDataFromFireStore() {
   SceneTypes = [];
   originalSceneTypes = [];
 
+  SceneHeaders = [];
+  originalSceneHeaders = [];
+
 
   // Clear Course combo box
   clearCombo(courseCombo);
@@ -498,6 +504,9 @@ function loadDataFromFireStore() {
   clearConceptsLst();
   // Clear modules list
   clearModulesLst();
+
+  // Clear Scene list
+  clearScenesLst();
 
   let AllPromises =[];
 
@@ -620,7 +629,8 @@ function fillCourseInfo() {
       clearSkillsLst();
       // Clear Scene Types List
       clearSceneTypes();
-
+      // Clear Scenes List
+      clearScenesLst();
       
       currentCourse = Courses.find( courseID => courseID.id == event.target.value);
       const textAreaCourseDesc = document.getElementById("id-course-description");

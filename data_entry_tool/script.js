@@ -948,7 +948,7 @@ function openSceneType(scenetype, sceneTypeNumber) {
             );
 
             parentlist.removeChild(buttonToBeRemoved);
-            s;
+            
           }
         }
       );

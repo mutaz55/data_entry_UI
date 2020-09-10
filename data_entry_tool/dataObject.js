@@ -71,10 +71,11 @@ class SceneType {
 
 
 class SceneHeader {
-    constructor(id, mod, les, sTitle, sDesc, sSeq, sType, snd_teacher , con, sk, bk_type) {
+    constructor(id, sID,  mod, les, sTitle, sDesc, sSeq, sType, snd_teacher , bk_type) {
         this.id = id;
-        this.ModuleID = mod.ModuleID;
-        this.LessonID = les.LessonID; 
+        this.sceneID = sID;
+        this.ModuleID = mod;
+        this.LessonID = les; 
         this.sceneTitle = sTitle;
         this.sceneDesc = sDesc;
         this.sceneSeq = sSeq;
@@ -83,8 +84,8 @@ class SceneHeader {
         this.flag_finished = false;
         this.flag_available = true;
         this.flag_review = false;
-        this.Concepts = con;
-        this.Skills = sk;
+        this.Concepts = [];
+        this.Skills = [];
         this.BookType = bk_type;
         this.Points = 0;
         this.Score = 0;
@@ -104,7 +105,7 @@ function storeDataLocally(id, data, type) {
             case 'concepts': return new Concept(id, data['Concept-ID'],data['Concept-Text']);
             case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text']);
             case 'sceneTypes': return new SceneType(id, data['sceneT-ID'], data['sceneT-Text']);
-            case 'sceneHeaders': return new SceneHeader(id, data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene-Desc'], data['Scene-Seq'],
+            case 'sceneHeaders': return new SceneHeader(id, data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene-Desc'], data['Scene-Seq'],
                                                             data['Scene-Type'], data['Send-To-Teacher'], data.Concepts , data.Skills, data['Book-Type'] );
         }
         
