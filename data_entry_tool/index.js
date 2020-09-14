@@ -36,7 +36,7 @@ document.querySelector("#load-btn").addEventListener("click", (e) => {
 document.querySelector('#save-btn').addEventListener("click", (event)=> {
   event.preventDefault();
 
-  if (Courses.length <= 0) return console.log("Courses has no changes");
+  if (Courses.length <= 0) return console.log("Nothing to save");
     
 
     // Check if the Course Description or Course Category have been changed
@@ -86,8 +86,16 @@ document.querySelector('#save-btn').addEventListener("click", (event)=> {
     // Add new scene types
     addSceneType();
     
-   
+    // Check the scene Headers info changes and save them
+
+    //Delete scene Header
+    deleteSceneHeader();
+    // Add new Scene Header
+    addSceneHeader();
+
 });
+
+
 
 
 function addSceneType() {
@@ -116,6 +124,205 @@ function addSceneType() {
     }
 
   });
+}
+
+
+
+function deleteSceneHeader(){
+
+
+  let AllPromises =[];
+
+  SceneHeaders.forEach(function (del) {
+
+    if (del._deleted) {
+
+      AllPromises.push ( deleteSceneHeaderFromDB(del).then(() => {
+        console.log(`Scene type with Id:  ${del.id} has been successuflly deleted!`);
+      }).catch(err => console.log(`Error while deleting sceneHeader with Id:  ${del.id} 
+          Details:  ${err}`))
+      );
+      
+
+    }
+
+
+  });
+
+  Promise.all(AllPromises).then(()=> {
+    
+    SceneHeaders = SceneHeaders.filter(sH => sH._deleted == false);
+   
+  })
+
+
+  
+
+}
+
+
+function addSceneHeader() {
+
+  SceneHeaders.forEach( function (sH)  {
+   
+
+          if (sH._new) {
+
+            db.collection("sceneHeaders").doc(sH.id).set({
+
+              
+              'Course-ID': sH.CourseID,
+              'Book-Type': sH.BookType,
+              'Lesson-ID': sH.LessonID,
+              'Module-ID': sH.ModuleID,
+              'Points': 0,
+              'Scene_Desc': sH.sceneDesc,
+              'Scene-ID': sH.sceneID,
+              'Scene-Seq': sH.sceneSeq,
+              'Scene-Title': sH.sceneTitle,
+              'Scene-Type': sH.sceneTypeID, 
+              'Score': 0, 
+              'Send-To-Teacher': sH.sendToTeacher,
+              'flag-available': false,
+              'flag-finished': false,
+              'flag-review': false
+            
+              
+              }).then( ()=> {
+        
+              
+        
+                  sH.Concepts.forEach( function (con) {
+        
+                    db.collection("sceneHeaders").doc(sH.id).update({
+                      'Concepts': firebase.firestore.FieldValue.arrayUnion({
+                        'Concept-ID': con.ConceptID,
+                        'Concept-Text': con.ConceptText
+                      })
+                    
+        
+        
+                    })
+                  });
+        
+                  sH.Skills.forEach( function (sk) {
+        
+                    
+        
+                      db.collection("sceneHeaders").doc(sH.id).update({
+                        'Skills': firebase.firestore.FieldValue.arrayUnion({
+                          'Skill-ID': sk.SkillID,
+                          'Skill-Text': sk.SkillText
+        
+                        })
+        
+        
+                      })
+        
+                  });
+        
+                  console.log(` SceneHeader with id: ${sH.id} has been successuflly added!`);
+              })
+              .catch(function(error) {
+                console.error("Error adding document: ", error);
+              });
+              sH._new = false;
+              return;
+          }
+          
+          if (sH._changed) {
+
+            db.collection("sceneHeaders").doc(sH.id).update({
+
+              'Course-ID': sH.CourseID,
+              'Book-Type': sH.BookType,
+              'Lesson-ID': sH.LessonID,
+              'Module-ID': sH.ModuleID,
+              'Points': 0,
+              'Scene_Desc': sH.sceneDesc,
+              'Scene-ID': sH.sceneID,
+              'Scene-Seq': sH.sceneSeq,
+              'Scene-Title': sH.sceneTitle,
+              'Scene-Type': sH.sceneTypeID, 
+              'Score': 0, 
+              'Send-To-Teacher': sH.sendToTeacher,
+              'flag-available': false,
+              'flag-finished': false,
+              'flag-review': false
+            
+              
+              }).then( ()=> {
+        
+              
+        
+                  
+        
+                    db.collection("sceneHeaders").doc(sH.id).update({
+
+                      'Concepts': firebase.firestore.FieldValue.delete()
+
+                    });
+
+                  
+
+                  
+                  sH.Concepts.forEach( function (con) {
+
+                    db.collection("sceneHeaders").doc(sH.id).update({
+                      'Concepts': firebase.firestore.FieldValue.arrayUnion({
+                        'Concept-ID': con.ConceptID,
+                        'Concept-Text': con.ConceptText
+                      })
+                    
+                    });
+
+                  });
+        
+
+
+        
+                      db.collection("sceneHeaders").doc(sH.id).update({
+
+                        'Skills': firebase.firestore.FieldValue.delete()
+        
+                      });
+
+                   
+
+
+                    sH.Skills.forEach( function (sk) {
+
+                      db.collection("sceneHeaders").doc(sH.id).update({
+                        'Skills': firebase.firestore.FieldValue.arrayUnion({
+                          'Skill-ID': sk.SkillID,
+                          'Skill-Text': sk.SkillText
+        
+                        })
+        
+                      });
+                      
+                    });
+                  
+        
+                  console.log(` SceneHeader with id: ${sH.id} has been successuflly updated!`);
+              })
+              .catch(function(error) {
+                console.error("Error updating document: ", error);
+              });
+              
+              sH._changed = false;
+
+          }
+          
+
+
+      
+       
+
+    });
+
+  
+  
 }
 
 function addSkill() {
@@ -410,6 +617,9 @@ function deleteSceneType() {
   })
 }
 
+function deleteSceneHeaderFromDB(del) {
+  return db.collection("sceneHeaders").doc(del.id).delete();
+}
 
 function deleteSceneTypeFromDB(del) {
   return db.collection("sceneTypes").doc(del.id).delete();
@@ -417,6 +627,8 @@ function deleteSceneTypeFromDB(del) {
 function deleteSkillFromDB(del) {
   return db.collection("skills").doc(del.id).delete();
 }
+
+
 
 function deleteLessonFromDB(del) {
   return db.collection("courses").doc(del.id).update({
@@ -577,6 +789,35 @@ function loadDataFromFireStore() {
 
   );
 
+  
+  var docRef_SHeaders = db.collection("sceneHeaders");
+
+  AllPromises.push(
+    docRef_SHeaders.get().then(function (querySnapshot) {
+
+      querySnapshot.forEach( function (doc) {
+
+          let sceneH = storeDataLocally(doc.id,doc.data(),"sceneHeaders");
+          
+
+          if (doc.data()["Concepts"])
+          doc.data()["Concepts"].forEach(function (con) {
+            sceneH.Concepts.unshift(storeDataLocally(null, con, "concepts"));
+            
+          });
+
+          if (doc.data()["Skills"])
+          doc.data()["Skills"].forEach(function(sk) {
+            sceneH.Skills.unshift(storeDataLocally(null,sk,"skills"));
+          });
+         
+          SceneHeaders.unshift(sceneH);
+      });
+
+    }).catch(er => console.log(er))
+
+  );
+
  Promise.all(AllPromises).then(()=> {
      
   // fill courses Info
@@ -599,7 +840,27 @@ function clearCombo(combo){
 
 
 }
+
+function clearLsts(){
+
+  // Clear concepts list
+  clearConceptsLst();
+  // Clear Modules list
+  clearModulesLst();
+  // Clear Lessons list
+  clearLessonsLst();
+  // Clear Skills list
+  clearSkillsLst();
+  // Clear Scene Types List
+  clearSceneTypes();
+  // Clear Scenes List
+  clearScenesLst();
+}
+
 function fillCourseInfo() {
+  
+
+  clearLsts();
   
   // clear the course in combobox if there is any
   clearCombo(courseCombo);
@@ -619,18 +880,7 @@ function fillCourseInfo() {
     courseCombo.addEventListener('change', (event)=> {
 
       
-      // Clear concepts list
-      clearConceptsLst();
-      // Clear Modules list
-      clearModulesLst();
-      // Clear Lessons list
-      clearLessonsLst();
-      // Clear Skills list
-      clearSkillsLst();
-      // Clear Scene Types List
-      clearSceneTypes();
-      // Clear Scenes List
-      clearScenesLst();
+      
       
       currentCourse = Courses.find( courseID => courseID.id == event.target.value);
       const textAreaCourseDesc = document.getElementById("id-course-description");
@@ -648,16 +898,13 @@ function fillCourseInfo() {
         chkBoxCourseTypeFree.checked = true;
 
       }
-      
-   
+     
       fillConcepts(Concepts.filter( con => con.id == currentCourse.id ));
       fillModules(Modules.filter(mod => mod.id == currentCourse.id));
       fillLessons(Lessons.filter(les => les.id == currentCourse.id));
       fillSkills(Skills);
       fillSceneTypes(SceneTypes);
-      
-
-    
+     
     });
     
     if (courseCombo.options.length > 0) {
@@ -667,6 +914,4 @@ function fillCourseInfo() {
       
   }
   
-
-
 }
