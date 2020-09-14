@@ -1,32 +1,47 @@
 {
-  "Course-Object": {
-    "couseID": "",
-    "course-title": "ArabicA1",
-    "Modules-Numbers": 8,
+  "courses (Id Auto generated)": {
+    
+    "Course-Title": "",
     "Description": "",
-    "MediaType": "",
-    "MediaFilename": "",
+    "Media-Type": "",
+    "Media-filename": "",
     "Progress": "",
-    "catagory": "Paid/Free",
+    "Catagory": 0,
     "Modules": ["", ""],
     "Lessons": ["", ""],
-    "Concepts": ["", ""],
-    "Skills": ["", ""],
-
-    "Scene-Type (without repetition)": ["", ""]
+    "Concepts": ["", ""]
+    
   },
 
-  "Scene-Header  (Col per Course per unit)": {
-    "Module": "",
-    "Lesson": "",
+  "sceneTypes (Id Auto generated)": {
+    "sceneT-ID": "",
+    "sceneT-Text": ""
+  },
+
+  "skills (Id Auto generated)": {
+    "Skill-ID":"",
+    "Skill-Text": ""
+  },
+
+  "sceneHeaders": {
+    "id":"",
+    "Course-ID":"",
+    "Scene-ID":"",
+    "Module-ID": "",
+    "Lesson-ID": "",
     "Scene-Title": "",
-    "SceneID": 1,
-    "SceneType": "",
-    "SendToTeacher": 0,
-    "flag_finished": false,
-    "flag_available": false,
-    "flag_refresh": false,
-    "Book": "Course/Or/Workbook"
+    "Scene-Desc": "",
+    "Scene-seq": 1,
+    "Scene-Type": "",
+    "Send-To-Teacher": 0,
+    "flag-finished": false,
+    "flag-available": false,
+    "flag-review": false,
+    "Concepts": ["", ""],
+    "Skills": ["", ""],
+    "Book-Type": "Course/Or/Workbook",
+    "Points": 0,
+    "Score" : 0
   },
 
   "FillInQuestion (Col per Course per unit)": {

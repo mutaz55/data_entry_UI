@@ -187,7 +187,7 @@
               >المعلومات الأساسية للكورس
             </a>
           </li>
-          <li class="nav-item col-lg-4">
+          <li class="nav-item col-lg-4" id="sceneInfoTab2">
             <a class="nav-link tab-color" href="#menu2" data-toggle="tab"
               >معلومات المشهد</a
             >
@@ -486,13 +486,13 @@
                 id="id-lessons-tab2"
               ></select>
             </div>
+
             <!-- Scene Serial number -->
-            <div class="form-group group-element">
+            <div >
               <label class="label-course col-lg-3" for="id-scene-no"
                 >رقم المشهد</label
               >
-              <input
-                type="number"
+              <label
                 class="form-control under-label"
                 style="
                   margin: 0 10px 0 0;
@@ -501,138 +501,136 @@
                     'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
                     sans-serif;
                   color: darkred;
-                  background-color: white;
-                "
-                value="1"
-                min="1"
-                max="50"
-                step="1"
-                id="id-scene-no"
-              />
+                  background-color: white;"
+                
+                
+                id="id-scene-no">
+              </label>
             </div>
-            <!-- Select Exercise type -->
 
-            <div>
-              <label class="label-course col-lg-3" for="lst_scenesType_tab2">
-                اختيار نوع المشهد</label
+            <div class="form-group group-element">
+              <label class="label-course col-lg-3" for="id-scenes">
+                المشاهد</label
               >
-
+          
               <div
                 class="list-group col align-self-end"
                 style="scroll-behavior: auto; text-align: right"
-                id="lst_scenesType_tab2"
-              >
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="1"
-                >
-                  ملخص
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="2"
-                >
-                  اختبار
-                </button>
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="3"
-                >
-                  تمرين املأ الفراغ
-                </button>
+                id="id-scenes"
+              ></div>
 
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="4"
-                >
-                  تمرين خيارات متعددة
-                </button>
-
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="5"
-                >
-                  تمرين توصيل
-                </button>
-
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="6"
-                >
-                  تمرين صح أم خطأ
-                </button>
-
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="7"
-                >
-                  تمرين تصنيف
-                </button>
-
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="8"
-                >
-                  تمرين ترتيب جمل
-                </button>
-
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="9"
-                >
-                  تمرين ترتيب الأحرف
-                </button>
-
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="10"
-                >
-                  قصة
-                </button>
-
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="11"
-                >
-                  مراجعة
-                </button>
-
-                <button
-                  type="button"
-                  class="list-group-item list-group-item-action select-scene-click"
-                  value="12"
-                >
-                  شرح
-                </button>
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control input-concepts"
+                  style="direction: rtl; font-size: larger"
+                  placeholder="إدخال عنوان المشهد"
+                  aria-label="إدخال عنوان المشهد"
+                  id="txt_sceneTitle"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-success"
+                    type="button"
+                    id="add_sceneTitle"
+                  >
+                    إضافة
+                  </button>
+                  <button
+                    class="btn btn-outline-danger"
+                    type="button"
+                    id="remove_sceneTitle"
+                  >
+                    حذف
+                  </button>
+                </div>
               </div>
-              <label
-                class="label-selected-value col-lg-10"
-                id="id-scene-selected"
-                >اختيار</label
+            </div>
+            
+            <div class="form-group group-element" style="margin-top: 30px">
+              <label class="label-course col-lg-3" for="id-scene-description"
+                >وصف المشهد</label
               >
+              <textarea
+                class="form-control under-label"
+                id="id-scene-description"
+                rows="3"
+              ></textarea>
             </div>
 
-            <!-- text input -->
             <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-scene-title"
-                >عنوان المشهد</label
+              <label class="label-course col-lg-3" for="id-select-concept">
+                اختيار المفهوم</label
               >
-              <input
-                type="text"
+              <select
+                
                 class="form-control under-label"
-                id="id-scene-title"
-              />
+                style="max-height: 100px;"
+                id="id-select-concept"
+              >
+             
+              </select>
+              <select
+                size=6
+                style="margin-top: 5px;"
+                multiple
+                class="form-control under-label"
+                id="id-lst-concepts"
+              ></select>
+              <div class="input-group mb-3">
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-success"
+                    type="button"
+                    id="add_concept_to_scene"
+                  >
+                    إضافة
+                  </button>
+                  <button
+                    class="btn btn-outline-danger"
+                    type="button"
+                    id="remove_concept_from_scene"
+                  >
+                    حذف
+                  </button>
+                </div>
+              </div>
+            
+            </div>
+
+            <div class="form-group group-element">
+              <label class="label-course col-lg-3" for="id-select-skill">
+                اختيار المهارة</label
+              >
+              <select
+              class="form-control under-label"
+              id="id-select-skill"
+              ></select>
+              <select
+              size = 3
+              style="margin-top: 5px;"
+                multiple
+                class="form-control under-label"
+                id="id-lst-skills"
+              ></select>
+              <div class="input-group mb-3">
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-success"
+                    type="button"
+                    id="add_skill_to_scene"
+                  >
+                    إضافة
+                  </button>
+                  <button
+                    class="btn btn-outline-danger"
+                    type="button"
+                    id="remove_skill_from_scene"
+                  >
+                    حذف
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div>
@@ -642,7 +640,7 @@
               <div class="form-control under-label">
                 <label>
                   <input
-                    name="courseTypeRdbtn"
+                    name="toBeCheckedRdbtn"
                     type="radio"
                     id="id-send-to-teacher"
                   />
@@ -654,7 +652,7 @@
 
                 <label style="margin-right: 30px">
                   <input
-                    name="courseTypeRdbtn"
+                    name="toBeCheckedRdbtn"
                     type="radio"
                     id="id-send-to-teacher-not"
                   />
@@ -669,7 +667,7 @@
               >
               <div class="form-control under-label">
                 <label>
-                  <input name="courseTypeRdbtn" type="radio" id="id-kursbook" />
+                  <input name="bookTypeRdbtn" type="radio" id="id-kursbook" />
 
                   <span style="font-size: 2em; color: rgb(68, 67, 67)"
                     >كتاب كورس</span
@@ -678,7 +676,7 @@
 
                 <label style="margin-right: 30px">
                   <input
-                    name="courseTypeRdbtn"
+                    name="bookTypeRdbtn"
                     type="radio"
                     id="id-Arbeitbook"
                   />
@@ -688,32 +686,37 @@
                 </label>
               </div>
             </div>
-            <br />
+
+            <!-- Select Exercise type -->
 
             <div>
-              <label class="label-course col-lg-3" for="id-select-concept">
-                اختيار المفهوم</label
+              <label class="label-course col-lg-3" for="lst_scenesType_tab2">
+                اختيار نوع المشهد</label
               >
 
+                       
               <select
-                style="height: 300px"
+              size = 7
+              style="margin-top: 5px;"
                 multiple
                 class="form-control under-label"
-                id="id-select-concept"
+                id="lst_scenesType_tab2"
               ></select>
+
+           
+
+              <label
+                class="label-selected-value col-lg-10"
+                id="id-scene-selected"
+                >اختيار</label
+              >
             </div>
 
-            <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-select-skill">
-                اختيارالمهارة</label
-              >
-              <select
-                style="height: 300px"
-                multiple
-                class="form-control under-label"
-                id="id-select-skill"
-              ></select>
-            </div>
+           
+            
+        
+
+            
           </div>
 
           <div class="tab-pane fade paneltab" role="tabpanel" id="menu3">
@@ -1889,9 +1892,13 @@
 
       var Skills = new Array();
       var originalSkills = new Array();
-      txt_sceneType;
+     
       var SceneTypes = new Array();
       var originalSceneTypes = new Array();
+
+      var SceneHeaders = new Array();
+      var originalSceneHeaders = new Array();
+
     </script>
 
     <!-- JQuery CDN -->

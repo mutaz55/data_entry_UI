@@ -38,6 +38,14 @@ const lst_sceneTypes = document.querySelector("#id-sceneTypes");
 
 let selected_sceneType_index = "-1";
 
+<<<<<<< HEAD
+// Category Scene
+const btn_add_categoryScene = document.querySelector("#id-add-category");
+const btn_remove_categoryScene = document.querySelector("#id-delete-category");
+const lst_cateogryScene = document.querySelector("#div-category-list");
+
+let selected_category_index = "-1";
+=======
 
 //// Tab 2
 
@@ -86,6 +94,7 @@ const radiotbtn_sendToTeacherNot = document.querySelector('#id-send-to-teacher-n
 const radiobtn_kursBuch = document.querySelector('#id-kursbook');
 const radiobtn_arbeitsBuch = document.querySelector('#id-Arbeitbook');
 
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
 
 ///////////////////////////////////////////////////////////////
 // Scene Type
@@ -129,6 +138,8 @@ radiotbtn_sendToTeacherNot.addEventListener('change', () => {
 
   }
 
+<<<<<<< HEAD
+=======
 });
 
 radiobtn_sendToTeacher.addEventListener('change', ()=> {
@@ -152,6 +163,7 @@ radiobtn_kursBuch.addEventListener('change', ()=> {
   }
 });
 
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
 // Remove Concept (Button)
 btn_remove_concept.addEventListener("click", (e) => {
   if (selected_concept_index != "-1") {
@@ -177,6 +189,43 @@ btn_remove_concept.addEventListener("click", (e) => {
 
 // Add Concept (Button)
 btn_add_concept.addEventListener("click", (e) => {
+<<<<<<< HEAD
+  const txt_concept_entry = document.getElementById("txt_concept").value;
+
+  if (txt_concept_entry != 0) {
+    let id_con = 1;
+
+    if (
+      Concepts.filter(function (item) {
+        return item.id == currentCourse.id;
+      }).length > 0
+    ) {
+      id_con =
+        Math.max.apply(
+          Math,
+          Concepts.filter(function (item) {
+            return item.id == currentCourse.id;
+          }).map(function (conId) {
+            return conId.ConceptID.substring(
+              conId.ConceptID.indexOf("C") + 1,
+              conId.ConceptID.length
+            );
+          })
+        ) + 1;
+    }
+
+    let id_con_key = currentCourse.CourseTitle + "C" + id_con;
+
+    Concepts.unshift(
+      new Concept(currentCourse.id, id_con_key, txt_concept_entry)
+    );
+    addNewItems(txt_concept_entry, id_con_key, "concepts_lst", true).focus();
+    document.getElementById("txt_concept").value = "";
+  }
+  selected_concept_index = "-1";
+});
+
+=======
     const txt_concept_entry = document.getElementById("txt_concept").value;
   
     if (txt_concept_entry != 0) {
@@ -258,6 +307,7 @@ tab2Header.addEventListener('click', ()=> {
   
 })
 
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
 // Add new item to the list (includes concepts, modules, lessons, skills, scene types)
 function addNewItems(txt, id_c, lst_type, added) {
   const new_item = document.createElement("button");
@@ -282,6 +332,13 @@ function addNewItems(txt, id_c, lst_type, added) {
         selected_skill_index = id_c;
         break;
       case "sceneType_lst":
+<<<<<<< HEAD
+        selected_sceneType_index = id_c;
+        break;
+      case "categoryScene_lst":
+        selected_category_index = id_c;
+        break;
+=======
           selected_sceneType_index = id_c;
           break;
       case "scenes_lst":
@@ -289,6 +346,7 @@ function addNewItems(txt, id_c, lst_type, added) {
           currentScene = id_c;
           updateSceneView();
           break;
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
     }
     
   });
@@ -316,6 +374,16 @@ function addNewItems(txt, id_c, lst_type, added) {
       else lst_skills.prepend(new_item);
       break;
     case "sceneType_lst":
+<<<<<<< HEAD
+      if (added) lst_sceneTypes.appendChild(new_item);
+      else lst_sceneTypes.prepend(new_item);
+      break;
+
+    case "categoryScene_lst":
+      if (added) lst_cateogryScene.appendChild(new_item);
+      else lst_cateogryScene.prepend(new_item);
+      break;
+=======
         if (added) lst_sceneTypes.appendChild(new_item);
         else lst_sceneTypes.prepend(new_item);
         break;
@@ -325,6 +393,7 @@ function addNewItems(txt, id_c, lst_type, added) {
         else lst_scenes.prepend(new_item);
     
         break;
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
   }
 
   return new_item;
@@ -375,6 +444,13 @@ function clearSkillsLst() {
 }
 
 function clearSceneTypes() {
+<<<<<<< HEAD
+  lst_sceneTypes.innerHTML = "";
+}
+
+function clearCategoryScene() {
+  lst_cateogryScene.innerHTML = "";
+=======
     lst_sceneTypes.innerHTML = "";
     clearSceneTypesTab2();
 }
@@ -384,6 +460,7 @@ function clearRdBtnTab2(){
   document.querySelector('#id-kursbook').checked = false;
   radiobtn_sendToTeacher.checked = false;
   radiotbtn_sendToTeacherNot.checked = false;
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
 }
 
 // Add new items to select (Combobox) - includes Modules, lessons....
@@ -445,6 +522,8 @@ function fillConcepts(con) {
   selected_concept_index = "-1";
 }
 
+<<<<<<< HEAD
+=======
 
 function fillSceneConcepts(con, type) {
   if (con.length != 0) {
@@ -469,6 +548,7 @@ function lst_concepts_tab2_setIndex(indx){
     lst_concepts_tab2.options[indx].selected = true;
 }
 
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
 function lst_modules_tab2_setIndex(indx) {
   if (lst_modules_tab2.options.length > 0)
     lst_modules_tab2.options[indx].selected = true;
@@ -540,6 +620,16 @@ function fillScenes(sc){
 }
 
 function fillSkills(sk) {
+<<<<<<< HEAD
+  if (sk.length != 0) {
+    sk.forEach((element) => {
+      const txt = `(${element.SkillID}) | ${element.SkillText}`;
+      addNewItems(txt, element.SkillID, "skills_lst", false);
+    });
+  }
+
+  selected_skill_index = "-1";
+=======
     
     if (sk.length != 0) {
         sk.forEach((element) => {
@@ -553,6 +643,7 @@ function fillSkills(sk) {
 
     lst_skills_tab2_setIndex(0);
     selected_skill_index = "-1";
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
 }
 
 function fillSceneSkills(sk, type) {
@@ -593,6 +684,11 @@ function fillSceneTypes(sceneT) {
     });
   }
 
+<<<<<<< HEAD
+  selected_sceneType_index = "-1";
+}
+
+=======
     if (sceneT.length != 0) {
         sceneT.forEach((element) => { 
             const txt = `(${element.SceneTypeID}) | ${element.SceneTypeDesc}`;
@@ -607,6 +703,7 @@ function fillSceneTypes(sceneT) {
 
 
 
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
 // Remove Module (Button)
 btn_remove_module.addEventListener("click", (e) => {
   if (selected_module_index != "-1") {
@@ -737,6 +834,18 @@ btn_remove_lesson.addEventListener("click", (e) => {
 
 // Remove Skill (Button)
 btn_remove_skill.addEventListener("click", (e) => {
+<<<<<<< HEAD
+  if (selected_skill_index != "-1") {
+    const removed = document.querySelector(`#${selected_skill_index}`);
+
+    if (removed != undefined) {
+      lst_skills.removeChild(removed);
+
+      Skills = Skills.filter(function (item) {
+        return item.SkillID !== selected_skill_index;
+      });
+    }
+=======
     if (selected_skill_index != "-1") {
       const removed = document.querySelector(`#${selected_skill_index}`);
   
@@ -780,6 +889,7 @@ btn_remove_skill.addEventListener("click", (e) => {
       selected_skill_index = "-1";
     });
   
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
 
     selected_skill_index = "-1";
 
@@ -811,6 +921,58 @@ btn_add_skill.addEventListener("click", (e) => {
 
 // Remove SceneType (Button)
 btn_remove_sceneType.addEventListener("click", (e) => {
+<<<<<<< HEAD
+  if (selected_sceneType_index != "-1") {
+    const removed = document.querySelector(`#${selected_sceneType_index}`);
+
+    if (removed != undefined) {
+      lst_sceneTypes.removeChild(removed);
+
+      SceneTypes = SceneTypes.filter(function (item) {
+        return item.SceneTypeID !== selected_sceneType_index;
+      });
+    }
+
+    selected_sceneType_index = "-1";
+
+    const firstChild = lst_sceneTypes.firstChild;
+    if (firstChild != undefined) firstChild.focus();
+  }
+});
+
+// Add SceneType (Button)
+btn_add_sceneType.addEventListener("click", (e) => {
+  const txt_sceneType_entry = document.getElementById("txt_sceneType").value;
+  const txt_sceneType_code = document.getElementById("txt_sceneType_code")
+    .value;
+
+  if (
+    txt_sceneType_entry != 0 &&
+    txt_sceneType_code != 0 &&
+    !txt_sceneType_code.match(/^\d/)
+  ) {
+    if (
+      SceneTypes.find((st) => st.SceneTypeID == txt_sceneType_code) == undefined
+    ) {
+      SceneTypes.unshift(
+        new SceneType(
+          txt_sceneType_code,
+          txt_sceneType_code,
+          txt_sceneType_entry
+        )
+      );
+
+      const txt = `(${txt_sceneType_code}) | ${txt_sceneType_entry}`;
+      addNewItems(txt, txt_sceneType_code, "sceneType_lst", true).focus();
+      document.getElementById("txt_sceneType").value = "";
+      document.getElementById("txt_sceneType_code").value = "";
+    } else {
+      showError("The Code is already used!");
+    }
+  }
+  selected_sceneType_index = "-1";
+});
+=======
     if (selected_sceneType_index != "-1") {
       const removed = document.querySelector(`#${selected_sceneType_index}`);
   
@@ -1111,3 +1273,4 @@ btn_remove_sceneType.addEventListener("click", (e) => {
 
     });
    
+>>>>>>> 43f27d5ade0f47fb35e8bbf000d87733ef5335ae
