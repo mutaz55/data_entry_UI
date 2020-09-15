@@ -2,18 +2,57 @@ body {
   background-color: #d1cdcd;
 }
 
-.list_background{
+.normal-Button {
+  background-color: #009879;
+  color: #fff !important;
+  width: 10%;
+  line-height: 1rem;
+  text-align: center;
+  margin: 30px 20px;
+  border-radius: 10px 0 10px 0;
+  padding: 10px 32px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+.normal-Button:hover {
+  background-color: #23ac90;
+}
+
+.list_background {
   background-color: #fff;
   /* border: 1px solid gray; */
   padding: 10px;
 }
 
-.list_buttons{
+.list_buttons {
   background-color: rgb(204, 117, 117);
   border: 2px solid gray;
   padding: 10px;
 }
 
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 400px;
+  text-align: right;
+}
+
+.content-tablehead {
+  background-color: #009879;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  line-height: 1.1rem;
+}
+
+.content-tableTD {
+  padding: 12px 15px;
+  direction: rtl;
+  text-align: right;
+  cursor: pointer;
+}
 
 /* ############################### Main Tab Section ###################################  */
 .tab-color {
@@ -86,10 +125,10 @@ body {
 .label-selected-value {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 2rem;
-  background-color: rgb(39, 39, 201);
+  background-color: #26a69a;
   color: #fff;
   font-weight: bold;
-  border: 1px solid black;
+  border: 4px solid black;
   text-align: right;
   direction: rtl;
   /* clear: both; */
@@ -196,7 +235,7 @@ body {
 }
 
 /* ############################### Hidden Tab Section ################################### */
-.statement-btn{
+.statement-btn {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 1.5rem;
   color: #fff;
@@ -204,7 +243,7 @@ body {
   background-color: #26a69a;
   border-radius: 10px 0px 0px 0px;
   /* height: 20px;*/
-  width: 200px; 
+  width: 200px;
   margin-top: 30px;
   margin-left: 40px;
   text-align: right;
@@ -213,9 +252,9 @@ body {
   margin-right: 10px;
   margin-bottom: 0;
 }
-.statement-btn:hover{
+.statement-btn:hover {
   background-color: #09e6cf;
-  cursor:pointer;
+  cursor: pointer;
 }
 .hidden-tab {
   display: none;
@@ -223,7 +262,6 @@ body {
 }
 
 .shown-tab {
-  
   animation: showInEffect 1s;
   /* display: block; */
 }
@@ -302,7 +340,6 @@ body {
   }
 }
 
-
 /* ############################### QTHint Section ################################### */
 .genSection {
   padding: 20px 40px 30px;
@@ -318,14 +355,10 @@ body {
 }
 /* ############################### Media Section ################################### */
 
-
-.media-checkbox-span{
-  font-size: 1rem; 
+.media-checkbox-span {
+  font-size: 1rem;
   color: rgb(68, 67, 67);
- 
 }
-
-
 
 /* ############################### Statement & Answer Section ################################### */
 .list-col {
@@ -401,8 +434,8 @@ body {
 
 .toast-style {
   background-color: red;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 1.5rem;
-  color : white;
+  color: white;
 }
 /* .//////////////////////// */
