@@ -71,6 +71,7 @@
 
   "HintObj": {
     "Text": "",
+    "draggable-text": ["draggable text 1", "dragabble text 2"],
     "Previous-help": {
       "description": "",
       "filename": ""
@@ -80,24 +81,13 @@
   "Question": {
     "Id": "",
     "DataMedia": "Mediaobj",
-    "StatementAnswer": [
-      {
-        "statement": "statement text with tokins (E, C, T)",
-        "Answers": ["AnsObj1", "AnsObj2", "AnsObj3"]
-      },
-      {
-        "statement": "statement text with tokins (E, C, T)",
-        "Answers": ["AnsObj1", "AnsObj2", "AnsObj3"]
-      },
-      {
-        "statement": "statement text with tokins (E, C, T)",
-        "Answers": ["AnsObj1", "AnsObj2", "AnsObj3"]
-      },
-      {
-        "statement": "statement text with tokins (E, C, T)",
-        "Answers": ["AnsObj1", "AnsObj2", "AnsObj3"]
-      }
-    ]
+    "Statement": [
+      "statement text with tokins (E, C, T)",
+      "Statement text with tokins (E, C, T)",
+      "Statement text with tokins (E, C, T)",
+      "Statement text with tokins (E, C, T)"
+    ],
+    "Answers": ["AnsObj", "AnsObj", "AnsObj", "AnsObj"]
   },
 
   "Mediaobj": {
@@ -137,8 +127,12 @@
 
   "AnsObj": {
     "Id": "",
-    "answerText": "Answer Text with tokins",
-    "mediaAnswer": "PicObject", // or sound, or Video
-    "correct": true //or false
+    "text": "Answer Text with tokins",
+    "text-arr": ["Answer Text with tokins", "Answer Text with tokins"],
+    "text-tobe-recorded-arr": [
+      "text-tobe-recordedObj",
+      "text-tobe-recordedObj"
+    ],
+    "Pic-arr": ["PicObj", "PicObj"]
   }
 }

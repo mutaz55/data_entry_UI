@@ -2,27 +2,6 @@ body {
   background-color: #d1cdcd;
 }
 
-
-
-.normal-Button{
-  background-color: #009879;
-  color:#fff!important;
-  width: 10%;
-  line-height: 1rem;
-  text-align: center;
-  margin:30px 20px;
-  border-radius: 10px 0 10px 0;
-  padding: 10px 32px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  
-}
-.normal-Button:hover{
-
-  background-color: #23ac90;
-}
-
 .list_background{
   background-color: #fff;
   /* border: 1px solid gray; */
@@ -33,30 +12,6 @@ body {
   background-color: rgb(204, 117, 117);
   border: 2px solid gray;
   padding: 10px;
-}
-
-.content-table{
-border-collapse: collapse;
-margin: 25px 0;
-font-size: 0.9em;
-min-width: 400px;
-text-align: right;
-
-}
-
-.content-tablehead{
-  background-color: #009879;
-  color:#fff;
-  text-align:center;
-  font-weight: bold;
-  line-height: 1.1rem;
-}
-
-.content-tableTD{
-  padding: 12px 15px;
-  direction: rtl;
-  text-align: right;
-  cursor:pointer;
 }
 
 
