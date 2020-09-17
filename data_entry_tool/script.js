@@ -1,3 +1,118 @@
+/////////////////////////////////////////////
+class Question {
+  constructor(questionId, mediaObject) {
+    this.id = questionId;
+    this.mediaObject = mediaObject;
+    this.statementsAnswers = [];
+  }
+  addStatementsAnswers(StatementAnswers) {
+    this.statementsAnswers.push(StatementAnswers);
+  }
+}
+/////////////////////////////////////////
+class statementsAnswers {
+  constructor(statementId, statement) {
+    this.id = statementId;
+
+    this.statement = statement;
+    this.Answer = [];
+  }
+  addAnswer(Answer) {
+    this.Answer.push(Answer);
+  }
+}
+
+//////////////////////////////////////////
+
+class Answers {
+  constructor(answerId) {
+    this.answerId = answerId;
+    this.answerText = "";
+    this.mediaAnswer = "";
+    this.correct = "";
+  }
+  addTextAnswer(answerText, truetOrFalse) {
+    this.answerText = answerText;
+    this.correct = truetOrFalse;
+  }
+
+  addMediaAnswer(mediaAnswer, truetOrFalse) {
+    this.answerText = mediaAnswer;
+    this.correct = truetOrFalse;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+class PicObj {
+  constructor(picId) {
+    this.id = picId;
+    this.description = "";
+    this.fileName = "";
+    this.type = "";
+  }
+  addPicDescription(picDescription) {
+    this.description = picDescription;
+  }
+  addPicFileName(fileName) {
+    this.fileName = fileName;
+  }
+  specifyPicType(picType) {
+    this.type = picType;
+  }
+}
+// ***********
+class SoundToBeRecordedObj {
+  constructor(soundTobeRecordedId) {
+    this.id = soundTobeRecordedId;
+    this.Text = "";
+    this.fileName = "";
+  }
+  addSoundtoBeRecorded(textTobeRecorded) {
+    this.Text = textTobeRecorded;
+  }
+  addSoundtoBeRecordedFileName(fileName) {
+    this.fileName = fileName;
+  }
+}
+// ***********
+
+class SoundEffectObj {
+  constructor(soundEffectId) {
+    this.id = soundEffectId;
+    this.description = "";
+    this.fileName = "";
+  }
+
+  addSoundEffectDes(soundEffectDes) {
+    this.description = soundEffectDes;
+  }
+
+  addSoundeffectfileName(fileName) {
+    this.fileName = fileName;
+  }
+}
+// ***********
+
+class VideoObj {
+  constructor(videoId) {
+    this.id = videoId;
+    this.description = "";
+    this.fileName = "";
+    this.type = "";
+  }
+  addVideoDescription(videoDescription) {
+    this.description = videoDescription;
+  }
+  addVideoFileName(fileName) {
+    this.fileName = fileName;
+  }
+  specifyVideoType(videoType) {
+    this.type = videoType;
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
 class ExerciseTextOrTranslate {
   constructor(labelText, idTextarea, rows) {
     this.Div = document.createElement("div");
@@ -278,14 +393,7 @@ class FillinBlankStatement {
     this.inputFillinBlankStatement = document.createElement("input");
     this.insertFillingBlankStatement = document.createElement("a");
 
-    // this.divRadioDraggable = document.createElement("div");
-    // this.labelRadioDraggable = document.createElement("label");
-    // this.radioDraggable = document.createElement("input");
-    // this.spanDraggable = document.createElement("span");
-
-    // this.labelRadioWrite = document.createElement("label");
-    // this.radioWrite = document.createElement("input");
-    // this.spanWrite = document.createElement("span");
+    this.EmptyWords = 0;
   }
   AssingNamesAndAttr() {
     this.divFillinBlankStatement.id = "div-FiB-statement";
@@ -308,29 +416,8 @@ class FillinBlankStatement {
 
     this.insertFillingBlankStatement.id = "id-insert";
     this.insertFillingBlankStatement.classList.add("statement-btn");
-    this.insertFillingBlankStatement.innerHTML = " موافق ";
+    this.insertFillingBlankStatement.innerHTML = " إدخال الإجابات ";
     this.insertFillingBlankStatement.style.color = "#fff";
-
-    // this.divRadioDraggable.classList.add("form-control");
-    // this.divRadioDraggable.classList.add("control-hidden");
-
-    // this.labelRadioDraggable.classList.add("radio-margin");
-
-    // this.radioDraggable.id = "id-draggable";
-    // this.radioDraggable.name = "FiB-DraggableOrWrite";
-    // this.radioDraggable.type = "radio";
-    // this.spanDraggable.style.fontSize = "2rem";
-    // this.spanDraggable.style.color = "rgb(68, 67, 67)";
-    // this.spanDraggable.textContent = "سحب وادراج";
-
-    // this.labelRadioWrite.classList.add("radio-margin");
-
-    // this.radioWrite.id = "id-draggable";
-    // this.radioWrite.name = "FiB-DraggableOrWrite";
-    // this.radioWrite.type = "radio";
-    // this.spanWrite.style.fontSize = "2rem";
-    // this.spanWrite.style.color = "rgb(68, 67, 67)";
-    // this.spanWrite.textContent = "ادخال كتابي";
   }
   Build() {
     this.divFillinBlankStatement.appendChild(this.labelFillinBlankStatement);
@@ -341,16 +428,132 @@ class FillinBlankStatement {
     this.labelFillinBlankStatement.appendChild(
       this.insertEmptyFillingBlankStatement
     );
-
-    // this.divRadioDraggable.appendChild(this.labelRadioDraggable);
-    // this.divRadioDraggable.appendChild(this.labelRadioWrite);
-
-    // this.labelRadioDraggable.appendChild(this.radioDraggable);
-    // this.labelRadioDraggable.appendChild(this.spanDraggable);
-
-    // this.labelRadioWrite.appendChild(this.radioWrite);
-    // this.labelRadioWrite.appendChild(this.spanWrite);
   }
+  createEmptyAnswer(StatementNumber, EmptyWordNumber, AnswerLabelText) {
+    let divAnswer = document.createElement("div");
+    let labelAnswer = document.createElement("label");
+    let inputAnswer = document.createElement("input");
+    //Assinge
+    divAnswer.id =
+      "div-fill-in-blank-" + StatementNumber + "-" + EmptyWordNumber;
+    labelAnswer.classList.add("fill-in-blank");
+    labelAnswer.textContent = AnswerLabelText;
+    inputAnswer.type = "text";
+    inputAnswer.id =
+      "id-fill-in-blank-" + StatementNumber + "-" + EmptyWordNumber;
+    inputAnswer.classList.add("input-fill-in-blank");
+    inputAnswer.classList.add("col-lg-2");
+    //build
+
+    divAnswer.appendChild(labelAnswer);
+    divAnswer.appendChild(inputAnswer);
+
+    return divAnswer;
+
+    // <div id="div-fill-in-blank-s1-E-word-1" class="">
+    //   <label class="fill-in-blank" for="">
+    //     اجابة الفراغ الأول
+    //   </label>
+    //   <input
+    //     class="input-fill-in-blank col-lg-2"
+    //     id="id-fill-in-blank-s1-answer1"
+    //     type="text"
+    //   />
+    // </div>;
+  }
+  createDraggableOption() {
+    // construct
+    this.divRadioDraggable = document.createElement("div");
+    this.labelRadioDraggable = document.createElement("label");
+    this.radioDraggable = document.createElement("input");
+    this.spanDraggable = document.createElement("span");
+    this.labelRadioWrite = document.createElement("label");
+    this.radioWrite = document.createElement("input");
+    this.spanWrite = document.createElement("span");
+    //Assgin
+
+    this.divRadioDraggable.classList.add("form-control");
+    this.divRadioDraggable.classList.add("control-hidden");
+    this.divRadioDraggable.style.backgroundColor = "#E0FFFF";
+
+    this.labelRadioDraggable.classList.add("radio-margin");
+
+    this.radioDraggable.id = "id-draggable";
+    this.radioDraggable.name = "FiB-DraggableOrWrite";
+    this.radioDraggable.type = "radio";
+    this.spanDraggable.style.fontSize = "2rem";
+    this.spanDraggable.style.color = "rgb(68, 67, 67)";
+    this.spanDraggable.textContent = "سحب وادراج";
+
+    this.labelRadioWrite.classList.add("radio-margin");
+
+    this.radioWrite.id = "id-draggable";
+    this.radioWrite.name = "FiB-DraggableOrWrite";
+    this.radioWrite.type = "radio";
+    this.spanWrite.style.fontSize = "2rem";
+    this.spanWrite.style.color = "rgb(68, 67, 67)";
+    this.spanWrite.textContent = "ادخال كتابي";
+
+    //Build
+
+    this.divRadioDraggable.appendChild(this.labelRadioDraggable);
+    this.divRadioDraggable.appendChild(this.labelRadioWrite);
+
+    this.labelRadioDraggable.appendChild(this.radioDraggable);
+    this.labelRadioDraggable.appendChild(this.spanDraggable);
+
+    this.labelRadioWrite.appendChild(this.radioWrite);
+    this.labelRadioWrite.appendChild(this.spanWrite);
+
+    //return
+
+    return this.divRadioDraggable;
+  }
+
+  createAnswersOkCancelbuttons() {
+    let divOkCancelAnswers = document.createElement("div");
+    let buttonOk = document.createElement("a");
+    let buttonCancel = document.createElement("a");
+
+    buttonOk.id = "id-answers-button-ok";
+    buttonCancel.id = "id-answers-button-cancel";
+
+    buttonOk.classList.add("normal-Button");
+    buttonCancel.classList.add("normal-Button");
+
+    buttonOk.textContent = "حفظ";
+    buttonCancel.textContent = "الغاء";
+
+    divOkCancelAnswers.appendChild(buttonOk);
+    divOkCancelAnswers.appendChild(buttonCancel);
+
+    divOkCancelAnswers.style.float = "left";
+
+    return divOkCancelAnswers;
+  }
+
+  createSceneSaveCancelButtons() {
+    let divOkCancelAnswers = document.createElement("div");
+    let buttonOk = document.createElement("a");
+    let buttonCancel = document.createElement("a");
+
+    buttonOk.id = "id-scene-button-save";
+    buttonCancel.id = "id-scene-button-cancel";
+
+    buttonOk.classList.add("normal-Button");
+    buttonCancel.classList.add("normal-Button");
+
+    buttonOk.textContent = "حفظ المشهد";
+    buttonCancel.textContent = "الغــاء";
+
+    divOkCancelAnswers.appendChild(buttonOk);
+    divOkCancelAnswers.appendChild(buttonCancel);
+
+    divOkCancelAnswers.style.float = "left";
+
+    return divOkCancelAnswers;
+  }
+
   ReturnContainerDiv() {
     return this.divFillinBlankStatement;
   }
@@ -552,51 +755,48 @@ class CatagoriesClassStatements {
 /* ############################### Hidden Tab Section ################################### */
 
 // click on scene type
-$(".select-scene-click").click(function () {
-  let sceneTypeNumber = $(this).val();
-  // console.log(this);
-  let scenetype = this.textContent;
+const selectedScene = document.querySelector("#lst_scenesType_tab2");
+selectedScene.addEventListener("click", (e) => {
+  if (e.target.tagName === "OPTION") {
+    document.getElementById("id-scene-selected").innerHTML =
+      e.target.textContent;
 
-  // console.log(scenetype);
-  // console.log(sceneTypeNumber);
-
-  document.getElementById("id-scene-selected").innerHTML = scenetype;
-
-  openSceneType(scenetype, sceneTypeNumber);
+    document.getElementById("id-scene-code").innerHTML = e.target.value;
+  }
 });
 
-function openSceneType(scenetype, sceneTypeNumber) {
-  // console.log("entered openSceneType " + scenetype);
-  let idScene = "S-type-" + sceneTypeNumber;
-  // console.log(idScene);
+// click on tab #3 to generate the scene type
+const clickOnTab3ToBuildScene = document.querySelector("#id-scene-deteils");
+clickOnTab3ToBuildScene.addEventListener("click", () => {
+  let sceneType = document.getElementById("id-scene-selected").textContent;
+
+  let sceneCode = document.getElementById("id-scene-code").textContent;
+
+  openSceneType(sceneType, sceneCode);
+});
+
+function openSceneType(sceneType, sceneCode) {
   let i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
 
-    if (sceneTypeNumber != 3) {
-      while (tabcontent[i].firstChild) {
-        tabcontent[i].removeChild(tabcontent[i].lastChild);
-      }
+    while (tabcontent[i].firstChild) {
+      tabcontent[i].removeChild(tabcontent[i].lastChild);
     }
   }
 
-  // tablinks = document.getElementsByClassName("tablinks");
-  // for (i = 0; i < tablinks.length; i++) {
-  //   tablinks[i].className = tablinks[i].className.replace(" active", "");
-  // }
-
-  const selectedSceneTab = document.getElementById(idScene);
+  const selectedSceneTab = document.getElementById("scene-details");
   selectedSceneTab.style.display = "block";
 
-  const sceneTitle = document.createTextNode("المشهد: " + scenetype);
+  const sceneTitle = document.createTextNode("المشهد: " + sceneType);
 
   selectedSceneTab.appendChild(sceneTitle);
 
   /////////////////////////////////////////////
-  const QuestionSection = document.createElement("Section");
-  QuestionSection.classList.add("genSection");
-  selectedSceneTab.appendChild(QuestionSection);
+  const QuestionTitleSection = document.createElement("Section");
+  QuestionTitleSection.classList.add("genSection");
+  selectedSceneTab.appendChild(QuestionTitleSection);
 
   const newExerciseText = new ExerciseTextOrTranslate(
     "صيغة السؤال",
@@ -604,7 +804,7 @@ function openSceneType(scenetype, sceneTypeNumber) {
     3
   );
 
-  newExerciseText.appendTo(QuestionSection);
+  newExerciseText.appendTo(QuestionTitleSection);
 
   const newExerciseTranslate = new ExerciseTextOrTranslate(
     "ترجمة السؤال",
@@ -612,7 +812,7 @@ function openSceneType(scenetype, sceneTypeNumber) {
     3
   );
 
-  newExerciseTranslate.appendTo(QuestionSection);
+  newExerciseTranslate.appendTo(QuestionTitleSection);
 
   const newExerciseHintText = new ExerciseTextOrTranslate(
     "مساعدة",
@@ -620,7 +820,7 @@ function openSceneType(scenetype, sceneTypeNumber) {
     1
   );
 
-  newExerciseHintText.appendTo(QuestionSection);
+  newExerciseHintText.appendTo(QuestionTitleSection);
 
   const newExercisePreviousHelp = new ExerciseTextOrTranslate(
     "مراجعات سابقة",
@@ -628,7 +828,11 @@ function openSceneType(scenetype, sceneTypeNumber) {
     3
   );
 
-  newExercisePreviousHelp.appendTo(QuestionSection);
+  newExercisePreviousHelp.appendTo(QuestionTitleSection);
+  ///////////////////// Question Section /////////////////////////
+  const QuestionSection = document.createElement("section");
+  QuestionSection.classList.add("genSection");
+  selectedSceneTab.appendChild(QuestionSection);
 
   ////////////////////////// Media Object ////////////////////////////
   const MediaSection = document.createElement("Section");
@@ -835,12 +1039,25 @@ function openSceneType(scenetype, sceneTypeNumber) {
   const StatementSection = document.createElement("Section");
   StatementSection.classList.add("genSection");
   selectedSceneTab.appendChild(StatementSection);
-  console.log(scenetype.trim());
 
-  switch (scenetype.trim()) {
-    case "تمرين صح أم خطأ":
-    case "تمرين خيارات متعددة":
-    case "تمرين ترتيب الأحرف":
+  const AnswerSection = document.createElement("Section");
+  AnswerSection.classList.add("genSection");
+  selectedSceneTab.appendChild(AnswerSection);
+
+  const tablePreviewSection = document.createElement("Section");
+  tablePreviewSection.classList.add("genSection");
+  selectedSceneTab.appendChild(tablePreviewSection);
+
+  const saveSceneSection = document.createElement("Section");
+  saveSceneSection.classList.add("genSection");
+  selectedSceneTab.appendChild(saveSceneSection);
+
+  console.log(sceneCode.trim());
+
+  switch (sceneCode.trim()) {
+    case "code_trueFlase":
+    case "code_multipleCh":
+    case "code_lettersSorting":
       const newCommonStatement = new CommonClassStatements();
       newCommonStatement.AssingNamesAndAttr();
       newCommonStatement.Build();
@@ -853,7 +1070,7 @@ function openSceneType(scenetype, sceneTypeNumber) {
       );
 
       break;
-    case "تمرين توصيل":
+    case "code_dragdrop":
       const newDragAndDropStatement = new DragAndDropClassStatements();
       newDragAndDropStatement.AssingNamesAndAttr();
       newDragAndDropStatement.Build();
@@ -869,17 +1086,49 @@ function openSceneType(scenetype, sceneTypeNumber) {
 
       break;
 
-    case "تمرين املأ الفراغ":
+    case "code_fillblank":
       const newFillinBlankStatement = new FillinBlankStatement();
       newFillinBlankStatement.AssingNamesAndAttr();
       newFillinBlankStatement.Build();
       StatementSection.appendChild(
         newFillinBlankStatement.ReturnContainerDiv()
       );
+      saveSceneSection.appendChild(
+        newFillinBlankStatement.createSceneSaveCancelButtons()
+      );
+      //////////////////////////////////////////////////////////
+
+      let newPreviewTable = document.createElement("table");
+      newPreviewTable.classList.add("content-table");
+      newPreviewTable.createTHead();
+      let rowTable = newPreviewTable.insertRow();
+      let th1 = document.createElement("th");
+      let th2 = document.createElement("th");
+      let th3 = document.createElement("th");
+
+      $("th").addClass("content-tablehead");
+
+      rowTable.classList.add("content-tablehead");
+
+      let tableTitle1 = document.createTextNode("العبارات");
+      let tableTitle2 = document.createTextNode("الأجوبة");
+      let tableTitle3 = document.createTextNode("اجابة صحيحة أم خاطئة");
+
+      th1.appendChild(tableTitle1);
+      th2.appendChild(tableTitle2);
+      th3.appendChild(tableTitle3);
+
+      rowTable.appendChild(th1);
+      rowTable.appendChild(th2);
+      rowTable.appendChild(th3);
+
+      tablePreviewSection.append(newPreviewTable);
+      ////////////////////////////////////////////////////
+
       newFillinBlankStatement.insertEmptyFillingBlankStatement.addEventListener(
         "click",
         function () {
-          console.log(document.getElementById("id-FiB-statement").innerHTML);
+          // console.log(document.getElementById("id-FiB-statement").innerHTML);
           let contentTxt = document.getElementById("id-FiB-statement").value;
           document.getElementById("id-FiB-statement").value =
             contentTxt + "  ... E ...  ";
@@ -888,12 +1137,115 @@ function openSceneType(scenetype, sceneTypeNumber) {
       newFillinBlankStatement.insertFillingBlankStatement.addEventListener(
         "click",
         function () {
-          console.log("Listner added to Fill in Blank button");
+          clearSection(AnswerSection);
+          // console.log("Listner added to Fill in Blank button");
+          let statementString = document.getElementById("id-FiB-statement")
+            .value;
+          // console.log(statementString);
+
+          AnswerSection.appendChild(
+            newFillinBlankStatement.createDraggableOption()
+          );
+
+          let numberOfEmptyWord = (statementString.match(/E/g) || []).length;
+
+          for (let i = 0; i < numberOfEmptyWord; i++) {
+            let statementNumber = "S1"; // Save the Statements Number
+            let EmptyWordNumber = "E-word-" + (i + 1);
+
+            switch (i) {
+              case 0:
+                AnswerLabelText = "إجابة الفراغ الأول";
+                break;
+              case 1:
+                AnswerLabelText = "إجابة الفراغ الثاني";
+                break;
+              case 2:
+                AnswerLabelText = "إجابة الفراغ الثالث";
+                break;
+              case 3:
+                AnswerLabelText = "إجابة الفراغ الرابع";
+                break;
+              case 4:
+                AnswerLabelText = "إجابة الفراغ الخامس";
+                break;
+              case 5:
+                AnswerLabelText = "إجابة الفراغ السادس";
+                break;
+              case 6:
+                AnswerLabelText = "إجابة الفراغ السابع";
+                break;
+              case 7:
+                AnswerLabelText = "إجابة الفراغ الثامن";
+                break;
+              case 8:
+                AnswerLabelText = "إجابة الفراغ التاسع";
+                break;
+              case 9:
+                AnswerLabelText = "إجابة الفراغ العاشر";
+                break;
+              default:
+                AnswerLabelText = "Over Flow!!!";
+                break;
+            }
+
+            AnswerSection.appendChild(
+              newFillinBlankStatement.createEmptyAnswer(
+                statementNumber,
+                EmptyWordNumber,
+                AnswerLabelText
+              )
+            );
+          }
+          let Ansewer = [];
+          let CorrectAnswer = [];
+          AnswerSection.appendChild(
+            newFillinBlankStatement.createAnswersOkCancelbuttons()
+          );
+          let buttonOk = document.getElementById("id-answers-button-ok");
+          let buttonCancel = document.getElementById(
+            "id-answers-button-cancel"
+          );
+
+          Answers = [];
+          CorrectAnswer = [];
+          ////////////////////// click on Save Answers in Answer Section
+          buttonOk.addEventListener("click", function () {
+            console.log("I'm inside buttonOk of Answers");
+
+            for (let i = 0; i < numberOfEmptyWord; i++) {
+              statementNumber = "S1";
+              EmptyWordNumber = "E-word-" + (i + 1);
+
+              AnswerIdtext =
+                "id-fill-in-blank-" + statementNumber + "-" + EmptyWordNumber;
+              let AnswerValue = document.getElementById(AnswerIdtext).value;
+
+              Answers.push(AnswerValue);
+              CorrectAnswer.push("إجابة صحيحة");
+            }
+
+            createRowTable(
+              newPreviewTable,
+              "id-row-1",
+              statementString,
+              Answers,
+              CorrectAnswer
+            );
+
+            clearSection(AnswerSection);
+            clearStatementInput();
+          });
+          ///////////////////////////// Click on Cancel in Answer Section
+          buttonCancel.addEventListener("click", function () {
+            // console.log("I'm inside buttonCancel of Answers");
+            clearSection(AnswerSection);
+          });
         }
       );
       break;
 
-    case "تمرين تصنيف":
+    case "code_categories":
       const newCategoryStatement = new CatagoriesClassStatements();
       newCategoryStatement.AssingNamesAndAttr();
       newCategoryStatement.Build();
@@ -948,15 +1300,15 @@ function openSceneType(scenetype, sceneTypeNumber) {
             );
 
             parentlist.removeChild(buttonToBeRemoved);
-            
+            s;
           }
         }
       );
 
       break;
 
-    case "تمرين ترتيب جمل":
-      // console.log(scenetype.trim());
+    case "code_sorting":
+      // console.log(sceneCode.trim());
       const newOrganizeStatements = new OrganizeStatements();
       newOrganizeStatements.AssingNamesAndAttr();
       newOrganizeStatements.Build();
@@ -974,11 +1326,48 @@ function openSceneType(scenetype, sceneTypeNumber) {
   }
 
   ////////////////////////////////////////////
-  const AnswerSection = document.createElement("Section");
-  AnswerSection.classList.add("genSection");
-  selectedSceneTab.appendChild(AnswerSection);
 
   ////////////////////////////////////////////
+}
+
+function createRowTable(newTable, idRow, Statement, Answers, CorrectOrNo) {
+  let row1 = newTable.insertRow();
+  row1.id = idRow;
+
+  let cell1 = row1.insertCell();
+  let row1text = document.createTextNode(Statement);
+  cell1.appendChild(row1text);
+
+  for (let i = 0; i < Answers.length; i++) {
+    if (i !== 0) {
+      let row2 = newTable.insertRow();
+      let emptyCell = row2.insertCell();
+
+      let emptyText = document.createTextNode("");
+      emptyCell.appendChild(emptyText);
+      let cell2 = row2.insertCell();
+      let row2text = document.createTextNode(Answers[i]);
+      cell2.appendChild(row2text);
+      let cell3 = row2.insertCell();
+      let row2text2 = document.createTextNode(CorrectOrNo[i]);
+      cell3.appendChild(row2text2);
+    } else {
+      cell2 = row1.insertCell();
+      row2text = document.createTextNode(Answers[i]);
+      cell2.appendChild(row2text);
+      cell3 = row1.insertCell();
+      row2text2 = document.createTextNode(CorrectOrNo[i]);
+      cell3.appendChild(row2text2);
+    }
+  }
+
+  // document.querySelectorAll("td").classList.add("content-tableTD");
+
+  $("td").addClass("content-tableTD");
+
+  row1.addEventListener("click", function () {
+    console.log("I'm " + row1.id);
+  });
 }
 
 // //Media General - click on Picture
@@ -1071,6 +1460,18 @@ function createSlide(ItemEvent, ItemSlide, Eventname) {
 
     console.log("I'm inside checkbox click");
   });
+}
+
+function clearSection(SectionName) {
+  while (SectionName.firstChild) {
+    SectionName.removeChild(SectionName.lastChild);
+  }
+}
+
+function clearStatementInput() {
+  let statementInput = document.getElementById("id-FiB-statement");
+  statementInput.value = "";
+  statementInput.focus();
 }
 
 // console.log($(".itemEventSlide").siblings("div"));

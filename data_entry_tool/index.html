@@ -193,7 +193,11 @@
             >
           </li>
           <li class="nav-item col-lg-4">
-            <a class="nav-link tab-color" href="#menu3" data-toggle="tab"
+            <a
+              id="id-scene-deteils"
+              class="nav-link tab-color"
+              href="#menu3"
+              data-toggle="tab"
               >تفاصيل المشهد</a
             >
           </li>
@@ -488,7 +492,7 @@
             </div>
 
             <!-- Scene Serial number -->
-            <div >
+            <div>
               <label class="label-course col-lg-3" for="id-scene-no"
                 >رقم المشهد</label
               >
@@ -501,10 +505,10 @@
                     'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
                     sans-serif;
                   color: darkred;
-                  background-color: white;"
-                
-                
-                id="id-scene-no">
+                  background-color: white;
+                "
+                id="id-scene-no"
+              >
               </label>
             </div>
 
@@ -512,7 +516,7 @@
               <label class="label-course col-lg-3" for="id-scenes">
                 المشاهد</label
               >
-          
+
               <div
                 class="list-group col align-self-end"
                 style="scroll-behavior: auto; text-align: right"
@@ -546,7 +550,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="form-group group-element" style="margin-top: 30px">
               <label class="label-course col-lg-3" for="id-scene-description"
                 >وصف المشهد</label
@@ -563,16 +567,13 @@
                 اختيار المفهوم</label
               >
               <select
-                
                 class="form-control under-label"
-                style="max-height: 100px;"
+                style="max-height: 100px"
                 id="id-select-concept"
-              >
-             
-              </select>
+              ></select>
               <select
-                size=6
-                style="margin-top: 5px;"
+                size="6"
+                style="margin-top: 5px"
                 multiple
                 class="form-control under-label"
                 id="id-lst-concepts"
@@ -595,7 +596,6 @@
                   </button>
                 </div>
               </div>
-            
             </div>
 
             <div class="form-group group-element">
@@ -603,12 +603,12 @@
                 اختيار المهارة</label
               >
               <select
-              class="form-control under-label"
-              id="id-select-skill"
+                class="form-control under-label"
+                id="id-select-skill"
               ></select>
               <select
-              size = 3
-              style="margin-top: 5px;"
+                size="3"
+                style="margin-top: 5px"
                 multiple
                 class="form-control under-label"
                 id="id-lst-skills"
@@ -675,11 +675,7 @@
                 </label>
 
                 <label style="margin-right: 30px">
-                  <input
-                    name="bookTypeRdbtn"
-                    type="radio"
-                    id="id-Arbeitbook"
-                  />
+                  <input name="bookTypeRdbtn" type="radio" id="id-Arbeitbook" />
                   <span style="font-size: 2em; color: rgb(68, 67, 67)"
                     >كتاب تدريبات</span
                   >
@@ -694,44 +690,28 @@
                 اختيار نوع المشهد</label
               >
 
-                       
               <select
-              size = 7
-              style="margin-top: 5px;"
+                size="7"
+                style="margin-top: 5px"
                 multiple
                 class="form-control under-label"
                 id="lst_scenesType_tab2"
               ></select>
 
-           
-
               <label
-                class="label-selected-value col-lg-10"
+                class="label-selected-value col-lg-5"
                 id="id-scene-selected"
                 >اختيار</label
               >
+              <label class="label-selected-value col-lg-5" id="id-scene-code"
+                >اختيار</label
+              >
             </div>
-
-           
-            
-        
-
-            
           </div>
 
           <div class="tab-pane fade paneltab" role="tabpanel" id="menu3">
             <div class="tab">
-              <div id="S-type-1" class="tabcontent col-lg-12"></div>
-              <div id="S-type-2" class="tabcontent col-lg-12"></div>
-              <div id="S-type-4" class="tabcontent col-lg-12"></div>
-              <div id="S-type-5" class="tabcontent col-lg-12"></div>
-              <div id="S-type-6" class="tabcontent col-lg-12"></div>
-              <div id="S-type-7" class="tabcontent col-lg-12"></div>
-              <div id="S-type-8" class="tabcontent col-lg-12"></div>
-              <div id="S-type-9" class="tabcontent col-lg-12"></div>
-              <div id="S-type-10" class="tabcontent col-lg-12"></div>
-              <div id="S-type-11" class="tabcontent col-lg-12"></div>
-              <div id="S-type-12" class="tabcontent col-lg-12"></div>
+              <div id="scene-details" class="tabcontent col-lg-12"></div>
 
               <div id="S-type-3" class="tabcontent col-lg-12">
                 <!-- ****************** Section Question Main Infor********************* -->
@@ -1892,13 +1872,12 @@
 
       var Skills = new Array();
       var originalSkills = new Array();
-     
+
       var SceneTypes = new Array();
       var originalSceneTypes = new Array();
 
       var SceneHeaders = new Array();
       var originalSceneHeaders = new Array();
-
     </script>
 
     <!-- JQuery CDN -->
