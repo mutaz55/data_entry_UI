@@ -137,7 +137,7 @@
   "AnsObj": {
     "Id": "",
     "answerText": "Answer Text with tokins",
-    "mediaAnswer": "PicObject", // or sound, or Video
-    "correct": true //or false
+    "mediaAnswer": "PicObject",
+    "correct": true
   }
 }

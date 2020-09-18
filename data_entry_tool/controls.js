@@ -1,4 +1,18 @@
 /////////////////////////// Initialization /////////////////////////////
+// Tab 1
+// The course combo box (dropdown list)
+const courseCombo = document.getElementById("id-course-title");
+
+// The course type
+const chkBoxCourseTypePaid = document.getElementById("id-cat-paid");
+const chkBoxCourseTypeFree = document.getElementById("id-cat-free");
+
+// The course description field
+const textAreaCourseDesc = document.getElementById(
+  "id-course-description"
+);
+
+
 // Concepts List
 const btn_add_concept = document.querySelector("#add_concept");
 const btn_remove_concept = document.querySelector("#remove_concept");
@@ -155,7 +169,7 @@ btn_remove_concept.addEventListener("click", (e) => {
 
     selected_concept_index = "-1";
 
-    clearSceneConceptsLst();
+
     fillSceneConcepts(
       Concepts.filter((con) => con.id == currentCourse.id),
       "concepts_lst"
@@ -206,7 +220,7 @@ btn_add_concept.addEventListener("click", (e) => {
 
 // Select Module - and filter the lessons based on it
 lst_modules_tab2.addEventListener("change", (e) => {
-  clearLessonsTab2();
+  //clearLessonsTab2();
   fillLessonsTab2(Lessons.filter((les) => les.ModuleID == getModuleValue()));
 
   clearScenesLst();
@@ -219,7 +233,8 @@ lst_modules_tab2.addEventListener("change", (e) => {
 
 // Select Lesson - and filter scenes based on it
 lst_lessons_tab2.addEventListener("change", (e) => {
-  clearScenesLst();
+  
+  console.log('change');
   currentScene = null;
   updateSceneView();
 
@@ -231,18 +246,18 @@ lst_lessons_tab2.addEventListener("change", (e) => {
   );
 
   if (lst_scenes.firstChild) {
+    
     lst_scenes.firstChild.focus();
     lst_scenes.firstChild.dispatchEvent(new Event("click"));
+    
   }
 });
 
+// Select Tab2
 tab2Header.addEventListener("click", () => {
-  if (currentScene == null || currentScene == undefined) {
-    if (lst_scenes.firstChild) {
-      lst_scenes.firstChild.focus();
-      lst_scenes.firstChild.dispatchEvent(new Event("click"));
-    }
-  }
+
+
+      
 });
 
 // Add new item to the list (includes concepts, modules, lessons, skills, scene types)
@@ -318,7 +333,7 @@ function addNewItems(txt, id_c, lst_type, added) {
 
 // Clear lists
 function clearConceptsLst() {
-  lst_concepts.innerHTML = "";
+  removeAllChildNodes(lst_concepts);
   clearSceneConceptsLst();
 }
 
@@ -327,16 +342,29 @@ function clearSceneConceptsLst() {
 }
 
 function clearSceneSkillsLst() {
-  lst_skills_tab2.innerHTML = "";
+  removeAllChildNodes(lst_skills_tab2);
 }
 
 function clearSceneTypesTab2() {
+
   lst_sceneTypes_tab2.innerHTML = "";
+
 }
 
 function clearModulesLst() {
-  lst_modules.innerHTML = "";
-  lst_modules_tab2.innerHTML = "";
+  
+  
+  removeAllChildNodes(lst_modules);
+  
+  removeAllChildNodes(lst_modules_tab2)
+    
+  
+}
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+  }
 }
 
 function clearLessonsLst() {
@@ -349,20 +377,28 @@ function clearLessonsTab2() {
 }
 
 function clearScenesLst() {
-  lst_scenes.innerHTML = "";
+  
+  // Clear the scenes list
+  removeAllChildNodes(lst_scenes);
+  // clear the scene no.
   lbl_scene_no.textContent = "";
+  // Clear the scene description
   textbox_scene_desc.value = "";
-
+  // clear tab2 radio buttons
   clearRdBtnTab2();
 }
 function clearSkillsLst() {
   lst_skills.innerHTML = "";
+
 }
 
 function clearSceneTypes() {
   lst_sceneTypes.innerHTML = "";
   clearSceneTypesTab2();
 }
+
+
+
 
 function clearRdBtnTab2() {
   document.querySelector("#id-Arbeitbook").checked = false;
@@ -414,6 +450,10 @@ function addNewItemsTab2(txt, id_c, type, added) {
 }
 
 function fillConcepts(con) {
+
+  // Clear the previous session
+  clearConceptsLst();
+  
   if (con.length != 0) {
     con.forEach((element) => {
       addNewItems(
@@ -430,6 +470,10 @@ function fillConcepts(con) {
 }
 
 function fillSceneConcepts(con, type) {
+
+  if (type == "concepts_lst")
+      clearSceneConceptsLst();
+
   if (con.length != 0) {
     con.forEach((element) => {
       addNewItemsTab2(element.ConceptText, element.ConceptID, type, false);
@@ -448,9 +492,11 @@ function lst_concepts_tab2_setIndex(indx) {
 }
 
 function lst_modules_tab2_setIndex(indx) {
-  if (lst_modules_tab2.options.length > 0)
+  if (lst_modules_tab2.options.length > 0) {
     lst_modules_tab2.options[indx].selected = true;
-  lst_modules_tab2.dispatchEvent(new Event("change"));
+    lst_modules_tab2.dispatchEvent(new Event("change"));
+  }
+    
 }
 
 function lst_lessons_tab2_setIndex(indx) {
@@ -459,6 +505,10 @@ function lst_lessons_tab2_setIndex(indx) {
 }
 
 function fillModules(mod) {
+
+  // clear the previous session
+  clearModulesLst();
+
   if (mod.length != 0) {
     mod.forEach((element) => {
       addNewItems(element.ModuleTitle, element.ModuleID, "modules_lst", true);
@@ -470,13 +520,17 @@ function fillModules(mod) {
       );
     });
 
-    lst_modules_tab2_setIndex(0);
+    
   }
 
   selected_module_index = "-1";
 }
 
 function fillLessons(less) {
+
+  // clear the previous session
+  clearLessonsLst();
+
   if (less.length != 0) {
     less.forEach((element) => {
       addNewItems(element.LessonTitle, element.LessonID, "lessons_lst", false);
@@ -488,6 +542,10 @@ function fillLessons(less) {
 }
 
 function fillLessonsTab2(less) {
+
+  // clear the previous session
+  clearLessonsTab2()
+
   if (less.length != 0) {
     less.forEach((element) => {
       addNewItemsTab2(
@@ -504,29 +562,46 @@ function fillLessonsTab2(less) {
 }
 
 function fillScenes(sc) {
+
+  // clear the previous session
+  clearScenesLst();
+
+
   if (sc.length != 0) {
     sc.forEach((element) => {
       if (!element._deleted)
-        addNewItems(element.sceneTitle, element.sceneID, "scenes_lst", true);
+        addNewItems(element.sceneTitle, element.sceneID, "scenes_lst", false);
     });
   }
 }
 
 function fillSkills(sk) {
+
+  // clear the previous session
+  clearSkillsLst();
+
   if (sk.length != 0) {
     sk.forEach((element) => {
       const txt = `(${element.SkillID}) | ${element.SkillText}`;
       addNewItems(txt, element.SkillID, "skills_lst", false);
     });
-
+    
+    
     fillSceneSkills(sk, "skills_lst");
+
+    lst_skills_tab2_setIndex(0);
+
   }
 
-  lst_skills_tab2_setIndex(0);
   selected_skill_index = "-1";
 }
 
 function fillSceneSkills(sk, type) {
+
+  if (type == "skills_lst")
+     // clear the previous session
+      clearSceneSkillsLst();
+
   if (sk.length != 0) {
     sk.forEach((element) => {
       addNewItemsTab2(element.SkillText, element.SkillID, type, false);
@@ -535,6 +610,10 @@ function fillSceneSkills(sk, type) {
 }
 
 function fillSceneTypesTab2(sk, type) {
+
+  // clear the previous session
+  clearSceneTypesTab2();
+
   if (sk.length != 0) {
     sk.forEach((element) => {
       addNewItemsTab2(element.SceneTypeDesc, element.SceneTypeID, type, false);
@@ -543,6 +622,10 @@ function fillSceneTypesTab2(sk, type) {
 }
 
 function fillSceneTypes(sceneT) {
+  
+  // clear the previous session
+  clearSceneTypes();
+
   if (sceneT.length != 0) {
     sceneT.forEach((element) => {
       const txt = `(${element.SceneTypeID}) | ${element.SceneTypeDesc}`;
@@ -706,7 +789,6 @@ btn_remove_skill.addEventListener("click", (e) => {
         return item.SkillID !== selected_skill_index;
       });
 
-      clearSceneSkillsLst();
       fillSceneSkills(Skills, "skills_lst");
     }
 
@@ -737,9 +819,7 @@ btn_add_skill.addEventListener("click", (e) => {
     document.getElementById("txt_skill_code").value = "";
   }
   selected_skill_index = "-1";
-  // });
-
-  // selected_skill_index = "-1";
+ 
 
   const firstChild = lst_skills.firstChild;
   if (firstChild != undefined) firstChild.focus();
@@ -778,7 +858,6 @@ btn_remove_sceneType.addEventListener("click", (e) => {
         return item.SceneTypeID !== selected_sceneType_index;
       });
 
-      clearSceneTypesTab2();
       fillSceneTypesTab2(SceneTypes, "scene_types");
     }
 
@@ -928,19 +1007,23 @@ function updateSceneView() {
   lst_sceneTypes_tab2.selectedIndex = -1;
 
   if (currentScene != undefined && currentScene != null) {
+    
+    // retrieve the header of the current scene
     cScene = SceneHeaders.find((sid) => sid.sceneID == currentScene);
+    
+    // display the scene name
     lbl_scene_no.textContent =
-      cScene.sceneID +
-      ` [${SceneHeaders.length}] > ${cScene.ModuleID} > ${cScene.LessonID}`;
+      
+      `${Modules.find(mid => mid.ModuleID == cScene.ModuleID).ModuleTitle}` +
+      ` < ${Lessons.find(ls => ls.LessonID == cScene.LessonID).LessonTitle}` + 
+      ` < ${cScene.sceneTitle} [${SceneHeaders.length}] | ${cScene.sceneID}`;
+
     textbox_scene_desc.value = cScene.sceneDesc;
-    fillSceneConcepts(
-      SceneHeaders.find((st) => st.sceneID == currentScene).Concepts,
-      "scene_concepts"
-    );
-    fillSceneSkills(
-      SceneHeaders.find((st) => st.sceneID == currentScene).Skills,
-      "scene_skills"
-    );
+
+    fillSceneConcepts( cScene.Concepts, "scene_concepts");
+    
+    fillSceneSkills(cScene.Skills, "scene_skills");
+
     lst_sceneTypes_tab2.selectedIndex = getSceneTypeLstIndex(cScene);
 
     if (lst_sceneTypes_tab2.selectedIndex != -1) {
