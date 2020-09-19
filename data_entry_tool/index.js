@@ -38,7 +38,11 @@ document.querySelector("#save-btn").addEventListener("click", (event) => {
 
   event.preventDefault();
 
-  if (Courses.length <= 0) return console.log("Nothing to save");
+  if (Courses.length <= 0) {
+    showError("Nothing to save");
+    return;  
+  }
+  
 
   // Check if the Course Description or Course Category have been changed
   // And update the new values into the database.

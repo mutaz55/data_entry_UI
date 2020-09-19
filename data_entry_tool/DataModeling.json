@@ -8,7 +8,9 @@
     "Catagory": 0,
     "Modules": ["", ""],
     "Lessons": ["", ""],
-    "Concepts": ["", ""]
+    "Concepts": ["", ""],
+    "C-New-Field-No": 0,
+    "C-New-Field-Txt": ""
   },
 
   "sceneTypes (Id Auto generated)": {
@@ -39,7 +41,9 @@
     "Skills": ["", ""],
     "Book-Type": "Course/Or/Workbook",
     "Points": 0,
-    "Score": 0
+    "Score": 0,
+    "SH-New-Field-No": 0,
+    "SH-New-Field-Txt": ""
   },
 
   "FillInQuestion (Col per Course per unit)": {
