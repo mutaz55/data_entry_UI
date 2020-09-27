@@ -17,6 +17,7 @@ const textAreaCourseDesc = document.getElementById(
 const btn_add_concept = document.querySelector("#add_concept");
 const btn_remove_concept = document.querySelector("#remove_concept");
 const lst_concepts = document.querySelector("#id-concepts");
+const txt_concept_entry = document.querySelector("#txt_concept");
 
 let selected_concept_index = "-1";
 
@@ -26,6 +27,8 @@ const btn_remove_module = document.querySelector("#remove_module");
 const lst_modules = document.querySelector("#id-modules");
 
 const lst_modules_tab2 = document.querySelector("#id-units");
+
+const txt_module_entry = document.getElementById("txt_module");
 
 let selected_module_index = "-1";
 
@@ -75,6 +78,7 @@ const scene_concepts = document.querySelector("#id-lst-concepts");
 const add_con_scene = document.querySelector("#add_concept_to_scene");
 const remove_con_scene = document.querySelector("#remove_concept_from_scene");
 
+
 // Scene Skills
 const lst_skills_tab2 = document.querySelector("#id-select-skill");
 
@@ -95,7 +99,7 @@ const radiotbtn_sendToTeacherNot = document.querySelector(
 const radiobtn_kursBuch = document.querySelector("#id-kursbook");
 const radiobtn_arbeitsBuch = document.querySelector("#id-Arbeitbook");
 
-///////////////////////////////////////////////////////////////
+
 // Scene Type
 const lst_sceneTypes_tab2 = document.querySelector("#lst_scenesType_tab2");
 
@@ -108,32 +112,30 @@ const txtbox_course_description = document.querySelector(
 const radiobtn_course_category_paid = document.querySelector("#id-cat-paid");
 const radiobtn_course_category_free = document.querySelector("#id-cat-free");
 
-// Toast
+
+// Toast Msgs
 
 function showError(msg) {
   M.toast({ html: msg, classes: "toast-style" });
 }
 
-///// Listener for Course Description and Category
+function showSuccess(msg){
+  M.toast({html:msg, classes: "toast-success"});
+}
 
-txtbox_course_description.addEventListener("input", (e) => {
-  if (Courses.length > 0) currentCourse.Description = e.target.value;
-});
 
-radiobtn_course_category_paid.addEventListener("change", () => {
-  if (Courses.length > 0) currentCourse.Category = 1;
-});
 
-radiobtn_course_category_free.addEventListener("change", () => {
-  if (Courses.length > 0) currentCourse.Category = 0;
-});
 
-/////
+//
+
+// Listener for send to teacher
+//
 radiotbtn_sendToTeacherNot.addEventListener("change", () => {
   if (currentScene != undefined && currentScene != null) {
     SceneHeaders.find((sid) => sid.sceneID == currentScene).sendToTeacher = 0;
   }
 });
+
 
 radiobtn_sendToTeacher.addEventListener("change", () => {
   if (currentScene != undefined && currentScene != null) {
@@ -141,6 +143,9 @@ radiobtn_sendToTeacher.addEventListener("change", () => {
   }
 });
 
+
+// Listener for book type
+//
 radiobtn_arbeitsBuch.addEventListener("change", () => {
   if (currentScene != undefined && currentScene != null) {
     SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType =
@@ -154,17 +159,89 @@ radiobtn_kursBuch.addEventListener("change", () => {
   }
 });
 
+
+
+///////////////////// Tab 1 /////////////////////
+
+
+// Listener for Course Description and Category
+
+txtbox_course_description.addEventListener("input", (e) => {
+  if (Courses.length > 0) currentCourse.Description = e.target.value;
+});
+
+radiobtn_course_category_paid.addEventListener("change", () => {
+  if (Courses.length > 0) currentCourse.Category = 1;
+});
+
+radiobtn_course_category_free.addEventListener("change", () => {
+  if (Courses.length > 0) currentCourse.Category = 0;
+});
+
+
+
+///////////////////
+/* Concepts List */
+///////////////////
+
+
+// When click on any item of the concept list
+// store the id of the clicked item 
+lst_concepts.addEventListener('click', (e)=> {
+  if (e.target) {
+    selected_concept_index = e.target.id;
+    txt_concept_entry.value = e.target.textContent;
+    btn_add_concept.textContent = "تعديل";
+  }
+
+});
+
+
+// click on a concept to change its text
+txt_concept_entry.addEventListener('click', ()=> {
+  if (txt_concept_entry.value.length > 0)
+      txt_concept_entry.select();
+});
+
+
+// when press Enter key on the input of the concept entry
+// fires add button
+txt_concept_entry.addEventListener('keydown', function (e) {
+
+  if (e.key === 'Enter') {
+    
+    btn_add_concept.dispatchEvent(new Event('click'));
+  
+  // escape the update mode on the concepts list
+  }else if ((e.key  === 'Escape') || (e.key === 'Delete') || (e.key == 'Backspace')) {
+
+    txt_concept_entry.value = "";
+    btn_add_concept.textContent = "إضافة";
+  }
+});
+
+
 // Remove Concept (Button)
-btn_remove_concept.addEventListener("click", (e) => {
+btn_remove_concept.addEventListener("click", () => {
+ 
   if (selected_concept_index != "-1") {
     const removed = document.querySelector(`#${selected_concept_index}`);
 
     if (removed != undefined) {
       lst_concepts.removeChild(removed);
+      
+      if (Concepts.find( (item) =>  item.ConceptID == selected_concept_index)._new) {
 
-      Concepts = Concepts.filter(function (item) {
-        return item.ConceptID !== selected_concept_index;
-      });
+          Concepts = Concepts.filter( con => con.ConceptID != selected_concept_index);
+
+        }else {
+
+          Concepts.find(function (item) {
+            return item.ConceptID == selected_concept_index;
+            })._deleted = true;
+
+        }
+
     }
 
     selected_concept_index = "-1";
@@ -174,52 +251,154 @@ btn_remove_concept.addEventListener("click", (e) => {
       Concepts.filter((con) => con.id == currentCourse.id),
       "concepts_lst"
     );
-
+    txt_concept_entry.value = "";
     const firstChild = lst_concepts.firstChild;
     if (firstChild != undefined) firstChild.focus();
   }
 });
 
 // Add Concept (Button)
-btn_add_concept.addEventListener("click", (e) => {
-  const txt_concept_entry = document.getElementById("txt_concept").value;
+btn_add_concept.addEventListener("click", () => {
+   
+  // check if the entry text isn't empty and if the entered concept isn't already exist
+  if (checkValidation(txt_concept_entry.value, lst_concepts)) {
+    
+    // generate a new id for the concept (based on the course id)
+    let id_con_key = get_id(Concepts, 'ConceptID', 'C');
 
-  if (txt_concept_entry != 0) {
-    let id_con = 1;
-
-    if (
-      Concepts.filter(function (item) {
-        return item.id == currentCourse.id;
-      }).length > 0
-    ) {
-      id_con =
-        Math.max.apply(
-          Math,
-          Concepts.filter(function (item) {
-            return item.id == currentCourse.id;
-          }).map(function (conId) {
-            return conId.ConceptID.substring(
-              conId.ConceptID.indexOf("C") + 1,
-              conId.ConceptID.length
-            );
-          })
-        ) + 1;
-    }
-
-    let id_con_key = currentCourse.CourseTitle + "C" + id_con;
-
+    // store the concept locally
     Concepts.unshift(
-      new Concept(currentCourse.id, id_con_key, txt_concept_entry)
+      new Concept(currentCourse.id, id_con_key, txt_concept_entry.value, true)
     );
-    addNewItems(txt_concept_entry, id_con_key, "concepts_lst", true).focus();
-    addNewItemsTab2(txt_concept_entry, id_con_key, "concepts_lst", false);
+
+    // add the new concept into the concepts list in tab 1
+    addNewItems(txt_concept_entry.value, id_con_key, "concepts_lst", true).focus();
+
+    // add the new concept into the concepts list in tab 2
+    addNewItemsTab2(txt_concept_entry.value, id_con_key, "concepts_lst", false);
+
+    // clear the concept input box (used to enter the concept text)
     document.getElementById("txt_concept").value = "";
+
+    // make the concept input box focused
+    txt_concept_entry.focus();
+
   }
+
+  // the selected concept of the concepts list is empty now.
   selected_concept_index = "-1";
+
 });
 
+
+
+// When click on any item of the module list
+// store the id of the clicked item 
+lst_modules.addEventListener('click', (e)=> {
+  if (e.target) {
+    selected_module_index = e.target.id;
+    txt_module_entry.value = e.target.textContent;
+    btn_add_module.textContent = "تعديل";
+  }
+
+});
+
+
+// click on a concept to change its text
+txt_module_entry.addEventListener('click', ()=> {
+ 
+  if (txt_module_entry.value.length > 0)
+      txt_module_entry.select();
+});
+
+
+// when press Enter key on the input of the concept entry
+// fires add button
+txt_module_entry.addEventListener('keydown', function (e) {
+
+  if (e.key === 'Enter') {
+    
+    btn_add_module.dispatchEvent(new Event('click'));
+  
+  // escape the update mode on the concepts list
+  }else if ((e.key  === 'Escape') || (e.key === 'Delete') || (e.key == 'Backspace')) {
+
+    txt_module_entry.value = "";
+    btn_add_module.textContent = "إضافة";
+  }
+});
+
+
+// Remove Module (Button)
+btn_remove_module.addEventListener("click", () => {
+
+  if (selected_module_index != "-1") {
+    const removed = document.querySelector(`#${selected_module_index}`);
+
+    if (removed != undefined) {
+      lst_modules.removeChild(removed);
+
+      Array.from(lst_modules_tab2.options).forEach((element) => {
+        if (element.value == selected_module_index) {
+          element.remove();
+        }
+      });
+
+      Modules = Modules.filter(function (item) {
+        return item.ModuleID !== selected_module_index;
+      });
+    }
+
+    selected_module_index = "-1";
+
+    const firstChild = lst_modules.firstChild;
+    if (firstChild != undefined) firstChild.focus();
+  }
+});
+
+
+
+// Add Module (Button)
+btn_add_module.addEventListener("click", () => {
+
+  
+  // check if the entry text isn't empty and if the entered module isn't already exist
+  if (checkValidation(txt_module_entry.value, lst_modules)) {
+
+    // generate a new id for the module (based on the course id)
+    let id_mod_key = get_id(Modules, 'ModuleID', 'M');
+
+    // store the module locally
+    Modules.unshift(new Module(currentCourse.id, id_mod_key, txt_module_entry.value));
+
+    // add the new module into the modules list in tab 1
+    addNewItems(txt_module_entry.value, id_mod_key, "modules_lst", true).focus();
+
+    // add the new module into the modules list in tab 2
+    addNewItemsTab2(txt_module_entry.value, id_mod_key, 'modules_lst', true);
+
+    // clear the module input box (used to enter the module text)
+    document.getElementById("txt_module").value = "";
+
+    // make the concept input box focused
+    txt_module_entry.focus();
+  }
+
+  // the selected module of the modules list is empty now.
+  selected_module_index = "-1";
+
+});
+
+
+
+
+
+
+
+
+
 // Select Module - and filter the lessons based on it
-lst_modules_tab2.addEventListener("change", (e) => {
+lst_modules_tab2.addEventListener("change", () => {
   //clearLessonsTab2();
   fillLessonsTab2(Lessons.filter((les) => les.ModuleID == getModuleValue()));
 
@@ -234,7 +413,7 @@ lst_modules_tab2.addEventListener("change", (e) => {
 // Select Lesson - and filter scenes based on it
 lst_lessons_tab2.addEventListener("change", (e) => {
   
-  console.log('change');
+  
   currentScene = null;
   updateSceneView();
 
@@ -260,6 +439,34 @@ tab2Header.addEventListener("click", () => {
       
 });
 
+
+
+
+function get_id(obj, _objID, char) {
+
+  let id_obj = 1;
+
+  if (obj.filter(function (item) {
+    return item.id == currentCourse.id;
+  }).length > 0) {
+    id_obj =
+      Math.max.apply(
+        Math,
+        obj.filter(function (item) {
+          return item.id == currentCourse.id;
+        }).map(function (objId) {
+          return objId[_objID].substring(
+            objId[_objID].indexOf(char) + 1,
+            objId[_objID].length
+          );
+        })
+      ) + 1;
+  }
+
+  let id_obj_key = currentCourse.CourseTitle + char + id_obj;
+  return id_obj_key;
+}
+
 // Add new item to the list (includes concepts, modules, lessons, skills, scene types)
 function addNewItems(txt, id_c, lst_type, added) {
   const new_item = document.createElement("button");
@@ -268,14 +475,16 @@ function addNewItems(txt, id_c, lst_type, added) {
   new_item.type = "button";
   new_item.className = "list-group-item list-group-item-action";
   new_item.id = id_c;
+
   new_item.addEventListener("click", (e) => {
     switch (lst_type) {
-      case "concepts_lst":
-        selected_concept_index = id_c;
-        break;
-      case "modules_lst":
-        selected_module_index = id_c;
-        break;
+      //case "concepts_lst":
+        //selected_concept_index = id_c;
+        //break;
+      // case "modules_lst":
+      //   selected_module_index = id_c;
+      //   console.log("haaa");
+      //   break;
       case "lessons_lst":
         selected_lesson_index = id_c;
         break;
@@ -293,6 +502,8 @@ function addNewItems(txt, id_c, lst_type, added) {
         break;
     }
   });
+  
+  
   new_item.appendChild(new_item_txt);
 
   switch (lst_type) {
@@ -330,6 +541,8 @@ function addNewItems(txt, id_c, lst_type, added) {
 
   return new_item;
 }
+
+
 
 // Clear lists
 function clearConceptsLst() {
@@ -416,7 +629,7 @@ function addNewItemsTab2(txt, id_c, type, added) {
   // and option value
   newOption.setAttribute("value", id_c);
   // add the option to the select box
-
+console.log('added');
   switch (type) {
     case "modules_lst":
       if (added) lst_modules_tab2.appendChild(newOption);
@@ -449,6 +662,28 @@ function addNewItemsTab2(txt, id_c, type, added) {
   }
 }
 
+function checkValidation(txtEntry, lst) {
+
+  if (txtEntry.length == 0) return false;
+
+  if (lst.children != undefined) {
+
+    for (let i = 0; i < lst.children.length; i++) {
+
+      if (lst.children[i].textContent == txtEntry) {
+
+          showError (` ${txtEntry} is already exist!`);
+
+          return false;
+
+      }      
+    }
+  }
+
+  return true;
+}
+
+
 function fillConcepts(con) {
 
   // Clear the previous session
@@ -456,6 +691,7 @@ function fillConcepts(con) {
   
   if (con.length != 0) {
     con.forEach((element) => {
+     if (element._deleted) return;
       addNewItems(
         element.ConceptText,
         element.ConceptID,
@@ -476,6 +712,7 @@ function fillSceneConcepts(con, type) {
 
   if (con.length != 0) {
     con.forEach((element) => {
+      if (element._deleted) return;
       addNewItemsTab2(element.ConceptText, element.ConceptID, type, false);
     });
   }
@@ -486,10 +723,10 @@ function lst_skills_tab2_setIndex(indx) {
     lst_skills_tab2.options[indx].selected = true;
 }
 
-function lst_concepts_tab2_setIndex(indx) {
-  if (lst_concepts_tab2.options.length > 0)
-    lst_concepts_tab2.options[indx].selected = true;
-}
+// function lst_concepts_tab2_setIndex(indx) {
+//   if (lst_concepts_tab2.options.length > 0)
+//     lst_concepts_tab2.options[indx].selected = true;
+// }
 
 function lst_modules_tab2_setIndex(indx) {
   if (lst_modules_tab2.options.length > 0) {
@@ -631,88 +868,24 @@ function fillSceneTypes(sceneT) {
       const txt = `(${element.SceneTypeID}) | ${element.SceneTypeDesc}`;
       addNewItems(txt, element.SceneTypeID, "sceneType_lst", false);
     });
-  }
-
-  if (sceneT.length != 0) {
-    sceneT.forEach((element) => {
-      const txt = `(${element.SceneTypeID}) | ${element.SceneTypeDesc}`;
-      addNewItems(txt, element.SceneTypeID, "sceneType_lst", false);
-    });
 
     fillSceneTypesTab2(sceneT, "scene_types");
   }
 
+
   selected_sceneType_index = "-1";
 }
 
-// Remove Module (Button)
-btn_remove_module.addEventListener("click", (e) => {
-  if (selected_module_index != "-1") {
-    const removed = document.querySelector(`#${selected_module_index}`);
 
-    if (removed != undefined) {
-      lst_modules.removeChild(removed);
-
-      Array.from(lst_modules_tab2.options).forEach((element) => {
-        if (element.value == selected_module_index) {
-          element.remove();
-        }
-      });
-
-      Modules = Modules.filter(function (item) {
-        return item.ModuleID !== selected_module_index;
-      });
-    }
-
-    selected_module_index = "-1";
-
-    const firstChild = lst_modules.firstChild;
-    if (firstChild != undefined) firstChild.focus();
-  }
-});
-
-// Add Module (Button)
-btn_add_module.addEventListener("click", (e) => {
-  const txt_module_entry = document.getElementById("txt_module").value;
-
-  if (txt_module_entry != 0) {
-    let id_mod = 1;
-
-    if (
-      Modules.filter(function (item) {
-        return item.id == currentCourse.id;
-      }).length > 0
-    ) {
-      id_mod =
-        Math.max.apply(
-          Math,
-          Modules.filter(function (item) {
-            return item.id == currentCourse.id;
-          }).map(function (modId) {
-            return modId.ModuleID.substring(
-              modId.ModuleID.indexOf("M") + 1,
-              modId.ModuleID.length
-            );
-          })
-        ) + 1;
-    }
-
-    let id_mod_key = currentCourse.CourseTitle + "M" + id_mod;
-    Modules.unshift(new Module(currentCourse.id, id_mod_key, txt_module_entry));
-    addNewItems(txt_module_entry, id_mod_key, "modules_lst", true).focus();
-    addNewItemsTab2(txt_module_entry, id_mod, true);
-    document.getElementById("txt_module").value = "";
-  }
-  selected_module_index = "-1";
-});
 
 // Add Lesson (Button)
 btn_add_lesson.addEventListener("click", (e) => {
+
   if (selected_module_index == -1) return;
 
   const txt_lesson_entry = document.getElementById("txt_lesson").value;
 
-  if (txt_lesson_entry != 0) {
+  if (checkValidation(txt_lesson_entry, lst_lessons)) {
     let id_les = 1;
 
     if (
@@ -1088,7 +1261,7 @@ add_con_scene.addEventListener("click", (e) => {
       addNewItemsTab2(conTxt, conID, "scene_concepts", false);
 
       SceneHeaders.find((st) => st.sceneID == currentScene).Concepts.push(
-        new Concept(currentCourse.id, conID, conTxt)
+        new Concept(currentCourse.id, conID, conTxt, true)
       );
       SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
     }

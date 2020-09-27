@@ -1,6 +1,7 @@
 var currentCourse;
 var currentScene;
 var _busy;
+var save_busy;
 
 var logMsgs = [];
 const loggedOutLinks = document.querySelectorAll(".logged-out");
@@ -26,6 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
   M.Modal.init(modals);
 });
 
+
+const saveBtn = document.querySelector("#save-btn");
 // get data from database
 
 document.querySelector("#load-btn").addEventListener("click", (e) => {
@@ -34,26 +37,17 @@ document.querySelector("#load-btn").addEventListener("click", (e) => {
 });
 
 // save data into database
-document.querySelector("#save-btn").addEventListener("click", (event) => {
+saveBtn.addEventListener("click", (event) => {
 
   event.preventDefault();
+  
+  if (save_busy) return;
+  save_busy = true;
 
-  if (Courses.length <= 0) {
-    showError("Nothing to save");
-    return;  
-  }
+  if (Courses.length <= 0) showError("Nothing to save");
+  
   
 
-  // Check if the Course Description or Course Category have been changed
-  // And update the new values into the database.
-  updateCourseInfo();
-
-  // Check if Concepts have been changed and save the changes
-  // Delete concepts
-  deleteConcept();
-
-  // Add new Concepts
-  AddConcept();
 
   // Check if the Course Description or Course Category have been changed
   // And update the new values into the database.
@@ -81,12 +75,7 @@ document.querySelector("#save-btn").addEventListener("click", (event) => {
   // Add new lessons
   addLesson();
 
-  // Check the skills info changes and save them
-  //Delete skills
-  deleteSkill();
-  // Add new skills
-  addSkill();
-
+  
   // Check the skills info changes and save them
   //Delete skills
   deleteSkill();
@@ -105,6 +94,9 @@ document.querySelector("#save-btn").addEventListener("click", (event) => {
   deleteSceneHeader();
   // Add new Scene Header
   addSceneHeader();
+
+
+  save_busy = false;
 });
 
 function addSceneType() {
@@ -442,11 +434,12 @@ function updateCourseInfo() {
 function AddConcept() {
   Concepts.forEach(function (con) {
     if (
-      originalConcepts.findIndex(
-        (conId) =>
-          conId.ConceptID == con.ConceptID &&
-          conId.ConceptText == con.ConceptText
-      ) == -1
+      // originalConcepts.findIndex(
+      //   (conId) =>
+      //     conId.ConceptID == con.ConceptID &&
+      //     conId.ConceptText == con.ConceptText
+      // ) == -1
+      con._new 
     ) {
       // new concept has been added
       db.collection("courses")
@@ -458,15 +451,15 @@ function AddConcept() {
           }),
         })
         .then(() => {
-          originalConcepts.unshift(
-            new Concept(con.id, con.ConceptID, con.ConceptText)
-          );
-          console.log(
-            `Concept with Id:  ${con.ConceptID} has been successuflly added!`
-          );
+          // originalConcepts.unshift(
+          //   new Concept(con.id, con.ConceptID, con.ConceptText)
+          // );
+          con._new = false;
+          let msg = `Concept with Id:  ${con.ConceptID} has been successuflly added!`;
+          showSuccess(msg);
         })
         .catch((err) =>
-          console.log(`Error while deleting concept with Id: ${con.ConceptID} 
+          showSuccess(`Error while deleting concept with Id: ${con.ConceptID} 
                            "Details:  ${err}`)
         );
     }
@@ -474,35 +467,65 @@ function AddConcept() {
 }
 
 function deleteConcept() {
+  // let AllPromises = [];
+
+  // originalConcepts.forEach(function (del) {
+  //   if (
+  //     Concepts.findIndex(
+  //       (conId) =>
+  //         conId.ConceptID == del.ConceptID &&
+  //         conId.ConceptText == del.ConceptText
+  //     ) == -1
+  //   ) {
+  //     AllPromises.push(
+  //       deleteConceptFromDB(del)
+  //         .then(() => {
+  //           console.log(
+  //             `Concept with Id:  ${del.ConceptID} has been successuflly deleted!`
+  //           );
+  //           del.id = "-1";
+  //         })
+  //         .catch((err) =>
+  //           console.log(`Error while deleting concept with Id: ${del.ConceptID} 
+  //      Details:  ${err}`)
+  //         )
+  //     );
+  //   }
+  // });
+
+  // Promise.all(AllPromises).then(() => {
+  //   clearOriginalConcepts();
+  // });
+
   let AllPromises = [];
 
-  originalConcepts.forEach(function (del) {
-    if (
-      Concepts.findIndex(
-        (conId) =>
-          conId.ConceptID == del.ConceptID &&
-          conId.ConceptText == del.ConceptText
-      ) == -1
-    ) {
+  Concepts.forEach(function (del) {
+
+    if (del._deleted) {
+     
       AllPromises.push(
+
         deleteConceptFromDB(del)
+
           .then(() => {
-            console.log(
+            showSuccess(
               `Concept with Id:  ${del.ConceptID} has been successuflly deleted!`
             );
-            del.id = "-1";
           })
           .catch((err) =>
-            console.log(`Error while deleting concept with Id: ${del.ConceptID} 
-       Details:  ${err}`)
+            showError(`Error while deleting concept with Id: ${del.ConceptID} 
+            Details:  ${err}`)
           )
-      );
+        );
+
     }
+
   });
 
   Promise.all(AllPromises).then(() => {
-    clearOriginalConcepts();
+     clearConcepts();
   });
+
 }
 
 function deleteModule() {
@@ -648,6 +671,7 @@ function deleteLessonFromDB(del) {
 }
 
 function deleteModuleFromDB(del) {
+
   return db
     .collection("courses")
     .doc(del.id)
@@ -660,6 +684,7 @@ function deleteModuleFromDB(del) {
 }
 
 function deleteConceptFromDB(del) {
+  
   return db
     .collection("courses")
     .doc(del.id)
@@ -677,8 +702,8 @@ function clearOriginalSceneTypes() {
 function clearOriginalSkills() {
   originalSkills = originalSkills.filter((conId) => conId.id != "-1");
 }
-function clearOriginalConcepts() {
-  originalConcepts = originalConcepts.filter((conId) => conId.id != "-1");
+function clearConcepts() {
+  Concepts = Concepts.filter((con) => con._deleted == false);
 }
 function clearOringinalModules() {
   originalModules = originalModules.filter((conId) => conId.ModuleID != "-1");
@@ -706,7 +731,7 @@ function loadDataFromFireStore() {
   originalModules = [];
 
   Concepts = [];
-  originalConcepts = [];
+  
 
   Skills = [];
   originalSkills = [];
@@ -739,9 +764,9 @@ function loadDataFromFireStore() {
             doc.data()["Concepts"].forEach(function (con) {
 
                 Concepts.unshift(storeDataLocally(doc.id, con, "concepts"));
-                originalConcepts.unshift(
-                  storeDataLocally(doc.id, con, "concepts")
-                );
+               // originalConcepts.unshift(
+                //  storeDataLocally(doc.id, con, "concepts")
+               // );
             
             });
 

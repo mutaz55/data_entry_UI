@@ -439,5 +439,12 @@ body {
   color: white;
 }
 
+.toast-success {
+  background-color: green;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: white;
+
+}
 
 /* .//////////////////////// */
