@@ -24,6 +24,9 @@ body {
   /* border: 1px solid gray; */
   padding: 10px;
 }
+.icons-media {
+  width: 200%;
+}
 
 .list_buttons {
   background-color: rgb(204, 117, 117);
@@ -36,7 +39,9 @@ body {
   margin: 25px 0;
   font-size: 0.9em;
   min-width: 400px;
-  text-align: right;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
 .content-tablehead {
@@ -50,8 +55,19 @@ body {
 .content-tableTD {
   padding: 12px 15px;
   direction: rtl;
-  text-align: right;
+  text-align: center;
   cursor: pointer;
+  border: 1px solid rgb(98, 98, 98);
+  padding: 8px;
+  word-wrap: break-word;
+}
+
+#id-media-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#id-media-table tr:hover {
+  background-color: #ddd;
 }
 
 /* ############################### Main Tab Section ###################################  */
@@ -196,7 +212,8 @@ body {
 
   /* clear: both; */
   float: right;
-  margin-right: 30px;
+  margin-right: 20px;
+  margin-left: 10px;
 }
 .answer-control-hidden {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
@@ -350,6 +367,17 @@ body {
 
   overflow: auto;
 }
+
+.genSubSection {
+  padding: 10px 10px 10px;
+  margin: 10px;
+  border: 2px solid rgb(70, 69, 69);
+  display: flex;
+  flex-direction: column;
+
+  overflow: auto;
+}
+
 .radio-margin {
   margin: 0px 20px 0px;
 }
@@ -438,5 +466,181 @@ body {
   font-size: 1.5rem;
   color: white;
 }
-
 /* .//////////////////////// */
+
+/* MAKE IT CUTE ----- */
+.tabs {
+  position: relative;
+  display: flex;
+  min-height: 600px;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  /* height: auto; */
+}
+
+.tabby-tab {
+  flex: 1;
+}
+
+.tabby-tab .labelMediaTab {
+  display: block;
+  box-sizing: border-box;
+  /* tab content must clear this */
+  /* height: 40px; */
+
+  padding: 10px;
+  text-align: center;
+  color: #ee6e73;
+  background-color: #e0d8d8;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.tabby-tab .labelMediaTab:hover {
+  color: #ee8386;
+  background-color: #f89597;
+}
+
+.tabby-content {
+  position: absolute;
+
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  /* clear the tab labels */
+  top: 80px;
+
+  padding: 10px;
+  border-radius: 0 0 8px 8px;
+  background-color: #e0dfdf;
+
+  transition: opacity 0.8s ease;
+
+  /* show/hide */
+  opacity: 0;
+  /* transform: scale(0.1); */
+  /* transform-origin: top left; */
+}
+
+/* MAKE IT WORK ----- */
+.tabby-tab .radioInputTab {
+  display: block;
+}
+
+.radioInputTab:checked ~ .labelMediaTab {
+  background-color: #f5c2c3;
+  color: #f86065;
+
+  z-index: 2;
+}
+
+.radioInputTab:checked ~ .labelMediaTab ~ .tabby-content {
+  z-index: 1;
+
+  /* show/hide */
+  opacity: 1;
+  /* transform: scale(1); */
+}
+
+.iconTab {
+  margin-top: 0.3rem;
+  /* color: #ee6e73; */
+  /* display: inline-block; */
+  /* width: 100px;
+  height: 100px; */
+  /* border-radius: 100%; */
+  /* border: 2px solid #cacfd6; */
+  /* background-size: 100px 50px; */
+  /* box-sizing: border-box; */
+}
+/* ///////////////////////// Tab function ///////////////////////////// */
+
+.questionDiv {
+  display: flex;
+  flex-direction: row;
+  word-wrap: none;
+}
+
+.questionText {
+  padding: 0px 20px 0px;
+  margin: 5px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style the tab */
+.tab-function {
+  overflow: hidden;
+}
+
+/* Style the buttons inside the tab */
+.tab-function button {
+  background-color: inherit;
+  color: #ffffff;
+  float: right;
+
+  outline: none;
+  cursor: pointer;
+  /* padding: 14px 16px; */
+  transition: 0.3s;
+
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  text-decoration: none;
+  font-size: 1.5rem;
+  border-right: 1px solid #d3cdce;
+  background-color: #abeb92;
+  border-radius: 20px 0px 0px 0px;
+
+  /* height: 20px;
+  width: 200px; */
+  margin: 0px 5px;
+
+  text-align: right;
+  /* clear: both; */
+  float: right;
+  transition: all 0.5s ease;
+}
+
+/* Change background color of buttons on hover */
+.tab-function button:hover {
+  background-color: #89ec62;
+  box-shadow: 0px 0px 5px rgb(19, 18, 18);
+}
+
+/* Create an active/current tablink class */
+.tab-function button.active {
+  background-color: #26a69a;
+  box-shadow: 0px 0px 10px rgb(19, 18, 18);
+}
+
+/* Style the tab content */
+.tabcontent-function {
+  display: none;
+
+  padding: 6px 12px;
+
+  /* overflow: auto; */
+  -webkit-animation: fadeEffectTab 1s;
+  animation: fadeEffectTab 1s;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffectTab {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeEffectTab {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
