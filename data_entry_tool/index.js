@@ -7,8 +7,6 @@ const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 //const mainMsg = document.querySelector('#mainMsg');
 
-
-
 const setupUI = (user) => {
   if (user) {
     loggedInLinks.forEach((item) => (item.style.display = "block"));
@@ -35,14 +33,12 @@ document.querySelector("#load-btn").addEventListener("click", (e) => {
 
 // save data into database
 document.querySelector("#save-btn").addEventListener("click", (event) => {
-
   event.preventDefault();
 
   if (Courses.length <= 0) {
     showError("Nothing to save");
-    return;  
+    return;
   }
-  
 
   // Check if the Course Description or Course Category have been changed
   // And update the new values into the database.
@@ -690,7 +686,6 @@ function clearOringinalLessons() {
 // Course combo box
 
 function loadDataFromFireStore() {
-  
   // to prevent user of clicking too many times load button.
   if (_busy) return;
   _busy = true;
@@ -719,30 +714,25 @@ function loadDataFromFireStore() {
 
   let AllPromises = [];
 
-
   var docRef = db.collection("courses");
   AllPromises.push(
     docRef
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          
           // get Courses Info
-            Courses.unshift(storeDataLocally(doc.id, doc.data(), "courses"));
-            originalCourses.unshift(
-              storeDataLocally(doc.id, doc.data(), "courses")
-            );
-          
+          Courses.unshift(storeDataLocally(doc.id, doc.data(), "courses"));
+          originalCourses.unshift(
+            storeDataLocally(doc.id, doc.data(), "courses")
+          );
 
           // get Concept Info
           if (doc.data()["Concepts"])
             doc.data()["Concepts"].forEach(function (con) {
-
-                Concepts.unshift(storeDataLocally(doc.id, con, "concepts"));
-                originalConcepts.unshift(
-                  storeDataLocally(doc.id, con, "concepts")
-                );
-            
+              Concepts.unshift(storeDataLocally(doc.id, con, "concepts"));
+              originalConcepts.unshift(
+                storeDataLocally(doc.id, con, "concepts")
+              );
             });
 
           // get Modules Info
@@ -830,15 +820,11 @@ function loadDataFromFireStore() {
   });
 }
 
-
 // Clear drop down items (Combobox Courses)
 function clearCombo(combo) {
-
   if (combo.options.length > 0) {
-
-    combo.removeEventListener("change",courseComboChangeHandler, true);
+    combo.removeEventListener("change", courseComboChangeHandler, true);
     combo.options.length = 0;
-
   }
 }
 
@@ -857,25 +843,19 @@ function clearCombo(combo) {
 //   clearScenesLst();
 // }
 
-
 function courseComboChangeHandler(e) {
   newCourseSelected(e);
 
   // Select first module in Tab 2
   lst_modules_tab2_setIndex(0);
-  
 }
 
-
 function fillCourseInfo() {
-    
-
   // clear the course in combobox if there is any
   clearCombo(courseCombo);
   //courseCombo.outerHTML = courseCombo.outerHTML;
 
   if (Courses.length != 0) {
-
     Courses.forEach((x) => {
       const newOption = document.createElement("option");
       const optionText = document.createTextNode(x.CourseTitle);
@@ -887,40 +867,30 @@ function fillCourseInfo() {
       courseCombo.appendChild(newOption);
     });
 
-    courseCombo.addEventListener("change",  courseComboChangeHandler);
+    courseCombo.addEventListener("change", courseComboChangeHandler);
 
     if (courseCombo.options.length > 0) {
-      
       courseCombo.dispatchEvent(new Event("change"));
     }
   }
 }
 
-
 // A course selectes from the drop down list (courses combo box)
 // then a Change event fires and the following function executes.
 function newCourseSelected(event) {
- 
-
   // Find the current course based on the selected item from the course list combo
-  currentCourse = Courses.find(
-    (courseID) => courseID.id == event.target.value
-  );
+  currentCourse = Courses.find((courseID) => courseID.id == event.target.value);
 
   // Fill the course description
-  
+
   textAreaCourseDesc.value = currentCourse.Description;
 
   // Fill the course type (free or paid)
   if (currentCourse.Category == 1) {
-    
-      chkBoxCourseTypePaid.checked = true;
-
+    chkBoxCourseTypePaid.checked = true;
   } else {
-
-      chkBoxCourseTypeFree.checked = true;
+    chkBoxCourseTypeFree.checked = true;
   }
-
 
   // Clear tab2 fields
   clearScenesLst();
@@ -932,8 +902,6 @@ function newCourseSelected(event) {
   fillSkills(Skills);
   fillSceneTypes(SceneTypes);
 
-   // Now user can press load button again.
+  // Now user can press load button again.
   _busy = false;
-
 }
-

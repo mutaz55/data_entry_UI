@@ -8,10 +8,7 @@ const chkBoxCourseTypePaid = document.getElementById("id-cat-paid");
 const chkBoxCourseTypeFree = document.getElementById("id-cat-free");
 
 // The course description field
-const textAreaCourseDesc = document.getElementById(
-  "id-course-description"
-);
-
+const textAreaCourseDesc = document.getElementById("id-course-description");
 
 // Concepts List
 const btn_add_concept = document.querySelector("#add_concept");
@@ -169,7 +166,6 @@ btn_remove_concept.addEventListener("click", (e) => {
 
     selected_concept_index = "-1";
 
-
     fillSceneConcepts(
       Concepts.filter((con) => con.id == currentCourse.id),
       "concepts_lst"
@@ -233,8 +229,7 @@ lst_modules_tab2.addEventListener("change", (e) => {
 
 // Select Lesson - and filter scenes based on it
 lst_lessons_tab2.addEventListener("change", (e) => {
-  
-  console.log('change');
+  console.log("change");
   currentScene = null;
   updateSceneView();
 
@@ -246,19 +241,13 @@ lst_lessons_tab2.addEventListener("change", (e) => {
   );
 
   if (lst_scenes.firstChild) {
-    
     lst_scenes.firstChild.focus();
     lst_scenes.firstChild.dispatchEvent(new Event("click"));
-    
   }
 });
 
 // Select Tab2
-tab2Header.addEventListener("click", () => {
-
-
-      
-});
+tab2Header.addEventListener("click", () => {});
 
 // Add new item to the list (includes concepts, modules, lessons, skills, scene types)
 function addNewItems(txt, id_c, lst_type, added) {
@@ -346,24 +335,18 @@ function clearSceneSkillsLst() {
 }
 
 function clearSceneTypesTab2() {
-
   lst_sceneTypes_tab2.innerHTML = "";
-
 }
 
 function clearModulesLst() {
-  
-  
   removeAllChildNodes(lst_modules);
-  
-  removeAllChildNodes(lst_modules_tab2)
-    
-  
+
+  removeAllChildNodes(lst_modules_tab2);
 }
 
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
-      parent.removeChild(parent.firstChild);
+    parent.removeChild(parent.firstChild);
   }
 }
 
@@ -377,7 +360,6 @@ function clearLessonsTab2() {
 }
 
 function clearScenesLst() {
-  
   // Clear the scenes list
   removeAllChildNodes(lst_scenes);
   // clear the scene no.
@@ -389,16 +371,12 @@ function clearScenesLst() {
 }
 function clearSkillsLst() {
   lst_skills.innerHTML = "";
-
 }
 
 function clearSceneTypes() {
   lst_sceneTypes.innerHTML = "";
   clearSceneTypesTab2();
 }
-
-
-
 
 function clearRdBtnTab2() {
   document.querySelector("#id-Arbeitbook").checked = false;
@@ -450,10 +428,9 @@ function addNewItemsTab2(txt, id_c, type, added) {
 }
 
 function fillConcepts(con) {
-
   // Clear the previous session
   clearConceptsLst();
-  
+
   if (con.length != 0) {
     con.forEach((element) => {
       addNewItems(
@@ -470,9 +447,7 @@ function fillConcepts(con) {
 }
 
 function fillSceneConcepts(con, type) {
-
-  if (type == "concepts_lst")
-      clearSceneConceptsLst();
+  if (type == "concepts_lst") clearSceneConceptsLst();
 
   if (con.length != 0) {
     con.forEach((element) => {
@@ -496,7 +471,6 @@ function lst_modules_tab2_setIndex(indx) {
     lst_modules_tab2.options[indx].selected = true;
     lst_modules_tab2.dispatchEvent(new Event("change"));
   }
-    
 }
 
 function lst_lessons_tab2_setIndex(indx) {
@@ -505,7 +479,6 @@ function lst_lessons_tab2_setIndex(indx) {
 }
 
 function fillModules(mod) {
-
   // clear the previous session
   clearModulesLst();
 
@@ -519,15 +492,12 @@ function fillModules(mod) {
         true
       );
     });
-
-    
   }
 
   selected_module_index = "-1";
 }
 
 function fillLessons(less) {
-
   // clear the previous session
   clearLessonsLst();
 
@@ -542,9 +512,8 @@ function fillLessons(less) {
 }
 
 function fillLessonsTab2(less) {
-
   // clear the previous session
-  clearLessonsTab2()
+  clearLessonsTab2();
 
   if (less.length != 0) {
     less.forEach((element) => {
@@ -562,10 +531,8 @@ function fillLessonsTab2(less) {
 }
 
 function fillScenes(sc) {
-
   // clear the previous session
   clearScenesLst();
-
 
   if (sc.length != 0) {
     sc.forEach((element) => {
@@ -576,7 +543,6 @@ function fillScenes(sc) {
 }
 
 function fillSkills(sk) {
-
   // clear the previous session
   clearSkillsLst();
 
@@ -585,22 +551,19 @@ function fillSkills(sk) {
       const txt = `(${element.SkillID}) | ${element.SkillText}`;
       addNewItems(txt, element.SkillID, "skills_lst", false);
     });
-    
-    
+
     fillSceneSkills(sk, "skills_lst");
 
     lst_skills_tab2_setIndex(0);
-
   }
 
   selected_skill_index = "-1";
 }
 
 function fillSceneSkills(sk, type) {
-
   if (type == "skills_lst")
-     // clear the previous session
-      clearSceneSkillsLst();
+    // clear the previous session
+    clearSceneSkillsLst();
 
   if (sk.length != 0) {
     sk.forEach((element) => {
@@ -610,7 +573,6 @@ function fillSceneSkills(sk, type) {
 }
 
 function fillSceneTypesTab2(sk, type) {
-
   // clear the previous session
   clearSceneTypesTab2();
 
@@ -622,7 +584,6 @@ function fillSceneTypesTab2(sk, type) {
 }
 
 function fillSceneTypes(sceneT) {
-  
   // clear the previous session
   clearSceneTypes();
 
@@ -819,7 +780,6 @@ btn_add_skill.addEventListener("click", (e) => {
     document.getElementById("txt_skill_code").value = "";
   }
   selected_skill_index = "-1";
- 
 
   const firstChild = lst_skills.firstChild;
   if (firstChild != undefined) firstChild.focus();
@@ -956,7 +916,15 @@ btn_add_scene.addEventListener("click", (e) => {
         true
       )
     );
+    //************************* Code added by Taha to Create Empty Scene and push it to the SceneArray **************************************** */
 
+    // let currentSceneHeader = SceneHeaders.find(
+    //   (sid) => sid.sceneID == id_scene_key
+    // );
+    // currentSceneHeader._news = true;
+    ScenesArray.push(createEmptyScene(id_scene_key));
+
+    //***************************************************************************************************************************************** */
     addNewItems(txt_sceneTitle_entry, id_scene_key, "scenes_lst", true).focus();
     document.getElementById("txt_sceneTitle").value = "";
     updateSceneView();
@@ -1007,21 +975,19 @@ function updateSceneView() {
   lst_sceneTypes_tab2.selectedIndex = -1;
 
   if (currentScene != undefined && currentScene != null) {
-    
     // retrieve the header of the current scene
     cScene = SceneHeaders.find((sid) => sid.sceneID == currentScene);
-    
+
     // display the scene name
     lbl_scene_no.textContent =
-      
-      `${Modules.find(mid => mid.ModuleID == cScene.ModuleID).ModuleTitle}` +
-      ` < ${Lessons.find(ls => ls.LessonID == cScene.LessonID).LessonTitle}` + 
+      `${Modules.find((mid) => mid.ModuleID == cScene.ModuleID).ModuleTitle}` +
+      ` < ${Lessons.find((ls) => ls.LessonID == cScene.LessonID).LessonTitle}` +
       ` < ${cScene.sceneTitle} [${SceneHeaders.length}] | ${cScene.sceneID}`;
 
     textbox_scene_desc.value = cScene.sceneDesc;
 
-    fillSceneConcepts( cScene.Concepts, "scene_concepts");
-    
+    fillSceneConcepts(cScene.Concepts, "scene_concepts");
+
     fillSceneSkills(cScene.Skills, "scene_skills");
 
     lst_sceneTypes_tab2.selectedIndex = getSceneTypeLstIndex(cScene);
