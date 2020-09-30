@@ -1,5 +1,6 @@
 var CurrentSceneObject;
 var currentSceneHeaderObj;
+var LastQuestionNumber;
 
 /* ############################### Tab 2 Select the Scene Type  ################################### */
 
@@ -24,13 +25,12 @@ selectedScene.addEventListener("click", (e) => {
 const clickOnTab3ToBuildScene = document.querySelector("#id-scene-deteils");
 clickOnTab3ToBuildScene.addEventListener("click", () => {
   //**************************** Code to be changed to connect to Database ******************************
-
+  debugger;
   currentSceneHeaderObj = SceneHeaders.find(
     (sid) => sid.sceneID == currentScene
   );
 
   CurrentSceneObject = ScenesArray.find((sid) => sid.id == currentScene);
-  debugger;
   // if (currentSceneHeaderObj._new) {
   //*****************************************************************************************************
 
@@ -42,21 +42,21 @@ clickOnTab3ToBuildScene.addEventListener("click", () => {
 //**************************************************************************************************************** */
 // function Generate the question Text with hint Section and Call the function to create the Question
 function openSceneType() {
-  let i, tabcontent;
+  let i;
   // Read the Scne type name in Arabic shown in the Tab 2 - Scene type
   let sceneType = document.getElementById("id-scene-selected").textContent;
 
-  // clear the Tab 3 from Previous Elements
-  tabcontent = document.getElementsByClassName("tabcontent"); // No need now there is only 1 Tab need to be modified
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-    while (tabcontent[i].firstChild) {
-      tabcontent[i].removeChild(tabcontent[i].lastChild);
-    }
-  }
+  const selectedSceneTab = document.getElementById("scene-details");
+
+  selectedSceneTab.innerHTML = "";
+
+  // while (selectedSceneTab.firstChild) {
+  //   console.log(selectedSceneTab.lastChild);
+  //   selectedSceneTab.removeChild(selectedSceneTab.lastChild);
+  // }
 
   // Show the name of the Scene
-  const selectedSceneTab = document.getElementById("scene-details");
+
   selectedSceneTab.style.display = "block";
   selectedSceneTab.appendChild(document.createTextNode("المشهد: " + sceneType));
 
@@ -91,8 +91,8 @@ function openSceneType() {
   );
 
   // *****************  Read Data of Question Title Section from Scene Data Object ***************/
-  console.log(currentScene);
-  console.log(CurrentSceneObject);
+  // console.log(currentScene);
+  // console.log(CurrentSceneObject);
   newExerciseText.UpdateTextValueFromDatabase(CurrentSceneObject.exerciseText);
 
   newExerciseTranslate.UpdateTextValueFromDatabase(
@@ -164,6 +164,9 @@ function openSceneType() {
   let arrDeleteIconShow = [];
   let QuestionTabContent = [];
   let idContentTab = "";
+  let newQuestionID = "";
+  let newQuestion = "";
+
   for (i = 0; i < numberOfQuestion; i++) {
     idContentTab = "id-question-tab-" + (i + 1);
     // console.log(idContentTab);
@@ -192,8 +195,8 @@ function openSceneType() {
   for (i = 0; i < numberOfQuestion; i++) {
     idContentTab = "id-question-tab-" + (i + 1);
     QuestionTabContent[i] = document.getElementById(idContentTab);
-    console.log("Div Content ");
-    console.log(QuestionTabContent[i]);
+    // console.log("Div Content ");
+    // console.log(QuestionTabContent[i]);
     // function Create Media Section, Statements Section & Answers first time
 
     createQuestion(QuestionTabContent[i]);
@@ -217,20 +220,21 @@ function openSceneType() {
       let NewQuestionTab = AddTabFunction(
         "id-div-question-section",
         TabTitle,
-        numberOfQuestion,
+        numberOfQuestion + 1,
         newTabId
       );
       console.log("here we are " + NewQuestionTab);
       //create new Question Data Object with new id
-      let newQuestion = new Question(newTabId); //id will be changed as per naming policy of the objects the Ask Mutaz
+      newQuestionID = "id-question-" + (numberOfQuestion + 1);
+      newQuestion = new Question(newQuestionID); //id will be changed as per naming policy of the objects the Ask Mutaz
       CurrentSceneObject.questions.push(newQuestion);
       // create new Question and pass the correct Question Tab-Content
-
+      console.log("CurrentSceneObject:", CurrentSceneObject);
       createQuestion(NewQuestionTab);
     }
   });
 
-  //************************** Creating Save Scene Button Section ************************************** */
+  //************************** Creating Save Scene Button Section ******************************************//
   const saveSceneSection = document.createElement("Section");
   saveSceneSection.classList.add("genSection");
   selectedSceneTab.appendChild(saveSceneSection);
@@ -244,12 +248,13 @@ function createQuestion(questionTabDIV) {
   MediaSection.classList.add("genSubSection");
   questionTabDIV.appendChild(MediaSection);
 
-  const mediaTab = createTab(5);
+  const mediaTab = createTab(5, CurrentSceneObject.questions.length);
 
   MediaSection.appendChild(mediaTab);
+
   const MediaOkCancelButton = createAnswersOkCancelbuttons(
-    "id-media-add",
-    "id-media-cancel",
+    "id-media-add-" + CurrentSceneObject.questions.length,
+    "id-media-cancel-" + CurrentSceneObject.questions.length,
     "اضافة",
     "الغاء"
   );
@@ -257,8 +262,9 @@ function createQuestion(questionTabDIV) {
   MediaSection.appendChild(MediaOkCancelButton);
 
   let SelectedMediaTab = document.createElement("label");
-  SelectedMediaTab.id = "id-media-tab-selected";
-  SelectedMediaTab.textContent = "id-tabMedia-label-1";
+  SelectedMediaTab.id =
+    "id-media-tab-selected-" + CurrentSceneObject.questions.length;
+  SelectedMediaTab.textContent = "id-tabMedia-label-11";
   MediaSection.appendChild(SelectedMediaTab);
 
   ///////////////////////////////// Media Table Section //////////////////////////////////////
@@ -273,44 +279,70 @@ function createQuestion(questionTabDIV) {
     "مواصفات العنصر",
   ];
   let itemTobeDeleted = document.createElement("label");
-  itemTobeDeleted.id = "id-label-media-delete";
+  itemTobeDeleted.id =
+    "id-label-media-delete-" + CurrentSceneObject.questions.length;
   itemTobeDeleted.textContent = "1";
 
-  let mediaTable = createGenTableHead("id-media-table", arrMediaTableHeadText);
-  let DeleteMediaObject = createButton("id-media-delete", "حذف");
+  let mediaTable = createGenTableHead(
+    "id-media-table-" + CurrentSceneObject.questions.length,
+    arrMediaTableHeadText
+  );
+  let DeleteMediaObject = createButton(
+    "id-media-delete-" + CurrentSceneObject.questions.length,
+    "حذف"
+  );
   MediaSectionTable.appendChild(mediaTable);
   MediaSectionTable.appendChild(DeleteMediaObject);
   MediaSectionTable.appendChild(itemTobeDeleted);
 
-  document.getElementById("id-media-add").addEventListener("click", (e) => {
-    // let mediaRecord = mediaTable.rows[0].cells.length;
+  document
+    .getElementById("id-media-add-" + CurrentSceneObject.questions.length)
+    .addEventListener("click", (e) => {
+      // let mediaRecord = mediaTable.rows[0].cells.length;
+      let TargetId = e.target.id;
+      console.log(TargetId);
 
-    let tableMedia = document.getElementById("id-media-table");
-    let mediaRecord = [];
+      let QuestionNumber = TargetId.slice(13, TargetId.length);
+      console.log(QuestionNumber);
 
-    let srMediaNumber = tableMedia.rows.length;
+      let tableMedia = document.getElementById(
+        "id-media-table-" + QuestionNumber
+      );
+      let mediaRecord = [];
 
-    let mediaInfo = GetMediaObjDataFromMediaTab();
+      let srMediaNumber = tableMedia.rows.length;
 
-    console.log(mediaInfo);
-    let mediaObjecttype = mediaInfo.type;
-    let mediaObjectDesOrText = mediaInfo.DesOrText;
-    let mediaObjectSpecs = mediaInfo.Specs;
+      let mediaInfo = GetMediaObjDataFromMediaTab(QuestionNumber);
 
-    mediaRecord = [
-      srMediaNumber,
-      mediaObjecttype,
-      mediaObjectDesOrText,
-      mediaObjectSpecs,
-    ];
-    // console.log(tableMedia.rows);
+      console.log(mediaInfo);
+      let mediaObjecttype = mediaInfo.type;
+      let mediaObjectDesOrText = mediaInfo.DesOrText;
+      let mediaObjectSpecs = mediaInfo.Specs;
 
-    createGenRowTable(tableMedia, mediaRecord, "id-label-media-delete");
-  });
+      mediaRecord = [
+        srMediaNumber,
+        mediaObjecttype,
+        mediaObjectDesOrText,
+        mediaObjectSpecs,
+      ];
+      // console.log(tableMedia.rows);
 
-  DeleteMediaObject.addEventListener("click", () => {
+      createGenRowTable(
+        tableMedia,
+        mediaRecord,
+        "id-label-media-delete-" + QuestionNumber
+      );
+    });
+
+  DeleteMediaObject.addEventListener("click", (e) => {
+    let TargetId1 = e.target.id;
+    console.log(TargetId1);
+
+    let QuestionNumber1 = TargetId1.slice(16, TargetId1.length);
+    console.log(QuestionNumber1);
+
     document
-      .getElementById("id-media-table")
+      .getElementById("id-media-table-" + QuestionNumber1)
       .deleteRow(itemTobeDeleted.textContent);
   });
 
@@ -428,41 +460,7 @@ function createQuestion(questionTabDIV) {
             let statementNumber = "S1"; // Save the Statements Number
             let EmptyWordNumber = "E-word-" + (i + 1);
 
-            switch (i) {
-              case 0:
-                AnswerLabelText = "إجابة الفراغ الأول";
-                break;
-              case 1:
-                AnswerLabelText = "إجابة الفراغ الثاني";
-                break;
-              case 2:
-                AnswerLabelText = "إجابة الفراغ الثالث";
-                break;
-              case 3:
-                AnswerLabelText = "إجابة الفراغ الرابع";
-                break;
-              case 4:
-                AnswerLabelText = "إجابة الفراغ الخامس";
-                break;
-              case 5:
-                AnswerLabelText = "إجابة الفراغ السادس";
-                break;
-              case 6:
-                AnswerLabelText = "إجابة الفراغ السابع";
-                break;
-              case 7:
-                AnswerLabelText = "إجابة الفراغ الثامن";
-                break;
-              case 8:
-                AnswerLabelText = "إجابة الفراغ التاسع";
-                break;
-              case 9:
-                AnswerLabelText = "إجابة الفراغ العاشر";
-                break;
-              default:
-                AnswerLabelText = "Over Flow!!!";
-                break;
-            }
+            AnswerLabelText = returnTextTitleFIB(i);
 
             AnswerSection.appendChild(
               newFillinBlankStatement.createEmptyAnswer(
@@ -601,6 +599,44 @@ function createQuestion(questionTabDIV) {
   ////////////////////////////////////////////
 }
 
+function returnTextTitleFIB(number) {
+  switch (number) {
+    case 0:
+      return "إجابة الفراغ الأول";
+      break;
+    case 1:
+      return "إجابة الفراغ الثاني";
+      break;
+    case 2:
+      return "إجابة الفراغ الثالث";
+      break;
+    case 3:
+      return "إجابة الفراغ الرابع";
+      break;
+    case 4:
+      return "إجابة الفراغ الخامس";
+      break;
+    case 5:
+      return "إجابة الفراغ السادس";
+      break;
+    case 6:
+      return "إجابة الفراغ السابع";
+      break;
+    case 7:
+      return "إجابة الفراغ الثامن";
+      break;
+    case 8:
+      return "إجابة الفراغ التاسع";
+      break;
+    case 9:
+      return "إجابة الفراغ العاشر";
+      break;
+    default:
+      return "Over Flow!!!";
+      break;
+  }
+}
+
 //*********************************** General Functions *************************************** */
 function createRowTable(newTable, idRow, Statement, Answers, CorrectOrNo) {
   let row1 = newTable.insertRow();
@@ -696,7 +732,7 @@ function clearStatementInput() {
 
 //******* Create Tab (Media Object) *******/
 
-function createTab(TabsNumbers) {
+function createTab(TabsNumbers, QuestionNumber) {
   const mediaArray = ["pic", "Rsound", "SoundEffect", "Video", "Rtext"];
   let divContainer = document.createElement("div");
   let divtabs = document.createElement("div");
@@ -717,12 +753,12 @@ function createTab(TabsNumbers) {
     labelTab[i] = document.createElement("label");
     divTabbyContent[i] = document.createElement("div");
 
-    radioInputTab[i].id = "tab-" + (i + 1);
+    radioInputTab[i].id = "tab-" + QuestionNumber + (i + 1);
     radioInputTab[i].type = "radio";
     radioInputTab[i].name = "tabby-tabs";
     radioInputTab[i].classList.add("radioInputTab");
 
-    labelTab[i].id = "id-tabMedia-label-" + (i + 1);
+    labelTab[i].id = "id-tabMedia-label-" + QuestionNumber + (i + 1);
     labelTab[i].for = radioInputTab[i].id;
     labelTab[i].classList.add("labelMediaTab");
     labelTab[i].appendChild(ReturnIcon(mediaArray[i]));
@@ -740,15 +776,27 @@ function createTab(TabsNumbers) {
     divTabbyContent[i].appendChild(returnMediaObject(mediaArray[i]));
 
     labelTab[i].addEventListener("click", (e) => {
-      console.log(e.target.tagName);
+      // console.log(e.target.tagName);
+      let TargetId = "";
+      let QuestionNumber = "";
+
       if (e.target.tagName === "I") {
-        console.log(e.target.parentNode.id);
-        document.getElementById("id-media-tab-selected").innerText =
-          e.target.parentNode.id;
+        // console.log(e.target.parentNode.id);
+        TargetId = e.target.parentNode.id;
+        QuestionNumber = TargetId.slice(18, TargetId.length - 1);
+        console.log(QuestionNumber);
+
+        document.getElementById(
+          "id-media-tab-selected-" + QuestionNumber
+        ).innerText = e.target.parentNode.id;
       } else if (e.target.tagName === "LABEL") {
-        console.log(e.target.id);
-        document.getElementById("id-media-tab-selected").innerText =
-          e.target.id;
+        TargetId = e.target.id;
+        QuestionNumber = TargetId.slice(18, TargetId.length - 1);
+        console.log(QuestionNumber);
+
+        document.getElementById(
+          "id-media-tab-selected-" + QuestionNumber
+        ).innerText = e.target.id;
       }
 
       radioInputTab[i].checked = true;
@@ -818,14 +866,14 @@ function returnMediaObject(mediaType) {
       newPicMedia.AssingNamesAndAttr(
         "صورة",
         "ادخال الصورة",
-        "id-main-pic-label",
-        "id-main-pic-checkbox"
+        "id-main-pic-label-" + CurrentSceneObject.questions.length,
+        "id-main-pic-checkbox-" + CurrentSceneObject.questions.length
       );
 
       newPicHiddenMedia.AssingNamesAndAttr(
-        "div-pic-hidden",
+        "div-pic-hidden-" + CurrentSceneObject.questions.length,
         "وصف الصورة",
-        "id-main-pic-des"
+        "id-main-pic-des-" + CurrentSceneObject.questions.length
       );
 
       // 2 Options for Pic types
@@ -833,13 +881,13 @@ function returnMediaObject(mediaType) {
       const newRadioOfPicHiddenMediaDiv2 = new RadioOfHiddenMediaDiv();
 
       newRadioOfPicHiddenMediaDiv1.AssingNamesAndAttr(
-        "main-photo-type",
-        "id-main-photo-type-photo",
+        "main-photo-type-" + CurrentSceneObject.questions.length,
+        "id-main-photo-type-photo-" + CurrentSceneObject.questions.length,
         "تصوير فوتوغرافي"
       );
       newRadioOfPicHiddenMediaDiv2.AssingNamesAndAttr(
-        "main-photo-type",
-        "id-main-photo-type-drawing",
+        "main-photo-type-" + CurrentSceneObject.questions.length,
+        "id-main-photo-type-drawing-" + CurrentSceneObject.questions.length,
         "رسومات"
       );
 
@@ -873,14 +921,14 @@ function returnMediaObject(mediaType) {
       newRecordedSoundMedia.AssingNamesAndAttr(
         "النص الصوتي",
         "ادخال النص الصوتي",
-        "id-main-sound-label",
-        "id-main-sound-checkbox"
+        "id-main-sound-label-" + CurrentSceneObject.questions.length,
+        "id-main-sound-checkbox-" + CurrentSceneObject.questions.length
       );
 
       newRecordedSoundHiddenMedia.AssingNamesAndAttr(
-        "div-sound-hidden",
+        "div-sound-hidden-" + CurrentSceneObject.questions.length,
         "وصف النص الصوتي",
-        "id-main-sound-des"
+        "id-main-sound-des-" + CurrentSceneObject.questions.length
       );
 
       newRecordedSoundMedia.Build();
@@ -905,14 +953,14 @@ function returnMediaObject(mediaType) {
       newSoundEffectMedia.AssingNamesAndAttr(
         "الؤثرات الصوتية",
         "ادخال المؤثرات الصوتية",
-        "id-main-soundeffect-label",
-        "id-main-soundeffect-checkbox"
+        "id-main-soundeffect-label-" + CurrentSceneObject.questions.length,
+        "id-main-soundeffect-checkbox-" + CurrentSceneObject.questions.length
       );
 
       newSoundEffectHiddenMedia.AssingNamesAndAttr(
-        "div-soundeffect-hidden",
+        "div-soundeffect-hidden-" + CurrentSceneObject.questions.length,
         "وصف المؤثرات الصوتية",
-        "id-main-soundeffect-des"
+        "id-main-soundeffect-des-" + CurrentSceneObject.questions.length
       );
 
       newSoundEffectMedia.Build();
@@ -936,14 +984,14 @@ function returnMediaObject(mediaType) {
       newVideoMedia.AssingNamesAndAttr(
         "الفيديو",
         "ادخال الفيديو",
-        "id-main-video-label",
-        "id-main-video-checkbox"
+        "id-main-video-label-" + CurrentSceneObject.questions.length,
+        "id-main-video-checkbox-" + CurrentSceneObject.questions.length
       );
 
       newVideoHiddenMedia.AssingNamesAndAttr(
-        "div-video-hidden",
+        "div-video-hidden-" + CurrentSceneObject.questions.length,
         "وصف الفيديو",
-        "id-main-video-des"
+        "id-main-video-des-" + CurrentSceneObject.questions.length
       );
 
       // 3 Options for Video types
@@ -952,19 +1000,20 @@ function returnMediaObject(mediaType) {
       const newRadioOfVideoHiddenMediaDiv3 = new RadioOfHiddenMediaDiv();
 
       newRadioOfVideoHiddenMediaDiv1.AssingNamesAndAttr(
-        "main-video-type",
-        "id-main-video-type-photographic",
+        "main-video-type-" + CurrentSceneObject.questions.length,
+        "id-main-video-type-photographic-" +
+          CurrentSceneObject.questions.length,
         "تصوير فوتوغرافي"
       );
       newRadioOfVideoHiddenMediaDiv2.AssingNamesAndAttr(
-        "main-video-type",
-        "id-main-video-type-animation",
+        "main-video-type-" + CurrentSceneObject.questions.length,
+        "id-main-video-type-animation-" + CurrentSceneObject.questions.length,
         "أنيماشن"
       );
 
       newRadioOfVideoHiddenMediaDiv3.AssingNamesAndAttr(
-        "main-video-type",
-        "id-main-video-type-slideshow",
+        "main-video-type-" + CurrentSceneObject.questions.length,
+        "id-main-video-type-slideshow-" + CurrentSceneObject.questions.length,
         "عرض صور مع صوت"
       );
 
@@ -1000,14 +1049,14 @@ function returnMediaObject(mediaType) {
       newTextMedia.AssingNamesAndAttr(
         "نصوص القراءة",
         "ادخال نصوص القراءة",
-        "id-main-text-label",
-        "id-main-text-checkbox"
+        "id-main-text-label-" + CurrentSceneObject.questions.length,
+        "id-main-text-checkbox-" + CurrentSceneObject.questions.length
       );
 
       newTextHiddenMedia.AssingNamesAndAttr(
-        "div-text-hidden",
+        "div-text-hidden-" + CurrentSceneObject.questions.length,
         "وصف النص المقروء",
-        "id-main-text-des"
+        "id-main-text-des-" + CurrentSceneObject.questions.length
       );
 
       newTextMedia.Build();
@@ -1100,7 +1149,7 @@ function CreateTabFunction(
 }
 
 //******* Add new Tab label/content to Existing Tab *******/
-function AddTabFunction(divTabId, tabTitle, NumberOfPrevTabs, newTabId) {
+function AddTabFunction(divTabId, tabTitle, QuestionNumber, newTabId) {
   //get the overall div of the existing tab to append the new tab to it
   let divOverall = document.getElementById(divTabId);
 
@@ -1290,25 +1339,31 @@ function createGenTableHead(tableId, arrtextColsHead) {
 
 //******* Get Media Object Inserted Information from the Media Tab *******/
 
-function GetMediaObjDataFromMediaTab() {
-  const mediaTabShown = document.getElementById("id-media-tab-selected")
-    .textContent;
+function GetMediaObjDataFromMediaTab(OnlyQuestionNumber) {
+  let mediaTabShown = document.getElementById(
+    "id-media-tab-selected-" + OnlyQuestionNumber
+  ).textContent;
+
+  let QuestionTabNumber = mediaTabShown.slice(18, mediaTabShown.length);
+  let swichtNumberTab = QuestionTabNumber.slice(1, QuestionTabNumber.length);
   let infoMedia = {
     type: "",
     DesOrText: "",
     Specs: "",
   };
-  switch (mediaTabShown) {
+  switch (swichtNumberTab) {
     //["pic", "Rsound", "SoundEffect", "Video", "Rtext"];
-    case "id-tabMedia-label-1":
+    case "1":
       infoMedia.type = "Pic";
-      infoMedia.DesOrText = document.getElementById("id-main-pic-des").value;
+      infoMedia.DesOrText = document.getElementById(
+        "id-main-pic-des-" + QuestionTabNumber[0]
+      ).value;
 
       let radioValuePicPhoto = document.getElementById(
-        "id-main-photo-type-photo"
+        "id-main-photo-type-photo-" + QuestionTabNumber[0]
       );
       let radioValuePicDrawing = document.getElementById(
-        "id-main-photo-type-drawing"
+        "id-main-photo-type-drawing-" + QuestionTabNumber[0]
       );
 
       console.log(radioValuePicPhoto);
@@ -1321,36 +1376,40 @@ function GetMediaObjDataFromMediaTab() {
       }
 
       break;
-    case "id-tabMedia-label-2":
+    case "2":
       infoMedia.type = "Rsound";
-      infoMedia.DesOrText = document.getElementById("id-main-sound-des").value;
-
-      infoMedia.Specs = "---";
-
-      break;
-
-    case "id-tabMedia-label-3":
-      infoMedia.type = "SoundEffect";
       infoMedia.DesOrText = document.getElementById(
-        "id-main-soundeffect-des"
+        "id-main-sound-des-" + QuestionTabNumber[0]
       ).value;
 
       infoMedia.Specs = "---";
 
       break;
 
-    case "id-tabMedia-label-4":
+    case "3":
+      infoMedia.type = "SoundEffect";
+      infoMedia.DesOrText = document.getElementById(
+        "id-main-soundeffect-des-" + QuestionTabNumber[0]
+      ).value;
+
+      infoMedia.Specs = "---";
+
+      break;
+
+    case "4":
       infoMedia.type = "Video";
-      infoMedia.DesOrText = document.getElementById("id-main-video-des").value;
+      infoMedia.DesOrText = document.getElementById(
+        "id-main-video-des-" + QuestionTabNumber[0]
+      ).value;
 
       let radioValueVideoPhotographic = document.getElementById(
-        "id-main-video-type-photographic"
+        "id-main-video-type-photographic-" + QuestionTabNumber[0]
       );
       let radioValueVideoAnimation = document.getElementById(
-        "id-main-video-type-animation"
+        "id-main-video-type-animation-" + QuestionTabNumber[0]
       );
       let radioValueVideoSlideShow = document.getElementById(
-        "id-main-video-type-slideshow"
+        "id-main-video-type-slideshow-" + QuestionTabNumber[0]
       );
 
       if (radioValueVideoPhotographic.checked) {
@@ -1365,9 +1424,11 @@ function GetMediaObjDataFromMediaTab() {
 
       break;
 
-    case "id-tabMedia-label-5":
+    case "5":
       infoMedia.type = "Rtext";
-      infoMedia.DesOrText = document.getElementById("id-main-text-des").value;
+      infoMedia.DesOrText = document.getElementById(
+        "id-main-text-des-" + QuestionTabNumber[0]
+      ).value;
 
       infoMedia.Specs = "---";
       break;
