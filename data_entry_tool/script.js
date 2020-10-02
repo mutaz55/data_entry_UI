@@ -12,9 +12,6 @@ selectedScene.addEventListener("click", (e) => {
       e.target.textContent;
 
     document.getElementById("id-scene-code").innerHTML = e.target.value;
-    //delete CurrentSceneObject;
-    //console.log(CurrentSceneObject);
-    // CurrentSceneObject = undefined;
   }
 });
 
@@ -23,9 +20,9 @@ selectedScene.addEventListener("click", (e) => {
 // click on tab #3 to generate the scene type
 
 const clickOnTab3ToBuildScene = document.querySelector("#id-scene-deteils");
+
 clickOnTab3ToBuildScene.addEventListener("click", () => {
   //**************************** Code to be changed to connect to Database ******************************
-  debugger;
   currentSceneHeaderObj = SceneHeaders.find(
     (sid) => sid.sceneID == currentScene
   );
@@ -130,7 +127,7 @@ function openSceneType() {
 
   let DeleteIcones = [false, false, false, false];
   QuestionTitleSection.appendChild(
-    CreateTabFunction(
+    CreateTabFromSceneObject(
       "id-questionText-div",
       arrOfQuestionTitlesNames,
       arrOfQuestionTitlesObjects,
@@ -157,15 +154,17 @@ function openSceneType() {
   //****** Create Questions Tabs and First Question first time ***********/
   // create Questions Tabs (Initialiazation as per the Scene Data Object)
 
-  // Read number of Questions from Scene Data Object
+  // Read number of Questions from Scene Data Object then create the HTML elements
   let numberOfQuestion = CurrentSceneObject.questions.length;
   let questionContentTabsId = [];
   let tabTitle = [];
-  let arrDeleteIconShow = [];
+  // let arrDeleteIconShow = [];
   let QuestionTabContent = [];
   let idContentTab = "";
   let newQuestionID = "";
   let newQuestion = "";
+  let divContent = [];
+  let createIcone = [];
 
   for (i = 0; i < numberOfQuestion; i++) {
     idContentTab = "id-question-tab-" + (i + 1);
@@ -173,21 +172,19 @@ function openSceneType() {
     questionContentTabsId.push(idContentTab);
     tabTitle.push(returnTabTitle(i + 1)); //the Tab question title
 
-    if ((i = 0)) {
-      arrDeleteIconShow.push(false);
-    } else {
-      arrDeleteIconShow.push(true);
-    }
+    divContent.push("");
+    console.log(!!i);
+    createIcone.push(!!+i);
   }
+
   //the Tab question title
-  // console.log(questionContentTabsId[0]);
-  // create the Tab
-  let QuestionTab = CreateTabFunction(
+
+  let QuestionTab = CreateTabFromSceneObject(
     "id-div-question-section",
     tabTitle,
-    "",
+    divContent,
     questionContentTabsId,
-    arrDeleteIconShow
+    createIcone
   );
 
   QuestionSection.appendChild(QuestionTab);
@@ -195,11 +192,12 @@ function openSceneType() {
   for (i = 0; i < numberOfQuestion; i++) {
     idContentTab = "id-question-tab-" + (i + 1);
     QuestionTabContent[i] = document.getElementById(idContentTab);
+
     // console.log("Div Content ");
     // console.log(QuestionTabContent[i]);
     // function Create Media Section, Statements Section & Answers first time
 
-    createQuestion(QuestionTabContent[i]);
+    createQuestion(QuestionTabContent[i], i + 1);
   }
   //****************************************************************************************************************//
 
@@ -214,23 +212,48 @@ function openSceneType() {
     if (numberOfQuestion < 10) {
       let newTabId = "id-question-tab-" + (numberOfQuestion + 1);
       let TabTitle = returnTabTitle(numberOfQuestion + 1);
+      let idDivQuestionSection = "id-div-question-section";
 
       // Add new Tab-label and Tab-content for the Question Tab
       // add x in the Tab-label to delete the Question
+
+      // function AddTabFunction(
+      //   divTabId,
+      //   tabTitle,
+      //   divContentDetails,
+      //   QuestionNumber,
+      //   newTabId
+      // ) {
+
       let NewQuestionTab = AddTabFunction(
-        "id-div-question-section",
+        idDivQuestionSection,
         TabTitle,
+        "",
         numberOfQuestion + 1,
-        newTabId
+        newTabId,
+        !!numberOfQuestion
       );
-      console.log("here we are " + NewQuestionTab);
+      let QuestionMainTab = document.getElementById(idDivQuestionSection);
+      let tabDivQuestions = document.querySelector(
+        `#${idDivQuestionSection} .tab-function`
+      );
+
+      tabDivQuestions.appendChild(NewQuestionTab.paneButton);
+
+      QuestionMainTab.appendChild(NewQuestionTab.DivContent);
+
+      // Tabdiv.appendChild(newButtonTab);
+
+      // divOverall.appendChild(newDivContent);
+
+      // console.log("here we are " + NewQuestionTab);
       //create new Question Data Object with new id
       newQuestionID = "id-question-" + (numberOfQuestion + 1);
       newQuestion = new Question(newQuestionID); //id will be changed as per naming policy of the objects the Ask Mutaz
       CurrentSceneObject.questions.push(newQuestion);
       // create new Question and pass the correct Question Tab-Content
       console.log("CurrentSceneObject:", CurrentSceneObject);
-      createQuestion(NewQuestionTab);
+      createQuestion(NewQuestionTab.DivContent, numberOfQuestion + 1);
     }
   });
 
@@ -242,19 +265,19 @@ function openSceneType() {
 
 //***************************************** Create Question ***********************************************//
 // function Create Media Section, Statements Section & Answers
-function createQuestion(questionTabDIV) {
+function createQuestion(questionTabDIV, CurrentQuestionNumber) {
   ////////////////////////// Media Object ////////////////////////////
   const MediaSection = document.createElement("Section");
   MediaSection.classList.add("genSubSection");
   questionTabDIV.appendChild(MediaSection);
 
-  const mediaTab = createTab(5, CurrentSceneObject.questions.length);
+  const mediaTab = createTab(5, CurrentQuestionNumber);
 
   MediaSection.appendChild(mediaTab);
 
   const MediaOkCancelButton = createAnswersOkCancelbuttons(
-    "id-media-add-" + CurrentSceneObject.questions.length,
-    "id-media-cancel-" + CurrentSceneObject.questions.length,
+    "id-media-add-" + CurrentQuestionNumber,
+    "id-media-cancel-" + CurrentQuestionNumber,
     "اضافة",
     "الغاء"
   );
@@ -262,9 +285,9 @@ function createQuestion(questionTabDIV) {
   MediaSection.appendChild(MediaOkCancelButton);
 
   let SelectedMediaTab = document.createElement("label");
-  SelectedMediaTab.id =
-    "id-media-tab-selected-" + CurrentSceneObject.questions.length;
-  SelectedMediaTab.textContent = "id-tabMedia-label-11";
+  SelectedMediaTab.id = "id-media-tab-selected-" + CurrentQuestionNumber;
+  SelectedMediaTab.textContent =
+    "id-tabMedia-label-" + CurrentQuestionNumber + "1";
   MediaSection.appendChild(SelectedMediaTab);
 
   ///////////////////////////////// Media Table Section //////////////////////////////////////
@@ -279,16 +302,15 @@ function createQuestion(questionTabDIV) {
     "مواصفات العنصر",
   ];
   let itemTobeDeleted = document.createElement("label");
-  itemTobeDeleted.id =
-    "id-label-media-delete-" + CurrentSceneObject.questions.length;
+  itemTobeDeleted.id = "id-label-media-delete-" + CurrentQuestionNumber;
   itemTobeDeleted.textContent = "1";
 
   let mediaTable = createGenTableHead(
-    "id-media-table-" + CurrentSceneObject.questions.length,
+    "id-media-table-" + CurrentQuestionNumber,
     arrMediaTableHeadText
   );
   let DeleteMediaObject = createButton(
-    "id-media-delete-" + CurrentSceneObject.questions.length,
+    "id-media-delete-" + CurrentQuestionNumber,
     "حذف"
   );
   MediaSectionTable.appendChild(mediaTable);
@@ -296,7 +318,7 @@ function createQuestion(questionTabDIV) {
   MediaSectionTable.appendChild(itemTobeDeleted);
 
   document
-    .getElementById("id-media-add-" + CurrentSceneObject.questions.length)
+    .getElementById("id-media-add-" + CurrentQuestionNumber)
     .addEventListener("click", (e) => {
       // let mediaRecord = mediaTable.rows[0].cells.length;
       let TargetId = e.target.id;
@@ -361,12 +383,27 @@ function createQuestion(questionTabDIV) {
 
   // console.log(currentSceneHeaderObj.sceneTypeID.trim());
 
+  ShowScene(
+    StatementSection,
+    tablePreviewSection,
+    AnswerSection,
+    CurrentQuestionNumber
+  );
+}
+
+//////////////////////////////////////////////////////////////////
+function ShowScene(
+  StatementSection,
+  tablePreviewSection,
+  AnswerSection,
+  QuestionNumber
+) {
   switch (currentSceneHeaderObj.sceneTypeID.trim()) {
     case "code_trueFlase":
     case "code_multipleCh":
     case "code_lettersSorting":
       const newCommonStatement = new CommonClassStatements();
-      newCommonStatement.AssingNamesAndAttr();
+      newCommonStatement.AssingNamesAndAttr(QuestionNumber);
       newCommonStatement.Build();
       StatementSection.appendChild(newCommonStatement.ReturnContainerDiv());
       newCommonStatement.insertCommonStatement.addEventListener(
@@ -379,7 +416,7 @@ function createQuestion(questionTabDIV) {
       break;
     case "code_dragdrop":
       const newDragAndDropStatement = new DragAndDropClassStatements();
-      newDragAndDropStatement.AssingNamesAndAttr();
+      newDragAndDropStatement.AssingNamesAndAttr(QuestionNumber);
       newDragAndDropStatement.Build();
       StatementSection.appendChild(
         newDragAndDropStatement.ReturnContainerDiv()
@@ -395,13 +432,13 @@ function createQuestion(questionTabDIV) {
 
     case "code_fillblank":
       const newFillinBlankStatement = new FillinBlankStatement();
-      newFillinBlankStatement.AssingNamesAndAttr();
+      newFillinBlankStatement.AssingNamesAndAttr(QuestionNumber);
       newFillinBlankStatement.Build();
       StatementSection.appendChild(
         newFillinBlankStatement.ReturnContainerDiv()
       );
       // saveSceneSection.appendChild(
-      //   newFillinBlankStatement.createSceneSaveCancelButtons()
+      //   newFillinBlankStatement.createSceneSaveCancelButtons(QuestionNumber)
       // );
       //////////////////////////////////////////////////////////
 
@@ -434,24 +471,32 @@ function createQuestion(questionTabDIV) {
 
       newFillinBlankStatement.insertEmptyFillingBlankStatement.addEventListener(
         "click",
-        function () {
-          // console.log(document.getElementById("id-FiB-statement").innerHTML);
-          let contentTxt = document.getElementById("id-FiB-statement").value;
-          document.getElementById("id-FiB-statement").value =
+        function (e) {
+          let QTarget = e.target.id;
+          console.log(QTarget);
+          let QNumber = QTarget.slice(16, QTarget.length);
+          let contentTxt = document.getElementById(
+            "id-FiB-statement-" + QNumber
+          ).value;
+          document.getElementById("id-FiB-statement-" + QNumber).value =
             contentTxt + "  ... E ...  ";
         }
       );
       newFillinBlankStatement.insertFillingBlankStatement.addEventListener(
         "click",
-        function () {
+        function (e) {
+          let QTarget = e.target.id;
+          console.log("insertFillingBlankStatement: ", QTarget);
+          let QNumber = QTarget.slice(10, QTarget.length);
           clearSection(AnswerSection);
           // console.log("Listner added to Fill in Blank button");
-          let statementString = document.getElementById("id-FiB-statement")
-            .value;
+          let statementString = document.getElementById(
+            "id-FiB-statement-" + QNumber
+          ).value;
           // console.log(statementString);
 
           AnswerSection.appendChild(
-            newFillinBlankStatement.createDraggableOption()
+            newFillinBlankStatement.createDraggableOption(QNumber)
           );
 
           let numberOfEmptyWord = (statementString.match(/E/g) || []).length;
@@ -464,6 +509,7 @@ function createQuestion(questionTabDIV) {
 
             AnswerSection.appendChild(
               newFillinBlankStatement.createEmptyAnswer(
+                QNumber,
                 statementNumber,
                 EmptyWordNumber,
                 AnswerLabelText
@@ -473,25 +519,34 @@ function createQuestion(questionTabDIV) {
           let Ansewer = [];
           let CorrectAnswer = [];
           AnswerSection.appendChild(
-            newFillinBlankStatement.createAnswersOkCancelbuttons()
+            newFillinBlankStatement.createAnswersOkCancelbuttons(QNumber)
           );
-          let buttonOk = document.getElementById("id-answers-button-ok");
+          let buttonOk = document.getElementById(
+            "id-answers-button-ok-" + QNumber
+          );
           let buttonCancel = document.getElementById(
-            "id-answers-button-cancel"
+            "id-answers-button-cancel-" + QNumber
           );
 
           Answers = [];
           CorrectAnswer = [];
           ////////////////////// click on Save Answers in Answer Section
-          buttonOk.addEventListener("click", function () {
-            console.log("I'm inside buttonOk of Answers");
+          buttonOk.addEventListener("click", function (e) {
+            let QTarget = e.target.id;
+            console.log("Inside Ok Answers: ", QTarget);
+            let QNumber = QTarget.slice(21, QTarget.length);
 
             for (let i = 0; i < numberOfEmptyWord; i++) {
               statementNumber = "S1";
               EmptyWordNumber = "E-word-" + (i + 1);
 
               AnswerIdtext =
-                "id-fill-in-blank-" + statementNumber + "-" + EmptyWordNumber;
+                "id-fill-in-blank-" +
+                QNumber +
+                "-" +
+                statementNumber +
+                "-" +
+                EmptyWordNumber;
               let AnswerValue = document.getElementById(AnswerIdtext).value;
 
               Answers.push(AnswerValue);
@@ -500,14 +555,14 @@ function createQuestion(questionTabDIV) {
 
             createRowTable(
               newPreviewTable,
-              "id-row-1",
+              "id-row-1-" + QNumber,
               statementString,
               Answers,
               CorrectAnswer
             );
 
             clearSection(AnswerSection);
-            clearStatementInput();
+            clearStatementInput(QNumber);
           });
           ///////////////////////////// Click on Cancel in Answer Section
           buttonCancel.addEventListener("click", function () {
@@ -520,17 +575,21 @@ function createQuestion(questionTabDIV) {
 
     case "code_categories":
       const newCategoryStatement = new CatagoriesClassStatements();
-      newCategoryStatement.AssingNamesAndAttr();
+      newCategoryStatement.AssingNamesAndAttr(QuestionNumber);
       newCategoryStatement.Build();
 
       StatementSection.appendChild(newCategoryStatement.ReturnContainerDiv());
 
       newCategoryStatement.addCategoryButton.addEventListener(
         "click",
-        function () {
+        function (e) {
+          let QTarget = e.target.id;
+          console.log("Inside Category Button: ", QTarget);
+          let QNumber = QTarget.slice(16, QTarget.length);
+
           const new_item = document.createElement("button");
           const new_item_txt = document.createTextNode(
-            document.getElementById("id-category").value
+            document.getElementById("id-category-" + QNumber).value
           );
 
           newCategoryStatement.buttonIndexlist.push(
@@ -538,7 +597,10 @@ function createQuestion(questionTabDIV) {
           );
 
           new_item.id =
-            "id-category-button-" + newCategoryStatement.buttonIndexlist.length;
+            "id-category-button-" +
+            QNumber +
+            "-" +
+            newCategoryStatement.buttonIndexlist.length;
 
           new_item.type = "button";
           new_item.classList.add("list-group-item");
@@ -581,7 +643,7 @@ function createQuestion(questionTabDIV) {
 
     case "code_sorting":
       const newOrganizeStatements = new OrganizeStatements();
-      newOrganizeStatements.AssingNamesAndAttr();
+      newOrganizeStatements.AssingNamesAndAttr(QuestionNumber);
       newOrganizeStatements.Build();
       StatementSection.appendChild(newOrganizeStatements.ReturnContainerDiv());
       newOrganizeStatements.insertOrganizeStatement.addEventListener(
@@ -595,8 +657,6 @@ function createQuestion(questionTabDIV) {
     default:
       console.log("Hello");
   }
-
-  ////////////////////////////////////////////
 }
 
 function returnTextTitleFIB(number) {
@@ -678,15 +738,6 @@ function createRowTable(newTable, idRow, Statement, Answers, CorrectOrNo) {
   });
 }
 
-//******* Insert Empty In a Row  Function *******/
-
-// click on insert empty
-$("#id-insert-empty").click(function () {
-  let contentTxt = document.getElementById("id-statement").value;
-
-  document.getElementById("id-statement").value = contentTxt + " E ";
-});
-
 //******* create slide animation for hidden Divs *******/
 $(".itemSlide").slideUp();
 
@@ -724,8 +775,12 @@ function clearSection(SectionName) {
 }
 
 //******* Clear Statement input (Fill In Blank Scene) *******/
-function clearStatementInput() {
-  let statementInput = document.getElementById("id-FiB-statement");
+function clearStatementInput(QuestionNumber) {
+  // console.log(QuestionNumber);
+  let statementInput = document.getElementById(
+    "id-FiB-statement-" + QuestionNumber
+  );
+  // console.log(statementInput);
   statementInput.value = "";
   statementInput.focus();
 }
@@ -1089,24 +1144,16 @@ function OpenTab(evt, divTABID, tabName) {
 
 //******* Create General Tabs *******/
 
-// CreateTabFunction(
-//   "id-questionText-div",
-//   arrOfQuestionTitlesNames,
-//   arrOfQuestionTitlesObjects,
-//   idsForQuestionTextTab,
-//   DeleteIcones
-// )
-
-function CreateTabFunction(
+function CreateTabFromSceneObject(
   divTabID,
   NameOfTabs,
   divContentDetails,
   idOfContentTabs,
-  DeleteIcons
+  createIcone
 ) {
   //Create overall div for the Tab, the Tab consiste of two parts the Tab pane where the buttons with the Question title number are
   // and the Tab content where the Question Details are
-
+  let tapPaneContent = "";
   let divOverall = document.createElement("div");
   divOverall.id = divTabID;
   divOverall.classList.add("questionText");
@@ -1117,80 +1164,93 @@ function CreateTabFunction(
 
   divOverall.appendChild(divTab);
 
-  // // Br is only if needed for giving some spaces
-  // let Br = document.createElement("br");
-
-  // Create the Arrays of the two Tab Parts: buttonTab to create the Tab pane Elements, divContent for Tab Question details
-  let buttonTab = [];
-  let divContent = [];
-
   // number of Tabs panes/Content is as per the number of Questions in the Scene passed in an argument
 
   for (let i = 0; i < NameOfTabs.length; i++) {
-    buttonTab[i] = document.createElement("button");
-    buttonTab[i].classList.add("tablinks-function");
-    buttonTab[i].textContent = NameOfTabs[i];
-
-    divContent[i] = document.createElement("div");
-    divContent[i].classList.add("tabcontent-function");
-    divContent[i].id = idOfContentTabs[i];
-    if (divContentDetails[i] !== undefined) {
-      divContent[i].appendChild(divContentDetails[i]);
-    }
-
-    buttonTab[i].addEventListener("click", (evt) =>
-      OpenTab(evt, divTabID, divContent[i].id)
+    tapPaneContent = AddTabFunction(
+      divTabID,
+      NameOfTabs[i],
+      divContentDetails[i],
+      i + 1,
+      idOfContentTabs[i],
+      createIcone[i]
     );
-    divTab.appendChild(buttonTab[i]);
-    divOverall.appendChild(divContent[i]);
+
+    divTab.appendChild(tapPaneContent.paneButton);
+    divOverall.appendChild(tapPaneContent.DivContent);
   }
 
   return divOverall;
 }
 
+// function createDeleteIcone(newTabId, btn) {
+//   let Xicone = document.createElement("i");
+//   Xicone.id = newTabId.slice(16, newTabId.length);
+//   Xicone.classList.add("fas");
+//   Xicone.classList.add("fa-trash-alt");
+//   Xicone.classList.add("fa-1x");
+//   Xicone.style.color = "red";
+//   Xicone.title = "حذف السؤال";
+//   let Spaceicone = document.createTextNode(" ");
+
+//   btn.appendChild(Spaceicone);
+//   btn.appendChild(Xicone);
+//   return btn;
+// }
+
 //******* Add new Tab label/content to Existing Tab *******/
-function AddTabFunction(divTabId, tabTitle, QuestionNumber, newTabId) {
+function AddTabFunction(
+  divTabId,
+  tabTitle,
+  divContentDetails,
+  QuestionNumber,
+  newTabId,
+  createIcone
+) {
   //get the overall div of the existing tab to append the new tab to it
-  let divOverall = document.getElementById(divTabId);
-
-  // create x icone to delete the Question
-  let Xicone = document.createElement("i");
-  Xicone.id = newTabId.slice(16, newTabId.length);
-  Xicone.classList.add("fas");
-  Xicone.classList.add("fa-trash-alt");
-  Xicone.classList.add("fa-1x");
-  Xicone.style.color = "red";
-  Xicone.title = "حذف السؤال";
-  let Spaceicone = document.createTextNode(" ");
-
+  // let divOverall = document.getElementById(divTabId);
+  let tabPaneContent = { paneButton: "", DivContent: "" };
   let newButtonTab = document.createElement("button");
   newButtonTab.classList.add("tablinks-function");
   newButtonTab.textContent = tabTitle;
-  newButtonTab.appendChild(Spaceicone);
-  newButtonTab.appendChild(Xicone);
+
+  // create x icone to delete the Question
+  if (createIcone) {
+    let Xicone = document.createElement("i");
+    // Xicone.id = newTabId.slice(16, newTabId.length);
+    Xicone.id = QuestionNumber;
+    Xicone.classList.add("fas");
+    Xicone.classList.add("fa-trash-alt");
+    Xicone.classList.add("fa-1x");
+    Xicone.style.color = "red";
+    Xicone.title = "حذف السؤال";
+    let Spaceicone = document.createTextNode(" ");
+    newButtonTab.appendChild(Spaceicone);
+    newButtonTab.appendChild(Xicone);
+    Xicone.addEventListener("click", (e) => {
+      //Delete Tab & Tab Content
+      if ((e.target.tagName = "i")) {
+        console.log("Delete Question Number : " + e.target.id);
+      }
+    });
+  }
 
   let newDivContent = document.createElement("div");
   newDivContent.classList.add("tabcontent-function");
   newDivContent.id = newTabId;
 
+  if (divContentDetails !== "") {
+    newDivContent.appendChild(divContentDetails);
+  }
+
   newButtonTab.addEventListener("click", (evt) =>
     OpenTab(evt, divTabId, newTabId)
   );
 
-  Xicone.addEventListener("click", (e) => {
-    //Delete Tab & Tab Content
-    if ((e.target.tagName = "i")) {
-      console.log("Delete Question Number : " + e.target.id);
-    }
-  });
+  tabPaneContent.paneButton = newButtonTab;
+  tabPaneContent.DivContent = newDivContent;
 
-  let Tabdiv = document.querySelector(`#${divTabId} .tab-function`);
-
-  // console.log(Tabdiv);
-  Tabdiv.appendChild(newButtonTab);
-
-  divOverall.appendChild(newDivContent);
-  return newDivContent;
+  return tabPaneContent;
 }
 
 //******* Return the Tab Title Text based on the Question Number *******/
@@ -1640,17 +1700,17 @@ class OrganizeStatements {
     this.divOverall = document.createElement("div");
     this.insertOrganizeStatement = document.createElement("a");
   }
-  AssingNamesAndAttr() {
-    this.divWarning.id = "div-label-warning";
+  AssingNamesAndAttr(QuestionNumber) {
+    this.divWarning.id = "div-label-warning-" + QuestionNumber;
     this.divWarning.classList.add("form-group");
     this.divWarning.classList.add("group-element");
 
-    this.labelWarning.id = "id-label-warning";
+    this.labelWarning.id = "id-label-warning-" + QuestionNumber;
     this.labelWarning.classList.add("label-war");
     this.labelWarning.classList.add("col-lg-12");
     this.labelWarning.textContent = "الرجاء ادخال العبارات بالترتيب الصحيح";
 
-    this.divOrganizeInsertStatement.id = "div-org-statement";
+    this.divOrganizeInsertStatement.id = "div-org-statement-" + QuestionNumber;
     this.divOrganizeInsertStatement.classList.add("form-group");
     this.divOrganizeInsertStatement.classList.add("group-element");
 
@@ -1658,12 +1718,12 @@ class OrganizeStatements {
     this.labelOrganizeInsertStatement.classList.add("col-lg-3");
     this.labelOrganizeInsertStatement.textContent = "أدخل العبارة";
 
-    this.textOrganizeInsertStatement.id = "id-org-statement";
+    this.textOrganizeInsertStatement.id = "id-org-statement-" + QuestionNumber;
     this.textOrganizeInsertStatement.type = "text";
     this.textOrganizeInsertStatement.classList.add("form-control");
     this.textOrganizeInsertStatement.classList.add("under-label");
 
-    this.insertOrganizeStatement.id = "id-insert";
+    this.insertOrganizeStatement.id = "id-insert-" + QuestionNumber;
     this.insertOrganizeStatement.classList.add("statement-btn");
     this.insertOrganizeStatement.innerHTML = " موافق ";
     this.insertOrganizeStatement.style.color = "#fff";
@@ -1694,8 +1754,8 @@ class CommonClassStatements {
     this.textCommonStatement = document.createElement("input");
     this.insertCommonStatement = document.createElement("a");
   }
-  AssingNamesAndAttr() {
-    this.divCommonStatement.id = "div-common-statement";
+  AssingNamesAndAttr(QuestionNumber) {
+    this.divCommonStatement.id = "div-common-statement-" + QuestionNumber;
     this.divCommonStatement.classList.add("form-group");
     this.divCommonStatement.classList.add("group-element");
 
@@ -1703,12 +1763,12 @@ class CommonClassStatements {
     this.labelCommonStatement.classList.add("col-lg-3");
     this.labelCommonStatement.textContent = "أدخل العبارة";
 
-    this.textCommonStatement.id = "id-common-statement";
+    this.textCommonStatement.id = "id-common-statement-" + QuestionNumber;
     this.textCommonStatement.type = "text";
     this.textCommonStatement.classList.add("form-control");
     this.textCommonStatement.classList.add("under-label");
 
-    this.insertCommonStatement.id = "id-insert";
+    this.insertCommonStatement.id = "id-insert-" + QuestionNumber;
     this.insertCommonStatement.classList.add("statement-btn");
     this.insertCommonStatement.innerHTML = " موافق ";
     this.insertCommonStatement.style.color = "#fff";
@@ -1734,8 +1794,8 @@ class FillinBlankStatement {
 
     this.EmptyWords = 0;
   }
-  AssingNamesAndAttr() {
-    this.divFillinBlankStatement.id = "div-FiB-statement";
+  AssingNamesAndAttr(QuestionNumber) {
+    this.divFillinBlankStatement.id = "div-FiB-statement-" + QuestionNumber;
     this.divFillinBlankStatement.classList.add("form-group");
     this.divFillinBlankStatement.classList.add("group-element");
 
@@ -1743,21 +1803,23 @@ class FillinBlankStatement {
     this.labelFillinBlankStatement.classList.add("col-lg-3");
     this.labelFillinBlankStatement.textContent = "أدخل العبارة";
 
-    this.insertEmptyFillingBlankStatement.id = "id-insert-empty";
+    this.insertEmptyFillingBlankStatement.id =
+      "id-insert-empty-" + QuestionNumber;
     this.insertEmptyFillingBlankStatement.classList.add("btn");
     this.insertEmptyFillingBlankStatement.classList.add("btn-info");
     this.insertEmptyFillingBlankStatement.textContent = "أدخل فراغ";
 
     this.inputFillinBlankStatement.type = "text";
-    this.inputFillinBlankStatement.id = "id-FiB-statement";
+    this.inputFillinBlankStatement.id = "id-FiB-statement-" + QuestionNumber;
     this.inputFillinBlankStatement.classList.add("form-control");
     this.inputFillinBlankStatement.classList.add("under-label");
 
-    this.insertFillingBlankStatement.id = "id-insert";
+    this.insertFillingBlankStatement.id = "id-insert-" + QuestionNumber;
     this.insertFillingBlankStatement.classList.add("statement-btn");
     this.insertFillingBlankStatement.innerHTML = " إدخال الإجابات ";
     this.insertFillingBlankStatement.style.color = "#fff";
   }
+
   Build() {
     this.divFillinBlankStatement.appendChild(this.labelFillinBlankStatement);
     this.divFillinBlankStatement.appendChild(this.inputFillinBlankStatement);
@@ -1768,18 +1830,33 @@ class FillinBlankStatement {
       this.insertEmptyFillingBlankStatement
     );
   }
-  createEmptyAnswer(StatementNumber, EmptyWordNumber, AnswerLabelText) {
+  createEmptyAnswer(
+    QuestionNumber,
+    StatementNumber,
+    EmptyWordNumber,
+    AnswerLabelText
+  ) {
     let divAnswer = document.createElement("div");
     let labelAnswer = document.createElement("label");
     let inputAnswer = document.createElement("input");
     //Assinge
     divAnswer.id =
-      "div-fill-in-blank-" + StatementNumber + "-" + EmptyWordNumber;
+      "div-fill-in-blank-" +
+      QuestionNumber +
+      "-" +
+      StatementNumber +
+      "-" +
+      EmptyWordNumber;
     labelAnswer.classList.add("fill-in-blank");
     labelAnswer.textContent = AnswerLabelText;
     inputAnswer.type = "text";
     inputAnswer.id =
-      "id-fill-in-blank-" + StatementNumber + "-" + EmptyWordNumber;
+      "id-fill-in-blank-" +
+      QuestionNumber +
+      "-" +
+      StatementNumber +
+      "-" +
+      EmptyWordNumber;
     inputAnswer.classList.add("input-fill-in-blank");
     inputAnswer.classList.add("col-lg-2");
     //build
@@ -1789,7 +1866,7 @@ class FillinBlankStatement {
 
     return divAnswer;
   }
-  createDraggableOption() {
+  createDraggableOption(QuestionNumber) {
     // construct
     this.divRadioDraggable = document.createElement("div");
     this.labelRadioDraggable = document.createElement("label");
@@ -1806,22 +1883,23 @@ class FillinBlankStatement {
 
     this.labelRadioDraggable.classList.add("radio-margin");
 
-    this.radioDraggable.id = "id-draggable";
+    this.radioDraggable.id = "id-draggable-Draggable-" + QuestionNumber;
     this.radioDraggable.name = "FiB-DraggableOrWrite";
     this.radioDraggable.type = "radio";
     this.spanDraggable.style.fontSize = "2rem";
     this.spanDraggable.style.color = "rgb(68, 67, 67)";
     this.spanDraggable.textContent = "سحب وادراج";
+    this.spanDraggable.value = "Drag-Drop";
 
     this.labelRadioWrite.classList.add("radio-margin");
 
-    this.radioWrite.id = "id-draggable";
+    this.radioWrite.id = "id-draggable-InputText-" + QuestionNumber;
     this.radioWrite.name = "FiB-DraggableOrWrite";
     this.radioWrite.type = "radio";
     this.spanWrite.style.fontSize = "2rem";
     this.spanWrite.style.color = "rgb(68, 67, 67)";
     this.spanWrite.textContent = "ادخال كتابي";
-
+    this.spanWrite.value = "Input-Text";
     //Build
 
     this.divRadioDraggable.appendChild(this.labelRadioDraggable);
@@ -1838,13 +1916,13 @@ class FillinBlankStatement {
     return this.divRadioDraggable;
   }
 
-  createAnswersOkCancelbuttons() {
+  createAnswersOkCancelbuttons(QuestionNumber) {
     let divOkCancelAnswers = document.createElement("div");
     let buttonOk = document.createElement("a");
     let buttonCancel = document.createElement("a");
 
-    buttonOk.id = "id-answers-button-ok";
-    buttonCancel.id = "id-answers-button-cancel";
+    buttonOk.id = "id-answers-button-ok-" + QuestionNumber;
+    buttonCancel.id = "id-answers-button-cancel-" + QuestionNumber;
 
     buttonOk.classList.add("normal-Button");
     buttonCancel.classList.add("normal-Button");
@@ -1860,13 +1938,13 @@ class FillinBlankStatement {
     return divOkCancelAnswers;
   }
 
-  createSceneSaveCancelButtons() {
+  createSceneSaveCancelButtons(QuestionNumber) {
     let divOkCancelAnswers = document.createElement("div");
     let buttonOk = document.createElement("a");
     let buttonCancel = document.createElement("a");
 
-    buttonOk.id = "id-scene-button-save";
-    buttonCancel.id = "id-scene-button-cancel";
+    buttonOk.id = "id-scene-button-save-" + QuestionNumber;
+    buttonCancel.id = "id-scene-button-cancel-" + QuestionNumber;
 
     buttonOk.classList.add("normal-Button");
     buttonCancel.classList.add("normal-Button");
@@ -1901,8 +1979,9 @@ class DragAndDropClassStatements {
     this.insertDragAndDropStatement = document.createElement("a");
     this.br = document.createElement("br");
   }
-  AssingNamesAndAttr() {
-    this.divDragAndDropStatement.id = "div-dragAnddrop1-statement";
+  AssingNamesAndAttr(QuestionNumber) {
+    this.divDragAndDropStatement.id =
+      "div-dragAnddrop1-statement-" + QuestionNumber;
     this.divDragAndDropStatement.classList.add("form-group");
     this.divDragAndDropStatement.classList.add("group-element");
 
@@ -1914,17 +1993,19 @@ class DragAndDropClassStatements {
     this.labelDragAndDropStatement2.classList.add("col-lg-3");
     this.labelDragAndDropStatement2.textContent = "أدخل العبارة المقابلة";
 
-    this.textDragAndDropStatement1.id = "id-dragAnddrop1-statement";
+    this.textDragAndDropStatement1.id =
+      "id-dragAnddrop1-statement-" + QuestionNumber;
     this.textDragAndDropStatement1.type = "text";
     this.textDragAndDropStatement1.classList.add("form-control");
     this.textDragAndDropStatement1.classList.add("under-label");
 
-    this.textDragAndDropStatement2.id = "id-dragAnddrop2-statement";
+    this.textDragAndDropStatement2.id =
+      "id-dragAnddrop2-statement-" + QuestionNumber;
     this.textDragAndDropStatement2.type = "text";
     this.textDragAndDropStatement2.classList.add("form-control");
     this.textDragAndDropStatement2.classList.add("under-label");
 
-    this.insertDragAndDropStatement.id = "id-insert";
+    this.insertDragAndDropStatement.id = "id-insert-" + QuestionNumber;
     this.insertDragAndDropStatement.classList.add("statement-btn");
     this.insertDragAndDropStatement.innerHTML = " موافق ";
     this.insertDragAndDropStatement.style.color = "#fff";
@@ -1969,14 +2050,14 @@ class CatagoriesClassStatements {
 
     this.insertCategoryStatement = document.createElement("a");
   }
-  AssingNamesAndAttr() {
+  AssingNamesAndAttr(QuestionNumber) {
     this.divOverall.classList.add("list-col");
 
     this.labelCategory.classList.add("label-course");
     this.labelCategory.classList.add("col-lg-3");
     this.labelCategory.textContent = "إدخال التصنيف";
 
-    this.divCategorylist.id = "div-category-list";
+    this.divCategorylist.id = "div-category-list-" + QuestionNumber;
     // this.divCategorylist.classList.add("form-control");
 
     this.divCategorylist.classList.add("list-group");
@@ -1989,7 +2070,7 @@ class CatagoriesClassStatements {
     this.divCategoryinput.classList.add("input-group");
     this.divCategoryinput.classList.add("mb-3");
 
-    this.textCategory.id = "id-category";
+    this.textCategory.id = "id-category-" + QuestionNumber;
     this.textCategory.type = "text";
     this.textCategory.classList.add("form-control");
     this.textCategory.classList.add("input-concepts");
@@ -1998,20 +2079,20 @@ class CatagoriesClassStatements {
     this.textCategory.placeholder = "إدخال التصنيف";
     // this.textCategory.aria.label = "إدخال التصنيف";
 
-    this.divButtonns.id = "div-add-delete-category";
+    this.divButtonns.id = "div-add-delete-category-" + QuestionNumber;
     this.divButtonns.classList.add("input-group-append");
 
-    this.addCategoryButton.id = "id-add-category";
+    this.addCategoryButton.id = "id-add-category-" + QuestionNumber;
     this.addCategoryButton.classList.add("btn");
     this.addCategoryButton.classList.add("btn-outline-success");
     this.addCategoryButton.textContent = "اضافة";
 
-    this.deleteCategoryButton.id = "id-delete-category";
+    this.deleteCategoryButton.id = "id-delete-category-" + QuestionNumber;
     this.deleteCategoryButton.classList.add("btn");
     this.deleteCategoryButton.classList.add("btn-outline-danger");
     this.deleteCategoryButton.textContent = "حذف";
 
-    this.inputCategoryStatement.id = "id-category-statement";
+    this.inputCategoryStatement.id = "id-category-statement-" + QuestionNumber;
     this.inputCategoryStatement.type = "text";
     this.inputCategoryStatement.classList.add("form-control");
     this.inputCategoryStatement.classList.add("input-concepts");
@@ -2019,7 +2100,7 @@ class CatagoriesClassStatements {
     this.inputCategoryStatement.style.fontSize = "larger";
     this.inputCategoryStatement.placeholder = "أدخل العبارة";
 
-    this.divCategoryStatement.id = "div-category-statement";
+    this.divCategoryStatement.id = "div-category-statement-" + QuestionNumber;
     this.divCategoryStatement.classList.add("form-group");
     this.divCategoryStatement.classList.add("group-element");
 
@@ -2027,7 +2108,7 @@ class CatagoriesClassStatements {
     this.labelCategoryStatement.classList.add("col-lg-3");
     this.labelCategoryStatement.textContent = "أدخل العبارة";
 
-    this.insertCategoryStatement.id = "id-delete-category";
+    this.insertCategoryStatement.id = "id-delete-category-" + QuestionNumber;
     this.insertCategoryStatement.classList.add("statement-btn");
     this.insertCategoryStatement.innerHTML = " موافق ";
     this.insertCategoryStatement.style.color = "#fff";
