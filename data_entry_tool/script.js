@@ -828,7 +828,9 @@ function createTab(TabsNumbers, QuestionNumber) {
     divTabbytab[i].appendChild(divTabbyContent[i]);
 
     divtabs.appendChild(divTabbytab[i]);
-    divTabbyContent[i].appendChild(returnMediaObject(mediaArray[i]));
+    divTabbyContent[i].appendChild(
+      returnMediaObject(mediaArray[i], QuestionNumber)
+    );
 
     labelTab[i].addEventListener("click", (e) => {
       // console.log(e.target.tagName);
@@ -911,7 +913,7 @@ function ReturnIcon(IconeType) {
 
 //******* Create Media Object *******/
 
-function returnMediaObject(mediaType) {
+function returnMediaObject(mediaType, QuestionNumber) {
   switch (mediaType) {
     case "pic":
       //**************************Pic Media Object******************************** */
@@ -921,14 +923,14 @@ function returnMediaObject(mediaType) {
       newPicMedia.AssingNamesAndAttr(
         "صورة",
         "ادخال الصورة",
-        "id-main-pic-label-" + CurrentSceneObject.questions.length,
-        "id-main-pic-checkbox-" + CurrentSceneObject.questions.length
+        "id-main-pic-label-" + QuestionNumber,
+        "id-main-pic-checkbox-" + QuestionNumber
       );
 
       newPicHiddenMedia.AssingNamesAndAttr(
-        "div-pic-hidden-" + CurrentSceneObject.questions.length,
+        "div-pic-hidden-" + QuestionNumber,
         "وصف الصورة",
-        "id-main-pic-des-" + CurrentSceneObject.questions.length
+        "id-main-pic-des-" + QuestionNumber
       );
 
       // 2 Options for Pic types
@@ -936,13 +938,13 @@ function returnMediaObject(mediaType) {
       const newRadioOfPicHiddenMediaDiv2 = new RadioOfHiddenMediaDiv();
 
       newRadioOfPicHiddenMediaDiv1.AssingNamesAndAttr(
-        "main-photo-type-" + CurrentSceneObject.questions.length,
-        "id-main-photo-type-photo-" + CurrentSceneObject.questions.length,
+        "main-photo-type-" + QuestionNumber,
+        "id-main-photo-type-photo-" + QuestionNumber,
         "تصوير فوتوغرافي"
       );
       newRadioOfPicHiddenMediaDiv2.AssingNamesAndAttr(
-        "main-photo-type-" + CurrentSceneObject.questions.length,
-        "id-main-photo-type-drawing-" + CurrentSceneObject.questions.length,
+        "main-photo-type-" + QuestionNumber,
+        "id-main-photo-type-drawing-" + QuestionNumber,
         "رسومات"
       );
 
@@ -976,14 +978,14 @@ function returnMediaObject(mediaType) {
       newRecordedSoundMedia.AssingNamesAndAttr(
         "النص الصوتي",
         "ادخال النص الصوتي",
-        "id-main-sound-label-" + CurrentSceneObject.questions.length,
-        "id-main-sound-checkbox-" + CurrentSceneObject.questions.length
+        "id-main-sound-label-" + QuestionNumber,
+        "id-main-sound-checkbox-" + QuestionNumber
       );
 
       newRecordedSoundHiddenMedia.AssingNamesAndAttr(
-        "div-sound-hidden-" + CurrentSceneObject.questions.length,
+        "div-sound-hidden-" + QuestionNumber,
         "وصف النص الصوتي",
-        "id-main-sound-des-" + CurrentSceneObject.questions.length
+        "id-main-sound-des-" + QuestionNumber
       );
 
       newRecordedSoundMedia.Build();
@@ -1008,14 +1010,14 @@ function returnMediaObject(mediaType) {
       newSoundEffectMedia.AssingNamesAndAttr(
         "الؤثرات الصوتية",
         "ادخال المؤثرات الصوتية",
-        "id-main-soundeffect-label-" + CurrentSceneObject.questions.length,
-        "id-main-soundeffect-checkbox-" + CurrentSceneObject.questions.length
+        "id-main-soundeffect-label-" + QuestionNumber,
+        "id-main-soundeffect-checkbox-" + QuestionNumber
       );
 
       newSoundEffectHiddenMedia.AssingNamesAndAttr(
-        "div-soundeffect-hidden-" + CurrentSceneObject.questions.length,
+        "div-soundeffect-hidden-" + QuestionNumber,
         "وصف المؤثرات الصوتية",
-        "id-main-soundeffect-des-" + CurrentSceneObject.questions.length
+        "id-main-soundeffect-des-" + QuestionNumber
       );
 
       newSoundEffectMedia.Build();
@@ -1039,14 +1041,14 @@ function returnMediaObject(mediaType) {
       newVideoMedia.AssingNamesAndAttr(
         "الفيديو",
         "ادخال الفيديو",
-        "id-main-video-label-" + CurrentSceneObject.questions.length,
-        "id-main-video-checkbox-" + CurrentSceneObject.questions.length
+        "id-main-video-label-" + QuestionNumber,
+        "id-main-video-checkbox-" + QuestionNumber
       );
 
       newVideoHiddenMedia.AssingNamesAndAttr(
-        "div-video-hidden-" + CurrentSceneObject.questions.length,
+        "div-video-hidden-" + QuestionNumber,
         "وصف الفيديو",
-        "id-main-video-des-" + CurrentSceneObject.questions.length
+        "id-main-video-des-" + QuestionNumber
       );
 
       // 3 Options for Video types
@@ -1055,20 +1057,19 @@ function returnMediaObject(mediaType) {
       const newRadioOfVideoHiddenMediaDiv3 = new RadioOfHiddenMediaDiv();
 
       newRadioOfVideoHiddenMediaDiv1.AssingNamesAndAttr(
-        "main-video-type-" + CurrentSceneObject.questions.length,
-        "id-main-video-type-photographic-" +
-          CurrentSceneObject.questions.length,
+        "main-video-type-" + QuestionNumber,
+        "id-main-video-type-photographic-" + QuestionNumber,
         "تصوير فوتوغرافي"
       );
       newRadioOfVideoHiddenMediaDiv2.AssingNamesAndAttr(
-        "main-video-type-" + CurrentSceneObject.questions.length,
-        "id-main-video-type-animation-" + CurrentSceneObject.questions.length,
+        "main-video-type-" + QuestionNumber,
+        "id-main-video-type-animation-" + QuestionNumber,
         "أنيماشن"
       );
 
       newRadioOfVideoHiddenMediaDiv3.AssingNamesAndAttr(
-        "main-video-type-" + CurrentSceneObject.questions.length,
-        "id-main-video-type-slideshow-" + CurrentSceneObject.questions.length,
+        "main-video-type-" + QuestionNumber,
+        "id-main-video-type-slideshow-" + QuestionNumber,
         "عرض صور مع صوت"
       );
 
@@ -1104,14 +1105,14 @@ function returnMediaObject(mediaType) {
       newTextMedia.AssingNamesAndAttr(
         "نصوص القراءة",
         "ادخال نصوص القراءة",
-        "id-main-text-label-" + CurrentSceneObject.questions.length,
-        "id-main-text-checkbox-" + CurrentSceneObject.questions.length
+        "id-main-text-label-" + QuestionNumber,
+        "id-main-text-checkbox-" + QuestionNumber
       );
 
       newTextHiddenMedia.AssingNamesAndAttr(
-        "div-text-hidden-" + CurrentSceneObject.questions.length,
+        "div-text-hidden-" + QuestionNumber,
         "وصف النص المقروء",
-        "id-main-text-des-" + CurrentSceneObject.questions.length
+        "id-main-text-des-" + QuestionNumber
       );
 
       newTextMedia.Build();
