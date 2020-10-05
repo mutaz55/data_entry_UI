@@ -42,16 +42,13 @@ function openSceneType() {
   let i;
   // Read the Scne type name in Arabic shown in the Tab 2 - Scene type
   let sceneType = document.getElementById("id-scene-selected").textContent;
-
   const selectedSceneTab = document.getElementById("scene-details");
-
   selectedSceneTab.innerHTML = "";
 
   // while (selectedSceneTab.firstChild) {
   //   console.log(selectedSceneTab.lastChild);
   //   selectedSceneTab.removeChild(selectedSceneTab.lastChild);
   // }
-
   // Show the name of the Scene
 
   selectedSceneTab.style.display = "block";
@@ -103,6 +100,7 @@ function openSceneType() {
   newExercisePreviousHelp.UpdateTextValueFromDatabase(
     CurrentSceneObject.exerciseHintObj.previousHelp.description
   );
+
   /***********************************************************************************************/
   let arrOfQuestionTitlesObjects = [];
 
@@ -117,6 +115,7 @@ function openSceneType() {
     "مساعدة",
     "مراجعات سابقة",
   ];
+
   // console.log(arrOfQuestionTitlesObjects);
 
   let idsForQuestionTextTab = [];
@@ -135,6 +134,8 @@ function openSceneType() {
       DeleteIcones
     )
   );
+
+  ReadDataFromQuestionTextSection();
 
   ///////////////////// Add Questions  /////////////////////////
   //create Question Section container
@@ -197,7 +198,7 @@ function openSceneType() {
     // console.log(QuestionTabContent[i]);
     // function Create Media Section, Statements Section & Answers first time
 
-    createQuestion(QuestionTabContent[i], i + 1);
+    createQuestion(QuestionTabContent[i], i + 1, !!i);
   }
   //****************************************************************************************************************//
 
@@ -209,21 +210,13 @@ function openSceneType() {
     let numberOfQuestion = CurrentSceneObject.questions.length;
 
     // Add Tab (tab & content Div) to existing Questions Tab (max 10)
-    if (numberOfQuestion < 10) {
+    if (numberOfQuestion < 9) {
       let newTabId = "id-question-tab-" + (numberOfQuestion + 1);
       let TabTitle = returnTabTitle(numberOfQuestion + 1);
       let idDivQuestionSection = "id-div-question-section";
 
       // Add new Tab-label and Tab-content for the Question Tab
       // add x in the Tab-label to delete the Question
-
-      // function AddTabFunction(
-      //   divTabId,
-      //   tabTitle,
-      //   divContentDetails,
-      //   QuestionNumber,
-      //   newTabId
-      // ) {
 
       let NewQuestionTab = AddTabFunction(
         idDivQuestionSection,
@@ -242,18 +235,9 @@ function openSceneType() {
 
       QuestionMainTab.appendChild(NewQuestionTab.DivContent);
 
-      // Tabdiv.appendChild(newButtonTab);
-
-      // divOverall.appendChild(newDivContent);
-
-      // console.log("here we are " + NewQuestionTab);
-      //create new Question Data Object with new id
-      newQuestionID = "id-question-" + (numberOfQuestion + 1);
-      newQuestion = new Question(newQuestionID); //id will be changed as per naming policy of the objects the Ask Mutaz
-      CurrentSceneObject.questions.push(newQuestion);
       // create new Question and pass the correct Question Tab-Content
-      console.log("CurrentSceneObject:", CurrentSceneObject);
-      createQuestion(NewQuestionTab.DivContent, numberOfQuestion + 1);
+
+      createQuestion(NewQuestionTab.DivContent, numberOfQuestion + 1, true);
     }
   });
 
@@ -265,7 +249,17 @@ function openSceneType() {
 
 //***************************************** Create Question ***********************************************//
 // function Create Media Section, Statements Section & Answers
-function createQuestion(questionTabDIV, CurrentQuestionNumber) {
+function createQuestion(
+  questionTabDIV,
+  CurrentQuestionNumber,
+  createQuestionObject
+) {
+  if (createQuestionObject) {
+    newQuestionID = "id-question-" + CurrentQuestionNumber;
+    newQuestion = new Question(newQuestionID); //id will be changed as per naming policy of the objects the Ask Mutaz
+    CurrentSceneObject.questions.push(newQuestion);
+  }
+
   ////////////////////////// Media Object ////////////////////////////
   const MediaSection = document.createElement("Section");
   MediaSection.classList.add("genSubSection");
@@ -333,9 +327,13 @@ function createQuestion(questionTabDIV, CurrentQuestionNumber) {
       let mediaRecord = [];
 
       let srMediaNumber = tableMedia.rows.length;
-
       let mediaInfo = GetMediaObjDataFromMediaTab(QuestionNumber);
 
+      //**************************************** */
+      //Add Media to Scene DataObject
+
+      addMediaObjectToSceneDataObject(mediaInfo, QuestionNumber, 1);
+      //**************************************** */
       console.log(mediaInfo);
       let mediaObjecttype = mediaInfo.type;
       let mediaObjectDesOrText = mediaInfo.DesOrText;
@@ -431,146 +429,17 @@ function ShowScene(
       break;
 
     case "code_fillblank":
-      const newFillinBlankStatement = new FillinBlankStatement();
-      newFillinBlankStatement.AssingNamesAndAttr(QuestionNumber);
-      newFillinBlankStatement.Build();
-      StatementSection.appendChild(
-        newFillinBlankStatement.ReturnContainerDiv()
+      let tableStatementPreview = buildStatementTableHead(tablePreviewSection);
+
+      buildSceneFIB(
+        StatementSection,
+        AnswerSection,
+        QuestionNumber,
+        tableStatementPreview
       );
-      // saveSceneSection.appendChild(
-      //   newFillinBlankStatement.createSceneSaveCancelButtons(QuestionNumber)
-      // );
-      //////////////////////////////////////////////////////////
 
-      let newPreviewTable = document.createElement("table");
-      newPreviewTable.classList.add("content-table");
-      newPreviewTable.createTHead();
-      let rowTable = newPreviewTable.insertRow();
-      let th1 = document.createElement("th");
-      let th2 = document.createElement("th");
-      let th3 = document.createElement("th");
-
-      $("th").addClass("content-tablehead");
-
-      rowTable.classList.add("content-tablehead");
-
-      let tableTitle1 = document.createTextNode("العبارات");
-      let tableTitle2 = document.createTextNode("الأجوبة");
-      let tableTitle3 = document.createTextNode("اجابة صحيحة أم خاطئة");
-
-      th1.appendChild(tableTitle1);
-      th2.appendChild(tableTitle2);
-      th3.appendChild(tableTitle3);
-
-      rowTable.appendChild(th1);
-      rowTable.appendChild(th2);
-      rowTable.appendChild(th3);
-
-      tablePreviewSection.append(newPreviewTable);
       ////////////////////////////////////////////////////
 
-      newFillinBlankStatement.insertEmptyFillingBlankStatement.addEventListener(
-        "click",
-        function (e) {
-          let QTarget = e.target.id;
-          console.log(QTarget);
-          let QNumber = QTarget.slice(16, QTarget.length);
-          let contentTxt = document.getElementById(
-            "id-FiB-statement-" + QNumber
-          ).value;
-          document.getElementById("id-FiB-statement-" + QNumber).value =
-            contentTxt + "  ... E ...  ";
-        }
-      );
-      newFillinBlankStatement.insertFillingBlankStatement.addEventListener(
-        "click",
-        function (e) {
-          let QTarget = e.target.id;
-          console.log("insertFillingBlankStatement: ", QTarget);
-          let QNumber = QTarget.slice(10, QTarget.length);
-          clearSection(AnswerSection);
-          // console.log("Listner added to Fill in Blank button");
-          let statementString = document.getElementById(
-            "id-FiB-statement-" + QNumber
-          ).value;
-          // console.log(statementString);
-
-          AnswerSection.appendChild(
-            newFillinBlankStatement.createDraggableOption(QNumber)
-          );
-
-          let numberOfEmptyWord = (statementString.match(/E/g) || []).length;
-
-          for (let i = 0; i < numberOfEmptyWord; i++) {
-            let statementNumber = "S1"; // Save the Statements Number
-            let EmptyWordNumber = "E-word-" + (i + 1);
-
-            AnswerLabelText = returnTextTitleFIB(i);
-
-            AnswerSection.appendChild(
-              newFillinBlankStatement.createEmptyAnswer(
-                QNumber,
-                statementNumber,
-                EmptyWordNumber,
-                AnswerLabelText
-              )
-            );
-          }
-          let Ansewer = [];
-          let CorrectAnswer = [];
-          AnswerSection.appendChild(
-            newFillinBlankStatement.createAnswersOkCancelbuttons(QNumber)
-          );
-          let buttonOk = document.getElementById(
-            "id-answers-button-ok-" + QNumber
-          );
-          let buttonCancel = document.getElementById(
-            "id-answers-button-cancel-" + QNumber
-          );
-
-          Answers = [];
-          CorrectAnswer = [];
-          ////////////////////// click on Save Answers in Answer Section
-          buttonOk.addEventListener("click", function (e) {
-            let QTarget = e.target.id;
-            console.log("Inside Ok Answers: ", QTarget);
-            let QNumber = QTarget.slice(21, QTarget.length);
-
-            for (let i = 0; i < numberOfEmptyWord; i++) {
-              statementNumber = "S1";
-              EmptyWordNumber = "E-word-" + (i + 1);
-
-              AnswerIdtext =
-                "id-fill-in-blank-" +
-                QNumber +
-                "-" +
-                statementNumber +
-                "-" +
-                EmptyWordNumber;
-              let AnswerValue = document.getElementById(AnswerIdtext).value;
-
-              Answers.push(AnswerValue);
-              CorrectAnswer.push("إجابة صحيحة");
-            }
-
-            createRowTable(
-              newPreviewTable,
-              "id-row-1-" + QNumber,
-              statementString,
-              Answers,
-              CorrectAnswer
-            );
-
-            clearSection(AnswerSection);
-            clearStatementInput(QNumber);
-          });
-          ///////////////////////////// Click on Cancel in Answer Section
-          buttonCancel.addEventListener("click", function () {
-            // console.log("I'm inside buttonCancel of Answers");
-            clearSection(AnswerSection);
-          });
-        }
-      );
       break;
 
     case "code_categories":
@@ -695,6 +564,247 @@ function returnTextTitleFIB(number) {
       return "Over Flow!!!";
       break;
   }
+}
+
+function buildSceneFIB(
+  ContainerSection,
+  AnswerSection,
+  QNumber,
+  tableStatementPreview
+) {
+  const newFillinBlankStatement = new FillinBlankStatement();
+  newFillinBlankStatement.AssingNamesAndAttr(QNumber);
+  newFillinBlankStatement.Build();
+  ContainerSection.appendChild(newFillinBlankStatement.ReturnContainerDiv());
+  insertBlankInStatement(
+    newFillinBlankStatement.insertEmptyFillingBlankStatement
+  );
+
+  insertStatementFIB(
+    newFillinBlankStatement,
+    AnswerSection,
+    tableStatementPreview
+  );
+}
+
+function insertBlankInStatement(insertBlankButton) {
+  insertBlankButton.addEventListener("click", function (e) {
+    let QTarget = e.target.id;
+    console.log(QTarget);
+    let QNumber = QTarget.slice(16, QTarget.length);
+    let contentTxt = document.getElementById("id-FiB-statement-" + QNumber)
+      .value;
+    document.getElementById("id-FiB-statement-" + QNumber).value =
+      contentTxt + "  ... E ...  ";
+  });
+}
+
+//************************* Clicking on Insert Statement ****************** */
+function insertStatementFIB(
+  insertStatementFIB,
+  AnswerSection,
+  tableStatementPreview
+) {
+  insertStatementFIB.insertFillingBlankStatement.addEventListener(
+    "click",
+    function (e) {
+      let QTarget = e.target.id;
+      console.log("insertFillingBlankStatement: ", QTarget);
+      let QNumber = QTarget.slice(10, QTarget.length);
+      clearSection(AnswerSection);
+      // console.log("Listner added to Fill in Blank button");
+      let statementString = document.getElementById(
+        "id-FiB-statement-" + QNumber
+      ).value;
+      // console.log(statementString);
+
+      AnswerSection.appendChild(
+        insertStatementFIB.createDraggableOption(QNumber)
+      );
+
+      let numberOfEmptyWord = (statementString.match(/E/g) || []).length;
+
+      AddFIBStatementToSceneDataObj(QNumber, statementString);
+
+      for (let i = 0; i < numberOfEmptyWord; i++) {
+        this.statementsAnswers = []; // Array of Objects
+        let statementNumber =
+          "S" +
+          CurrentSceneObject.questions[QNumber - 1].statementsAnswers.length;
+        //CurrentSceneObject.questions[QNumber].statementsAnswers.length; // Save the Statements Number
+        let EmptyWordNumber = "E-word-" + (i + 1);
+
+        AnswerLabelText = returnTextTitleFIB(i);
+
+        AnswerSection.appendChild(
+          insertStatementFIB.createEmptyAnswer(
+            QNumber,
+            statementNumber,
+            EmptyWordNumber,
+            AnswerLabelText
+          )
+        );
+      }
+
+      AnswerSection.appendChild(
+        insertStatementFIB.createAnswersOkCancelbuttons(QNumber)
+      );
+      let buttonOk = document.getElementById("id-answers-button-ok-" + QNumber);
+      let buttonCancel = document.getElementById(
+        "id-answers-button-cancel-" + QNumber
+      );
+
+      //************************ click on Save Answers in Answer Section *************************/
+      SaveAnswers(
+        buttonOk,
+        tableStatementPreview,
+        statementString,
+        AnswerSection,
+        numberOfEmptyWord
+      );
+
+      ///////////////////////////// Click on Cancel in Answer Section
+      buttonCancel.addEventListener("click", function () {
+        // console.log("I'm inside buttonCancel of Answers");
+        clearSection(AnswerSection);
+      });
+    }
+  );
+}
+
+function SaveAnswers(
+  btnOk,
+  tableStatementPreview,
+  statementString,
+  AnswerSection,
+  numberOfEmptyWord
+) {
+  let AnswersObj = {
+    CorrectAnswer: [],
+    Answers: [],
+  };
+  let AnswerIdtext = "";
+
+  btnOk.addEventListener("click", function (e) {
+    let QTarget = e.target.id;
+    console.log("Inside Ok Answers: ", QTarget);
+    let QNumber = QTarget.slice(21, QTarget.length);
+    let StatementNumber =
+      CurrentSceneObject.questions[QNumber - 1].statementsAnswers.length;
+
+    for (let i = 0; i < numberOfEmptyWord; i++) {
+      statementNumber =
+        "S" +
+        CurrentSceneObject.questions[QNumber - 1].statementsAnswers.length;
+      EmptyWordNumber = "E-word-" + (i + 1);
+
+      AnswerIdtext =
+        "id-fill-in-blank-" +
+        QNumber +
+        "-" +
+        statementNumber +
+        "-" +
+        EmptyWordNumber;
+
+      console.log(AnswerIdtext);
+
+      let AnswerValue = document.getElementById(AnswerIdtext).value;
+
+      AnswersObj.Answers.push(AnswerValue);
+      AnswersObj.CorrectAnswer.push("إجابة صحيحة");
+
+      AddFIBAnswersToSceneDataObj(
+        QNumber,
+        AnswersObj.Answers[i],
+        StatementNumber
+      );
+    }
+
+    createRowTable(
+      tableStatementPreview,
+      "id-row-1-" + QNumber,
+      statementString,
+      AnswersObj.Answers,
+      AnswersObj.CorrectAnswer
+    );
+
+    clearSection(AnswerSection);
+    clearStatementInput(QNumber);
+  });
+}
+
+function AddFIBStatementToSceneDataObj(QNumber, statementString) {
+  let StatementNumber =
+    CurrentSceneObject.questions[QNumber - 1].statementsAnswers.length;
+  let statementId = currentScene + "Q" + QNumber + "St" + (StatementNumber + 1);
+
+  StatementAnswerObj = new statementAnswersObj(statementId, statementString);
+  CurrentSceneObject.questions[QNumber - 1].statementsAnswers.push(
+    StatementAnswerObj
+  );
+}
+
+function AddFIBAnswersToSceneDataObj(QNumber, AnswerText, StatementNumber) {
+  // statementId, statement
+  let AnswerToInsert;
+  let answerId;
+  let answerNumber;
+
+  let statementId = currentScene + "Q" + QNumber + "St" + StatementNumber;
+
+  //for (let i = 0; i < AnswerObj.Answers.length; i++) {
+  // class Answers {
+  //   constructor(answerId, answerText, mediaAnswer, correct) {
+  //     this.answerId = answerId;
+  //     this.answerText = answerText;
+  //     this.mediaAnswer = mediaAnswer; // Objects
+  //     this.correct = correct; //Boolean
+  //   }
+  // }
+
+  answerNumber =
+    CurrentSceneObject.questions[QNumber - 1].statementsAnswers[
+      StatementNumber - 1
+    ].Answers.length;
+
+  answerId = statementId + "A" + answerNumber;
+
+  AnswerToInsert = new Answers(answerId, AnswerText, "N/a", true);
+
+  CurrentSceneObject.questions[QNumber - 1].statementsAnswers[
+    StatementNumber - 1
+  ].Answers.push(AnswerToInsert);
+  // }
+}
+
+function buildStatementTableHead(containerScetion) {
+  let newPreviewTable = document.createElement("table");
+  newPreviewTable.classList.add("content-table");
+  newPreviewTable.createTHead();
+  let rowTable = newPreviewTable.insertRow();
+  let th1 = document.createElement("th");
+  let th2 = document.createElement("th");
+  let th3 = document.createElement("th");
+
+  $("th").addClass("content-tablehead");
+
+  rowTable.classList.add("content-tablehead");
+
+  let tableTitle1 = document.createTextNode("العبارات");
+  let tableTitle2 = document.createTextNode("الأجوبة");
+  let tableTitle3 = document.createTextNode("اجابة صحيحة أم خاطئة");
+
+  th1.appendChild(tableTitle1);
+  th2.appendChild(tableTitle2);
+  th3.appendChild(tableTitle3);
+
+  rowTable.appendChild(th1);
+  rowTable.appendChild(th2);
+  rowTable.appendChild(th3);
+
+  containerScetion.append(newPreviewTable);
+
+  return newPreviewTable;
 }
 
 //*********************************** General Functions *************************************** */
@@ -2142,15 +2252,6 @@ class CatagoriesClassStatements {
 
 //**************************************************************************** */
 function createEmptyScene(newSceneId) {
-  // let currentSceneHeader = SceneHeaders.find(
-  //   (sid) => sid.sceneID == currentScene
-  // );
-  // console.log(currentSceneHeader);
-
-  // let sceneId = currentSceneHeader.id;
-  // console.log(CurrentSceneObject);
-  // create empty Scene Object.
-
   let emptyScene = new Scene(newSceneId, "", "", "");
 
   // create first question and push it to Scene.
@@ -2171,4 +2272,65 @@ function createEmptyScene(newSceneId) {
   emptyScene.questions.push(firstQuestion);
 
   return emptyScene;
+}
+
+///////////////////////////////////// functions to read/Write from SceneData Object ////////////////////////////////////////////
+function ReadDataFromQuestionTextSection() {
+  let txtExerciseText = document.getElementById("id-ExerciseText");
+  // console.log(txtExerciseText);
+  txtExerciseText.addEventListener("change", (e) => {
+    CurrentSceneObject.exerciseText = e.target.value;
+  });
+
+  let txtTranslationText = document.getElementById("id-Translation");
+  // console.log(txtTranslationText);
+  txtTranslationText.addEventListener("change", (e) => {
+    CurrentSceneObject.translation = e.target.value;
+  });
+
+  let txtExerciseHintText = document.getElementById("id-ExerciseHint-text");
+  // console.log(txtExerciseHintText);
+  txtExerciseHintText.addEventListener("change", (e) => {
+    CurrentSceneObject.exerciseHintObj.text = e.target.value;
+  });
+
+  let txtExerciseHintPreviousHelpText = document.getElementById(
+    "id-ExerciseHint-Previous-help"
+  );
+  // console.log(txtExerciseHintPreviousHelpText);
+  txtExerciseHintPreviousHelpText.addEventListener("change", (e) => {
+    CurrentSceneObject.exerciseHintObj.previousHelp.description =
+      e.target.value;
+  });
+}
+
+function addMediaObjectToSceneDataObject(infoMedia, QuestionNumber, Sequence) {
+  // ["pic", "Rsound", "SoundEffect", "Video", "Rtext"]
+
+  let mediaObj;
+  let filename;
+  switch (infoMedia.type) {
+    case "Pic":
+      filename = currentScene + "Q" + QuestionNumber + "PIC" + Sequence;
+      mediaObj = new PicObj(infoMedia.DesOrText, filename, infoMedia.Specs);
+      break;
+    case "Rsound":
+      filename = currentScene + "Q" + QuestionNumber + "RSOUND" + Sequence;
+      mediaObj = new SoundToBeRecordedObj(infoMedia.DesOrText, filename);
+      break;
+    case "SoundEffect":
+      filename = currentScene + "Q" + QuestionNumber + "SOUNDEFFECT" + Sequence;
+      mediaObj = new SoundEffectObj(infoMedia.DesOrText, filename);
+      break;
+    case "Video":
+      filename = currentScene + "Q" + QuestionNumber + "VIDEO" + Sequence;
+      mediaObj = new VideoObj(infoMedia.DesOrText, filename, infoMedia.Specs);
+      break;
+    case "Rtext":
+      filename = currentScene + "Q" + QuestionNumber + "RTEXT" + Sequence;
+      mediaObj = new TextReadObj(infoMedia.DesOrText, filename);
+      break;
+  }
+
+  CurrentSceneObject.questions[QuestionNumber - 1].mediaObjects.push(mediaObj);
 }

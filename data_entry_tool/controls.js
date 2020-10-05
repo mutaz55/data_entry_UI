@@ -918,10 +918,6 @@ btn_add_scene.addEventListener("click", (e) => {
     );
     //************************* Code added by Taha to Create Empty Scene and push it to the SceneArray **************************************** */
 
-    // let currentSceneHeader = SceneHeaders.find(
-    //   (sid) => sid.sceneID == id_scene_key
-    // );
-    // currentSceneHeader._news = true;
     ScenesArray.push(createEmptyScene(id_scene_key));
 
     //***************************************************************************************************************************************** */

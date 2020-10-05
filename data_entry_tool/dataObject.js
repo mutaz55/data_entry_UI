@@ -188,8 +188,8 @@ class Answers {
 //Media Objects Type
 
 class PicObj {
-  constructor(picId, description, fileName, type) {
-    this.id = picId;
+  constructor(description, fileName, type) {
+    // this.id = picId;
     this.description = description;
     this.fileName = fileName;
     this.type = type;
@@ -197,8 +197,8 @@ class PicObj {
 }
 // ***********
 class SoundToBeRecordedObj {
-  constructor(soundTobeRecordedId, text, fileName) {
-    this.id = soundTobeRecordedId;
+  constructor(text, fileName) {
+    // this.id = soundTobeRecordedId;
     this.text = text;
     this.fileName = fileName;
   }
@@ -206,8 +206,8 @@ class SoundToBeRecordedObj {
 // ***********
 
 class SoundEffectObj {
-  constructor(soundEffectId, description, fileName) {
-    this.id = soundEffectId;
+  constructor(description, fileName) {
+    // this.id = soundEffectId;
     this.description = description;
     this.fileName = fileName;
   }
@@ -215,8 +215,8 @@ class SoundEffectObj {
 // ***********
 
 class VideoObj {
-  constructor(videoId, description, fileName, type) {
-    this.id = videoId;
+  constructor(description, fileName, type) {
+    // this.id = videoId;
     this.description = description;
     this.fileName = fileName;
     this.type = type;
@@ -224,8 +224,8 @@ class VideoObj {
 }
 
 class TextReadObj {
-  constructor(textReadID, text, fileName) {
-    this.id = textReadID;
+  constructor(text, fileName) {
+    // this.id = textReadID;
     this.text = text;
     this.fileName = fileName;
   }
