@@ -53,7 +53,7 @@
 
   + **Delete** -> (Condition) There are no scenes refer to it. (must be empty)
   + **update** (changing the Lesson-Title) => cascade to all scene headers files
-
+  + **Move** 
 
 
   ### 1.5. Modules
@@ -144,7 +144,7 @@
   + Determines how to build the scene.
   + Must has a value, otherwise the scene object would be null.
   + Contains a unique code, where it refers to one of the sceneTypes objects
-  + Changing its value after the scene being built would destroy the scene object and create a new one.
+  + (warning) Changing its value after the scene being built would destroy the scene object and create a new one.
 
   ### 4.4. Concepts / Skills
   + A collection of the scene related concepts / skills.

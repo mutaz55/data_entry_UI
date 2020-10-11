@@ -753,7 +753,7 @@ function loadDataFromFireStore() {
         querySnapshot.forEach(function (doc) {
           
           // get Courses Info
-            Courses.unshift(storeDataLocally(doc.id, doc.data(), "courses"));
+            Courses.push(storeDataLocally(doc.id, doc.data(), "courses"));
             originalCourses.unshift(
               storeDataLocally(doc.id, doc.data(), "courses")
             );
@@ -763,7 +763,7 @@ function loadDataFromFireStore() {
           if (doc.data()["Concepts"])
             doc.data()["Concepts"].forEach(function (con) {
 
-                Concepts.unshift(storeDataLocally(doc.id, con, "concepts"));
+                Concepts.push(storeDataLocally(doc.id, con, "concepts"));
                // originalConcepts.unshift(
                 //  storeDataLocally(doc.id, con, "concepts")
                // );
@@ -773,14 +773,15 @@ function loadDataFromFireStore() {
           // get Modules Info
           if (doc.data()["Modules"])
             doc.data()["Modules"].forEach(function (mod) {
-              Modules.unshift(storeDataLocally(doc.id, mod, "modules"));
+              Modules.push(storeDataLocally(doc.id, mod, "modules"));
               originalModules.unshift(storeDataLocally(doc.id, mod, "modules"));
             });
 
           // get Lessons Info
           if (doc.data()["Lessons"])
             doc.data()["Lessons"].forEach(function (les) {
-              Lessons.unshift(storeDataLocally(doc.id, les, "lessons"));
+              
+              Lessons.push(storeDataLocally(doc.id, les, "lessons"));
               originalLessons.unshift(storeDataLocally(doc.id, les, "lessons"));
             });
         });
@@ -796,7 +797,7 @@ function loadDataFromFireStore() {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          Skills.unshift(storeDataLocally(doc.id, doc.data(), "skills"));
+          Skills.push(storeDataLocally(doc.id, doc.data(), "skills"));
           originalSkills.unshift(
             storeDataLocally(doc.id, doc.data(), "skills")
           );
@@ -813,7 +814,7 @@ function loadDataFromFireStore() {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          SceneTypes.unshift(
+          SceneTypes.push(
             storeDataLocally(doc.id, doc.data(), "sceneTypes")
           );
           originalSceneTypes.unshift(
@@ -835,26 +836,68 @@ function loadDataFromFireStore() {
 
           if (doc.data()["Concepts"])
             doc.data()["Concepts"].forEach(function (con) {
-              sceneH.Concepts.unshift(storeDataLocally(null, con, "concepts"));
+              sceneH.Concepts.push(storeDataLocally(null, con, "concepts"));
             });
 
           if (doc.data()["Skills"])
             doc.data()["Skills"].forEach(function (sk) {
-              sceneH.Skills.unshift(storeDataLocally(null, sk, "skills"));
+              sceneH.Skills.push(storeDataLocally(null, sk, "skills"));
             });
 
-          SceneHeaders.unshift(sceneH);
+          SceneHeaders.push(sceneH);
         });
       })
       .catch((er) => console.log(er))
   );
 
   Promise.all(AllPromises).then(() => {
+    
+    // Sort all objects Array
+    SortObjArrays();  
     // fill courses Info
     fillCourseInfo();
   });
 }
 
+// Sorting based on the object ID ( Ascending order)
+function SortObjArrays(){
+
+  if (Lessons.length > 0) {
+    Lessons = Lessons.sort((a,b) => compareObjID( ConvetToDec(a.LessonID), ConvetToDec(b.LessonID)));
+  }
+
+  if (Modules.length > 0) {
+    Modules = Modules.sort((a,b) => compareObjID(ConvetToDec(a.ModuleID), ConvetToDec(b.ModuleID)));
+  }
+
+  if (Concepts.length > 0 ) {
+    Concepts = Concepts.sort((a,b) => compareObjID(ConvertToHexa(a.ConceptID), ConvertToHexa(b.ConceptID)));
+  }
+}
+
+// The Compare function being used
+function compareObjID( a, b ) {
+  if ( a < b ){
+    return -1;
+  }
+  if ( a > b ){
+    return 1;
+  }
+  return 0;
+}
+
+// Convert the passed id to an equivaluent number (base 16) - when id has valid characters
+// to be represent in 16 system
+function ConvertToHexa(id){
+
+  return parseInt(id.slice(7),16);
+}
+
+// Convert the passed id to an equivalent number (base 10) - when id has invalid characters
+// to be represent in 10 system
+function ConvetToDec(id){
+  return parseInt(id.slice(10));
+}
 
 // Clear drop down items (Combobox Courses)
 function clearCombo(combo) {
