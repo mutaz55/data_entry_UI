@@ -1129,3 +1129,31 @@ lst_sceneTypes_tab2.addEventListener("change", (e) => {
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
   }
 });
+
+//**********************Taha ********************************* */
+
+function createEmptyScene(newSceneId) {
+  let emptyScene = new Scene(newSceneId, "", "", "");
+
+  // create first question and push it to Scene.
+  let firstQuestion = new Question("id-question-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
+  let firstHintObj = new HintObj("id-hintObj-Q1-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
+  let firstPreviousHelpObj = new PreviousHelpObj("id-prevHelp-Q1-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
+
+
+
+  // Test Data to be changed with real datafrom DBs
+  emptyScene.exerciseText = "Test-data 1";
+  emptyScene.translation = "Test-data 2";
+  firstHintObj.text = "Test-data 3";
+  firstPreviousHelpObj.description = "Test-data 4";
+
+  firstHintObj.previousHelp = firstPreviousHelpObj;
+      emptyScene.exerciseHintObj = firstHintObj;
+
+  emptyScene.questions.push(firstQuestion);
+
+  return emptyScene;
+}
+
+//***************************************************** */

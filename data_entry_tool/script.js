@@ -102,11 +102,26 @@ function openSceneType() {
   );
 
   /***********************************************************************************************/
+  let DivHintText = document.createElement("div");
+  DivHintText.classList.add("borderLessContainer");
+  let labelHintDescription = document.createElement("label");
+  labelHintDescription.id="id-labelHintDraggable";
+  labelHintDescription.classList.add("under-label");
+  labelHintDescription.classList.add("hidden-tab");
+  labelHintDescription.innerText = "في حال ادخال الكلمات المسحوبة يرجى ادخالها بعد : ثم افصل بين الكلمات بعلامة - وذلك لتسهيل قراءتها "
+
+let CombinedHintDiv = combineHintTextWithDraggableOptionAndInstructionLabel(DivHintText,labelHintDescription,newExerciseHintText.ReturnContainerDiv(),createDraggableHintOption())
+  
+
+
+
   let arrOfQuestionTitlesObjects = [];
 
   arrOfQuestionTitlesObjects.push(newExerciseText.ReturnContainerDiv());
   arrOfQuestionTitlesObjects.push(newExerciseTranslate.ReturnContainerDiv());
-  arrOfQuestionTitlesObjects.push(newExerciseHintText.ReturnContainerDiv());
+  arrOfQuestionTitlesObjects.push(CombinedHintDiv);
+
+
   arrOfQuestionTitlesObjects.push(newExercisePreviousHelp.ReturnContainerDiv());
 
   let arrOfQuestionTitlesNames = [
@@ -134,6 +149,9 @@ function openSceneType() {
       DeleteIcones
     )
   );
+
+
+  addListnerToDraggableOption()
 
   ReadDataFromQuestionTextSection();
 
@@ -618,9 +636,7 @@ function insertStatementFIB(
       ).value;
       // console.log(statementString);
 
-      AnswerSection.appendChild(
-        insertStatementFIB.createDraggableOption(QNumber)
-      );
+     
 
       let numberOfEmptyWord = (statementString.match(/E/g) || []).length;
 
@@ -1521,6 +1537,7 @@ function GetMediaObjDataFromMediaTab(OnlyQuestionNumber) {
     type: "",
     DesOrText: "",
     Specs: "",
+    SpecsData:""
   };
   switch (swichtNumberTab) {
     //["pic", "Rsound", "SoundEffect", "Video", "Rtext"];
@@ -1542,8 +1559,10 @@ function GetMediaObjDataFromMediaTab(OnlyQuestionNumber) {
 
       if (radioValuePicPhoto.checked) {
         infoMedia.Specs = radioValuePicPhoto.value;
+        infoMedia.SpecsData="Photo"
       } else {
         infoMedia.Specs = radioValuePicDrawing.value;
+        infoMedia.SpecsData="Drawing";
       }
 
       break;
@@ -1554,7 +1573,7 @@ function GetMediaObjDataFromMediaTab(OnlyQuestionNumber) {
       ).value;
 
       infoMedia.Specs = "---";
-
+      infoMedia.SpecsData="N/a"
       break;
 
     case "3":
@@ -1564,7 +1583,7 @@ function GetMediaObjDataFromMediaTab(OnlyQuestionNumber) {
       ).value;
 
       infoMedia.Specs = "---";
-
+      infoMedia.SpecsData="N/a";
       break;
 
     case "4":
@@ -1585,12 +1604,16 @@ function GetMediaObjDataFromMediaTab(OnlyQuestionNumber) {
 
       if (radioValueVideoPhotographic.checked) {
         infoMedia.Specs = radioValueVideoPhotographic.value;
+        infoMedia.SpecsData="VideoPhotographic"
       } else if (radioValueVideoAnimation.checked) {
         infoMedia.Specs = radioValueVideoAnimation.value;
+        infoMedia.SpecsData="Animation"
       } else if (radioValueVideoSlideShow.checked) {
         infoMedia.Specs = radioValueVideoSlideShow.value;
+        infoMedia.SpecsData="SlideShow"
       } else {
         infoMedia.Specs = radioValueVideoPhotographic.value;
+        infoMedia.SpecsData="VideoPhotographic"
       }
 
       break;
@@ -1602,6 +1625,7 @@ function GetMediaObjDataFromMediaTab(OnlyQuestionNumber) {
       ).value;
 
       infoMedia.Specs = "---";
+      infoMedia.SpecsData="N/a";
       break;
 
     default:
@@ -1977,55 +2001,7 @@ class FillinBlankStatement {
 
     return divAnswer;
   }
-  createDraggableOption(QuestionNumber) {
-    // construct
-    this.divRadioDraggable = document.createElement("div");
-    this.labelRadioDraggable = document.createElement("label");
-    this.radioDraggable = document.createElement("input");
-    this.spanDraggable = document.createElement("span");
-    this.labelRadioWrite = document.createElement("label");
-    this.radioWrite = document.createElement("input");
-    this.spanWrite = document.createElement("span");
-    //Assgin
-
-    this.divRadioDraggable.classList.add("form-control");
-    this.divRadioDraggable.classList.add("control-hidden");
-    this.divRadioDraggable.style.backgroundColor = "#E0FFFF";
-
-    this.labelRadioDraggable.classList.add("radio-margin");
-
-    this.radioDraggable.id = "id-draggable-Draggable-" + QuestionNumber;
-    this.radioDraggable.name = "FiB-DraggableOrWrite";
-    this.radioDraggable.type = "radio";
-    this.spanDraggable.style.fontSize = "2rem";
-    this.spanDraggable.style.color = "rgb(68, 67, 67)";
-    this.spanDraggable.textContent = "سحب وادراج";
-    this.spanDraggable.value = "Drag-Drop";
-
-    this.labelRadioWrite.classList.add("radio-margin");
-
-    this.radioWrite.id = "id-draggable-InputText-" + QuestionNumber;
-    this.radioWrite.name = "FiB-DraggableOrWrite";
-    this.radioWrite.type = "radio";
-    this.spanWrite.style.fontSize = "2rem";
-    this.spanWrite.style.color = "rgb(68, 67, 67)";
-    this.spanWrite.textContent = "ادخال كتابي";
-    this.spanWrite.value = "Input-Text";
-    //Build
-
-    this.divRadioDraggable.appendChild(this.labelRadioDraggable);
-    this.divRadioDraggable.appendChild(this.labelRadioWrite);
-
-    this.labelRadioDraggable.appendChild(this.radioDraggable);
-    this.labelRadioDraggable.appendChild(this.spanDraggable);
-
-    this.labelRadioWrite.appendChild(this.radioWrite);
-    this.labelRadioWrite.appendChild(this.spanWrite);
-
-    //return
-
-    return this.divRadioDraggable;
-  }
+  
 
   createAnswersOkCancelbuttons(QuestionNumber) {
     let divOkCancelAnswers = document.createElement("div");
@@ -2246,35 +2222,17 @@ class CatagoriesClassStatements {
   }
 
   ReturnContainerDiv() {
-    return this.divOverall;
+    return  this.divOverall;
   }
 }
 
-//**************************************************************************** */
-function createEmptyScene(newSceneId) {
-  let emptyScene = new Scene(newSceneId, "", "", "");
-
-  // create first question and push it to Scene.
-  let firstQuestion = new Question("id-question-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
-  let firstHintObj = new HintObj("id-hintObj-Q1-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
-  let firstPreviousHelpObj = new PreviousHelpObj("id-prevHelp-Q1-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
-
-  // Test Data to be changed with real datafrom DBs
-
-  emptyScene.exerciseText = "Test-data 1";
-  emptyScene.translation = "Test-data 2";
-  firstHintObj.text = "Test-data 3";
-  firstPreviousHelpObj.description = "Test-data 4";
-
-  firstHintObj.previousHelp = firstPreviousHelpObj;
-  emptyScene.exerciseHintObj = firstHintObj;
-
-  emptyScene.questions.push(firstQuestion);
-
-  return emptyScene;
-}
-
 ///////////////////////////////////// functions to read/Write from SceneData Object ////////////////////////////////////////////
+
+//**************************************************************************** */
+
+
+
+
 function ReadDataFromQuestionTextSection() {
   let txtExerciseText = document.getElementById("id-ExerciseText");
   // console.log(txtExerciseText);
@@ -2287,6 +2245,7 @@ function ReadDataFromQuestionTextSection() {
   txtTranslationText.addEventListener("change", (e) => {
     CurrentSceneObject.translation = e.target.value;
   });
+
 
   let txtExerciseHintText = document.getElementById("id-ExerciseHint-text");
   // console.log(txtExerciseHintText);
@@ -2312,25 +2271,128 @@ function addMediaObjectToSceneDataObject(infoMedia, QuestionNumber, Sequence) {
   switch (infoMedia.type) {
     case "Pic":
       filename = currentScene + "Q" + QuestionNumber + "PIC" + Sequence;
-      mediaObj = new PicObj(infoMedia.DesOrText, filename, infoMedia.Specs);
       break;
     case "Rsound":
       filename = currentScene + "Q" + QuestionNumber + "RSOUND" + Sequence;
-      mediaObj = new SoundToBeRecordedObj(infoMedia.DesOrText, filename);
+      // mediaObj = new SoundToBeRecordedObj(infoMedia.DesOrText, filename);
       break;
     case "SoundEffect":
       filename = currentScene + "Q" + QuestionNumber + "SOUNDEFFECT" + Sequence;
-      mediaObj = new SoundEffectObj(infoMedia.DesOrText, filename);
+      // mediaObj = new SoundEffectObj(infoMedia.DesOrText, filename);
       break;
     case "Video":
       filename = currentScene + "Q" + QuestionNumber + "VIDEO" + Sequence;
-      mediaObj = new VideoObj(infoMedia.DesOrText, filename, infoMedia.Specs);
+      // mediaObj = new VideoObj(infoMedia.DesOrText, filename, infoMedia.Specs);
       break;
     case "Rtext":
       filename = currentScene + "Q" + QuestionNumber + "RTEXT" + Sequence;
-      mediaObj = new TextReadObj(infoMedia.DesOrText, filename);
+      // mediaObj = new TextReadObj(infoMedia.DesOrText, filename);
       break;
   }
+  mediaObj = new MediaObjectData(filename,infoMedia.DesOrText, filename, infoMedia.type+"-"+infoMedia.SpecsData);
 
   CurrentSceneObject.questions[QuestionNumber - 1].mediaObjects.push(mediaObj);
+}
+
+
+
+function combineHintTextWithDraggableOptionAndInstructionLabel(Container,LabelInstructionChild,HintTextChild,DraggableRadio) {
+  Container.appendChild(LabelInstructionChild);
+
+  Container.appendChild(HintTextChild);
+  Container.appendChild(DraggableRadio);
+
+
+  return Container;
+  }
+
+
+
+
+function addListnerToDraggableOption (){
+
+  let radioDraggable = document.getElementById("id-draggable-Draggable");
+
+  let radioWrite = document.getElementById("id-draggable-InputText");
+
+
+    radioDraggable.addEventListener("click",(e)=>{
+  
+  
+      CurrentSceneObject.exerciseHintObj.draggableHint=true;
+      let labelHint =document.getElementById("id-labelHintDraggable");
+      labelHint.classList.add("shown-tab");
+      labelHint.classList.remove("hidden-tab");
+     
+  
+    })
+  
+    radioWrite.addEventListener("click",(e)=>{
+      CurrentSceneObject.exerciseHintObj.draggableHint=false;
+      let labelHint =document.getElementById("id-labelHintDraggable");
+      labelHint.classList.add("hidden-tab");
+      labelHint.classList.remove("shown-tab");
+     
+    })
+
+
+}
+
+
+
+
+
+
+
+
+
+function createDraggableHintOption() {
+  // construct
+  let divRadioDraggable = document.createElement("div");
+  let labelRadioDraggable = document.createElement("label");
+  let radioDraggable = document.createElement("input");
+  let spanDraggable = document.createElement("span");
+  let labelRadioWrite = document.createElement("label");
+  let radioWrite = document.createElement("input");
+  let spanWrite = document.createElement("span");
+  //Assgin
+
+   divRadioDraggable.classList.add("form-control");
+   divRadioDraggable.classList.add("control-hidden");
+   divRadioDraggable.style.backgroundColor = "#E0FFFF";
+
+  labelRadioDraggable.classList.add("radio-margin");
+
+  radioDraggable.id = "id-draggable-Draggable" ;
+  radioDraggable.name = "FiB-DraggableOrWrite";
+  radioDraggable.type = "radio";
+  spanDraggable.style.fontSize = "2rem";
+  spanDraggable.style.color = "rgb(68, 67, 67)";
+  spanDraggable.textContent = "سحب وادراج";
+  spanDraggable.value = "Drag-Drop";
+
+  labelRadioWrite.classList.add("radio-margin");
+
+  radioWrite.id = "id-draggable-InputText" ;
+  radioWrite.name = "FiB-DraggableOrWrite";
+  radioWrite.type = "radio";
+  radioWrite.checked=true;
+  spanWrite.style.fontSize = "2rem";
+  spanWrite.style.color = "rgb(68, 67, 67)";
+  spanWrite.textContent = "ادخال كتابي";
+  spanWrite.value = "Input-Text";
+  //Build
+
+  divRadioDraggable.appendChild(labelRadioDraggable);
+  divRadioDraggable.appendChild(labelRadioWrite);
+
+  labelRadioDraggable.appendChild(radioDraggable);
+  labelRadioDraggable.appendChild(spanDraggable);
+
+  labelRadioWrite.appendChild(radioWrite);
+  labelRadioWrite.appendChild(spanWrite);
+
+  //return
+
+  return divRadioDraggable;
 }

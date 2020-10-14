@@ -144,6 +144,7 @@ class HintObj {
   constructor(hintObjID, hintText = "", previousHelpObj = "") {
     this.id = hintObjID;
     this.text = hintText;
+    this.draggableHint = false;
     this.previousHelp = previousHelpObj; //Object
   }
 }
@@ -185,49 +186,58 @@ class Answers {
 }
 
 //****************************************** */
-//Media Objects Type
+// //Media Objects Type
 
-class PicObj {
-  constructor(description, fileName, type) {
-    // this.id = picId;
-    this.description = description;
-    this.fileName = fileName;
-    this.type = type;
-  }
-}
-// ***********
-class SoundToBeRecordedObj {
-  constructor(text, fileName) {
-    // this.id = soundTobeRecordedId;
-    this.text = text;
-    this.fileName = fileName;
-  }
-}
-// ***********
+// class PicObj {
+//   constructor(description, fileName, type) {
+//     // this.id = picId;
+//     this.description = description;
+//     this.fileName = fileName;
+//     this.type = type;
+//   }
+// }
+// // ***********
+// class SoundToBeRecordedObj {
+//   constructor(text, fileName) {
+//     // this.id = soundTobeRecordedId;
+//     this.text = text;
+//     this.fileName = fileName;
+//   }
+// }
+// // ***********
 
-class SoundEffectObj {
-  constructor(description, fileName) {
-    // this.id = soundEffectId;
-    this.description = description;
-    this.fileName = fileName;
-  }
-}
-// ***********
+// class SoundEffectObj {
+//   constructor(description, fileName) {
+//     // this.id = soundEffectId;
+//     this.description = description;
+//     this.fileName = fileName;
+//   }
+// }
+// // ***********
 
-class VideoObj {
-  constructor(description, fileName, type) {
-    // this.id = videoId;
-    this.description = description;
-    this.fileName = fileName;
-    this.type = type;
-  }
-}
+// class VideoObj {
+//   constructor(description, fileName, type) {
+//     // this.id = videoId;
+//     this.description = description;
+//     this.fileName = fileName;
+//     this.type = type;
+//   }
+// }
 
-class TextReadObj {
-  constructor(text, fileName) {
-    // this.id = textReadID;
-    this.text = text;
-    this.fileName = fileName;
+// class TextReadObj {
+//   constructor(text, fileName) {
+//     // this.id = textReadID;
+//     this.text = text;
+//     this.fileName = fileName;
+//   }
+// }
+
+class MediaObjectData {
+  constructor(id,text,filename,type){
+    this.id=id
+    this.text=text;
+    this.filename=filename;
+    this.type=type;
   }
 }
 
