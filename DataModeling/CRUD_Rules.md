@@ -53,7 +53,7 @@
 
   + **Delete** -> (Condition) There are no scenes refer to it. (must be empty)
   + **update** (changing the Lesson-Title) => cascade to all scene headers files
-  + **Move** 
+   
 
 
   ### 1.5. Modules

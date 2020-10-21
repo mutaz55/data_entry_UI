@@ -434,12 +434,12 @@ function updateCourseInfo() {
 function AddConcept() {
   Concepts.forEach(function (con) {
     if (
-      // originalConcepts.findIndex(
-      //   (conId) =>
-      //     conId.ConceptID == con.ConceptID &&
-      //     conId.ConceptText == con.ConceptText
-      // ) == -1
-      con._new 
+      originalConcepts.findIndex(
+        (conId) =>
+          conId.ConceptID == con.ConceptID &&
+          conId.ConceptText == con.ConceptText
+      ) == -1
+      //con._new 
     ) {
       // new concept has been added
       db.collection("courses")
@@ -451,10 +451,10 @@ function AddConcept() {
           }),
         })
         .then(() => {
-          // originalConcepts.unshift(
-          //   new Concept(con.id, con.ConceptID, con.ConceptText)
-          // );
-          con._new = false;
+           originalConcepts.unshift(
+             new Concept(con.id, con.ConceptID, con.ConceptText)
+           );
+          //con._new = false;
           let msg = `Concept with Id:  ${con.ConceptID} has been successuflly added!`;
           showSuccess(msg);
         })
@@ -467,64 +467,65 @@ function AddConcept() {
 }
 
 function deleteConcept() {
-  // let AllPromises = [];
-
-  // originalConcepts.forEach(function (del) {
-  //   if (
-  //     Concepts.findIndex(
-  //       (conId) =>
-  //         conId.ConceptID == del.ConceptID &&
-  //         conId.ConceptText == del.ConceptText
-  //     ) == -1
-  //   ) {
-  //     AllPromises.push(
-  //       deleteConceptFromDB(del)
-  //         .then(() => {
-  //           console.log(
-  //             `Concept with Id:  ${del.ConceptID} has been successuflly deleted!`
-  //           );
-  //           del.id = "-1";
-  //         })
-  //         .catch((err) =>
-  //           console.log(`Error while deleting concept with Id: ${del.ConceptID} 
-  //      Details:  ${err}`)
-  //         )
-  //     );
-  //   }
-  // });
-
-  // Promise.all(AllPromises).then(() => {
-  //   clearOriginalConcepts();
-  // });
 
   let AllPromises = [];
 
-  Concepts.forEach(function (del) {
-
-    if (del._deleted) {
-     
+  originalConcepts.forEach(function (del) {
+    if (
+      Concepts.findIndex(
+        (conId) =>
+          conId.ConceptID == del.ConceptID &&
+          conId.ConceptText == del.ConceptText
+      ) == -1
+    ) {
       AllPromises.push(
-
         deleteConceptFromDB(del)
-
           .then(() => {
-            showSuccess(
+            console.log(
               `Concept with Id:  ${del.ConceptID} has been successuflly deleted!`
             );
+            del.id = "-1";
           })
           .catch((err) =>
-            showError(`Error while deleting concept with Id: ${del.ConceptID} 
-            Details:  ${err}`)
+            console.log(`Error while deleting concept with Id: ${del.ConceptID} 
+       Details:  ${err}`)
           )
-        );
-
+      );
     }
-
   });
 
   Promise.all(AllPromises).then(() => {
-     clearConcepts();
+    clearOriginalConcepts();
   });
+
+  // let AllPromises = [];
+
+  // Concepts.forEach(function (del) {
+
+  //   if (del._deleted) {
+     
+  //     AllPromises.push(
+
+  //       deleteConceptFromDB(del)
+
+  //         .then(() => {
+  //           showSuccess(
+  //             `Concept with Id:  ${del.ConceptID} has been successuflly deleted!`
+  //           );
+  //         })
+  //         .catch((err) =>
+  //           showError(`Error while deleting concept with Id: ${del.ConceptID} 
+  //           Details:  ${err}`)
+  //         )
+  //       );
+
+  //   }
+
+  // });
+
+  // Promise.all(AllPromises).then(() => {
+  //    clearConcepts();
+  // });
 
 }
 
@@ -702,9 +703,12 @@ function clearOriginalSceneTypes() {
 function clearOriginalSkills() {
   originalSkills = originalSkills.filter((conId) => conId.id != "-1");
 }
-function clearConcepts() {
-  Concepts = Concepts.filter((con) => con._deleted == false);
+//function clearConcepts() {
+function clearOriginalConcepts(){
+  Concepts = Concepts.filter((conId) => conId.id != "-1");
+  //Concepts = Concepts.filter((con) => con._deleted == false);
 }
+
 function clearOringinalModules() {
   originalModules = originalModules.filter((conId) => conId.ModuleID != "-1");
 }
@@ -714,13 +718,25 @@ function clearOringinalLessons() {
 }
 // Course combo box
 
+// re-init the array of obejcts
+function initArrays(){
+  // toDelete.length = 0;
+  // toAdd.length = 0;
+  // toUpdate.length = 0;
+  Concepts.length  = 0;
+  originalConcepts.length = 0;
+}
+
 function loadDataFromFireStore() {
   
   // to prevent user of clicking too many times load button.
   if (_busy) return;
   _busy = true;
 
+  
   // re-initialize = when user clicks on load button while there are already data into objects.
+  initArrays();
+  
   Courses = [];
   originalCourses = [];
 
@@ -730,8 +746,7 @@ function loadDataFromFireStore() {
   Modules = [];
   originalModules = [];
 
-  Concepts = [];
-  
+
 
   Skills = [];
   originalSkills = [];
@@ -764,9 +779,9 @@ function loadDataFromFireStore() {
             doc.data()["Concepts"].forEach(function (con) {
 
                 Concepts.push(storeDataLocally(doc.id, con, "concepts"));
-               // originalConcepts.unshift(
-                //  storeDataLocally(doc.id, con, "concepts")
-               // );
+               originalConcepts.unshift(
+                 storeDataLocally(doc.id, con, "concepts")
+               );
             
             });
 
@@ -910,6 +925,22 @@ function clearCombo(combo) {
   }
 }
 
+// clear all text entries boxes and reset add/update buttons
+// for all lists in tab1/tab2
+function clearTxtEntries(){
+
+  resetAddBtn(lst_concepts, txt_concept_entry, btn_add_concept);
+  resetAddBtn(lst_modules, txt_module_entry, btn_add_module);
+  resetAddBtn(lst_lessons, txt_lesson_entry, btn_add_lesson);
+  
+  resetAddBtnCase2
+  (lst_skills, txt_skill_entry, txt_skill_code_entry, btn_add_skill);
+  
+  resetAddBtnCase2
+  (lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code, btn_add_sceneType);
+
+  resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
+}
 // function clearLsts() {
 //   // Clear concepts list
 //   clearConceptsLst();
@@ -990,6 +1021,8 @@ function newCourseSelected(event) {
   }
 
 
+  // clear all text fields tab1
+  clearTxtEntries();
   // Clear tab2 fields
   clearScenesLst();
 

@@ -39,8 +39,6 @@ class Concept {
 }
 
 
-
-
 class Skill {
     constructor(id, SkillID, SkillText ) {
         this.id = id;
@@ -101,6 +99,17 @@ class SceneHeader {
         this._new = newCreated;
 
     }
+
+    
+}
+
+class CRUD_Op{
+    constructor(fId, _id, fc) {
+        this.fileId = fId;
+        this.objId = _id;
+        this.opFunc = fc;
+    }
+    
 }
 
 function storeDataLocally(id, data, type) {
