@@ -1,15 +1,15 @@
 
 class Course {
-    constructor (id, CourseTitle,Description,  Category, ModulesNumbers) {
+    constructor (id, CourseTitle, Description,  Category) {
         this.id = id;
         this.CourseTitle = CourseTitle;
         this.Description = Description;
         this.Category = Category;
-        this.ModulesNumbers = ModulesNumbers;
+      
 
     }
     toString() {
-        return this.id + ', ' + this.CourseTitle + ', ' + this.Description + ', ' + this.Category + ', ' + this.ModulesNumbers;
+        return this.id + ', ' + this.CourseTitle + ', ' + this.Description + ', ' + this.Category;
     }
 }
 
@@ -24,18 +24,16 @@ class Module {
     }
 }
 
+
 class Concept {
-
-    constructor(id, ConceptID, ConceptText, newCreated){
-
-        this.id = id;
-        this.ConceptID = ConceptID;
-        this.ConceptText = ConceptText;
-        this._new = newCreated;
-        this._deleted = false;
-        this._changed = false;
-
-    }  
+    constructor(id, ConceptID, ConceptText) {
+      this.id = id;
+      this.ConceptID = ConceptID;
+      this.ConceptText = ConceptText;
+    }
+    toString() {
+      return this.id + ", " + this.ConceptID + ", " + this.ConceptText;
+    }
 }
 
 
@@ -103,14 +101,118 @@ class SceneHeader {
     
 }
 
-class CRUD_Op{
-    constructor(fId, _id, fc) {
-        this.fileId = fId;
-        this.objId = _id;
-        this.opFunc = fc;
+//****************************************** */
+class Scene {
+    constructor(
+      sceneId,
+      exerciseText = "",
+      translation = "",
+      exerciseHintObj = ""
+    ) {
+      this.id = sceneId;
+      this.exerciseText = exerciseText;
+      this.translation = translation;
+      this.exerciseHintObj = exerciseHintObj; // Object
+      this.questions = []; // Array of Objecs
     }
-    
-}
+  }
+  
+  //****************************************** */
+  class HintObj {
+    constructor(hintObjID, hintText = "", previousHelpObj = "") {
+      this.id = hintObjID;
+      this.text = hintText;
+      this.previousHelp = previousHelpObj; //Object
+    }
+  }
+  //****************************************** */
+  class PreviousHelpObj {
+    constructor(previousHelpId, description = "", fileName = "") {
+      this.id = previousHelpId;
+      this.description = description;
+      this.fileName = fileName;
+    }
+  }
+  
+  //****************************************** */
+  class Question {
+    constructor(questionId) {
+      this.id = questionId;
+      this.mediaObjects = []; // Array of Objects
+      this.statementsAnswers = []; // Array of Objects
+    }
+  }
+  
+  //****************************************** */
+  class statementAnswersObj {
+    constructor(statementId, statement) {
+      this.id = statementId;
+  
+      this.statement = statement;
+      this.Answers = []; //Array of Objects
+    }
+  }
+  //****************************************** */
+  class Answers {
+    constructor(answerId, answerText, mediaAnswer, correct) {
+      this.answerId = answerId;
+      this.answerText = answerText;
+      this.mediaAnswer = mediaAnswer; // Objects
+      this.correct = correct; //Boolean
+    }
+  }
+  
+  //****************************************** */
+  //Media Objects Type
+  
+  class PicObj {
+    constructor(description, fileName, type) {
+      // this.id = picId;
+      this.description = description;
+      this.fileName = fileName;
+      this.type = type;
+    }
+  }
+  // ***********
+  class SoundToBeRecordedObj {
+    constructor(text, fileName) {
+      // this.id = soundTobeRecordedId;
+      this.text = text;
+      this.fileName = fileName;
+    }
+  }
+  // ***********
+  
+  class SoundEffectObj {
+    constructor(description, fileName) {
+      // this.id = soundEffectId;
+      this.description = description;
+      this.fileName = fileName;
+    }
+  }
+  // ***********
+  
+  class VideoObj {
+    constructor(description, fileName, type) {
+      // this.id = videoId;
+      this.description = description;
+      this.fileName = fileName;
+      this.type = type;
+    }
+  }
+  
+  class TextReadObj {
+    constructor(text, fileName) {
+      // this.id = textReadID;
+      this.text = text;
+      this.fileName = fileName;
+    }
+  }
+  
+  //****************************************** */
+  
+
+
 
 function storeDataLocally(id, data, type) {
 
@@ -121,11 +223,12 @@ function storeDataLocally(id, data, type) {
             case 'courses':  return new Course(id,data['Course-Title'],data.Description,data.Category,data['Modules-Numbers']);
             case 'modules':  return new Module(id, data['Module-ID'], data['Module-Title']);
             case 'lessons':  return new Lesson(id, data['Lesson-ID'], data['Lesson-Title'], data['Module-ID']);
-            case 'concepts': return new Concept(id, data['Concept-ID'],data['Concept-Text'], false);
+            case "concepts": return new Concept(id, data["Concept-ID"], data["Concept-Text"]);
             case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text']);
             case 'sceneTypes': return new SceneType(id, data['sceneT-ID'], data['sceneT-Text']);
             case 'sceneHeaders': return new SceneHeader(id, data['Course-ID'], data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene_Desc'], data['Scene-Seq'],
                                                             data['Scene-Type'], data['Send-To-Teacher'], data['Book-Type'] );
+            case 'scene':
         }
         
            

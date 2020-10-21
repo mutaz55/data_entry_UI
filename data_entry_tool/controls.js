@@ -648,7 +648,7 @@ btn_add_concept.addEventListener("click", () => {
 
       // store the concept locally
       Concepts.push(
-        new Concept(currentCourse.id, id_con_key, txt_concept_entry.value, true)
+        new Concept(currentCourse.id, id_con_key, txt_concept_entry.value)
       );
       
       // Add new record of concept
@@ -1365,7 +1365,7 @@ add_con_scene.addEventListener("click", () => {
       addNewItemsTab2(conTxt, conID, scene_concepts, true);
 
       SceneHeaders.find((st) => st.sceneID == currentScene).Concepts.push(
-        new Concept(currentCourse.id, conID, conTxt, true)
+        new Concept(currentCourse.id, conID, conTxt)
       );
 
       // //Add a concept to a scene record.

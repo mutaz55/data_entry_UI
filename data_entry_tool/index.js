@@ -140,7 +140,7 @@ function deleteSceneHeader() {
         deleteSceneHeaderFromDB(del)
           .then(() => {
             console.log(
-              `Scene type with Id:  ${del.id} has been successuflly deleted!`
+              `SceneHeader with Id:  ${del.id} has been successuflly deleted!`
             );
           })
           .catch((err) =>
@@ -705,7 +705,7 @@ function clearOriginalSkills() {
 }
 //function clearConcepts() {
 function clearOriginalConcepts(){
-  Concepts = Concepts.filter((conId) => conId.id != "-1");
+  originalConcepts = originalConcepts.filter((conId) => conId.id != "-1");
   //Concepts = Concepts.filter((con) => con._deleted == false);
 }
 
