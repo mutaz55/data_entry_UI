@@ -116,7 +116,7 @@ function addSceneType() {
           "sceneT-Text": st.SceneTypeDesc,
         })
         .then(() => {
-          originalSceneTypes.unshift(
+          originalSceneTypes.push(
             new SceneType(st.SceneTypeID, st.SceneTypeID, st.SceneTypeDesc)
           );
           console.log(
@@ -140,7 +140,7 @@ function deleteSceneHeader() {
         deleteSceneHeaderFromDB(del)
           .then(() => {
             console.log(
-              `Scene type with Id:  ${del.id} has been successuflly deleted!`
+              `SceneHeader with Id:  ${del.id} has been successuflly deleted!`
             );
           })
           .catch((err) =>
@@ -283,7 +283,7 @@ function addSkill() {
         (skId) => skId.SkillID == sk.SkillID && skId.SkillText == sk.SkillText
       ) == -1
     ) {
-      // new Module has been added
+      // new Skill has been added
 
       db.collection("skills")
         .add({
@@ -291,7 +291,7 @@ function addSkill() {
           "Skill-Text": sk.SkillText,
         })
         .then(() => {
-          originalSkills.unshift(
+          originalSkills.push(
             new Skill(sk.SkillID, sk.SkillID, sk.SkillText)
           );
           console.log(
@@ -327,7 +327,7 @@ function addModule() {
           }),
         })
         .then(() => {
-          originalModules.unshift(
+          originalModules.push(
             new Module(con.id, con.ModuleID, con.ModuleTitle)
           );
           console.log(
@@ -364,7 +364,7 @@ function addLesson() {
           }),
         })
         .then(() => {
-          originalLessons.unshift(
+          originalLessons.push(
             new Lesson(les.id, les.LessonID, les.LessonTitle, les.ModuleID)
           );
           console.log(
@@ -451,7 +451,7 @@ function AddConcept() {
           }),
         })
         .then(() => {
-           originalConcepts.unshift(
+           originalConcepts.push(
              new Concept(con.id, con.ConceptID, con.ConceptText)
            );
           //con._new = false;
@@ -705,7 +705,7 @@ function clearOriginalSkills() {
 }
 //function clearConcepts() {
 function clearOriginalConcepts(){
-  Concepts = Concepts.filter((conId) => conId.id != "-1");
+  originalConcepts = originalConcepts.filter((conId) => conId.id != "-1");
   //Concepts = Concepts.filter((con) => con._deleted == false);
 }
 
@@ -769,7 +769,7 @@ function loadDataFromFireStore() {
           
           // get Courses Info
             Courses.push(storeDataLocally(doc.id, doc.data(), "courses"));
-            originalCourses.unshift(
+            originalCourses.push(
               storeDataLocally(doc.id, doc.data(), "courses")
             );
           
@@ -779,7 +779,7 @@ function loadDataFromFireStore() {
             doc.data()["Concepts"].forEach(function (con) {
 
                 Concepts.push(storeDataLocally(doc.id, con, "concepts"));
-               originalConcepts.unshift(
+               originalConcepts.push(
                  storeDataLocally(doc.id, con, "concepts")
                );
             
@@ -789,7 +789,7 @@ function loadDataFromFireStore() {
           if (doc.data()["Modules"])
             doc.data()["Modules"].forEach(function (mod) {
               Modules.push(storeDataLocally(doc.id, mod, "modules"));
-              originalModules.unshift(storeDataLocally(doc.id, mod, "modules"));
+              originalModules.push(storeDataLocally(doc.id, mod, "modules"));
             });
 
           // get Lessons Info
@@ -797,7 +797,7 @@ function loadDataFromFireStore() {
             doc.data()["Lessons"].forEach(function (les) {
               
               Lessons.push(storeDataLocally(doc.id, les, "lessons"));
-              originalLessons.unshift(storeDataLocally(doc.id, les, "lessons"));
+              originalLessons.push(storeDataLocally(doc.id, les, "lessons"));
             });
         });
       })
@@ -813,7 +813,7 @@ function loadDataFromFireStore() {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           Skills.push(storeDataLocally(doc.id, doc.data(), "skills"));
-          originalSkills.unshift(
+          originalSkills.push(
             storeDataLocally(doc.id, doc.data(), "skills")
           );
         });
@@ -832,7 +832,7 @@ function loadDataFromFireStore() {
           SceneTypes.push(
             storeDataLocally(doc.id, doc.data(), "sceneTypes")
           );
-          originalSceneTypes.unshift(
+          originalSceneTypes.push(
             storeDataLocally(doc.id, doc.data(), "sceneTypes")
           );
         });
