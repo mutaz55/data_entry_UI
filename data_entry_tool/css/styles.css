@@ -491,6 +491,9 @@ body {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 822cd5ef90110937f5a77d809de4fc85012948e3
 .toast-success {
   background-color: green;
   font-family: "Courier New", Courier, monospace;
@@ -498,13 +501,19 @@ body {
   color: white;
 
 }
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 822cd5ef90110937f5a77d809de4fc85012948e3
 .tabby-tab .labelMediaTab {
   display: block;
   box-sizing: border-box;
   /* tab content must clear this */
   /* height: 40px; */
+<<<<<<< HEAD
 >>>>>>> Tab3-Generate-Scene
+=======
+>>>>>>> 822cd5ef90110937f5a77d809de4fc85012948e3
 
   padding: 10px;
   text-align: center;

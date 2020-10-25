@@ -1325,7 +1325,7 @@ btn_remove_scene.addEventListener("click", () => {
     if (removeBtnFromLst(lst_scenes)) {
            
         SceneHeaders = removeItemFromArr(SceneHeaders, 'sceneID', lst_scenes.index);
-        
+        ScenesArray=removeItemFromArr(ScenesArray,"",lst_scenes.index)
         // TODO: Remove the scene from scene array objects
         resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
 
@@ -1385,6 +1385,9 @@ btn_add_scene.addEventListener("click", () => {
     
     // Add new record of a scene header
     //TODO: initialize the scene obj
+
+    ScenesArray.push(createEmptyScene(id_scene_key));
+
     //toAdd.push(new CRUD_Op(currentCourse.id, id_scene_key, addSceneHeader));
 
     
@@ -2198,3 +2201,30 @@ function getSceneTypeLstIndex(sc) {
 }
 
 
+//**********************Taha ********************************* */
+
+function createEmptyScene(newSceneId) {
+  let emptyScene = new Scene(newSceneId, "", "", "");
+
+  // create first question and push it to Scene.
+  let firstQuestion = new Question("id-question-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
+  let firstHintObj = new HintObj("id-hintObj-Q1-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
+  let firstPreviousHelpObj = new PreviousHelpObj("id-prevHelp-Q1-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
+
+
+
+  // Test Data to be changed with real datafrom DBs
+  emptyScene.exerciseText = "Test-data 1";
+  emptyScene.translation = "Test-data 2";
+  firstHintObj.text = "Test-data 3";
+  firstPreviousHelpObj.description = "Test-data 4";
+
+  firstHintObj.previousHelp = firstPreviousHelpObj;
+      emptyScene.exerciseHintObj = firstHintObj;
+
+  emptyScene.questions.push(firstQuestion);
+
+  return emptyScene;
+}
+
+//***************************************************** */
