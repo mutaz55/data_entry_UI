@@ -490,7 +490,6 @@ body {
   flex: 1;
 }
 
-<<<<<<< HEAD
 .toast-success {
   background-color: green;
   font-family: "Courier New", Courier, monospace;
@@ -498,13 +497,11 @@ body {
   color: white;
 
 }
-=======
 .tabby-tab .labelMediaTab {
   display: block;
   box-sizing: border-box;
   /* tab content must clear this */
   /* height: 40px; */
->>>>>>> Tab3-Generate-Scene
 
   padding: 10px;
   text-align: center;
