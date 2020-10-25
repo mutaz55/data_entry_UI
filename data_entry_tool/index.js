@@ -8,8 +8,6 @@ const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 //const mainMsg = document.querySelector('#mainMsg');
 
-
-
 const setupUI = (user) => {
   if (user) {
     loggedInLinks.forEach((item) => (item.style.display = "block"));
@@ -728,7 +726,6 @@ function initArrays(){
 }
 
 function loadDataFromFireStore() {
-  
   // to prevent user of clicking too many times load button.
   if (_busy) return;
   _busy = true;
@@ -759,14 +756,12 @@ function loadDataFromFireStore() {
 
   let AllPromises = [];
 
-
   var docRef = db.collection("courses");
   AllPromises.push(
     docRef
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          
           // get Courses Info
             Courses.push(storeDataLocally(doc.id, doc.data(), "courses"));
             originalCourses.push(
@@ -916,12 +911,9 @@ function ConvetToDec(id){
 
 // Clear drop down items (Combobox Courses)
 function clearCombo(combo) {
-
   if (combo.options.length > 0) {
-
-    combo.removeEventListener("change",courseComboChangeHandler, true);
+    combo.removeEventListener("change", courseComboChangeHandler, true);
     combo.options.length = 0;
-
   }
 }
 
@@ -956,25 +948,19 @@ function clearTxtEntries(){
 //   clearScenesLst();
 // }
 
-
 function courseComboChangeHandler(e) {
   newCourseSelected(e);
 
   // Select first module in Tab 2
   lst_modules_tab2_setIndex(0);
-  
 }
 
-
 function fillCourseInfo() {
-    
-
   // clear the course in combobox if there is any
   clearCombo(courseCombo);
   //courseCombo.outerHTML = courseCombo.outerHTML;
 
   if (Courses.length != 0) {
-
     Courses.forEach((x) => {
       const newOption = document.createElement("option");
       const optionText = document.createTextNode(x.CourseTitle);
@@ -986,38 +972,29 @@ function fillCourseInfo() {
       courseCombo.appendChild(newOption);
     });
 
-    courseCombo.addEventListener("change",  courseComboChangeHandler);
+    courseCombo.addEventListener("change", courseComboChangeHandler);
 
     if (courseCombo.options.length > 0) {
-      
       courseCombo.dispatchEvent(new Event("change"));
     }
   }
 }
 
-
 // A course selectes from the drop down list (courses combo box)
 // then a Change event fires and the following function executes.
 function newCourseSelected(event) {
- 
-
   // Find the current course based on the selected item from the course list combo
-  currentCourse = Courses.find(
-    (courseID) => courseID.id == event.target.value
-  );
+  currentCourse = Courses.find((courseID) => courseID.id == event.target.value);
 
   // Fill the course description
-  
+
   textAreaCourseDesc.value = currentCourse.Description;
 
   // Fill the course type (free or paid)
   if (currentCourse.Category == 1) {
-    
-      chkBoxCourseTypePaid.checked = true;
-
+    chkBoxCourseTypePaid.checked = true;
   } else {
-
-      chkBoxCourseTypeFree.checked = true;
+    chkBoxCourseTypeFree.checked = true;
   }
 
 
@@ -1033,8 +1010,6 @@ function newCourseSelected(event) {
   fillSkills(Skills);
   fillSceneTypes(SceneTypes);
 
-   // Now user can press load button again.
+  // Now user can press load button again.
   _busy = false;
-
 }
-
