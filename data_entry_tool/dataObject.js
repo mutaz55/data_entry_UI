@@ -1,4 +1,3 @@
-
 class Course {
     constructor (id, CourseTitle, Description,  Category) {
         this.id = id;
@@ -14,14 +13,14 @@ class Course {
 }
 
 class Module {
-    constructor(id, ModuleID, ModuleTitle) {
-        this.id = id;
-        this.ModuleID = ModuleID;
-        this.ModuleTitle = ModuleTitle;
-    }
-    toString() {
-        return this.id + ', ' + this.ModuleID + ', ' + this.ModuleTitle;
-    }
+  constructor(id, ModuleID, ModuleTitle) {
+    this.id = id;
+    this.ModuleID = ModuleID;
+    this.ModuleTitle = ModuleTitle;
+  }
+  toString() {
+    return this.id + ", " + this.ModuleID + ", " + this.ModuleTitle;
+  }
 }
 
 
@@ -38,85 +37,102 @@ class Concept {
 
 
 class Skill {
-    constructor(id, SkillID, SkillText ) {
-        this.id = id;
-        this.SkillID = SkillID;
-        this.SkillText = SkillText;
-    }
-    toString(){
-        return this.id + ', ' + this.SkillID + ', ' + this.SkillText;
-    }
+  constructor(id, SkillID, SkillText) {
+    this.id = id;
+    this.SkillID = SkillID;
+    this.SkillText = SkillText;
+  }
+  toString() {
+    return this.id + ", " + this.SkillID + ", " + this.SkillText;
+  }
 }
 
 class Lesson {
-    constructor(id, LessonID, LessonTitle, modId ) {
-        this.id = id;
-        this.LessonID = LessonID;
-        this.LessonTitle = LessonTitle;
-        this.ModuleID = modId;
-    }
-    toString() {
-        return this.id + ', ' + this.LessonID + ', ' + this.LessonTitle + ', ' + this.ModuleID;
-    }
+  constructor(id, LessonID, LessonTitle, modId) {
+    this.id = id;
+    this.LessonID = LessonID;
+    this.LessonTitle = LessonTitle;
+    this.ModuleID = modId;
+  }
+  toString() {
+    return (
+      this.id +
+      ", " +
+      this.LessonID +
+      ", " +
+      this.LessonTitle +
+      ", " +
+      this.ModuleID
+    );
+  }
 }
 
 class SceneType {
-    constructor(id, SceneTypeID, SceneTypeDesc) {
-        this.id = id;
-        this.SceneTypeID = SceneTypeID;
-        this.SceneTypeDesc = SceneTypeDesc;
-    }
-    toString() {
-        return this.id + ', ' + this.SceneTypeID + ', ' + this.SceneTypeDesc;
-    }
+  constructor(id, SceneTypeID, SceneTypeDesc) {
+    this.id = id;
+    this.SceneTypeID = SceneTypeID;
+    this.SceneTypeDesc = SceneTypeDesc;
+  }
+  toString() {
+    return this.id + ", " + this.SceneTypeID + ", " + this.SceneTypeDesc;
+  }
 }
-
 
 class SceneHeader {
-    constructor(_id, cId, sID,  mod, les, sTitle, sDesc, sSeq, sType, snd_teacher , bk_type, newCreated = false) {
-        this.id = _id;
-        this.CourseID = cId;
-        this.sceneID = sID;
-        this.ModuleID = mod;
-        this.LessonID = les; 
-        this.sceneTitle = sTitle;
-        this.sceneDesc = sDesc;
-        this.sceneSeq = sSeq;
-        this.sceneTypeID = sType;
-        this.sendToTeacher = snd_teacher;
-        this.flag_finished = false;
-        this.flag_available = true;
-        this.flag_review = false;
-        this.Concepts = [];
-        this.Skills = [];
-        this.BookType = bk_type;
-        this.Points = 0;
-        this.Score = 0;
-        this._deleted = false;
-        this._changed = false;
-        this._new = newCreated;
-
-    }
-
-    
+  constructor(
+    _id,
+    cId,
+    sID,
+    mod,
+    les,
+    sTitle,
+    sDesc,
+    sSeq,
+    sType,
+    snd_teacher,
+    bk_type,
+    newCreated = false
+  ) {
+    this.id = _id;
+    this.CourseID = cId;
+    this.sceneID = sID;
+    this.ModuleID = mod;
+    this.LessonID = les;
+    this.sceneTitle = sTitle;
+    this.sceneDesc = sDesc;
+    this.sceneSeq = sSeq;
+    this.sceneTypeID = sType;
+    this.sendToTeacher = snd_teacher;
+    this.flag_finished = false;
+    this.flag_available = true;
+    this.flag_review = false;
+    this.Concepts = [];
+    this.Skills = [];
+    this.BookType = bk_type;
+    this.Points = 0;
+    this.Score = 0;
+    this._deleted = false;
+    this._changed = false;
+    this._new = newCreated;
+  }
 }
-
 //****************************************** */
 class Scene {
-    constructor(
-      sceneId,
-      exerciseText = "",
-      translation = "",
-      exerciseHintObj = ""
-    ) {
-      this.id = sceneId;
-      this.exerciseText = exerciseText;
-      this.translation = translation;
-      this.exerciseHintObj = exerciseHintObj; // Object
-      this.questions = []; // Array of Objecs
-    }
+  constructor(
+    sceneId,
+    exerciseText = "",
+    translation = "",
+    exerciseHintObj = ""
+  ) {
+    this.id = sceneId;
+    this.exerciseText = exerciseText;
+    this.translation = translation;
+    this.exerciseHintObj = exerciseHintObj; // Object
+    this.questions = []; // Array of Objecs
   }
-  
+}
+
+ 
   //****************************************** */
   class HintObj {
     constructor(hintObjID, hintText = "", previousHelpObj = "") {
@@ -233,6 +249,5 @@ function storeDataLocally(id, data, type) {
         
            
        
-    }
-
+  }
 }

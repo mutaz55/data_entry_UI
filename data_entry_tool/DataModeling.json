@@ -82,7 +82,7 @@
 
   "Question": {
     "Id": "",
-    "DataMedia": "Mediaobj",
+    "DataMedia":["Mediaobj"] ,
     "StatementAnswer": [
       {
         "statement": "statement text with tokins (E, C, T)",
