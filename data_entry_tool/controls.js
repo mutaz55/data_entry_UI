@@ -80,6 +80,7 @@ const remove_con_scene = document.querySelector("#remove_concept_from_scene");
 
 // Scene Skills
 const lst_skills_tab2 = document.querySelector("#id-select-skill");
+const lst_elementsSkills_tab2 = document.querySelector('#id-select-elementSkills');
 const scene_skills = document.querySelector("#id-lst-skills");
 const add_skill_scene = document.querySelector("#add_skill_to_scene");
 const remove_skill_scene = document.querySelector("#remove_skill_from_scene");
@@ -1829,7 +1830,7 @@ function fillSkills(sk) {
     
     
     fillSceneSkills(sk, lst_skills_tab2);
-
+    fillSceneSkills(sk, lst_elementsSkills_tab2);
     lst_skills_tab2_setIndex(0);
 
   }
@@ -1843,6 +1844,7 @@ function fillSceneSkills(sk, lst_type) {
    if (sk.length != 0) {
     sk.forEach((element) => {
       addNewItemsTab2(element.SkillText, element.SkillID, lst_type , true);
+
     });
   }
 }

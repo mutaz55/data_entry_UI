@@ -23,7 +23,31 @@ class Module {
   }
 }
 
+class Subject {
+  constructor(id, subjID, subjText){
+    this.id = id;
+    this.sujectID = subjID;
+    this.subjectText = subjText;
+    this.elements = [];
+  }
+}
 
+const ElementType = {
+    KeyWords: 0,
+    Structure: 1,
+    Vocals: 2,
+    Grammer: 3,
+}
+
+class Element {
+
+  constructor(id, text, type){
+    this.id = id;
+    this.elementText = text;
+    this.elementType = type;
+  }
+
+}
 class Concept {
     constructor(id, ConceptID, ConceptText) {
       this.id = id;

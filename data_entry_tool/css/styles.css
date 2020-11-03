@@ -108,6 +108,41 @@ body {
   text-align: right;
 } */
 
+.dropdown-subjects {
+  
+  height: 100%;
+  border: 1px solid #999;
+  font-size: 18px;
+  color: #1c87c9;
+  background-color: rgb(247, 245, 245);
+  border-radius: 5px;
+ 
+  
+}
+
+.cell-subjects {
+ 
+
+  
+  margin:auto;
+  
+}
+.text-entry{
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: x-large;
+}
+.tab-subject {
+  background-color: white;
+  border: 1px solid #bebbbb;
+
+  
+}
+.table-subjects {
+  margin: 60px 10px 40px 0px;
+  background-color: white;
+  border: 1px solid #bebbbb;
+
+}
 .span-radio {
   font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 2rem;
@@ -490,10 +525,6 @@ body {
   flex: 1;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 822cd5ef90110937f5a77d809de4fc85012948e3
 .toast-success {
   background-color: green;
   font-family: "Courier New", Courier, monospace;
@@ -501,19 +532,12 @@ body {
   color: white;
 
 }
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 822cd5ef90110937f5a77d809de4fc85012948e3
+
 .tabby-tab .labelMediaTab {
   display: block;
   box-sizing: border-box;
   /* tab content must clear this */
   /* height: 40px; */
-<<<<<<< HEAD
->>>>>>> Tab3-Generate-Scene
-=======
->>>>>>> 822cd5ef90110937f5a77d809de4fc85012948e3
 
   padding: 10px;
   text-align: center;
