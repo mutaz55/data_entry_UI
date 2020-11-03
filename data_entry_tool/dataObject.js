@@ -207,7 +207,9 @@ function storeDataLocally(id, data, type) {
             case 'sceneTypes': return new SceneType(id, data['sceneT-ID'], data['sceneT-Text']);
             case 'sceneHeaders': return new SceneHeader(id, data['Course-ID'], data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene_Desc'], data['Scene-Seq'],
                                                             data['Scene-Type'], data['Send-To-Teacher'], data['Book-Type'] );
-            case 'scene':
+            case 'scene': return new Scene(id, data['exerciseText'], data['translation']);
+              
+              
         }
         
            

@@ -88,11 +88,14 @@ saveBtn.addEventListener("click", (event) => {
 
   // Check the scene Headers info changes and save them
 
+  // save new/changed scenes into DB
+  addScenes();
   //Delete scene Header
   deleteSceneHeader();
   // Add new Scene Header
   addSceneHeader();
 
+ 
 
   save_busy = false;
 });
@@ -146,12 +149,53 @@ function deleteSceneHeader() {
           Details:  ${err}`)
           )
       );
+
+      AllPromises.push(
+        deleteSceneFromDB(del.sceneID)
+          .then(() => {
+            console.log(
+              `Scene with Id:  ${del.sceneID} has been successuflly deleted!`
+            );
+          })
+          .catch((err) =>
+            console.log(`Error while deleting scene with Id:  ${del.id} 
+          Details:  ${err}`)
+          )
+      );
+
     }
   });
 
   Promise.all(AllPromises).then(() => {
+
+    SceneHeaders.forEach (function (item ) {
+        
+      if (item._deleted) {
+        
+        ScenesArray = ScenesArray.filter((sc) => sc.id != item.sceneID);
+
+      }
+
+    });
+
     SceneHeaders = SceneHeaders.filter((sH) => sH._deleted == false);
   });
+}
+
+function addScenes(){
+  let AllPromises = [];
+
+  SceneHeaders.forEach( function (sHeader) {
+    
+    if (sHeader._new || sHeader._changed) {
+
+      AllPromises.push(db.collection("Scenes").doc(sHeader.sceneID).set(JSON.parse(JSON.stringify(ScenesArray.find(sc => sc.id == sHeader.sceneID)))));
+
+    }
+    
+  });
+
+  Promise.all(AllPromises);
 }
 
 function addSceneHeader() {
@@ -207,6 +251,7 @@ function addSceneHeader() {
           console.error("Error adding document: ", error);
         });
       sH._new = false;
+      sH._changed = false;
       return;
     }
 
@@ -649,6 +694,10 @@ function deleteSceneHeaderFromDB(del) {
   return db.collection("sceneHeaders").doc(del.id).delete();
 }
 
+function deleteSceneFromDB(del) {
+  return db.collection("Scenes").doc(del.id).delete();
+}
+
 function deleteSceneTypeFromDB(del) {
   return db.collection("sceneTypes").doc(del.id).delete();
 }
@@ -753,6 +802,7 @@ function loadDataFromFireStore() {
   SceneHeaders = [];
   originalSceneHeaders = [];
 
+  ScenesArray = [];
 
 
   let AllPromises = [];
@@ -856,6 +906,68 @@ function loadDataFromFireStore() {
             });
 
           SceneHeaders.push(sceneH);
+        });
+      })
+      .catch((er) => console.log(er))
+  );
+
+  var docRef_Scenes = db.collection("Scenes");
+
+  AllPromises.push(
+    docRef_Scenes
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          
+          let scene = storeDataLocally(doc.id, doc.data(), "scene");
+          
+          let hintObj = doc.data()["exerciseHintObj"];
+          if(hintObj) {
+            scene.exerciseHintObj = new HintObj(hintObj.id, hintObj.text);
+            scene.exerciseHintObj.draggableHint = hintObj.draggableHint;
+            scene.exerciseHintObj.previousHelp = new PreviousHelpObj(hintObj["previousHelp"].id, hintObj["previousHelp"].description, hintObj["previousHelp"].fileName);
+            
+          }
+        
+          if (doc.data()["questions"]) {
+              doc.data()["questions"].forEach(function (qu) {
+
+                let quest = new Question(qu.id);
+
+                qu["mediaObjects"].forEach(function (md) {
+
+                  let mdObj = new MediaObjectData(md.id, md.text, md.filename, md.type);
+
+                  quest.mediaObjects.push(mdObj);
+
+                });
+                
+                qu["statementsAnswers"].forEach(function (sAns) {
+
+                  let stateAns = new statementAnswersObj(sAns.id, sAns.statement);
+
+                  if (sAns["Answers"]) {
+                      sAns["Answers"].forEach( function (ans){
+
+                        let answer = new Answers(ans.answerId, ans.answerText, ans.mediaAnswer, ans.correct);
+                        stateAns.Answers.push(answer);
+
+                      });
+                    
+                  }
+
+                  quest.statementsAnswers.push(stateAns);
+
+                });
+
+                scene.questions.push(quest);
+                  
+              });
+              
+          }
+
+
+          ScenesArray.push(scene);
         });
       })
       .catch((er) => console.log(er))
@@ -993,9 +1105,9 @@ function newCourseSelected(event) {
 
   // Fill the course type (free or paid)
   if (currentCourse.Category == 1) {
-    chkBoxCourseTypePaid.checked = true;
+      chkBoxCourseTypePaid.checked = true;
   } else {
-    chkBoxCourseTypeFree.checked = true;
+      chkBoxCourseTypeFree.checked = true;
   }
 
 
@@ -1014,3 +1126,4 @@ function newCourseSelected(event) {
   // Now user can press load button again.
   _busy = false;
 }
+

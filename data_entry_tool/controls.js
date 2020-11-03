@@ -130,23 +130,17 @@ function showSuccess(msg){
 
 txtbox_course_description.addEventListener("input", (e) => {
   if (Courses.length > 0) currentCourse.Description = e.target.value;
-  // if (isUpdatePossible(currentCourse.id, 'description')) {
-  //     toUpdate.push(new CRUD_Op(currentCourse.id, "description", updateCourseInfo));
-  // }
+
 });
 
 radiobtn_course_category_paid.addEventListener("change", () => {
   if (Courses.length > 0) currentCourse.Category = 1;
-  // if (isUpdatePossible(currentCourse.id, 'category')) {
-  //     toUpdate.push(new CRUD_Op(currentCourse.id, "category", updateCourseInfo));
-  // }
+
 });
 
 radiobtn_course_category_free.addEventListener("change", () => {
   if (Courses.length > 0) currentCourse.Category = 0;
-  // if (isUpdatePossible(currentCourse.id, 'category')) {
-  //     toUpdate.push(new CRUD_Op(currentCourse.id, "category", updateCourseInfo));
-  // }
+
 });
 
 
@@ -243,7 +237,7 @@ function addLstHandlersCase2(lst, txt_entry, code_entry, btn_add) {
       btn_add.dispatchEvent(new Event('click'));
     
     // escape the update mode on the list
-    }else if ((e.key  === 'Escape') || (e.key === 'Delete') || (e.key == 'Backspace')) {
+    }else if (e.key  === 'Escape')  {
 
       resetAddBtnCase2(lst, txt_entry, code_entry, btn_add)
     }
@@ -292,7 +286,7 @@ function keyHandlers(lst, txt_entry, btn_add){
       btn_add.dispatchEvent(new Event('click'));
 
       // escape the update mode on the list
-      }else if ((e.key  === 'Escape') || (e.key === 'Delete') || (e.key == 'Backspace')) {
+      }else if (e.key  === 'Escape')  {
 
       resetAddBtn(lst, txt_entry, btn_add);
       }
@@ -367,25 +361,7 @@ function clearSkillsLst() {
   lst_skills.innerHTML = "";
 }
 
-// Check if there is an Add operation to the same item
-// in this case drop the update operation
-// function isUpdatePossible(fIndx, _indx){
 
-//   let condition1 = toAdd.filter( obj => obj.fileId == fIndx && obj.objId == _indx ).length;
-//   let condition2 = toUpdate.filter(obj => obj.fileId == fIndx && obj.objId == _indx).length;
-  
-//   return !(condition1 || condition2);
-
-// }
-
-// check for duplicate delete operation
-// function isDeletePossible(fid,_indx, func)
-// {
-//   return !toDelete.find( obj => obj.fileId == fid && obj.objId == _indx && obj.func == func);
-// }
-
-// // Check if the deleted item stored locally only
-// function deleteLocally(fid, _index){
 function clearRdBtnTab2() {
   document.querySelector("#id-Arbeitbook").checked = false;
   document.querySelector("#id-kursbook").checked = false;
@@ -393,22 +369,7 @@ function clearRdBtnTab2() {
   radiotbtn_sendToTeacherNot.checked = false;
 }
 
-//   let condition = false;
-//   let toAddOriginalLen = toAdd.length;
-  
-//   toAdd  = toAdd.filter( obj => obj.fileId == fid &&  obj.objId != _index);
-  
-//   let toAddNewLen = toAdd.length;
-  
-//   condition = toAddNewLen < toAddOriginalLen;
-    
-//   return condition;
-// }
 
-// remove an CRUD_op from the update array
-// function rmFromtoUpdate(fid, _index){
-//   toUpdate =  toUpdate.filter( obj => obj.fileId == fid &&  obj.objId != _index);
-// }
 
 //#region  Fill lists Tab1 and Tab2
 // Concepts Tab1
@@ -419,7 +380,7 @@ function fillConcepts(con) {
   
   if (con.length != 0) {
     con.forEach((element) => {
-     if (element._deleted) return;
+     
       addNewItems(
         element.ConceptText,
         element.ConceptID,
@@ -438,7 +399,7 @@ function fillSceneConcepts(con, lst_type) {
 
   if (con.length != 0) {
    con.forEach((element) => {
-     if (element._deleted) return;
+     
      addNewItemsTab2(element.ConceptText, element.ConceptID, lst_type , true);
    });
  }
@@ -453,6 +414,7 @@ function updateSkFromScenes(oldValue, newValueCode, newValueTxt) {
         if (item.Skills.find( x => x.SkillID == oldValue)) {
             item.Skills.find( x => x.SkillID == oldValue).SkillText = newValueTxt;  
             item.Skills.find( x => x.SkillID == oldValue).SkillID = newValueCode;
+            item._changed = true;
             result.push(item.sceneID);
         }
       
@@ -479,7 +441,8 @@ function updateSTFromScenes(oldValue, newValue){
   SceneHeaders.forEach( function(item) {
 
     if (item.sceneTypeID == oldValue) {
-        item.sceneTypeID = newValue;  
+        item.sceneTypeID = newValue;
+        item._changed = true;  
         result.push(item.sceneID);
     }
   
@@ -508,6 +471,36 @@ function fillModules(mod) {
 }
 
 
+// delete concepts from all scenes
+function deleteConFromScenes(fid, _indx){
+
+  let result = [];
+  SceneHeaders.forEach( function(item) {
+
+      if (item.CourseID == fid) {
+        if (item.Concepts.find(x=> x.ConceptID == _indx)) {
+          item._changed = true;
+          result.push(item.sceneID);
+        }
+      }
+  });
+
+  if (result.length > 0) {
+    SceneHeaders.find(
+      (st) => st.CourseID == fid
+    ).Concepts = SceneHeaders.find(
+      (st) => st.CourseID == fid
+    ).Concepts.filter(function (item) {
+      return item.ConceptID != _indx;
+    });
+  }
+
+
+  
+  return result;
+  
+}
+
 // update a concept txt from all scenes
 function updateConFromScenes(_id, newValue){
 
@@ -516,6 +509,7 @@ function updateConFromScenes(_id, newValue){
 
         if (item.Concepts.find( x => x.ConceptID == _id)) {
             item.Concepts.find( x => x.ConceptID == _id).ConceptText = newValue;  
+            item._changed = true;
             result.push(item.sceneID);
         }
       
@@ -608,6 +602,32 @@ function rmSkillFromLst( itemValue ){
 }
 
 
+function checkSceneHeaderChanges(){
+
+  let result = [];
+
+  SceneHeaders.forEach( function (item) {
+
+    if ((item._deleted && item._new)) {
+
+        ScenesArray = ScenesArray.filter((scene) => scene.id != item.sceneID);
+        result.push(item.sceneID);
+    }
+    if (item._new || item._deleted) {
+        item._changed = false;
+    }
+
+  });
+
+  console.log(result);
+
+  result.forEach( item => {
+    SceneHeaders = SceneHeaders.filter( sH => sH.sceneID != item);
+  });
+  
+
+}
+
 // Check if the lesson with scenes or empty
 function isDeleteLessonPossible(_id, _index){
 
@@ -653,52 +673,23 @@ btn_remove_concept.addEventListener("click", () => {
  
   if (lst_concepts.index != "-1") {
 
-     // if (isDeletePossible(currentCourse.id, lst_concepts.index, deleteConcept)) {
-          
-        if (removeBtnFromLst(lst_concepts)) {
+      if (removeBtnFromLst(lst_concepts)) {
 
-          // remove the concept from the update list if it was there
-          //rmFromtoUpdate(currentCourse.id, lst_concepts.index);
-        // remove from add or update list if its there
-        //if (!deleteLocally(currentCourse.id, lst_concepts.index)) {
-          
-          
-          // otherwise delete from DB
-          //toDelete.push(new CRUD_Op(currentCourse.id, lst_concepts.index,deleteConcept))
-        //}
-      
-        // find if its being used by any scenes
-        //let scenesHaveIt = deleteConFromScenes(currentCourse.id, lst_concepts.index);
-        deleteConFromScenes(currentCourse.id, lst_concepts.index);
+            deleteConFromScenes(currentCourse.id, lst_concepts.index);
 
-        // if (scenesHaveIt.length > 0) {
-        
-        //   scenesHaveIt.forEach ( function(_sceneID) {
-
-        //     if (isUpdatePossible(currentCourse.id, _sceneID)){
-        //         toUpdate.push(new CRUD_Op(currentCourse.id, _sceneID, addSceneHeader));
-        //     }
-
-        //   });
-
-          //remove it from scene concept list (tab 2)
-          rmConFromConLst(lst_concepts.index);
+            //remove it from scene concept list (tab 2)
+            rmConFromConLst(lst_concepts.index);
             
-
-       // }  
-       removeOptionFromLst(lst_concepts_tab2, lst_concepts.index)
+            removeOptionFromLst(lst_concepts_tab2, lst_concepts.index)
       
-       Concepts = removeItemFromArr(Concepts, 'ConceptID', lst_concepts.index);
+            Concepts = removeItemFromArr(Concepts, 'ConceptID', lst_concepts.index);
        
- 
-        
       }
       
       resetAddBtn(lst_concepts, txt_concept_entry, btn_add_concept);
 
       initAfterDel(lst_concepts, txt_concept_entry);
-    //}
-
+    
   }
 
 });
@@ -721,9 +712,7 @@ btn_add_concept.addEventListener("click", () => {
         new Concept(currentCourse.id, id_con_key, txt_concept_entry.value)
       );
       
-      // Add new record of concept
-      //toAdd.push(new CRUD_Op(currentCourse.id, id_con_key, AddConcept));
-      
+    
       // add the new concept into the concepts list in tab 1
       addNewItems(txt_concept_entry.value, id_con_key, lst_concepts, true).focus();
 
@@ -743,26 +732,12 @@ btn_add_concept.addEventListener("click", () => {
       updateListItemText(lst_concepts, txt_concept_entry.value);
 
       
-      // is update possible
-     // if (isUpdatePossible(currentCourse.id, lst_concepts.index)){
-        //  toUpdate.push(new CRUD_Op(currentCourse.id, lst_concepts.index, AddConcept));
-      //}
-
-
       // find if its being used by any scenes
       let scenesHaveIt = updateConFromScenes(lst_concepts.index, txt_concept_entry.value, txt_skill_entry.value);
 
       if (scenesHaveIt.length > 0) {
       
-        // scenesHaveIt.forEach ( function(_sceneID) {
-
-        //   if (isUpdatePossible(currentCourse.id,  _sceneID)){
-        //       toUpdate.push(new CRUD_Op( currentCourse.id, _sceneID, addSceneHeader));
-        //   }
-
-        // });
-
-        updateOptionText(scene_concepts,lst_concepts.index, txt_concept_entry.value);
+         updateOptionText(scene_concepts,lst_concepts.index, txt_concept_entry.value);
       }
 
   
@@ -796,26 +771,14 @@ btn_remove_module.addEventListener("click", () => {
 
   if (lst_modules.index != "-1") {
     
-    //Check if the operation is duplicated
-    //if (isDeletePossible(currentCourse.id, lst_modules.index, deleteModule)) {
-
+   
       // Check if there are no lessons within the Module
       if (isDeleteModulePossible(currentCourse.id, lst_modules.index)) {
 
 
         if (removeBtnFromLst(lst_modules)) {
         
-          // remove the module from the update list if it was there
-         // rmFromtoUpdate(currentCourse.id, lst_modules.index);
-
-          // remove from toAdd list if its there
-          // if (!deleteLocally(currentCourse.id, lst_modules.index)) {
-                  
-          //   // otherwise delete from DB
-          //   toDelete.push(new CRUD_Op(currentCourse.id, lst_modules.index,deleteModule))
-
-          // }
-
+         
           removeOptionFromLst(lst_modules_tab2, lst_modules.index)
           
           Modules = removeItemFromArr(Modules, 'ModuleID', lst_modules.index);
@@ -831,12 +794,6 @@ btn_remove_module.addEventListener("click", () => {
         showError("Can't delete modules have lessons within it!")
       }
 
-      
-
-
-    //}
-
-    
   }
 });
 
@@ -877,12 +834,7 @@ btn_add_module.addEventListener("click", () => {
       // update list item text 
       updateListItemText(lst_modules, txt_module_entry.value);
 
-      // is update possible
-      // if (isUpdatePossible(currentCourse.id, lst_modules.index)){
-      //     toUpdate.push(new CRUD_Op(currentCourse.id, lst_modules.index, addModule));
-      // }
-
-
+    
       // Update the option text in Tab2 
       updateOptionText(lst_modules_tab2,lst_modules.index, txt_module_entry.value);
             
@@ -912,25 +864,14 @@ btn_remove_lesson.addEventListener("click", () => {
   if (lst_lessons.index != "-1") {
   
     
-        // Check if the operation is duplicated
-        //if (isDeletePossible(currentCourse.id, lst_lessons.index, deleteLesson)) {
-
+        
           // Check if there are no scenes within the lesson
           if (isDeleteLessonPossible(currentCourse.id, lst_lessons.index)) {
 
             
                // Check if its possible to delete a lesson
               if (removeBtnFromLst(lst_lessons)) {
-                  // remove the lesson from the update list if it was there
-                  // rmFromtoUpdate(currentCourse.id, lst_lessons.index);
-
-                  // // remove from toAdd list if its there
-                  // if (!deleteLocally(currentCourse.id, lst_lessons.index)) {
                   
-                  //   // otherwise delete from DB
-                  //   toDelete.push(new CRUD_Op(currentCourse.id, lst_lessons.index,deleteLesson))
-
-                  // }
 
                   removeOptionFromLst(lst_lessons_tab2, lst_lessons.index)
                 
@@ -946,14 +887,7 @@ btn_remove_lesson.addEventListener("click", () => {
             showError("Can't delete lessons have scenes within it!")
           }
 
-            
-
-       // }
-        
-
-      
-    
-    
+       
   }
 });
 
@@ -976,9 +910,7 @@ btn_add_lesson.addEventListener("click", () => {
     // store the lesson locally 
     Lessons.push(new Lesson(currentCourse.id, id_less_key, txt_lesson_entry.value, lst_modules.index));
 
-    // Add new record of lessons
-    //toAdd.push(new CRUD_Op(currentCourse.id, id_less_key, addLesson));
-
+    
     addNewItems(txt_lesson_entry.value, id_less_key, lst_lessons, true).focus();
 
     // Add to tab2 only if the current module is displayed
@@ -995,11 +927,7 @@ btn_add_lesson.addEventListener("click", () => {
     // update list item text Tab1
     updateListItemText(lst_lessons, txt_lesson_entry.value);
 
-    // is update possible
-    // if (isUpdatePossible(currentCourse.id, lst_lessons.index)){
-    //   toUpdate.push(new CRUD_Op(currentCourse.id, lst_lessons.index, addLesson));
-    // }
-
+    
     // Update the option text in Tab2
     updateOptionText(lst_lessons_tab2,lst_lessons.index, txt_lesson_entry.value);
     
@@ -1026,24 +954,13 @@ btn_remove_skill.addEventListener("click", () => {
   
   if (lst_skills.index != "-1") {
 
-    //if (isDeletePossible(currentCourse.id, lst_skills.index, deleteSkill)) {
 
       // Check if there are no scenes refer to the skill
       if (isDeleteSkillPossible(lst_skills.index)){
 
         if (removeBtnFromLst(lst_skills)) {
       
-            // remove the module from the update list if it was there
-           // rmFromtoUpdate(currentCourse.id, lst_skills.index);
-
-            // remove from toAdd list if its there
-           // if (!deleteLocally(currentCourse.id, lst_skills.index)) {
-                    
-            //   // otherwise delete from DB
-            //   toDelete.push(new CRUD_Op(currentCourse.id, lst_skills.index,deleteSkill))
-
-            // }
-
+           
             //remove it from scene skills list (tab 2)
             rmSkillFromLst(lst_skills.index);
         
@@ -1087,9 +1004,7 @@ btn_add_skill.addEventListener("click", () => {
           new Skill(txt_skill_code_entry.value, txt_skill_code_entry.value, txt_skill_entry.value)
         );
         
-        // Add new record of skill
-        //toAdd.push(new CRUD_Op("", txt_skill_code_entry.value, addSkill));
-
+        
         const txt = `(${txt_skill_code_entry.value}) | ${txt_skill_entry.value}`;
          
         addNewItems(txt, txt_skill_code_entry.value, lst_skills, true).focus();
@@ -1113,27 +1028,13 @@ btn_add_skill.addEventListener("click", () => {
       updateListItemText(lst_skills, txt);
       updateListItemId(lst_skills, txt_skill_code_entry.value);
 
-      // // is update possible
-      // if (isUpdatePossible("", txt_skill_code_entry.value)){
-      //     toUpdate = toUpdate.filter(obj => obj.objId != lst_skills.index);
-      //     toUpdate.push(new CRUD_Op("", txt_skill_code_entry.value, addSkill));
-      // }
-
-    
+      
       // find if its being used by any scenes
       let scenesHaveIt = updateSkFromScenes(lst_skills.index, txt_skill_code_entry.value, txt_skill_entry.value);
 
       if (scenesHaveIt.length > 0) {
       
-        // scenesHaveIt.forEach ( function(_sceneID) {
-
-        //   let crId = SceneHeaders.find(x => x.sceneID == _sceneID).CourseID;
-
-        //   if (isUpdatePossible( crId ,  _sceneID)){
-        //       toUpdate.push(new CRUD_Op( crId, _sceneID, addSceneHeader));
-        //   }
-
-        // });
+       
 
         updateOptionText(scene_skills,lst_skills.index, txt_skill_entry.value);
       }
@@ -1167,23 +1068,12 @@ btn_remove_sceneType.addEventListener("click", () => {
 
   if (lst_sceneTypes.index != "-1") {
 
-    //if (isDeletePossible(currentCourse.id, lst_sceneTypes.index, deleteSceneType)) {
 
       if (isDeleteSTypePossible(lst_sceneTypes.index)){
 
         if (removeBtnFromLst(lst_sceneTypes)) {
 
-        // // remove the skill from toUpdate list if it was there
-        // rmFromtoUpdate(currentCourse.id, lst_sceneTypes.index);
-
-        // // remove from toAdd list if its there
-        // if (!deleteLocally(currentCourse.id, lst_sceneTypes.index)) {
-                    
-        //   // otherwise delete from DB
-        //   toDelete.push(new CRUD_Op(currentCourse.id, lst_sceneTypes.index,deleteSceneType));
-
-        // }
-
+       
         
         // remove it from scene type list 
         
@@ -1236,8 +1126,6 @@ btn_add_sceneType.addEventListener("click", () => {
           )
         );
             
-        //Add new record of sceneType
-        //toAdd.push(new CRUD_Op("", txt_sceneType_code.value, addSceneType));
 
         const txt = `(${txt_sceneType_code.value}) | ${txt_sceneType_entry.value}`;
         addNewItems(txt, txt_sceneType_code.value, lst_sceneTypes, true).focus();
@@ -1254,7 +1142,6 @@ btn_add_sceneType.addEventListener("click", () => {
     }else {
 
       // update the sceneType text locally
-      //let _id = SceneTypes.find(sty => sty.SceneTypeID == lst_sceneTypes.index).id;
 
       SceneTypes.find(sty => sty.SceneTypeID == lst_sceneTypes.index).SceneTypeDesc = txt_sceneType_entry.value;
       SceneTypes.find(sty => sty.SceneTypeID == lst_sceneTypes.index).SceneTypeID = txt_sceneType_code.value;
@@ -1265,35 +1152,9 @@ btn_add_sceneType.addEventListener("click", () => {
       updateListItemText(lst_sceneTypes, txt);
       updateListItemId(lst_sceneTypes, txt_sceneType_code.value);
 
-      // // is update possible
-      // if (isUpdatePossible(_id, txt_sceneType_code.value)){
-      //     toUpdate = toUpdate.filter(obj => obj.objId != lst_sceneTypes.index);
-      //     toUpdate.push(new CRUD_Op("", txt_sceneType_code.value, addSceneType));
-      // }
-
-
-      // find if its being used by any scenes
-      //let scenesHaveIt = updateSTFromScenes(lst_sceneTypes.index, txt_sceneType_code.value);
-      
       updateSTFromScenes(lst_sceneTypes.index, txt_sceneType_code.value);
       
-      // if (scenesHaveIt.length > 0) {
-      
-      //   scenesHaveIt.forEach ( function(_sceneID) {
-
-      //     let crID = SceneHeaders.find(x => x.sceneID == _sceneID).CourseID;
-      //     if (isUpdatePossible(crID,  _sceneID)){
-      //         toUpdate.push(new CRUD_Op( crID, _sceneID, addSceneHeader));
-      //     }
-
-      //   });
-
-      // }
-
-        
-
-    
-
+     
       // Update the option text in Tab2 
       updateOptionText(lst_sceneTypes_tab2,lst_sceneTypes.index, txt_sceneType_entry.value);
       updateOptionValue(lst_sceneTypes_tab2, lst_sceneTypes.index, txt_sceneType_code.value);
@@ -1323,15 +1184,18 @@ btn_remove_scene.addEventListener("click", () => {
     
     // TODO : Check if its possible to delete a Scene and the scene header
     if (removeBtnFromLst(lst_scenes)) {
-           
-        SceneHeaders = removeItemFromArr(SceneHeaders, 'sceneID', lst_scenes.index);
-        ScenesArray=removeItemFromArr(ScenesArray,"",lst_scenes.index)
+          
+        SceneHeaders.find((sc) => sc.sceneID == lst_scenes.index)._deleted = true;
+        //SceneHeaders = removeItemFromArr(SceneHeaders, 'sceneID', lst_scenes.index);
+        //ScenesArray=removeItemFromArr(ScenesArray,"",lst_scenes.index)
+
+        checkSceneHeaderChanges();
+        
         // TODO: Remove the scene from scene array objects
         resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
 
         initAfterDel(lst_scenes, txt_sceneTitle_entry);
 
-    // TODO: Add Delete Transaction.
     }
 
     currentScene = null;
@@ -1365,6 +1229,7 @@ btn_add_scene.addEventListener("click", () => {
     // Assign the current scene id
     currentScene = id_scene_key;
     let _id = currentCourse.id + lessonNo + "S" + id_scene;
+
     // store the scene header locally
     SceneHeaders.push(
       new SceneHeader(
@@ -1384,16 +1249,20 @@ btn_add_scene.addEventListener("click", () => {
     );
     
     // Add new record of a scene header
-    //TODO: initialize the scene obj
-
     ScenesArray.push(createEmptyScene(id_scene_key));
 
-    //toAdd.push(new CRUD_Op(currentCourse.id, id_scene_key, addSceneHeader));
 
-    
+   
     addNewItems(txt_sceneTitle_entry.value, id_scene_key, lst_scenes, true).focus();
         
     updateSceneView();
+
+    radiotbtn_sendToTeacherNot.checked = true;
+    radiotbtn_sendToTeacherNot.dispatchEvent( new Event('change'));
+    radiobtn_kursBuch.checked = true;
+    radiobtn_kursBuch.dispatchEvent(new Event('change'));
+    lst_sceneTypes_tab2.selectedIndex = 0;
+    lst_sceneTypes_tab2.dispatchEvent(new Event('change'));
 
     }
     // Update mode
@@ -1401,10 +1270,8 @@ btn_add_scene.addEventListener("click", () => {
       
       // update the scene text locally
       SceneHeaders.find(sH => sH.sceneID == currentScene).sceneTitle = txt_sceneTitle_entry.value;
+      SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
 
-      // if (isUpdatePossible(currentCourse.id, currentScene)) {
-      //     toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-      // }
 
       // update list item text Tab1
       updateListItemText(currentScene, txt_sceneTitle_entry.value);
@@ -1442,11 +1309,7 @@ add_con_scene.addEventListener("click", () => {
         new Concept(currentCourse.id, conID, conTxt)
       );
 
-      // //Add a concept to a scene record.
-      // // update the current sceneHeader
-      // if (isUpdatePossible(currentCourse.id, currentScene)) {
-      //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-      // }
+     
       SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
     }
   }
@@ -1468,9 +1331,6 @@ remove_con_scene.addEventListener("click", () => {
       return item.ConceptID != conID;
     });
 
-    // if (isUpdatePossible(currentCourse.id, currentScene)) {
-    //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-    // }
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
   }
 });
@@ -1495,11 +1355,7 @@ add_skill_scene.addEventListener("click", () => {
       SceneHeaders.find((st) => st.sceneID == currentScene).Skills.push(
         new Skill(currentCourse.id, skID, skTxt)
       );
-      // Add a skill to a scene record
-      // Update the sceneHeader
-      // if (isUpdatePossible(currentCourse.id, currentScene)) {
-      //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-      // }
+     
       SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
     }
   }
@@ -1521,9 +1377,7 @@ remove_skill_scene.addEventListener("click", () => {
 
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
     
-    // if (isUpdatePossible(currentCourse.id, currentScene)) {
-    //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-    // }
+    
   }
 });
 
@@ -1538,11 +1392,7 @@ lst_sceneTypes_tab2.addEventListener("change", (e) => {
     SceneHeaders.find((st) => st.sceneID == currentScene).sceneTypeID =
       e.target.value;
 
-    // update
     
-    // if (isUpdatePossible(currentCourse.id, currentScene)) {
-    //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-    // }
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
 
   }
@@ -1555,19 +1405,16 @@ lst_sceneTypes_tab2.addEventListener("change", (e) => {
 radiotbtn_sendToTeacherNot.addEventListener("change", () => {
   if (currentScene != undefined && currentScene != null) {
     SceneHeaders.find((sid) => sid.sceneID == currentScene).sendToTeacher = 0;
-    // if (isUpdatePossible(currentCourse.id, currentScene)) {
-    //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-    // }
+   
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
   }
 });
 
 radiobtn_sendToTeacher.addEventListener("change", () => {
   if (currentScene != undefined && currentScene != null) {
+
     SceneHeaders.find((sid) => sid.sceneID == currentScene).sendToTeacher = 1;
-    // if (isUpdatePossible(currentCourse.id, currentScene)) {
-    //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-    // }
+    
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
   }
 });
@@ -1579,9 +1426,7 @@ radiobtn_arbeitsBuch.addEventListener("change", () => {
   if (currentScene != undefined && currentScene != null) {
     SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType =
       "Workbook";
-      // if (isUpdatePossible(currentCourse.id, currentScene)) {
-      //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-      // }
+      
       SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
   }
 });
@@ -1589,9 +1434,7 @@ radiobtn_arbeitsBuch.addEventListener("change", () => {
 radiobtn_kursBuch.addEventListener("change", () => {
   if (currentScene != undefined && currentScene != null) {
     SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType = "Course";
-    // if (isUpdatePossible(currentCourse.id, currentScene)) {
-    //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-    // }
+    
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
   }
 });
@@ -1604,10 +1447,7 @@ textbox_scene_desc.addEventListener("input", (e) => {
     SceneHeaders.find((st) => st.sceneID == currentScene).sceneDesc =
       e.target.value;
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
-    // console.log(isUpdatePossible(currentCourse.id, currentScene));
-    // if (isUpdatePossible(currentCourse.id, currentScene)) {
-    //   toUpdate.push(new CRUD_Op(currentCourse.id, currentScene, addSceneHeader));
-    // }
+    
 
   }
 });
@@ -1874,7 +1714,7 @@ function fillConcepts(con) {
   
   if (con.length != 0) {
     con.forEach((element) => {
-     if (element._deleted) return;
+     
       addNewItems(
         element.ConceptText,
         element.ConceptID,
@@ -1892,7 +1732,7 @@ function fillSceneConcepts(con, lst_type) {
 
    if (con.length != 0) {
     con.forEach((element) => {
-      if (element._deleted) return;
+      
       addNewItemsTab2(element.ConceptText, element.ConceptID, lst_type , true);
     });
   }
@@ -2084,6 +1924,8 @@ function getFirstSceneActive(){
     currentScene = lst_scenes.firstChild.id;
     updateSceneView();
     resetAddBtn(lst_scenes,txt_sceneTitle_entry, btn_add_scene);
+  } else {
+    initSceneView();
   }
 }
 
@@ -2153,7 +1995,10 @@ function updateSceneView() {
     if (lst_sceneTypes_tab2.selectedIndex != -1) {
       document.querySelector("#id-scene-selected").innerHTML =
         lst_sceneTypes_tab2.options[lst_sceneTypes_tab2.selectedIndex].text;
+        document.querySelector("#id-scene-code").innerHTML =
+        lst_sceneTypes_tab2.options[lst_sceneTypes_tab2.selectedIndex].value;
     }
+    
 
     if (
       SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType ==
@@ -2188,8 +2033,9 @@ function initSceneView(){
 
   txt_sceneTitle_entry.value = "";
   resetAddBtn(lst_scenes,txt_sceneTitle_entry,  btn_add_scene );
-
   lst_sceneTypes_tab2.selectedIndex = -1;
+  document.querySelector("#id-scene-selected").innerHTML = "xxx";
+  document.querySelector("#id-scene-code").innerHTML = "xxx";
 }
 
 // get the index of the stored scene type
