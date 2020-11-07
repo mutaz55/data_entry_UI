@@ -26,37 +26,28 @@ class Module {
 class Subject {
   constructor(id, subjID, subjText){
     this.id = id;
-    this.sujectID = subjID;
+    this.subjectID = subjID;
     this.subjectText = subjText;
     this.elements = [];
   }
 }
 
-const ElementType = {
+const LingElementType = {
     KeyWords: 0,
     Structure: 1,
     Vocals: 2,
     Grammer: 3,
 }
 
-class Element {
+class LingElement {
 
-  constructor(id, text, type){
+  constructor(id, subID, text, type){
     this.id = id;
+    this.subjID = subID;
     this.elementText = text;
     this.elementType = type;
   }
 
-}
-class Concept {
-    constructor(id, ConceptID, ConceptText) {
-      this.id = id;
-      this.ConceptID = ConceptID;
-      this.ConceptText = ConceptText;
-    }
-    toString() {
-      return this.id + ", " + this.ConceptID + ", " + this.ConceptText;
-    }
 }
 
 
@@ -130,7 +121,7 @@ class SceneHeader {
     this.flag_finished = false;
     this.flag_available = true;
     this.flag_review = false;
-    this.Concepts = [];
+    this.Subjects = [];
     this.Skills = [];
     this.BookType = bk_type;
     this.Points = 0;
@@ -223,10 +214,11 @@ function storeDataLocally(id, data, type) {
 
 
         switch (type){
-            case 'courses':  return new Course(id,data['Course-Title'],data.Description,data.Category,data['Modules-Numbers']);
+            case 'courses':  return new Course(id,data['Course-Title'],data.Description,data.Category);
             case 'modules':  return new Module(id, data['Module-ID'], data['Module-Title']);
             case 'lessons':  return new Lesson(id, data['Lesson-ID'], data['Lesson-Title'], data['Module-ID']);
-            case "concepts": return new Concept(id, data["Concept-ID"], data["Concept-Text"]);
+            case "subjects": return new Subject(id, data["subjectID"], data["subjectText"]);
+            case "elements": return new LingElement(id, data["LingElement-ID"], data["LingElement-Text"], data["LingElement-Type"])
             case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text']);
             case 'sceneTypes': return new SceneType(id, data['sceneT-ID'], data['sceneT-Text']);
             case 'sceneHeaders': return new SceneHeader(id, data['Course-ID'], data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene_Desc'], data['Scene-Seq'],

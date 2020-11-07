@@ -258,14 +258,14 @@
             </div>
 
             <div>
-              <label class="label-course col-lg-3" for="id-concepts">
+              <label class="label-course col-lg-3" for="id-subject">
                 المواضيع</label
               >
 
               <div
                 class="list-group col align-self-end"
                 style="scroll-behavior: auto; text-align: right"
-                id="id-concepts"
+                id="id-subject"
               ></div>
 
               <div class="input-group mb-3">
@@ -275,20 +275,20 @@
                   style="direction: rtl; font-size: larger"
                   placeholder="إدخال الموضوع"
                   aria-label="إدخال الموضوع"
-                  id="txt_concept"
+                  id="txt_subject"
                 />
                 <div class="input-group-append">
                   <button
                     class="btn btn-outline-success"
                     type="button"
-                    id="add_concept"
+                    id="add_subject"
                   >
                     إضافة
                   </button>
                   <button
                     class="btn btn-outline-danger"
                     type="button"
-                    id="remove_concept"
+                    id="remove_subject"
                   >
                     حذف
                   </button>
@@ -334,7 +334,7 @@
             </div>
 
             <div>
-              <label class="label-course col-lg-3" for="id-concepts">
+              <label class="label-course col-lg-3" for="id-modules">
                 الوحدات</label
               >
 
@@ -601,34 +601,34 @@
             </div>
 
             <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-select-concept">
+              <label class="label-course col-lg-3" for="id-select-subject">
                 اختيار الموضوع</label
               >
               <select
                 class="form-control under-label"
                 style="max-height: 100px"
-                id="id-select-concept"
+                id="id-select-subject"
               ></select>
               <select
                 size="6"
                 style="margin-top: 5px"
                 multiple
                 class="form-control under-label"
-                id="id-lst-concepts"
+                id="id-lst-subjects"
               ></select>
               <div class="input-group mb-3">
                 <div class="input-group-append">
                   <button
                     class="btn btn-outline-success"
                     type="button"
-                    id="add_concept_to_scene"
+                    id="add_subject_to_scene"
                   >
                     إضافة
                   </button>
                   <button
                     class="btn btn-outline-danger"
                     type="button"
-                    id="remove_concept_from_scene"
+                    id="remove_subject_from_scene"
                   >
                     حذف
                   </button>
@@ -650,10 +650,7 @@
                           style="max-height: 50px"
                           id="id-select-elementType"
                         >
-                          <option value=0>كلمات مفتاحية</option>
-                          <option value=0>تراكيب</option>
-                          <option value=0>صوتيات</option>
-                          <option value=0>قواعد</option>
+                          
                       </select></th>
                         <th scope="col" class="align-middle"><select
                           class="form-control dropdown-subjects"
@@ -693,40 +690,7 @@
               </div>
             </div>
 
-            <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-select-skill">
-                اختيار المهارة</label
-              >
-              <select
-                class="form-control under-label"
-                id="id-select-skill"
-              ></select>
-              <select
-                size="3"
-                style="margin-top: 5px"
-                multiple
-                class="form-control under-label"
-                id="id-lst-skills"
-              ></select>
-              <div class="input-group mb-3">
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    id="add_skill_to_scene"
-                  >
-                    إضافة
-                  </button>
-                  <button
-                    class="btn btn-outline-danger"
-                    type="button"
-                    id="remove_skill_from_scene"
-                  >
-                    حذف
-                  </button>
-                </div>
-              </div>
-            </div>
+            
 
             <div>
               <label class="label-course col-lg-3" for="id-send-to-teacher"
@@ -796,10 +760,10 @@
               <label
                 class="label-selected-value col-lg-5"
                 id="id-scene-selected"
-                >اختيار</label
+                >xxx</label
               >
               <label class="label-selected-value col-lg-5" id="id-scene-code"
-                >اختيار</label
+                >xxx</label
               >
             </div>
           </div>
@@ -1959,10 +1923,10 @@
       var Modules = new Array();
       var originalModules = new Array();
 
-      var Concepts = new Array();
-      var originalConcepts = new Array();
 
-      
+      var Subjects = new Array();
+      var originalSubjects = new Array();
+
       var Lessons = new Array();
       var originalLessons = new Array();
 
@@ -1986,12 +1950,12 @@
     ></script>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
+<!-- 
     <script>
       $(document).ready(function () {
         $(".sidenav").sidenav();
       });
-    </script>
+    </script> -->
     <script src="dataObject.js"></script>
     <script src="auth.js"></script>
     <script src="index.js"></script>

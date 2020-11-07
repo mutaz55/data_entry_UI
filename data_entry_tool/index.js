@@ -1,3 +1,4 @@
+
 var currentCourse;
 var currentScene;
 var _busy;
@@ -19,21 +20,29 @@ const setupUI = (user) => {
     //mainMsg.style.display = "block";
   }
 };
+
+
+
 // setup materialize components
- document.addEventListener("DOMContentLoaded", function () {
-   var modals = document.querySelectorAll(".modal");
-   M.Modal.init(modals);
- });
+//  document.addEventListener("DOMContentLoaded", function () {
+//    var modals = document.querySelectorAll(".modal");
+//    M.Modal.init(modals);
+//  });
 
-
+ 
 const saveBtn = document.querySelector("#save-btn");
 // get data from database
 
 document.querySelector("#load-btn").addEventListener("click", (e) => {
   e.preventDefault();
-  loadDataFromFireStore();
+ 
+    
+    loadDataFromFireStore();
+ 
+  
 });
 
+//#region Save Operation
 // save data into database
 saveBtn.addEventListener("click", (event) => {
 
@@ -51,13 +60,14 @@ saveBtn.addEventListener("click", (event) => {
   // And update the new values into the database.
   updateCourseInfo();
 
-  // Check if Concepts have been changed and save the changes
-  // Delete concepts
-  deleteConcept();
-
-  // Add new Concepts
-  AddConcept();
-
+  // Check if Subjects  have been changed and save the changes
+  // Delete Subjects
+  //deleteConcept();
+  deleteSubject();
+  // Add new Subjects
+  //AddConcept();
+  AddSubject();
+  
   // Check if the Modules info have been changed and save them
 
   // Delete Modules
@@ -221,13 +231,12 @@ function addSceneHeader() {
           "flag-review": false,
         })
         .then(() => {
-          sH.Concepts.forEach(function (con) {
+          sH.Subjects.forEach(function (sub) {
             db.collection("sceneHeaders")
               .doc(sH.id)
               .update({
-                Concepts: firebase.firestore.FieldValue.arrayUnion({
-                  "Concept-ID": con.ConceptID,
-                  "Concept-Text": con.ConceptText,
+                Subjects: firebase.firestore.FieldValue.arrayUnion({
+                  "subjectID": sub.subjectID,
                 }),
               });
           });
@@ -277,16 +286,16 @@ function addSceneHeader() {
         })
         .then(() => {
           db.collection("sceneHeaders").doc(sH.id).update({
-            Concepts: firebase.firestore.FieldValue.delete(),
+            Subjects: firebase.firestore.FieldValue.delete(),
           });
 
-          sH.Concepts.forEach(function (con) {
+          sH.Subjects.forEach(function (sub) {
             db.collection("sceneHeaders")
               .doc(sH.id)
               .update({
-                Concepts: firebase.firestore.FieldValue.arrayUnion({
-                  "Concept-ID": con.ConceptID,
-                  "Concept-Text": con.ConceptText,
+                Subjects: firebase.firestore.FieldValue.arrayUnion({
+                  "subjectID": sub.subjectID,
+                  
                 }),
               });
           });
@@ -350,36 +359,38 @@ function addSkill() {
 }
 
 function addModule() {
-  Modules.forEach(function (con) {
+  Modules.forEach(function (mod) {
     if (
       originalModules.findIndex(
-        (conId) =>
-          conId.id == con.id &&
-          conId.ModuleID == con.ModuleID &&
-          conId.ModuleTitle == con.ModuleTitle
+        (modId) =>
+            modId.id == mod.id &&
+            modId.ModuleID == mod.ModuleID &&
+            modId.ModuleTitle == mod.ModuleTitle
       ) == -1
     ) {
       // new Module has been added
 
       db.collection("courses")
-        .doc(con.id)
+        .doc(mod.id)
         .update({
           Modules: firebase.firestore.FieldValue.arrayUnion({
-            "Module-ID": con.ModuleID,
-            "Module-Title": con.ModuleTitle,
+            "Module-ID": mod.ModuleID,
+            "Module-Title": mod.ModuleTitle,
           }),
         })
         .then(() => {
           originalModules.push(
-            new Module(con.id, con.ModuleID, con.ModuleTitle)
+            new Module(mod.id, mod.ModuleID, mod.ModuleTitle)
           );
-          console.log(
-            `Module with Id : ${con.ModuleID} has been successuflly added!`
-          );
+          
+          showSuccess(`Module with Id : ${mod.ModuleID} has been successuflly added!`);
+          
         })
         .catch((err) =>
-          console.log(`Error while deleting concept with Id ${con.ModuleID}  
-              Details:  ${err}`)
+          
+          showError(`Error while deleting module with Id ${mod.ModuleID}  
+          Details:  ${err}`)
+        
         );
     }
   });
@@ -410,17 +421,20 @@ function addLesson() {
           originalLessons.push(
             new Lesson(les.id, les.LessonID, les.LessonTitle, les.ModuleID)
           );
-          console.log(
-            `Lesson with Id : ${les.LessonID} has been successuflly added!`
-          );
+
+          showSuccess(`Lesson with Id : ${les.LessonID} has been successuflly added!`);
+          
         })
         .catch((err) =>
-          console.log(`Error while deleting lesson with Id ${les.LessonID}  
-              Details:  ${err}`)
+          
+          showError(`Error while deleting lesson with Id ${les.LessonID}  
+          Details:  ${err}`)
+          
         );
     }
   });
 }
+
 
 function updateCourseInfo() {
   Courses.forEach(function (cour) {
@@ -436,15 +450,16 @@ function updateCourseInfo() {
         .then(function () {
           originalCourses.find((courID) => courID.id == cour.id).Description =
             cour.Description;
-          console.log(
-            `Course Description successfully updated! / Course ID =  ${cour.id}`
-          );
+            showSuccess(`Course Description successfully updated! / Course ID =  ${cour.id}`);
+          
         })
         .catch(function (error) {
+          
           // The document probably doesn't exist.
-          console.log(`Error updaing Course Description!  Course ID =  ${cour.id}
-               Error >> : ${error}
-               `);
+          showError(`Error updaing Course Description!  Course ID =  ${cour.id}
+          Error >> : ${error}
+          `);
+          
         });
     }
 
@@ -460,77 +475,91 @@ function updateCourseInfo() {
         .then(function () {
           originalCourses.find((courID) => courID.id == cour.id).Category =
             cour.Category;
-          console.log(
-            `Course Category successfully updated! / Course ID = ${cour.id}`
-          );
+
+            showSuccess(`Course Category successfully updated! / Course ID = ${cour.id}`);
+          
         })
         .catch(function (error) {
           // The document probably doesn't exist.
-          console.log(`Error updaing Course Category!  / Course ID =  ${cour.id}
-            Error >> : ${error}
-            `);
+          showError(`Error updaing Course Category!  / Course ID =  ${cour.id}
+          Error >> : ${error}
+          `);
+          
         });
     }
   });
 }
 
-function AddConcept() {
-  Concepts.forEach(function (con) {
-    if (
-      originalConcepts.findIndex(
-        (conId) =>
-          conId.ConceptID == con.ConceptID &&
-          conId.ConceptText == con.ConceptText
-      ) == -1
-      //con._new 
-    ) {
+
+function AddSubject() {
+  Subjects.forEach(function (sub) {
+
+    let currentSub =  originalSubjects.find( (subId) => subId.subjectID == sub.subjectID && subId.subjectText == sub.subjectText);
+    
+    //TODO: Check if the elements have been changed before
+    if (!currentSub  || !(JSON.stringify(sub.elements)==JSON.stringify(originalSubjects.find(subId => subId.subjectID == currentSub.subjectID).elements)) )
+    {
       // new concept has been added
-      db.collection("courses")
-        .doc(con.id)
-        .update({
-          Concepts: firebase.firestore.FieldValue.arrayUnion({
-            "Concept-ID": con.ConceptID,
-            "Concept-Text": con.ConceptText,
-          }),
-        })
+     
+        db.collection("courses").doc(sub.id).collection("Subjects").doc(sub.subjectID).set(JSON.parse(JSON.stringify(sub)))
+        
+     
         .then(() => {
-           originalConcepts.push(
-             new Concept(con.id, con.ConceptID, con.ConceptText)
-           );
-          //con._new = false;
-          let msg = `Concept with Id:  ${con.ConceptID} has been successuflly added!`;
-          showSuccess(msg);
+           
+          if (!currentSub)
+            {
+              let newSub =  new Subject(sub.id, sub.subjectID, sub.subjectText);
+              newSub.elements = [...sub.elements];
+              originalSubjects.push(newSub);
+
+           
+              let msg = `Subject with Id:  ${sub.subjectID} has been successuflly added!`;
+              showSuccess(msg);
+            }else {
+              originalSubjects.find(subId => subId.subjectID == currentSub.subjectID).elements = [...sub.elements];
+              let msg = `Elements in subject with Id:  ${sub.subjectID} have been successuflly added!`;
+              showSuccess(msg);
+            }
         })
-        .catch((err) =>
-          showSuccess(`Error while deleting concept with Id: ${con.ConceptID} 
-                           "Details:  ${err}`)
+        .catch((err) => function() {
+          if (!currentSub) {
+            showError(`Error while adding a subject with Id: ${sub.subjectID} 
+            "Details:  ${err}`)
+          }else {
+            showError(`Error while adding Elements in subject with Id: ${sub.subjectID} 
+            "Details:  ${err}`)
+          }
+        }
+          
+          
+        
         );
     }
   });
 }
 
-function deleteConcept() {
+
+function deleteSubject() {
 
   let AllPromises = [];
 
-  originalConcepts.forEach(function (del) {
+  originalSubjects.forEach(function (del) {
     if (
-      Concepts.findIndex(
-        (conId) =>
-          conId.ConceptID == del.ConceptID &&
-          conId.ConceptText == del.ConceptText
+      Subjects.findIndex(
+        (subId) =>
+          subId.subjectID == del.subjectID
       ) == -1
     ) {
       AllPromises.push(
-        deleteConceptFromDB(del)
+        deleteSubjectFromDB(del)
           .then(() => {
             console.log(
-              `Concept with Id:  ${del.ConceptID} has been successuflly deleted!`
+              `Subject with Id:  ${del.subjectID} has been successuflly deleted!`
             );
             del.id = "-1";
           })
           .catch((err) =>
-            console.log(`Error while deleting concept with Id: ${del.ConceptID} 
+            console.log(`Error while deleting subject with Id: ${del.subjectID} 
        Details:  ${err}`)
           )
       );
@@ -538,37 +567,10 @@ function deleteConcept() {
   });
 
   Promise.all(AllPromises).then(() => {
-    clearOriginalConcepts();
+    clearOriginalSubjects();
   });
 
-  // let AllPromises = [];
 
-  // Concepts.forEach(function (del) {
-
-  //   if (del._deleted) {
-     
-  //     AllPromises.push(
-
-  //       deleteConceptFromDB(del)
-
-  //         .then(() => {
-  //           showSuccess(
-  //             `Concept with Id:  ${del.ConceptID} has been successuflly deleted!`
-  //           );
-  //         })
-  //         .catch((err) =>
-  //           showError(`Error while deleting concept with Id: ${del.ConceptID} 
-  //           Details:  ${err}`)
-  //         )
-  //       );
-
-  //   }
-
-  // });
-
-  // Promise.all(AllPromises).then(() => {
-  //    clearConcepts();
-  // });
 
 }
 
@@ -587,14 +589,16 @@ function deleteModule() {
       AllPromises.push(
         deleteModuleFromDB(del)
           .then(() => {
-            console.log(
-              `Module with Id:  ${del.ModuleID} has been successuflly deleted!`
-            );
+
+            showSuccess(`Module with Id:  ${del.ModuleID} has been successuflly deleted!`);
+            
             del.ModuleID = "-1";
           })
           .catch((err) =>
-            console.log(`Error while deleting Module with Id:  ${del.ModuleID} 
-          Details:  ${err}`)
+
+            showError(`Error while deleting Module with Id:  ${del.ModuleID} 
+            Details:  ${err}`)  
+          
           )
       );
     }
@@ -620,14 +624,16 @@ function deleteLesson() {
       AllPromises.push(
         deleteLessonFromDB(del)
           .then(() => {
-            console.log(
-              `Lesson with Id:  ${del.LessonID} has been successuflly deleted!`
-            );
+            
+            showSuccess(`Lesson with Id:  ${del.LessonID} has been successuflly deleted!`);
+            
             del.LessonID = "-1";
           })
           .catch((err) =>
-            console.log(`Error while deleting Lesson with Id:  ${del.LessonID} 
-          Details:  ${err}`)
+            
+            showError(`Error while deleting Lesson with Id:  ${del.LessonID} 
+            Details:  ${err}`)
+          
           )
       );
     }
@@ -731,18 +737,17 @@ function deleteModuleFromDB(del) {
     });
 }
 
-function deleteConceptFromDB(del) {
+
+function deleteSubjectFromDB(del) {
   
   return db
     .collection("courses")
     .doc(del.id)
-    .update({
-      Concepts: firebase.firestore.FieldValue.arrayRemove({
-        "Concept-ID": del.ConceptID,
-        "Concept-Text": del.ConceptText,
-      }),
-    });
+    .collection("Subjects")
+    .doc(del.subjectID).delete();
+
 }
+
 
 function clearOriginalSceneTypes() {
   originalSceneTypes = originalSceneTypes.filter((conId) => conId.id != "-1");
@@ -750,10 +755,10 @@ function clearOriginalSceneTypes() {
 function clearOriginalSkills() {
   originalSkills = originalSkills.filter((conId) => conId.id != "-1");
 }
-//function clearConcepts() {
-function clearOriginalConcepts(){
-  originalConcepts = originalConcepts.filter((conId) => conId.id != "-1");
-  //Concepts = Concepts.filter((con) => con._deleted == false);
+
+
+function clearOriginalSubjects(){
+  originalSubjects = originalSubjects.filter((subId) => subId.id != "-1");
 }
 
 function clearOringinalModules() {
@@ -763,15 +768,32 @@ function clearOringinalModules() {
 function clearOringinalLessons() {
   originalLessons = originalLessons.filter((lesId) => lesId.LessonID != "-1");
 }
+//#endregion
+
+
 // Course combo box
+
+
 
 // re-init the array of obejcts
 function initArrays(){
-  // toDelete.length = 0;
-  // toAdd.length = 0;
-  // toUpdate.length = 0;
-  Concepts.length  = 0;
-  originalConcepts.length = 0;
+  
+  Courses.length = 0;
+  originalCourses.length = 0;
+  Subjects.length  =  0;
+  originalSubjects.length = 0;
+  Lessons.length = 0;
+  originalLessons.length = 0;
+  Modules.length = 0;
+  originalModules.length = 0;
+  Skills.length = 0;
+  originalSkills.length = 0;
+  SceneTypes.length = 0;
+  originalSceneTypes.length = 0;
+  SceneHeaders.length = 0;
+  originalSceneHeaders.length = 0;
+  ScenesArray.length = 0;
+
 }
 
 function loadDataFromFireStore() {
@@ -783,27 +805,7 @@ function loadDataFromFireStore() {
   // re-initialize = when user clicks on load button while there are already data into objects.
   initArrays();
   
-  Courses = [];
-  originalCourses = [];
-
-  Lessons = [];
-  originalLessons = [];
-
-  Modules = [];
-  originalModules = [];
-
-
-  Skills = [];
-  originalSkills = [];
-
-  SceneTypes = [];
-  originalSceneTypes = [];
-
-  SceneHeaders = [];
-  originalSceneHeaders = [];
-
-  ScenesArray = [];
-
+  
 
   let AllPromises = [];
 
@@ -812,45 +814,42 @@ function loadDataFromFireStore() {
     docRef
       .get()
       .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          // get Courses Info
-            Courses.push(storeDataLocally(doc.id, doc.data(), "courses"));
-            originalCourses.push(
-              storeDataLocally(doc.id, doc.data(), "courses")
-            );
+        querySnapshot.forEach(function (docu) {
           
-
-          // get Concept Info
-          if (doc.data()["Concepts"])
-            doc.data()["Concepts"].forEach(function (con) {
-
-                Concepts.push(storeDataLocally(doc.id, con, "concepts"));
-               originalConcepts.push(
-                 storeDataLocally(doc.id, con, "concepts")
-               );
+          
+          // get Courses Info
+            Courses.push(storeDataLocally(docu.id, docu.data(), "courses"));
+            originalCourses.push(
+              storeDataLocally(docu.id, docu.data(), "courses")
+            );
             
-            });
 
           // get Modules Info
-          if (doc.data()["Modules"])
-            doc.data()["Modules"].forEach(function (mod) {
-              Modules.push(storeDataLocally(doc.id, mod, "modules"));
-              originalModules.push(storeDataLocally(doc.id, mod, "modules"));
+          if (docu.data()["Modules"])
+              docu.data()["Modules"].forEach(function (mod) {
+              Modules.push(storeDataLocally(docu.id, mod, "modules"));
+              originalModules.push(storeDataLocally(docu.id, mod, "modules"));
             });
 
           // get Lessons Info
-          if (doc.data()["Lessons"])
-            doc.data()["Lessons"].forEach(function (les) {
+          if (docu.data()["Lessons"])
+              docu.data()["Lessons"].forEach(function (les) {
               
-              Lessons.push(storeDataLocally(doc.id, les, "lessons"));
-              originalLessons.push(storeDataLocally(doc.id, les, "lessons"));
+              Lessons.push(storeDataLocally(docu.id, les, "lessons"));
+              originalLessons.push(storeDataLocally(docu.id, les, "lessons"));
             });
+
+          
+
         });
+        
       })
       .catch((er) =>
         console.log("Error while loading course info data..." + er)
       )
   );
+
+
 
   var docRef_sk = db.collection("skills");
   AllPromises.push(
@@ -895,17 +894,22 @@ function loadDataFromFireStore() {
         querySnapshot.forEach(function (doc) {
           let sceneH = storeDataLocally(doc.id, doc.data(), "sceneHeaders");
 
-          if (doc.data()["Concepts"])
-            doc.data()["Concepts"].forEach(function (con) {
-              sceneH.Concepts.push(storeDataLocally(null, con, "concepts"));
+          if (doc.data()["Subjects"])
+            doc.data()["Subjects"].forEach(function (sub) {
+              console.log(sub);
+              const subObj = {
+                subjectID : sub["subjectID"],
+              };
+              sceneH.Subjects?.push(subObj);
             });
 
           if (doc.data()["Skills"])
             doc.data()["Skills"].forEach(function (sk) {
-              sceneH.Skills.push(storeDataLocally(null, sk, "skills"));
+              sceneH.Skills?.push(storeDataLocally(null, sk, "skills"));
             });
 
-          SceneHeaders.push(sceneH);
+          if (sceneH)
+            SceneHeaders.push(sceneH);
         });
       })
       .catch((er) => console.log(er))
@@ -975,10 +979,51 @@ function loadDataFromFireStore() {
 
   Promise.all(AllPromises).then(() => {
     
-    // Sort all objects Array
-    SortObjArrays();  
-    // fill courses Info
-    fillCourseInfo();
+    
+    AllPromises = [];
+    Courses.forEach( function (courseItem) {
+
+      const subRef = docRef.doc(courseItem.id).collection("Subjects");
+
+      AllPromises.push(
+      subRef.get().then(function (query) {
+
+        query.forEach( function (subjDoc) {
+          let sub = storeDataLocally(courseItem.id, subjDoc.data(), "subjects");
+          let sub1 = storeDataLocally(courseItem.id, subjDoc.data(), "subjects");
+
+          if (subjDoc.data()['elements']){
+              subjDoc.data()['elements'].forEach( function(elm){
+                
+                let newElm = new LingElement(elm.id, elm.subjID, elm.elementText,elm.elementType);
+                let newElm1 = new LingElement(elm.id, elm.subjID, elm.elementText,elm.elementType);
+                
+                sub.elements.push(newElm);
+                sub1.elements.push(newElm1);
+
+              });
+          }
+
+
+          Subjects.push(sub);
+          originalSubjects.push( sub1);
+          
+        });
+      })
+      .catch((er) =>
+      console.log("Error while loading subjects info data..." + er)
+      )
+      )
+    })
+      
+    Promise.all(AllPromises).then(() => {
+      // Sort all objects Array
+      SortObjArrays();  
+
+      // fill courses Info
+      fillCourseInfo();
+    })
+    
   });
 }
 
@@ -993,9 +1038,11 @@ function SortObjArrays(){
     Modules = Modules.sort((a,b) => compareObjID(ConvetToDec(a.ModuleID), ConvetToDec(b.ModuleID)));
   }
 
-  if (Concepts.length > 0 ) {
-    Concepts = Concepts.sort((a,b) => compareObjID(ConvertToHexa(a.ConceptID), ConvertToHexa(b.ConceptID)));
+  if (Subjects.length > 0) {
+    Subjects = Subjects.sort((a,b) => compareObjID(ConvetToDec(a.subjectID), ConvetToDec(b.subjectID)));
   }
+
+  
 }
 
 // The Compare function being used
@@ -1034,7 +1081,7 @@ function clearCombo(combo) {
 // for all lists in tab1/tab2
 function clearTxtEntries(){
 
-  resetAddBtn(lst_concepts, txt_concept_entry, btn_add_concept);
+  resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
   resetAddBtn(lst_modules, txt_module_entry, btn_add_module);
   resetAddBtn(lst_lessons, txt_lesson_entry, btn_add_lesson);
   
@@ -1045,6 +1092,8 @@ function clearTxtEntries(){
   (lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code, btn_add_sceneType);
 
   resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
+
+  clearElementTxtarea();
 }
 // function clearLsts() {
 //   // Clear concepts list
@@ -1084,7 +1133,6 @@ function fillCourseInfo() {
       // add the option to the select box
       courseCombo.appendChild(newOption);
     });
-
     courseCombo.addEventListener("change", courseComboChangeHandler);
 
     if (courseCombo.options.length > 0) {
@@ -1100,6 +1148,7 @@ function newCourseSelected(event) {
   currentCourse = Courses.find((courseID) => courseID.id == event.target.value);
 
   // Fill the course description
+
 
   textAreaCourseDesc.value = currentCourse.Description;
 
@@ -1117,9 +1166,10 @@ function newCourseSelected(event) {
   clearScenesLst();
 
   // Fill info in different sections
-  fillConcepts(Concepts.filter((con) => con.id == currentCourse.id));
   fillModules(Modules.filter((mod) => mod.id == currentCourse.id));
   fillLessons(Lessons.filter((les) => les.id == currentCourse.id));
+  //fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
+  fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
   fillSkills(Skills);
   fillSceneTypes(SceneTypes);
 
