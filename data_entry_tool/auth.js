@@ -1,5 +1,20 @@
+// Authentication Process
+const loggedOutLinks = document.querySelectorAll(".logged-out");
+const loggedInLinks = document.querySelectorAll(".logged-in");
+const modals = document.querySelector(".modal");
 
 
+
+const setupUI = (user) => {
+  if (user) {
+    loggedInLinks.forEach((item) => (item.style.display = "block"));
+    loggedOutLinks.forEach((item) => (item.style.display = "none"));
+
+  } else {
+    loggedInLinks.forEach((item) => (item.style.display = "none"));
+    loggedOutLinks.forEach((item) => (item.style.display = "block"));
+  }
+};
 
 
 // listen for auth changes
@@ -14,6 +29,8 @@ auth.onAuthStateChanged( user => {
 
 // login
 const loginForm = document.querySelector('#login-form');
+
+
 loginForm.addEventListener('submit', (e)=> {
     e.preventDefault();
 
@@ -27,13 +44,12 @@ loginForm.addEventListener('submit', (e)=> {
       
 
         // close the modal form and reset it
-        const modal = document.querySelector('#modal-login');
-        M.Modal.getInstance(modal).close();
-        loginForm.reset();
-        loginForm.querySelector('.error').innerHTML = '';
+        //const modal = document.querySelector('#modal-login');
+        removeLoginProcess();
+       
 
     }).catch (error => {
-        loginForm.querySelector('.error').innerHTML = error.message;
+        loginForm.querySelector('.login-error').innerHTML = error.message;
     })
 });
 
@@ -45,3 +61,53 @@ logout.addEventListener('click', (e) => {
     e.preventDefault();
     auth.signOut();
 });
+
+const login = document.querySelector('#login');
+login.addEventListener('click', e=> {
+    e.preventDefault();
+    modalOverlay = document.createElement("div");
+    modalOverlay.classList.add("modal-overlay");
+
+    modalOverlay.style.zIndex = 2002;
+    modalOverlay.style.display= "block";
+    modalOverlay.style.opacity = 0.5;
+
+    
+    
+    
+    document.body.appendChild(modalOverlay);
+    modalOverlay.addEventListener('click', removeLoginProcess);
+   
+    modals.style.zIndex = 2005;
+    modals.style.display = "block";
+    modals.style.opacity = 1;
+    modals.style.top = "10%";
+    modals.style.transform = "scaleX(1) scaleY(1)";
+    
+    
+      
+});
+
+function removeLoginProcess(){
+    if (modals) {
+        
+        loginForm.reset();
+        loginForm.querySelector('.login-error').innerHTML = '';
+
+        modals.removeAttribute("style");
+        modals.classList.add("modal");
+    }
+
+    if(modalOverlay)
+        document.body.removeChild(modalOverlay);
+}
+
+
+window.addEventListener('keydown', (e) => {
+
+    // close log in form
+    if (modals.style.display == "block")
+        if (e.key  === 'Escape') 
+            removeLoginProcess();
+});
+

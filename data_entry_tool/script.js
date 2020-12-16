@@ -6,14 +6,14 @@ var LastQuestionNumber;
 
 // click on scene type
 const selectedScene = document.querySelector("#lst_scenesType_tab2");
-selectedScene.addEventListener("click", (e) => {
-  if (e.target.tagName === "OPTION") {
-    document.getElementById("id-scene-selected").innerHTML =
-      e.target.textContent;
+// selectedScene.addEventListener("click", (e) => {
+//   if (e.target.tagName === "OPTION") {
+//     document.getElementById("id-scene-selected").innerHTML =
+//       e.target.textContent;
 
-    document.getElementById("id-scene-code").innerHTML = e.target.value;
-  }
-});
+//     document.getElementById("id-scene-code").innerHTML = e.target.value;
+//   }
+// });
 
 /* ############################### Tab 3 generate the scene  ################################### */
 
@@ -21,22 +21,22 @@ selectedScene.addEventListener("click", (e) => {
 
 const clickOnTab3ToBuildScene = document.querySelector("#id-scene-deteils");
 
-clickOnTab3ToBuildScene.addEventListener("click", () => {
-  //**************************** Code to be changed to connect to Database ******************************
-  currentSceneHeaderObj = SceneHeaders.find(
-    (sid) => sid.sceneID == currentScene
-  );
+// clickOnTab3ToBuildScene.addEventListener("click", () => {
+//   //**************************** Code to be changed to connect to Database ******************************
+//   currentSceneHeaderObj = SceneHeaders.find(
+//     (sid) => sid.sceneID == currentScene
+//   );
 
-  CurrentSceneObject = ScenesArray.find((sid) => sid.id == currentScene);
+//   CurrentSceneObject = ScenesArray.find((sid) => sid.id == currentScene);
 
 
-  // if (currentSceneHeaderObj._new) {
-  //*****************************************************************************************************
+//   // if (currentSceneHeaderObj._new) {
+//   //*****************************************************************************************************
 
-  // function Generate the question Text with hint Section and Call the function to create the Question
-  openSceneType();
-  // }
-});
+//   // function Generate the question Text with hint Section and Call the function to create the Question
+//   openSceneType();
+//   // }
+// });
 
 //**************************************************************************************************************** */
 // function Generate the question Text with hint Section and Call the function to create the Question
@@ -867,7 +867,7 @@ function createRowTable(newTable, idRow, Statement, Answers, CorrectOrNo) {
 }
 
 //******* create slide animation for hidden Divs *******/
-$(".itemSlide").slideUp();
+// $(".itemSlide").slideUp();
 
 createSlide(
   "#id-multiChoices-s1-textRadio-answer1",
@@ -888,11 +888,11 @@ createSlide(
 );
 
 function createSlide(ItemEvent, ItemSlide, Eventname) {
-  $(ItemEvent).on(Eventname, function () {
-    $(ItemSlide).slideToggle();
+  // $(ItemEvent).on(Eventname, function () {
+  //   $(ItemSlide).slideToggle();
 
-    console.log("I'm inside checkbox click");
-  });
+  //   console.log("I'm inside checkbox click");
+  // });
 }
 
 //******* Clear Section from Element Function *******/

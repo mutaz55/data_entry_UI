@@ -1,49 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="auto">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!--Import Google Icon Font-->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-
-    <!-- Compiled and minified CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-    />
-
-    <!-- ############################### Link to bootstrap ################################### -->
-
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
-
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-      crossorigin="anonymous"
-    ></script>
-
-    <!-- ############################### Link to Css file ################################### -->
-
-    <link rel="stylesheet" href="css/styles.css" />
+    
 
     <!-- ############################### Link to font awesome ################################### -->
 
@@ -54,85 +15,73 @@
       crossorigin="anonymous"
     />
 
+ 
+    <!-- ############################### Link to Css file ################################### -->
+
+   
+    <link rel="stylesheet" href="css/style-new.css" /> 
+
+   
+
     <!-- ############################### title ################################### -->
-
-    <style>
-      a.active.nav-link {
-        background-color: #26a69a !important;
-      }
-
-      a.active.list-group-item {
-        background-color: #fd9c9c;
-        color: #fff;
-        border-right: 10px solid #26a69a;
-      }
-    </style>
-
     <title>ArabicLang Tools - Data Entry UI</title>
+  
   </head>
 
   <body>
     <!-- Navbar -->
-    <div style="margin: 0 auto">
-      <nav class="z-depth-0 grey lighten-4">
-        <div class="nav-wrapper">
-          <a href="#" class="logo-bran">
-            <img
-              src="img/data_entry_app_logo.PNG"
-              style="width: 180px; margin-left: 20px"
-            />
-          </a>
-          <a href="#" class="sidenav-trigger" data-target="mobile-links">
-            <i class="material-icons orange">menu</i>
-          </a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li class="logged-in" style="display: none">
-              <a href="#" class="grey-text">Accounts</a>
-            </li>
+    
+      <nav class="">
+        <div class="nav-main-wrapper">
+      
+          
+            <ul class="nav-list" >
+                
+                <li class="logged-in" style="display: none">
+                
+                    <a href="#" >Profile</a>
+                </li>
 
-            <li class="logged-in" style="display: none">
-              <a href="#" class="grey-text" id="logout">Log Out</a>
-            </li>
+                <li class="logged-in"  style="display: none">
+                
+                    <a href="#" >Accounts</a>
+                </li>
 
-            <li class="logged-out" style="display: none">
-              <a
-                href="#"
-                class="grey-text modal-trigger"
-                data-target="modal-login"
-                >Log in</a
-              >
-            </li>
-          </ul>
+                <li class="logged-in" style="display: none">
+                
+                    <a href="#" id="logout">Log Out</a>
+                </li>
+
+                <li class="logged-out" style="display: none">
+                
+                    <a href="#"  id="login" data-target="modal-login">Log in</a>
+                </li>
+
+            </ul>
+            <a href="#" class="logo-bran">
+                <img
+                    src="img/data_entry_app_logo.PNG"
+                    
+                />
+            </a>
         </div>
       </nav>
-    </div>
-    <ul class="sidenav" id="mobile-links">
-      <li class="logged-in"><a href="#" class="grey-text">Accounts</a></li>
-      <li class="logged-in"><a href="#" class="grey-text">Log Out</a></li>
-      <li class="logged-out">
-        <a href="#" class="grey-text modal-trigger" data-target="modal-login"
-          >Log in</a
-        >
-      </li>
-    </ul>
 
     <div id="modal-login" class="modal">
       <div class="modal-content">
-        <h4>Sign In</h4>
+        <h4>تسجيل الدخول</h4>
         <br />
 
-        <form id="login-form">
-          <div class="input-field">
-            <input type="email" id="login-email" required />
-            <label for="login-email">Email Address</label>
-          </div>
+        <form id="login-form" dir="rtl">
 
-          <div class="input-field">
-            <input type="password" id="login-password" required />
-            <label for="login-password">Password</label>
-          </div>
-          <button class="btn yellow darken-2 z-depth-0">Log in</button>
-          <p class="error pink-text center-align"></p>
+          <input type="email" id="login-email" required placeholder="البريد الإلكتروني"/>
+
+
+
+            <input type="password" id="login-password" required placeholder="كلمة السر" />
+
+          <button class="login-btn">تسجيل</button>
+          <p class="login-error"></p>
         </form>
       </div>
     </div>
@@ -140,8 +89,8 @@
     <!-- The Welcome Message-->
 
     <div class="logged-out welMsg" style="display: none" id="mainMsg">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
+      <div class="card">
+        <div class="card-content">
           <span class="card-title">Warning</span>
           <p>
             This app is designd to be used only in LLF. If you already have an
@@ -149,1740 +98,348 @@
           </p>
         </div>
         <div class="card-action">
-          <a href="mailto:info@zeztaa.com">Contact us</a>
+          <a href="#">Contact us</a>
           <a href="#">Powered by zeztaa</a>
         </div>
       </div>
     </div>
 
     <!--  Action Bar includes /load/store  -->
+    <!-- Toolbar  --> 
+    <div class="main-tab logged-in" style="display: none;">
 
-    <div style="margin: 0 auto">
-      <nav>
-        <div class="nav-wrapper">
-          <ul class="right">
-            <li><a class="waves-effect waves-light btn">بعدين</a></li>
-            <li>
-              <a class="waves-effect waves-light btn" id="load-btn"
-                >تحميل البيانات <i class="material-icons right">cloud</i></a
-              >
-            </li>
-            <li>
-              <a class="waves-effect waves-light btn-large" id="save-btn"
-                >حفظ البيانات</a
-              >
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
+      <!-- Tab 1 Button -->
+      <input type="radio" name="main-tab" id="tab-courses" aria-controls="courses-view" checked>
+      <label class="tab-labels" for="tab-courses">معلومات الكورس</label>
+      <!-- Tab 2 Button -->
+      <input type="radio" name="main-tab"  id="tab-scenes" aria-controls="scenes-view">
+      <label class="tab-labels" for="tab-scenes">معلومات المشاهد</label>
 
-    <!-- ############################### Main Tab Section ################################### -->
+      <button class="tab-main-btn" id="load-btn">تحميل البيانات</button>
+      <button class="tab-main-btn" id="save-btn">حفظ البيانات</button>
 
-    <div class="MTS-wrapper logged-in" style="display: none">
-      <div class="maintab">
-        <ul class="nav nav-pills nav-fill navtop itemtab exband">
-          <li class="nav-item">
-            <a class="nav-link tab-color active" href="#menu1" data-toggle="tab"
-              >المعلومات الأساسية للكورس
-            </a>
-          </li>
-          <li class="nav-item col-lg-4" id="sceneInfoTab2">
-            <a class="nav-link tab-color" href="#menu2" data-toggle="tab"
-              >معلومات المشهد</a
-            >
-          </li>
-          <li class="nav-item col-lg-4">
-            <a
-              id="id-scene-deteils"
-              class="nav-link tab-color"
-              href="#menu3"
-              data-toggle="tab"
-              >تفاصيل المشهد</a
-            >
-          </li>
-        </ul>
-      </div>
+        <div class="main-tab-panels">
 
-      <div class="row">
-        <div class="tab-content col-lg-12">
-          <div
-            class="tab-pane fade show active paneltab"
-            role="tabpanel"
-            id="menu1"
-          >
-            <!-- ################## Main Project information ##################### -->
+              <!-- Tab 1 View (Courses) -->
+              <section class="main-tab-panel" id="courses-view">
 
-            <!-- Level Selection -->
-            <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-course-title"
-                >اختيار الكورس</label
-              >
-              <select
-                class="form-control under-label"
-                id="id-course-title"
-              ></select>
-            </div>
+                <!-- Side nav Courses & Skills -->
+                <span class="side-nav-btn" onclick="OpenSideNavCourses()">&#9776; إدارة الكورسات والمهارات</span>
+                <div id="side-nav-courses" class="side-nav" >
+                    <a href="javascript:void(0)" class="close-btn" onclick="CloseSideNavCourses()">&times;</a>
+                    <div class="side-nav-wrapper" id="nav-courses-wrapper">
 
-            <div class="form-group group-element" style="margin-top: 30px">
-              <label class="label-course col-lg-3" for="id-course-description"
-                >مقدمة عن الكورس</label
-              >
-              <textarea
-                class="form-control under-label"
-                id="id-course-description"
-                rows="3"
-              ></textarea>
-            </div>
+                        <!-- Courses & Skills Management -->
+                        <div class="list-container">
 
-            <div>
-              <label class="label-course col-lg-3" for="id-cat-paid"
-                >نوع الكورس</label
-              >
-              <div class="form-control under-label">
-                <label>
-                  <input name="courseTypeRdbtn" type="radio" id="id-cat-paid" />
+                           <div class="sidenav1-container-add">
+                             <button class="sidenav1-btn-new" id="new-course-btn">
+                             <img src="img/svg-icons/plus-circle-solid.svg" alt="add course icon">
+                            </button>
+                            <label class="sidenav1-labels"   for="new-course-name">إضافة كورس</label>
+                              <div class="sidenav1-container-hidden" id="hidden-container">
+                                <input type="text" id="new-course-name" class="inputfield-1line"/>
+                                <button class="add-btn" id="sidenav1-btn-add">إضافة</button>
+                              </div>
 
-                  <span style="font-size: 2em; color: rgb(68, 67, 67)"
-                    >مدفوع</span
-                  >
-                </label>
+                          </div>
 
-                <label style="margin-right: 30px">
-                  <input name="courseTypeRdbtn" type="radio" id="id-cat-free" />
-                  <span style="font-size: 2em; color: rgb(68, 67, 67)"
-                    >مجاني</span
-                  >
-                </label>
-              </div>
-            </div>
+                          <div class="list-container">
+                            <label class="label-controls" for="id-course-title"
+                              >اختيار الكورس</label
+                            >
+                            <select
+                              class="list-combo"
+                              id="id-course-title"
+                            ></select>
+                          </div>
+                         
 
-            <div>
-              <label class="label-course col-lg-3" for="id-subject">
-                المواضيع</label
-              >
+                        </div>
+                        <!-- Skills View & Editing -->
+                        <div class="list-container">
 
-              <div
-                class="list-group col align-self-end"
-                style="scroll-behavior: auto; text-align: right"
-                id="id-subject"
-              ></div>
+                              <label class="label-controls" for="txt_skill">المهارات</label>
+                              <div class="list-group" id="id-skills">
 
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control input-concepts"
-                  style="direction: rtl; font-size: larger"
-                  placeholder="إدخال الموضوع"
-                  aria-label="إدخال الموضوع"
-                  id="txt_subject"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    id="add_subject"
-                  >
-                    إضافة
-                  </button>
-                  <button
-                    class="btn btn-outline-danger"
-                    type="button"
-                    id="remove_subject"
-                  >
-                    حذف
-                  </button>
-                </div>
-              </div>
-
-              <div class="tab-subject" dir="rtl" style="margin: 50px 10px 40px 0px;">
-                <ul class="nav nav-pills mb-3"  style="margin-right:auto; padding-right: 0;  font-family: Georgia;border-bottom:1px dashed rgb(185, 182, 182);" id="pills-tab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="pills-keywords-tab" data-toggle="pill" href="#pills-keywords" role="tab" aria-controls="pills-home" aria-selected="true">الكلمات المفتاحية</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="pills-structure-tab" data-toggle="pill" href="#pills-structure" role="tab" aria-controls="pills-profile" aria-selected="false">التراكيب</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="pills-vocals-tab" data-toggle="pill" href="#pills-vocals" role="tab" aria-controls="pills-contact" aria-selected="false">الأصوات</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="pills-grammer-tab" data-toggle="pill" href="#pills-grammer" role="tab" aria-controls="pills-contact" aria-selected="false">القواعد</a>
-                  </li>
-                </ul>
-
-                <div class="tab-content" id="pills-tabContent">
-                  <div class="tab-pane fade show active" id="pills-keywords" role="tabpanel" aria-labelledby="pills-home-tab">
-                    <textarea class="form-control text-entry" id="id-keywords-list" rows="5"></textarea>
-                  </div>
-                  <div class="tab-pane fade" id="pills-structure" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <textarea class="form-control text-entry" id="id-structure-list" rows="5"></textarea>  
-                  </div>
-                  <div class="tab-pane fade" id="pills-vocals" role="tabpanel" aria-labelledby="pills-contact-tab">
-                    <textarea class="form-control text-entry" id="id-vocals-list" rows="5"></textarea>
-                  </div>
-                  <div class="tab-pane fade" id="pills-grammer" role="tabpanel" aria-labelledby="pills-contact-tab">
-                    <textarea class="form-control text-entry" id="id-grammer-list" rows="5"></textarea>
-                  </div>
-                </div>
-
-                <div class="input-group-append" >
-                  <button  class="btn btn-outline-success btn-block" type="button" id="update_elements">تعديل</button>
-                </div>
-
-              </div>
-            </div>
-
-            <div>
-              <label class="label-course col-lg-3" for="id-modules">
-                الوحدات</label
-              >
-
-              <div
-                class="list-group col align-self-end"
-                style="scroll-behavior: auto; text-align: right"
-                id="id-modules"
-              ></div>
-
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control input-concepts"
-                  style="direction: rtl; font-size: larger"
-                  id="txt_module"
-                  placeholder="إدخال الوحدة"
-                  aria-label="إدخال الوحدة"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    id="add_module"
-                  >
-                    إضافة
-                  </button>
-                  <button
-                    class="btn btn-outline-danger"
-                    type="button"
-                    id="remove_module"
-                  >
-                    حذف
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label class="label-course col-lg-3" for="id-lessons">
-                الدروس</label
-              >
-
-              <div
-                class="list-group col align-self-end"
-                style="scroll-behavior: auto; text-align: right"
-                id="id-lessons"
-              ></div>
-
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control input-concepts"
-                  style="direction: rtl; font-size: larger"
-                  placeholder="إدخال الدرس"
-                  aria-label="إدخال الدرس"
-                  id="txt_lesson"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    id="add_lesson"
-                  >
-                    إضافة
-                  </button>
-                  <button
-                    class="btn btn-outline-danger"
-                    type="button"
-                    id="remove_lesson"
-                  >
-                    حذف
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label class="label-course col-lg-3" for="id-skills">
-                المهارات</label
-              >
-
-              <div
-                class="list-group col align-self-end"
-                style="scroll-behavior: auto; text-align: right"
-                id="id-skills"
-              ></div>
-
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control input-concepts"
-                  style="direction: rtl; font-size: larger"
-                  placeholder="إدخال المهارة"
-                  aria-label="إدخال المهارة"
-                  id="txt_skill"
-                />
-                <input
-                  type="text"
-                  class="form-control input-concepts"
-                  style="direction: rtl; font-size: larger"
-                  placeholder="إدخال كود المهارة"
-                  aria-label="إدخال كود المهارة"
-                  id="txt_skill_code"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    id="add_skill"
-                  >
-                    إضافة
-                  </button>
-                  <button
-                    class="btn btn-outline-danger"
-                    type="button"
-                    id="remove_skill"
-                  >
-                    حذف
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label class="label-course col-lg-3" for="id-sceneTypes">
-                أنواع المشاهد</label
-              >
-
-              <div
-                class="list-group col align-self-end"
-                style="scroll-behavior: auto; text-align: right"
-                id="id-sceneTypes"
-              ></div>
-
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control input-concepts"
-                  style="direction: rtl; font-size: larger"
-                  placeholder="إدخال نوع المشهد"
-                  aria-label="إدخال نوع المشهد"
-                  id="txt_sceneType"
-                />
-                <input
-                  type="text"
-                  class="form-control input-concepts"
-                  style="direction: rtl; font-size: larger"
-                  placeholder="إدخال كود نوع المشهد"
-                  aria-label="إدخال كود نوع المشهد"
-                  id="txt_sceneType_code"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    id="add_sceneType"
-                  >
-                    إضافة
-                  </button>
-                  <button
-                    class="btn btn-outline-danger"
-                    type="button"
-                    id="remove_sceneType"
-                  >
-                    حذف
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-pane fade paneltab" role="tabpanel" id="menu2">
-            <!-- ################## Scene header information ##################### -->
-
-            <!-- Unit Selection -->
-            <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-units"
-                >اختيار الوحدة</label
-              >
-              <select class="form-control under-label" id="id-units"></select>
-            </div>
-
-            <!-- Lesson Selection -->
-            <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-lessons-tab2"
-                >اختيار الدرس</label
-              >
-              <select
-                class="form-control under-label"
-                id="id-lessons-tab2"
-              ></select>
-            </div>
-
-            <!-- Scene Serial number -->
-            <div>
-              <label class="label-course col-lg-3" for="id-scene-no"
-                >رقم المشهد</label
-              >
-              <label
-                lang="rtl"
-                class="form-control under-label"
-                style="
-                  margin: 0 10px 0 0;
-                  font-size: larger;
-                  font-family: 'Lucida Sans', 'Lucida Sans Regular',
-                    'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
-                    sans-serif;
-                  color: darkred;
-                  background-color: white;
-                "
-                id="id-scene-no"
-              >
-              </label>
-            </div>
-
-            <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-scenes">
-                المشاهد</label
-              >
-
-              <div
-                class="list-group col align-self-end"
-                style="scroll-behavior: auto; text-align: right"
-                id="id-scenes"
-              ></div>
-
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control input-concepts"
-                  style="direction: rtl; font-size: larger"
-                  placeholder="إدخال عنوان المشهد"
-                  aria-label="إدخال عنوان المشهد"
-                  id="txt_sceneTitle"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    id="add_sceneTitle"
-                  >
-                    إضافة
-                  </button>
-                  <button
-                    class="btn btn-outline-danger"
-                    type="button"
-                    id="remove_sceneTitle"
-                  >
-                    حذف
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group group-element" style="margin-top: 30px">
-              <label class="label-course col-lg-3" for="id-scene-description"
-                >وصف المشهد</label
-              >
-              <textarea
-                class="form-control under-label"
-                id="id-scene-description"
-                rows="3"
-              ></textarea>
-            </div>
-
-            <div class="form-group group-element">
-              <label class="label-course col-lg-3" for="id-select-subject">
-                اختيار الموضوع</label
-              >
-              <select
-                class="form-control under-label"
-                style="max-height: 100px"
-                id="id-select-subject"
-              ></select>
-              <select
-                size="6"
-                style="margin-top: 5px"
-                multiple
-                class="form-control under-label"
-                id="id-lst-subjects"
-              ></select>
-              <div class="input-group mb-3">
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    id="add_subject_to_scene"
-                  >
-                    إضافة
-                  </button>
-                  <button
-                    class="btn btn-outline-danger"
-                    type="button"
-                    id="remove_subject_from_scene"
-                  >
-                    حذف
-                  </button>
-                </div>
-              </div>
+                                  
+                                  <div class="buttons-wrapper">
+                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
+                                      <button class="small-close"></button>
+                                  </div>
+                                  <div class="buttons-wrapper">
+                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
+                                      <button class="small-close"></button>
+                                  </div>
+                                  <div class="buttons-wrapper">
+                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
+                                      <button class="small-close"></button>
+                                  </div>
+                                  <div class="buttons-wrapper">
+                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
+                                      <button class="small-close"></button>
+                                  </div>
+                                  <div class="buttons-wrapper">
+                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
+                                      <button class="small-close"></button>
+                                  </div>
 
 
-              <div class="form-group group-element">
-                <label class="label-course col-lg-3" for="id-table-subjects" >
-                  اختيار العناصر</label>
-                <div id="id-table-subjects" class="table-subjects">
-                  
-                  <table dir="rtl" class="table table-bordered" style="width: 100%;">
-                    
-                    <thead >
-                      <tr>
-                        <th scope="col" class="align-middle" ><select
-                          class="form-control dropdown-subjects"
-                          style="max-height: 50px"
-                          id="id-select-elementType"
-                        >
-                          
-                      </select></th>
-                        <th scope="col" class="align-middle"><select
-                          class="form-control dropdown-subjects"
-                          style="max-height: 50px"
-                          id="id-select-element"
-                        ></select></th>
-                        <th scope="col" class="align-middle"><select
-                          class="form-control dropdown-subjects"
-                          style="max-height: 50px"
-                          id="id-select-elementSkills"
-                        ></select></th>
+                              </div>
+                                  <div class="input-group">
+                                    <input type="text" class="list-inputfield" id="txt_skill" placeholder="إدخال المهارة">
+                                    <input type="text" class="list-inputfield list-inputfield-code" id="txt_skill_code" placeholder="إدخال الكود">
+                                    <button class="add-btn" id="add_skill">إضافـة</button>
+                
+                                </div>
+                           
+
+                        </div>
+
                         
-                      </tr>
-                    </thead>
-                  </table>
+                    </div>
+                </div>   
+
+                <!-- Courses (View) -->
+                <div class="container-flex">
 
                   
+                  <!-- Course Name -->
+                    <div class="list-container">
+                      <label class="label-controls">الكورس</label>
+                      <div class="coursename-wrapper">
+                        <label id="tab1-lbl-coursename"> asdsad</label>
+
+                        <div class="coursestate-wrapper">
+                          <label for="tab1-lbl-lang">اللغة</label>
+                          <input type="text" id="tab1-lbl-lang" value="اللغة العربية" readonly>
+                          <label for="tab1-lbl-coursestate">حالة الكورس</label>
+                          <input type="text" id="tab1-lbl-coursestate" readonly>
+                          <input type="checkbox" id="tab1-chk-default">
+                          <label for="tab1-chk-default">الكورس الافتراضي؟</label>
+                          
+  
+                        </div>
+
+                      </div>
+                      
+                    </div>
+
+                  <!-- Course Description -->
+                    <div class="list-container">
+                      <label class="label-controls" for="id-course-description">مقدمة عن الكورس</label>
+                      <textarea class="textarea-description" id="id-course-description" rows="7"></textarea>
+                    </div>
+                                       
+                  <!-- Course Modules -->
+                    <div class="list-container">
+                      
+                      <label class="label-controls" for="id-modules">الوحدات</label>
+        
+                      <div class="list-group" id="id-modules" >
+                        
+
+                      </div>
+
+                      <div class="input-group">
+                          <input type="text" class="list-inputfield" id="txt_module" placeholder="إدخال الوحدة">
+                          <button id="add_module" class="add-btn">إضافـة</button>
+                      
+                      </div>
+                    </div>
+        
+                  <!-- Course Lessons -->
+                    <div class="list-container">
+                      <label class="label-controls" for="id-lessons">الدروس</label>
+        
+                      <div class="list-group" id="id-lessons">
+                      
+                      </div>
+                      <div class="input-group">
+                        <input type="text" class="list-inputfield" placeholder="إدخال الدرس" id="txt_lesson"/>
+                        <button id="add_lesson" class="add-btn">إضافـة</button>
+                      </div>
+                    </div>
+
+                  <!-- Course Subjects -->
+                    <div class="list-container">
+                      <label class="label-controls" for="id-subject">المواضيع</label>
+        
+                      <div class="list-group" id="id-subject">
+
+
+                      </div>
+        
+                      <div class="input-group">
+                        <input type="text"  class="list-inputfield" placeholder="إدخال الموضوع" id="txt_subject"/>
+                        <button id="add_subject" class="add-btn">إضافـة</button>
+                      </div>
+
+                    </div>
+                  
+                  <!-- Course Subjects Analysis-->
+                    <div class="list-container">
+                      <label class="label-controls">تحليل المواضيع</label>
+                      <div class="tabset" >
+                        <!-- Tab 1 -->
+                        <input type="radio" name="tabset" id="tab-keywords" aria-controls="txt-keywords" checked>
+                        <label class="tab-label-subjects tab-label-keywords" for="tab-keywords">الكلمات المفتاحية</label>
+                        <!-- Tab 2 -->
+                        <input type="radio" name="tabset" id="tab-structure" aria-controls="txt-structure">
+                        <label class="tab-label-subjects tab-label-structure" for="tab-structure">التراكيب اللغوية</label>
+                        <!-- Tab 3 -->
+                        <input type="radio" name="tabset" id="tab-sounds" aria-controls="txt-sounds">
+                        <label class="tab-label-subjects tab-label-sounds" for="tab-sounds">الأصوات اللغوية</label>
+                        <!-- Tab 4 -->
+                        <input type="radio" name="tabset" id="tab-grammer" aria-controls="txt-grammer">
+                        <label class="tab-label-subjects tab-label-grammer" for="tab-grammer">القواعد اللغوية</label>
+        
+                        <div class="tab-panels">
+        
+                            <section id="txt-keywords" class="tab-panel">
+                                <textarea class="txt-entry-subjects" id="id-keywords-list" rows="7"></textarea>
+                                
+                            </section>
+                        
+                            <section id="txt-structure" class="tab-panel">
+                                <textarea   class="txt-entry-subjects" id="id-structure-list" rows="7"></textarea>
+                            </section>
+        
+                            <section id="txt-sounds" class="tab-panel">
+                                <textarea class="txt-entry-subjects" id="id-vocals-list" rows="7"></textarea>
+                            </section>
+        
+                            <section id="txt-grammer" class="tab-panel">
+                                <textarea class="txt-entry-subjects" id="id-grammer-list" rows="7"></textarea>
+                            </section>
+        
+        
+                        </div>
+                        
+                    </div>
+
+                    </div>
+                        
+                    
+                 
+
+                  
+                  </div>
+
+                  <div style="height:200px;width: 100%;text-align: center; color:gray;border: 1px solid darkgray;margin-top:100px;">احصائيات الكورس</div>
+                  <div style="height:200px;width: 100%;text-align: center; color:gray;border: 1px solid darkgray; margin-top:100px;">Access Permissions</div>
+
+                
+                
+                  
+                
+              </section>
+
+              <!-- Tab 2 View (Scenes) -->
+              <section class="main-tab-panel" id="scenes-view">
+
+                <!-- Side nav Scenes -->
+                <span class="side-nav-btn" onclick="OpenSideNavScenes()">&#9776; إدارة المشاهد</span>
+
+                <div id="side-nav-scenes" class="side-nav" >
+                    <a href="javascript:void(0)" class="close-btn" onclick="CloseSideNavScenes()">&times;</a>
+                    <div class="side-nav-wrapper">
+
+                        <!-- Scenes Management -->
+
+                        
+                        <!-- Unit Selection -->
+                        <div class="list-container">
+
+                          <label class="label-controls" for="id-units">اختيار الوحدة</label>
+                          <select class="list-combo" id="id-units">
+                              <option value="ArabicA00">اللغة العربية مقدمة</option>
+                              <option value="ArabicA01">اللغة العربية مقدمة</option>
+                              <option value="ArabicA02">اللغة العربية مقدمة</option>س
+          
+                          </select>
+                        </div>
+
+                               
+                        <!-- Lesson Selection -->
+                        
+                        <div class="list-container">
+
+                          <label class="label-controls" for="id-lessons-tab2" >اختيار الدرس</label>
+                          <select class="list-combo" id="id-lessons-tab2" >
+                              <option value="ArabicA00">اللغة العربية مقدمة</option>
+                              <option value="ArabicA01">اللغة العربية مقدمة</option>
+                              <option value="ArabicA02">اللغة العربية مقدمة</option>س
+          
+                          </select>
+                        </div>
+
+                        <!-- Scenes Selection and Creating -->
+                        <div class="list-container">
+                          <label class="label-controls" for="txt_sceneTitle_entry">المشاهد</label>
+                          <div class="list-group" id="id-scenes">
+          
+                              
+          
+          
+                          </div>
+                          <div class="input-group">
+                              <input type="text" class="list-inputfield"  id="txt_sceneTitle" placeholder="إدخال عنوان المشهد">
+                              <button class="add-btn" id="add_sceneTitle">إضافـة</button>
+                          </div>
+                        </div>
+
+
+                      <!-- Scene Desc -->
+                      <div class="list-container">
+
+                        <label class="label-controls" for="id-scene-description" >وصف المشهد</label>
+                        <textarea class="textarea-description"  id="id-scene-description"    rows="3"></textarea>
+
+                      </div>
+        
+
+                      <!-- Subjects to be added to the scene -->
+                      <div class="list-container">
+
+                        <label class="label-controls" for="id-select-subject" >اختيار المواضيع</label>
+                        <div class="input-group-subjects">
+                            <select class="list-combo" id="id-select-subject">
+                                
+                                <option  value="ArabicA00J2">الموضوع الثاني</option>
+                                <option value="ArabicA00J4">الموضوع الرابع</option>
+                                <option value="ArabicA00J5">الموضوع الخامس</option>
+                                
+        
+                            </select>
+        
+                            <button class="add-btn" id="add_subject_to_scene"> &#x271A;</button>
+                            <button class="remove-btn" id="remove_subject_from_scene"> <strong>&minus;</strong></button>
+        
+                        </div>
+                        <select size="6" class="list-items-select" id="id-lst-subjects">
+                            <option value="ArabicA00J2">الموضوع الاول</option>
+                            <option value="ArabicA00J2">الموضوع الثاني</option>
+                        </select>
+        
+                      </div>
+                        
+                    </div>
                 </div>
-                  <div class="input-group mb-3">
-                    <div class="input-group-append">
-                      <button
-                        class="btn btn-outline-success"
-                        type="button"
-                        id="add_concept_to_scene"
-                      >
-                        إضافة
-                      </button>
-                      <button
-                        class="btn btn-outline-danger"
-                        type="button"
-                        id="remove_concept_from_scene"
-                      >
-                        حذف
-                      </button>
-                    </div>
-                  </div>
-              </div>
-            </div>
+                 
 
-            
 
-            <div>
-              <label class="label-course col-lg-3" for="id-send-to-teacher"
-                >ارسال إلى التصحيح</label
-              >
-              <div class="form-control under-label">
-                <label>
-                  <input
-                    name="toBeCheckedRdbtn"
-                    type="radio"
-                    id="id-send-to-teacher"
-                  />
-
-                  <span style="font-size: 2em; color: rgb(68, 67, 67)"
-                    >نعم</span
-                  >
-                </label>
-
-                <label style="margin-right: 30px">
-                  <input
-                    name="toBeCheckedRdbtn"
-                    type="radio"
-                    id="id-send-to-teacher-not"
-                  />
-                  <span style="font-size: 2em; color: rgb(68, 67, 67)">لا</span>
-                </label>
-              </div>
-            </div>
-
-            <div>
-              <label class="label-course col-lg-3" for="id-book-type"
-                >نوع الكتاب</label
-              >
-              <div class="form-control under-label">
-                <label>
-                  <input name="bookTypeRdbtn" type="radio" id="id-kursbook" />
-
-                  <span style="font-size: 2em; color: rgb(68, 67, 67)"
-                    >كتاب كورس</span
-                  >
-                </label>
-
-                <label style="margin-right: 30px">
-                  <input name="bookTypeRdbtn" type="radio" id="id-Arbeitbook" />
-                  <span style="font-size: 2em; color: rgb(68, 67, 67)"
-                    >كتاب تدريبات</span
-                  >
-                </label>
-              </div>
-            </div>
-
-            <!-- Select Exercise type -->
-
-            <div>
-              <label class="label-course col-lg-3" for="lst_scenesType_tab2">
-                اختيار نوع المشهد</label
-              >
-
-              <select
-                size="7"
-                style="margin-top: 5px"
-                multiple
-                class="form-control under-label"
-                id="lst_scenesType_tab2"
-              ></select>
-
-              <label
-                class="label-selected-value col-lg-5"
-                id="id-scene-selected"
-                >xxx</label
-              >
-              <label class="label-selected-value col-lg-5" id="id-scene-code"
-                >xxx</label
-              >
-            </div>
-          </div>
-
-          <div class="tab-pane fade paneltab" role="tabpanel" id="menu3">
-            <div class="tab">
-              <div id="scene-details" class="tabcontent col-lg-12"></div>
-
-              <div id="S-type-3" class="tabcontent col-lg-12">
-                <!-- ****************** Section Question Main Infor********************* -->
-                <section class="genSection">
-                  <h3><strong> المشهد </strong>تمرين املأ الفراغ</h3>
-                  <!-- ***** -->
-                  <div
-                    class="form-group group-element"
-                    style="margin-top: 30px"
-                  >
-                    <label class="label-course col-lg-3" for="id-ExerciseText">
-                      صيغة السؤال</label
-                    >
-                    <textarea
-                      class="form-control under-label"
-                      id="id-ExerciseText"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                  <!-- ***** -->
-
-                  <!-- ***** -->
-                  <div
-                    class="form-group group-element"
-                    style="margin-top: 30px"
-                  >
-                    <label class="label-course col-lg-3" for="id-Translation">
-                      ترجمة السؤال</label
-                    >
-                    <textarea
-                      class="form-control under-label"
-                      id="id-Translation"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                  <!-- ***** -->
-                  <div class="form-group group-element">
-                    <label
-                      class="label-course col-lg-3"
-                      for="id-ExerciseHint-text"
-                      >مساعدة نصية مقروءة</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control under-label"
-                      id="id-ExerciseHint-text"
-                    />
-                  </div>
-
-                  <!-- ***** -->
-                  <div
-                    class="form-group group-element"
-                    style="margin-top: 30px"
-                  >
-                    <label
-                      class="label-course col-lg-3"
-                      for="id-ExerciseHint-Previous-help"
-                    >
-                      مراجعات سابقة</label
-                    >
-                    <textarea
-                      class="form-control under-label"
-                      id="id-ExerciseHint-Previous-help"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                  <!-- ***** -->
-                </section>
-                <!-- ****************** End of Section Question Main Infor********************* -->
-                <!-- ****************** Media Section ***************************************** -->
-                <section class="genSection">
-                  <!-- ****************** Pic subSection of Media ***************** -->
-
-                  <!-- ****************** End of Pic subSection of Media ***************** -->
-
-                  <!-- ****************** Recorded Sound subSection of Media ***************** -->
-
-                  <div>
-                    <label class="label-course col-lg-3"> نص صوتي</label>
-                    <div class="form-control under-label">
-                      <label id="id-main-sound-label">
-                        <input
-                          id="id-main-sound-checkbox"
-                          name="courseTypeRdbtn"
-                          type="checkbox"
-                        />
-
-                        <span style="font-size: 2em; color: rgb(68, 67, 67)">
-                          ادخال النص الصوتي</span
-                        >
-                      </label>
-                    </div>
-                    <div id="div-sound-hidden" class="hidden-tab">
-                      <!-- ***** -->
-                      <div
-                        class="form-group group-element"
-                        style="margin-top: 30px"
-                      >
-                        <label
-                          class="label-hidden col-lg-2"
-                          for="id-main-sound-des"
-                        >
-                          ادخال النص الصوتي
-                        </label>
-                        <textarea
-                          class="form-control control-hidden"
-                          id="id-main-sound-des"
-                          rows="3"
-                        ></textarea>
-                      </div>
-                      <!-- ***** -->
-                    </div>
-                    <!-- ***** -->
-                  </div>
-
-                  <!-- ****************** End of Recorded Sound subSection of Media ***************** -->
-
-                  <!-- ****************** Sound Effect subSection of Media ***************** -->
-
-                  <div>
-                    <label
-                      class="label-course col-lg-3"
-                      for="id-main-soundeffect-label"
-                    >
-                      نص صوتي</label
-                    >
-                    <div class="form-control under-label">
-                      <label id="id-main-soundeffect-label">
-                        <input
-                          id="id-main-soundeffect-checkbox"
-                          name="soundeffect"
-                          type="checkbox"
-                        />
-
-                        <span style="font-size: 2em; color: rgb(68, 67, 67)">
-                          ادخال الموثرات الصوتية
-                        </span>
-                      </label>
-                    </div>
-                    <div id="div-soundeffect-hidden" class="hidden-tab">
-                      <!-- ***** -->
-                      <div
-                        class="form-group group-element"
-                        style="margin-top: 30px"
-                      >
-                        <label
-                          class="label-hidden col-lg-2"
-                          for="id-main-soundeffect-des"
-                        >
-                          وصف المؤثرات الصوتية
-                        </label>
-                        <textarea
-                          class="form-control control-hidden"
-                          id="id-main-soundeffect-des"
-                          rows="3"
-                        ></textarea>
-                      </div>
-                      <!-- ***** -->
-                    </div>
-                    <!-- ***** -->
-                  </div>
-
-                  <!-- ****************** End of Sound Effect subSection of Media ***************** -->
-
-                  <!-- ****************** Video subSection of Media ***************** -->
-
-                  <div>
-                    <label class="label-course col-lg-3"> فيديو</label>
-                    <div class="form-control under-label">
-                      <label id="">
-                        <input
-                          id="id-main-video-checkbox"
-                          name="VieoCheckbox"
-                          type="checkbox"
-                        />
-
-                        <span class="media-checkbox-span">ادخال فيديو</span>
-                      </label>
-                    </div>
-                    <div id="div-video-hidden" class="hidden-tab">
-                      <!-- ***** -->
-                      <div
-                        class="form-group group-element"
-                        style="margin-top: 30px"
-                      >
-                        <label
-                          class="label-hidden col-lg-2"
-                          for="id-main-video-des"
-                        >
-                          وصف الفيديو</label
-                        >
-                        <textarea
-                          class="form-control control-hidden"
-                          id="id-main-video-des"
-                          rows="3"
-                        ></textarea>
-                      </div>
-                      <!-- ***** -->
-                      <!-- ***** -->
-
-                      <div class="form-control control-hidden">
-                        <label class="radio-margin">
-                          <input
-                            name="main-video-type"
-                            type="radio"
-                            id="id-main-video-type-photographic"
-                          />
-                          <span style="font-size: 2em; color: rgb(68, 67, 67)">
-                            فيديو فوتوغرافي</span
-                          >
-                        </label>
-
-                        <label class="radio-margin">
-                          <input
-                            name="main-video-type"
-                            type="radio"
-                            id="id-main-video-type-animation"
-                          />
-                          <span style="font-size: 2em; color: rgb(68, 67, 67)">
-                            أنيماشن
-                          </span>
-                        </label>
-
-                        <label class="radio-margin">
-                          <input
-                            name="main-video-type"
-                            type="radio"
-                            id="id-main-video-type-slideshow"
-                          />
-                          <span style="font-size: 2em; color: rgb(68, 67, 67)">
-                            عرض صور مع صوت
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-                    <!-- ***** -->
-                  </div>
-
-                  <!-- ****************** End of video subSection of Media ***************** -->
-
-                  <!-- ****************** Read Text subSection of Media ***************** -->
-
-                  <div>
-                    <label class="label-course col-lg-3"> نصوص قراءة </label>
-                    <div class="form-control under-label">
-                      <label id="id-main-text-label">
-                        <input
-                          id="id-main-text-checkbox"
-                          name="textcheckbox"
-                          type="checkbox"
-                        />
-
-                        <span style="font-size: 2em; color: rgb(68, 67, 67)">
-                          ادخال نصوص القراءة</span
-                        >
-                      </label>
-                    </div>
-                    <div id="div-text-hidden" class="hidden-tab">
-                      <!-- ***** -->
-                      <div
-                        class="form-group group-element"
-                        style="margin-top: 30px"
-                      >
-                        <label
-                          class="label-hidden col-lg-2"
-                          for="id-main-text-des"
-                        >
-                          ادخال نصوص القراءة
-                        </label>
-                        <textarea
-                          class="form-control control-hidden"
-                          id="id-main-text-des"
-                          rows="3"
-                        ></textarea>
-                      </div>
-                      <!-- ***** -->
-                    </div>
-                    <!-- ***** -->
-                  </div>
-
-                  <!-- ****************** End of Recorded Sound subSection of Media ***************** -->
-                </section>
-                <!-- ****************** Endof Media Section ***************************************** -->
-
-                <!-- ****************** Statement Section ***************************************** -->
-
-                <section class="genSection">
-                  <!-- ***** -->
-                  <div id="div-label-warning" class="form-group group-element">
-                    <label id="id-label-warning" class="label-war col-lg-12">
-                      الرجاء ادخال العبارات بالترتيب الصحيح
-                    </label>
-                  </div>
-
-                  <!-- ***** -->
-
-                  <!-- ***** -->
-                  <div id="div-statement" class="form-group group-element">
-                    <label class="label-course col-lg-3" for="id-statement">
-                      أدخل العبارة
-                      <a class="btn btn-info" id="id-insert-empty">أدخل فراغ</a>
-                    </label>
-                    <!-- <button>أدخل</button> -->
-                    <input
-                      type="text"
-                      class="form-control under-label"
-                      id="id-statement"
-                    />
-                  </div>
-                  <!-- ***** -->
-                  <div id="div-2nd-statement" class="form-group group-element">
-                    <label class="label-course col-lg-3" for="id-2nd-statement">
-                      أدخل العبارة الثانية
-                    </label>
-                    <!-- <button>أدخل</button> -->
-                    <input
-                      type="text"
-                      class="form-control under-label"
-                      id="id-2nd-statement"
-                    />
-                  </div>
-
-                  <!-- ***** -->
-
-                  <div id="div-cat-statement" class="form-group group-element">
-                    <label class="label-course col-lg-3" for="id-cat-statement">
-                      أدخل تصنيف العبارة
-                    </label>
-                    <!-- <button>أدخل</button> -->
-                    <input
-                      type="text"
-                      class="form-control under-label"
-                      id="id-cat-statement"
-                    />
-                  </div>
-                  <!-- ***** -->
-                  <div id="div-ok-statement" class="form-group group-element">
-                    <a
-                      class="btn btn-success btn-lg text-light"
-                      id="id-ok-statement"
-                      >موافق</a
-                    >
-                  </div>
-                  <!-- ***** -->
-                </section>
-
-                <!-- ****************** Endof Statement Section ***************************************** -->
-                <!-- ****************** Answers Section ***************************************** -->
-
-                <section class="genSection">
-                  <div style="direction: rtl" class="row">
-                    <div class="col-4">
-                      <div
-                        class="list-group"
-                        style="max-height: 400px; overflow: auto"
-                        id="list-tab"
-                        role="tablist"
-                        style="scroll-behavior: none"
-                      >
-                        <a
-                          class="list-group-item list-group-item-action list-answer-statement active"
-                          id="id-statement1-list"
-                          data-toggle="list"
-                          href="#tab-pane-answer-1"
-                          role="tab"
-                          aria-controls="home"
-                          >العبارة الأولى</a
-                        >
-                        <a
-                          class="list-group-item list-group-item-action list-answer-statement"
-                          id="id-statement2-list"
-                          data-toggle="list"
-                          href="#tab-pane-answer-2"
-                          role="tab"
-                          aria-controls="profile"
-                          >...</a
-                        >
-                        <a
-                          class="list-group-item list-group-item-action list-answer-statement"
-                          id="id-statement3-list"
-                          data-toggle="list"
-                          href="#tab-pane-answer-3"
-                          role="tab"
-                          aria-controls="messages"
-                          >...</a
-                        >
-                        <a
-                          class="list-group-item list-group-item-action list-answer-statement"
-                          id="id-statement4-list"
-                          data-toggle="list"
-                          href="#tab-pane-answer-4"
-                          role="tab"
-                          aria-controls="settings"
-                          >...</a
-                        >
-
-                        <a
-                          class="list-group-item list-group-item-action list-answer-statement"
-                          id="id-statement5-list"
-                          data-toggle="list"
-                          href="#tab-pane-answer-5"
-                          role="tab"
-                          aria-controls="settings"
-                          >...</a
-                        >
-                        <a
-                          class="list-group-item list-group-item-action list-answer-statement"
-                          id="id-statement6-list"
-                          data-toggle="list"
-                          href="#tab-pane-answer-6"
-                          role="tab"
-                          aria-controls="settings"
-                          >...</a
-                        >
-                      </div>
-                    </div>
-
-                    <div class="col-8">
-                      <div
-                        class="tab-content tap-pane-answer"
-                        id="nav-tabContent"
-                      >
-                        <!-- ################################ Fill In blank Aswers ############################## -->
-
-                        <div
-                          class="tab-pane fade show active"
-                          id="tab-pane-answer-1"
-                        >
-                          <div id="div-fill-in-blank-s1-answer2" class="">
-                            <label class="fill-in-blank" for=""
-                              >اجابة الفراغ الأول
-                            </label>
-                            <input
-                              class="input-fill-in-blank col-lg-2"
-                              id="id-fill-in-blank-s1-answer1"
-                              type="text"
-                            />
-                          </div>
-
-                          <div id="div-fill-in-blank-s1-answer2" class="">
-                            <label class="fill-in-blank" for=""
-                              >اجابة الفراغ الثاني</label
-                            >
-                            <input
-                              class="input-fill-in-blank col-lg-2"
-                              id="id-fill-in-blank-s1-answer2"
-                              type="text"
-                            />
-                          </div>
-
-                          <div id="div-fill-in-blank-s1-answer3" class="">
-                            <label class="fill-in-blank" for="">
-                              اجابة الفراغ الثالث</label
-                            >
-                            <input
-                              class="input-fill-in-blank col-lg-2"
-                              id="id-fill-in-blank-s1-answer3"
-                              type="text"
-                            />
-                          </div>
-
-                          <!-- ################################ End of Fill In blank Aswers ############################## -->
-                          <!-- ################################ Correct or False Aswers ############################## -->
-
-                          <div
-                            class="form-group group-element"
-                            style="margin-top: 10px"
-                            id="div-correctOrFalse-s1"
-                          >
-                            <label class="label-hidden col-lg-4">
-                              حدد الإجابة</label
-                            >
-
-                            <div class="form-control control-hidden">
-                              <label class="radio-margin">
-                                <input
-                                  type="radio"
-                                  name="correctOrfasle-s1-ansewr1"
-                                  id="id-correctOrFalse-s1-correct"
-                                />
-                                <span
-                                  style="font-size: 2em; color: rgb(68, 67, 67)"
-                                >
-                                  عبارة صحيحة
-                                </span>
-                              </label>
-
-                              <label class="radio-margin">
-                                <input
-                                  type="radio"
-                                  name="correctOrfasle-s1-ansewr1"
-                                  id="id-correctOrFalse-s1-false"
-                                />
-                                <span
-                                  style="font-size: 2em; color: rgb(68, 67, 67)"
-                                >
-                                  عبارة خاطئة
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-
-                          <!-- ################################ End of Yes or No Aswers ############################## -->
-
-                          <!-- ################################ Arrange letters Aswers ############################## -->
-
-                          <div id="div-arrangeLetters-s1" class="">
-                            <label class="fill-in-blank" for=""
-                              >أدخل الإجابة الصحيحة
-                            </label>
-                            <input
-                              class="input-fill-in-blank col-lg-4"
-                              id="id-arrangeLetters-s1"
-                              type="text"
-                            />
-                          </div>
-
-                          <!-- ################################ End of Arrange letters Aswers ######################## -->
-
-                          <!-- ################################ Multi choices Aswers ############################## -->
-
-                          <!-- ** Ans 1*** -->
-                          <!-- ** Determine number of Answers*** -->
-
-                          <div
-                            id="div-multiChoices-s1-answer1"
-                            class="multi-answers"
-                          >
-                            <div
-                              id="div-multiChoices-s1-count"
-                              class="form-group group-element"
-                            >
-                              <label class="label-course col-lg-3"
-                                >عدد الإجابات</label
-                              >
-                              <input
-                                type="number"
-                                class="form-control under-label"
-                                value="1"
-                                min="2"
-                                max="5"
-                                step="1"
-                                id="id-multiChoices-s1-count"
-                              />
-                            </div>
-                            <!-- ** continue Ans 1*** -->
-                            <div
-                              class="form-group group-element"
-                              style="
-                                margin-top: 10px;
-                                display: flex;
-                                flex-direction: column;
-                              "
-                            >
-                              <label class="label-hidden col-lg-4">
-                                الإجابة الأولى الصحيحة</label
-                              >
-
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer1"
-                                    type="radio"
-                                    id="id-multiChoices-s1-textRadio-answer1"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    نص
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-textDiv-answer1"
-                                  class="itemSlide"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-textTextarea-answer1"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer1"
-                                    type="radio"
-                                    id="id-multiChoices-s1-recordedSoundRadio-answer1"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صوت مسجل
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-recordedSoundDiv-answer1"
-                                  class="itemSlide"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-recordedSoundTextarea-answer1"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer1"
-                                    type="radio"
-                                    id="id-multiChoices-s1-picRadio-answer1"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صورة
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-picDiv-answer1"
-                                  class="itemSlide"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-picTextarea-answer1"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- ** End of Ans 1*** -->
-
-                          <!-- ** Ans 2*** -->
-                          <div id="div-video-hidden" class="multi-answers">
-                            <div
-                              class="form-group group-element"
-                              style="
-                                margin-top: 10px;
-                                display: flex;
-                                flex-direction: column;
-                              "
-                            >
-                              <label
-                                class="label-hidden col-lg-4"
-                                for="id-main-video-des"
-                              >
-                                الإجابة الثانية الخاطئة</label
-                              >
-
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer2"
-                                    type="radio"
-                                    id="id-multiChoices-s1-textRadio-answer2"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    نص
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-textDiv-answer2"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-textTextarea-answer2"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer2"
-                                    type="radio"
-                                    id="id-multiChoices-s1-recordedSoundRadio-answer2"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صوت مسجل
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-recordedSoundDiv-answer2"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-recordedSoundTextarea-answer2"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer2"
-                                    type="radio"
-                                    id="id-multiChoices-s1-picRadio-answer2"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صورة
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-picDiv-answer2"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-picTextarea-answer2"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- ** End of Ans 2*** -->
-
-                          <!-- ** Ans 3*** -->
-
-                          <div id="div-video-hidden" class="multi-answers">
-                            <div
-                              class="form-group group-element"
-                              style="
-                                margin-top: 10px;
-                                display: flex;
-                                flex-direction: column;
-                              "
-                            >
-                              <label
-                                class="label-hidden col-lg-4"
-                                for="id-main-video-des"
-                              >
-                                الإجابة الثالثة الخاطئة</label
-                              >
-
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer3"
-                                    type="radio"
-                                    id="id-multiChoices-s1-textRadio-answer3"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    نص
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-textDiv-answer3"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-textTextarea-answer3"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer3"
-                                    type="radio"
-                                    id="id-multiChoices-s1-recordedSoundRadio-answer3"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صوت مسجل
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-recordedSoundDiv-answer3"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-recordedSoundTextarea-answer3"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer3"
-                                    type="radio"
-                                    id="id-multiChoices-s1-picRadio-answer3"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صورة
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-picDiv-answer3"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-picTextarea-answer3"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- ** End of Ans 3*** -->
-
-                          <!-- ** Ans 4*** -->
-
-                          <div id="div-video-hidden" class="multi-answers">
-                            <div
-                              class="form-group group-element"
-                              style="
-                                margin-top: 10px;
-                                display: flex;
-                                flex-direction: column;
-                              "
-                            >
-                              <label
-                                class="label-hidden col-lg-4"
-                                for="id-main-video-des"
-                              >
-                                الإجابة الرابعة الخاطئة</label
-                              >
-
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer4"
-                                    type="radio"
-                                    id="id-multiChoices-s1-textRadio-answer4"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    نص
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-textDiv-answer4"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-textTextarea-answer4"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer4"
-                                    type="radio"
-                                    id="id-multiChoices-s1-recordedSoundRadio-answer4"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صوت مسجل
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-recordedSoundDiv-answer4"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-recordedSoundTextarea-answer4"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer4"
-                                    type="radio"
-                                    id="id-multiChoices-s1-picRadio-answer4"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صورة
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-picDiv-answer4"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-picTextarea-answer4"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- ** End of Ans 4*** -->
-
-                          <!-- ** Ans 5*** -->
-
-                          <div id="div-video-hidden" class="multi-answers">
-                            <div
-                              class="form-group group-element"
-                              style="
-                                margin-top: 10px;
-                                display: flex;
-                                flex-direction: column;
-                              "
-                            >
-                              <label
-                                class="label-hidden col-lg-4"
-                                for="id-main-video-des"
-                              >
-                                الإجابة الخامسة الخاطئة</label
-                              >
-
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer5"
-                                    type="radio"
-                                    id="id-multiChoices-s1-textRadio-answer5"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    نص
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-textDiv-answer5"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-textTextarea-answer5"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer5"
-                                    type="radio"
-                                    id="id-multiChoices-s1-recordedSoundRadio-answer5"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صوت مسجل
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-recordedSoundDiv-answer5"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-recordedSoundTextarea-answer5"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group control-hidden">
-                                <label class="radio-margin">
-                                  <input
-                                    name="multiChoices-s1-answer5"
-                                    type="radio"
-                                    id="id-multiChoices-s1-picRadio-answer5"
-                                  />
-                                  <span
-                                    style="
-                                      font-size: 2em;
-                                      color: rgb(68, 67, 67);
-                                    "
-                                  >
-                                    صورة
-                                  </span>
-                                </label>
-                                <div
-                                  id="div-multiChoices-s1-picDiv-answer5"
-                                  class="textareaAnswerHidden"
-                                >
-                                  <textarea
-                                    class="form-control answer-control-hidden"
-                                    id="id-multiChoices-s1-picTextarea-answer5"
-                                    rows="3"
-                                  ></textarea>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- ** End of Ans 5*** -->
-
-                          <!-- ################################ End of Multi choices Aswers ######################## -->
-                        </div>
-                        <div
-                          class="tab-pane fade"
-                          id="tab-pane-answer-2"
-                          aria-labelledby="list-profile-list"
-                        >
-                          ...2
-                        </div>
-                        <div
-                          class="tab-pane fade"
-                          id="tab-pane-answer-3"
-                          aria-labelledby="list-messages-list"
-                        >
-                          ...3
-                        </div>
-                        <div
-                          class="tab-pane fade"
-                          id="tab-pane-answer-4"
-                          aria-labelledby="list-settings-list"
-                        >
-                          ...4
-                        </div>
-                        <div
-                          class="tab-pane fade"
-                          id="tab-pane-answer-5"
-                          aria-labelledby="list-settings-list"
-                        >
-                          ...5
-                        </div>
-                        <div
-                          class="tab-pane fade"
-                          id="tab-pane-answer-6"
-                          aria-labelledby="list-settings-list"
-                        >
-                          ...6
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-                <!-- ****************** End of Answers Section *********************************** -->
-              </div>
-            </div>
-          </div>
+                 
+              </section>
         </div>
-      </div>
-    </div>
-    <!-- ############################### Insert Question Tab Section ################################### -->
 
-    <!-- ############################### QTHint Section ################################### -->
-    <!-- ############################### Media Section ################################### -->
-    <!-- ############################### Statement & Answer Section ################################### -->
-    <!-- ############################### Footer Section ################################### -->
+
+    </div>
+  </div>
+</div>
+
+
+    
 
     <!-- ############################### Scripts ################################### -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -1893,74 +450,74 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 
-    <script>
-      //const firebase = require("firebase");
-      // Required for side-effects
-      //require("firebase/firestore");
+   
 
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-        apiKey: "AIzaSyAFpD1e9Y1RSK9PNAQ84WI6lWAJQophybc",
-        authDomain: "arabiclang-b1f66.firebaseapp.com",
-        databaseURL: "https://arabiclang-b1f66.firebaseio.com",
-        projectId: "arabiclang-b1f66",
-        storageBucket: "arabiclang-b1f66.appspot.com",
-        messagingSenderId: "271833257572",
-        appId: "1:271833257572:web:68071f6a0bead4a499b171",
-      };
-
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-
-      // make references for auth and firestore
-      const auth = firebase.auth();
-      const db = firebase.firestore();
-
-      // initialize Array of our data objects
-      var Courses = new Array();
-      var originalCourses = new Array();
-
-      var Modules = new Array();
-      var originalModules = new Array();
-
-
-      var Subjects = new Array();
-      var originalSubjects = new Array();
-
-      var Lessons = new Array();
-      var originalLessons = new Array();
-
-      var Skills = new Array();
-      var originalSkills = new Array();
-
-      var SceneTypes = new Array();
-      var originalSceneTypes = new Array();
-
-      var SceneHeaders = new Array();
-      var originalSceneHeaders = new Array();
-
-      var ScenesArray = new Array();
-    </script>
-
-    <!-- JQuery CDN -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"
-    ></script>
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<!-- 
-    <script>
-      $(document).ready(function () {
-        $(".sidenav").sidenav();
-      });
-    </script> -->
     <script src="dataObject.js"></script>
     <script src="auth.js"></script>
     <script src="index.js"></script>
-    
     <script src="controls.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
+
+
+
+
+<!-- 
+
+
+<div class="form-group group-element">
+  <label class="label-course col-lg-3" for="id-table-subjects" >
+    اختيار العناصر</label>
+  <div id="id-table-subjects" class="table-subjects">
+    
+    <table dir="rtl" class="table table-bordered" style="width: 100%;">
+      
+      <thead >
+        <tr>
+          <th scope="col" class="align-middle" ><select
+            class="form-control dropdown-subjects"
+            style="max-height: 50px"
+            id="id-select-elementType"
+          >
+            
+        </select></th>
+          <th scope="col" class="align-middle"><select
+            class="form-control dropdown-subjects"
+            style="max-height: 50px"
+            id="id-select-element"
+          ></select></th>
+          <th scope="col" class="align-middle"><select
+            class="form-control dropdown-subjects"
+            style="max-height: 50px"
+            id="id-select-elementSkills"
+          ></select></th>
+          
+        </tr>
+      </thead>
+    </table>
+
+    
+  </div>
+    <div class="input-group mb-3">
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-success"
+          type="button"
+          id="add_concept_to_scene"
+        >
+          إضافة
+        </button>
+        <button
+          class="btn btn-outline-danger"
+          type="button"
+          id="remove_concept_from_scene"
+        >
+          حذف
+        </button>
+      </div>
+    </div>
+
+
+
+</div> -->

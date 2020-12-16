@@ -1,3 +1,48 @@
+ // Web app's Firebase configuration
+ var firebaseConfig = {
+  apiKey: "AIzaSyAFpD1e9Y1RSK9PNAQ84WI6lWAJQophybc",
+  authDomain: "arabiclang-b1f66.firebaseapp.com",
+  databaseURL: "https://arabiclang-b1f66.firebaseio.com",
+  projectId: "arabiclang-b1f66",
+  storageBucket: "arabiclang-b1f66.appspot.com",
+  messagingSenderId: "271833257572",
+  appId: "1:271833257572:web:68071f6a0bead4a499b171",
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// make references for auth and firestore
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// initialize Array of our data objects
+var Courses = new Array();
+var originalCourses = new Array();
+
+var Modules = new Array();
+var originalModules = new Array();
+
+
+var Subjects = new Array();
+var originalSubjects = new Array();
+
+var Lessons = new Array();
+var originalLessons = new Array();
+
+var Skills = new Array();
+var originalSkills = new Array();
+
+var SceneTypes = new Array();
+var originalSceneTypes = new Array();
+
+var SceneHeaders = new Array();
+var originalSceneHeaders = new Array();
+
+var ScenesArray = new Array();
+
+
+// Classes represent the data objects stored in Firebase
 class Course {
     constructor (id, CourseTitle, Description,  Category) {
         this.id = id;

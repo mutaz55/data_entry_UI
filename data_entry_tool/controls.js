@@ -4,48 +4,48 @@
 const courseCombo = document.getElementById("id-course-title");
 
 // The course type
-const chkBoxCourseTypePaid = document.getElementById("id-cat-paid");
-const chkBoxCourseTypeFree = document.getElementById("id-cat-free");
+// const chkBoxCourseTypePaid = document.getElementById("id-cat-paid");
+// const chkBoxCourseTypeFree = document.getElementById("id-cat-free");
 
 // The course description field
 const textAreaCourseDesc = document.getElementById("id-course-description");
 
 // Subject List
 const btn_add_subject = document.querySelector("#add_subject");
-const btn_remove_subject = document.querySelector("#remove_subject");
+// const btn_remove_subject = document.querySelector("#remove_subject");
 const lst_subjects = document.querySelector("#id-subject");
 const txt_subject_entry = document.querySelector("#txt_subject");
 
 // Modules List
 const btn_add_module = document.querySelector("#add_module");
-const btn_remove_module = document.querySelector("#remove_module");
+// const btn_remove_module = document.querySelector("#remove_module");
 const lst_modules = document.querySelector("#id-modules");
 const txt_module_entry = document.getElementById("txt_module");
 
 
 // Lessons List
 const btn_add_lesson = document.querySelector("#add_lesson");
-const btn_remove_lesson = document.querySelector("#remove_lesson");
+// const btn_remove_lesson = document.querySelector("#remove_lesson");
 const lst_lessons = document.querySelector("#id-lessons");
 const txt_lesson_entry = document.getElementById("txt_lesson");
 
 
 // Skills
 const btn_add_skill = document.querySelector("#add_skill");
-const btn_remove_skill = document.querySelector("#remove_skill");
+// const btn_remove_skill = document.querySelector("#remove_skill");
 const lst_skills = document.querySelector("#id-skills");
 
 const txt_skill_entry = document.getElementById("txt_skill");
 const txt_skill_code_entry = document.getElementById("txt_skill_code");
 
 // Scene Types
-const btn_add_sceneType = document.querySelector("#add_sceneType");
-const btn_remove_sceneType = document.querySelector("#remove_sceneType");
-const lst_sceneTypes = document.querySelector("#id-sceneTypes");
+// const btn_add_sceneType = document.querySelector("#add_sceneType");
+// const btn_remove_sceneType = document.querySelector("#remove_sceneType");
+// const lst_sceneTypes = document.querySelector("#id-sceneTypes");
 
 
-const txt_sceneType_entry = document.getElementById("txt_sceneType");
-const txt_sceneType_code = document.getElementById("txt_sceneType_code");
+// const txt_sceneType_entry = document.getElementById("txt_sceneType");
+// const txt_sceneType_code = document.getElementById("txt_sceneType_code");
 
 // Elements
 const btn_update_elements = document.getElementById("update_elements");
@@ -66,14 +66,14 @@ const lst_lessons_tab2 = document.querySelector("#id-lessons-tab2");
 //const tab2Header = document.querySelector("#sceneInfoTab2");
 // Scene
 const btn_add_scene = document.querySelector("#add_sceneTitle");
-const btn_remove_scene = document.querySelector("#remove_sceneTitle");
+// const btn_remove_scene = document.querySelector("#remove_sceneTitle");
 const lst_scenes = document.querySelector("#id-scenes");
 
 const txt_sceneTitle_entry = document.getElementById("txt_sceneTitle");
 
 
 // Scene No
-const lbl_scene_no = document.querySelector("#id-scene-no");
+// const lbl_scene_no = document.querySelector("#id-scene-no");
 
 // Scene Description
 const textbox_scene_desc = document.querySelector("#id-scene-description");
@@ -85,6 +85,11 @@ const add_subj_scene = document.querySelector("#add_subject_to_scene");
 const remove_subj_scene = document.querySelector("#remove_subject_from_scene");
 
 
+// side nav1 - new course 
+const show_addNewBtn = document.getElementById('new-course-btn');
+const container_addNewBtn = document.getElementById('hidden-container');
+const btn_addNewCourse = document.getElementById('sidenav1-btn-add');
+const entry_newCourseTxt = document.getElementById('new-course-name');
 // Scene Skills
 //const lst_skills_tab2 = document.querySelector("#id-select-skill");
 
@@ -93,18 +98,18 @@ const remove_subj_scene = document.querySelector("#remove_subject_from_scene");
 // const remove_skill_scene = document.querySelector("#remove_skill_from_scene");
 
 // Send to teacher
-const radiobtn_sendToTeacher = document.querySelector("#id-send-to-teacher");
-const radiotbtn_sendToTeacherNot = document.querySelector(
-  "#id-send-to-teacher-not"
-);
+// const radiobtn_sendToTeacher = document.querySelector("#id-send-to-teacher");
+// const radiotbtn_sendToTeacherNot = document.querySelector(
+//   "#id-send-to-teacher-not"
+// );
 
 // Book Type
-const radiobtn_kursBuch = document.querySelector("#id-kursbook");
-const radiobtn_arbeitsBuch = document.querySelector("#id-Arbeitbook");
+// const radiobtn_kursBuch = document.querySelector("#id-kursbook");
+// const radiobtn_arbeitsBuch = document.querySelector("#id-Arbeitbook");
 
 
 // Scene Type
-const lst_sceneTypes_tab2 = document.querySelector("#lst_scenesType_tab2");
+// const lst_sceneTypes_tab2 = document.querySelector("#lst_scenesType_tab2");
 
 ///
 
@@ -112,22 +117,22 @@ const lst_sceneTypes_tab2 = document.querySelector("#lst_scenesType_tab2");
 const txtbox_course_description = document.querySelector(
   "#id-course-description"
 );
-const radiobtn_course_category_paid = document.querySelector("#id-cat-paid");
-const radiobtn_course_category_free = document.querySelector("#id-cat-free");
+// const radiobtn_course_category_paid = document.querySelector("#id-cat-paid");
+// const radiobtn_course_category_free = document.querySelector("#id-cat-free");
 
 // Elements Component
-const lst_elementsSkills_tab3 = document.querySelector('#id-select-elementSkills');
+// const lst_elementsSkills_tab3 = document.querySelector('#id-select-elementSkills');
 const lst_elementsType_tab3 = document.querySelector('#id-select-elementType');
 const lst_elements_tab3 = document.querySelector('#id-select-element');
 
 // Toast Msgs
 
 function showError(msg) {
-  M.toast({ html: msg, classes: "toast-style" });
+  console.log({ html: msg, classes: "toast-style" });
 }
 
 function showSuccess(msg){
-  M.toast({html:msg, classes: "toast-success"});
+  console.log({html:msg, classes: "toast-success"});
 }
 
 
@@ -145,15 +150,15 @@ txtbox_course_description.addEventListener("input", (e) => {
 
 });
 
-radiobtn_course_category_paid.addEventListener("change", () => {
-  if (Courses.length > 0) currentCourse.Category = 1;
+// radiobtn_course_category_paid.addEventListener("change", () => {
+//   if (Courses.length > 0) currentCourse.Category = 1;
 
-});
+// });
 
-radiobtn_course_category_free.addEventListener("change", () => {
-  if (Courses.length > 0) currentCourse.Category = 0;
+// radiobtn_course_category_free.addEventListener("change", () => {
+//   if (Courses.length > 0) currentCourse.Category = 0;
 
-});
+// });
 
 
 // Add Click event to update (Change the text value) of the list items
@@ -172,19 +177,20 @@ addLstHandlers(lst_lessons, txt_lesson_entry, btn_add_lesson);
 addLstHandlersCase2(lst_skills, txt_skill_entry, txt_skill_code_entry, btn_add_skill);
 
 // SceneTypes list
-addLstHandlersCase2(lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code, btn_add_sceneType);
+// addLstHandlersCase2(lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code, btn_add_sceneType);
 
 //Scenes
 addLstHandlersCase3(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
 
 
-      
+
 // Enable updating of the selected item text
 // And add handlers for key strokes (Enter, Escape)
 function addLstHandlers(lst, txt_entry, btn_add) {
 
       lst.index = "-1";
       lst.mode = "normal";
+      
       // When click on any item of the subject list
       // store the id of the clicked item 
       lst.addEventListener('click', function (e){
@@ -195,6 +201,7 @@ function addLstHandlers(lst, txt_entry, btn_add) {
         txt_entry.value = e.target.textContent;
         btn_add.textContent = "تعديل"
         lst.mode = "update";
+        console.log("index=" + this.index);
 
       });
 
@@ -312,6 +319,8 @@ function selectAllTxt(txt) {
 }
 // Reset the add button (switch from update mode)
 function resetAddBtn(lst, txt,btn){
+
+  
   lst.mode = "normal";
   txt.value = "";
   btn.textContent = "إضافة";
@@ -361,12 +370,18 @@ function clearScenesLst() {
   // Clear the scenes list
   removeAllChildNodes(lst_scenes);
   // clear the scene no.
-  lbl_scene_no.textContent = "";
+  // lbl_scene_no.textContent = "";
   // Clear the scene description
-  textbox_scene_desc.value = "";
+  
   // clear tab2 radio buttons
-  clearRdBtnTab2();
+  // clearRdBtnTab2();
+
 }
+
+
+// Add click handlers for all small close buttons within the lists
+
+
 
 
 // function clearSkillsLst() {
@@ -374,12 +389,12 @@ function clearScenesLst() {
 // }
 
 
-function clearRdBtnTab2() {
-  document.querySelector("#id-Arbeitbook").checked = false;
-  document.querySelector("#id-kursbook").checked = false;
-  radiobtn_sendToTeacher.checked = false;
-  radiotbtn_sendToTeacherNot.checked = false;
-}
+// function clearRdBtnTab2() {
+//   document.querySelector("#id-Arbeitbook").checked = false;
+//   document.querySelector("#id-kursbook").checked = false;
+//   radiobtn_sendToTeacher.checked = false;
+//   radiotbtn_sendToTeacherNot.checked = false;
+// }
 
 
 
@@ -585,32 +600,59 @@ function isDeleteSTypePossible(_index){
 ////#endregion
 
 
+
 // Remove Subject (Button)
-btn_remove_subject.addEventListener("click", () => {
+function lst_subjects_handler(id) {
  
-  if (lst_subjects.index != "-1") {
+    if (id == lst_subjects.index) {
+      clearElementTxtarea();
+    } 
 
-      if (removeBtnFromLst(lst_subjects)) {
 
-            deleteSubjFromScenes(currentCourse.id, lst_subjects.index);
+    if (removeBtnFromLst(lst_subjects, id)) {
 
-            //remove it from scene subject list (tab 2)
-            rmSubjFromSubjLst(lst_subjects.index);
-            
-            removeOptionFromLst(lst_subjects_tab2, lst_subjects.index)
-      
-            Subjects = removeItemFromArr(Subjects, 'subjectID', lst_subjects.index);
-       
-      }
-      
-      resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
+        deleteSubjFromScenes(currentCourse.id, id);
 
-      initAfterDel(lst_subjects, txt_subject_entry);
+        //remove it from scene subject list (tab 2)
+        rmSubjFromSubjLst(id);
+        
+        removeOptionFromLst(lst_subjects_tab2, id)
+  
+        Subjects = removeItemFromArr(Subjects, 'subjectID', lst_subjects.index);
     
-  }
+        resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
 
+        initAfterDel(lst_subjects, txt_subject_entry);
+
+        
+
+    }
+    
+}
+
+// Add new Course (Button)
+btn_addNewCourse.addEventListener('click', ()=> {
+  showSuccess('add new course' + entry_newCourseTxt.value);
 });
 
+
+
+show_addNewBtn.addEventListener('click', (e)=> {
+  console.log(container_addNewBtn.style.display);
+  if (container_addNewBtn.style.display != "block" && container_addNewBtn.style.display != "none")
+      container_addNewBtn.style.display = "none";
+
+  if (container_addNewBtn.style.display == "none") {
+      container_addNewBtn.style.display = "block";
+  }
+  else {
+      container_addNewBtn.style.display = "none";
+  }
+    
+  
+
+  e.stopPropagation();
+});
 
 
 // Add Subject (Button)
@@ -684,37 +726,33 @@ btn_add_subject.addEventListener("click", () => {
 
 });
 
+ 
+function lst_modules_handler(id) {
 
-// Remove Module (Button)
-btn_remove_module.addEventListener("click", () => {
-
-  if (lst_modules.index != "-1") {
-    
-   
-      // Check if there are no lessons within the Module
-      if (isDeleteModulePossible(currentCourse.id, lst_modules.index)) {
+  // Check if there are no lessons within the Module
+  if (isDeleteModulePossible(currentCourse.id, id)) {
 
 
-        if (removeBtnFromLst(lst_modules)) {
-        
-         
-          removeOptionFromLst(lst_modules_tab2, lst_modules.index)
-          
-          Modules = removeItemFromArr(Modules, 'ModuleID', lst_modules.index);
-  
-          resetAddBtn(lst_modules, txt_module_entry, btn_add_module);
-  
-          initAfterDel(lst_modules, txt_module_entry);
-        }
+    if (removeBtnFromLst(lst_modules, id)) {
 
-      }
-      else 
-      {
-        showError("Can't delete modules have lessons within it!")
-      }
+
+      removeOptionFromLst(lst_modules_tab2, id);
+
+      Modules = removeItemFromArr(Modules, 'ModuleID', id);
+
+      resetAddBtn(lst_modules, txt_module_entry, btn_add_module);
+
+      initAfterDel(lst_modules, txt_module_entry);
+    }
 
   }
-});
+
+  else {
+    showError("Can't delete modules have lessons within it!");
+  }
+
+}
+
 
 
 // Add Module (Button)
@@ -779,37 +817,39 @@ btn_add_module.addEventListener("click", () => {
 
 
 // Remove Lesson (Button)
-btn_remove_lesson.addEventListener("click", () => {
+function lst_lessons_handler(id) {
+
+  // Check if there are no scenes within the lesson
+  if (isDeleteLessonPossible(currentCourse.id, id)) {
+
+              
+    // Check if its possible to delete a lesson
+  if (removeBtnFromLst(lst_lessons,id)) {
+      
+
+      removeOptionFromLst(lst_lessons_tab2, id)
+    
+      Lessons = removeItemFromArr(Lessons, 'LessonID', id);
+
+      resetAddBtn(lst_lessons, txt_lesson_entry, btn_add_lesson);
+
+      initAfterDel(lst_lessons, txt_lesson_entry);
+    }
+  }
+  else 
+  {
+  showError("Can't delete lessons have scenes within it!")
+  }
+
+}
   
-  if (lst_lessons.index != "-1") {
   
     
         
-          // Check if there are no scenes within the lesson
-          if (isDeleteLessonPossible(currentCourse.id, lst_lessons.index)) {
-
-            
-               // Check if its possible to delete a lesson
-              if (removeBtnFromLst(lst_lessons)) {
-                  
-
-                  removeOptionFromLst(lst_lessons_tab2, lst_lessons.index)
-                
-                  Lessons = removeItemFromArr(Lessons, 'LessonID', lst_lessons.index);
-            
-                  resetAddBtn(lst_lessons, txt_lesson_entry, btn_add_lesson);
-            
-                  initAfterDel(lst_lessons, txt_lesson_entry);
-                }
-          }
-          else 
-          {
-            showError("Can't delete lessons have scenes within it!")
-          }
+          
 
        
-  }
-});
+
 
 
 // Add Lesson (Button)
@@ -869,40 +909,40 @@ btn_add_lesson.addEventListener("click", () => {
 });
 
 
-// Remove Skill (Button)
-btn_remove_skill.addEventListener("click", () => {
+// // Remove Skill (Button)
+// btn_remove_skill.addEventListener("click", () => {
   
-  if (lst_skills.index != "-1") {
+//   if (lst_skills.index != "-1") {
 
 
-      // Check if there are no scenes refer to the skill
-      if (isDeleteSkillPossible(lst_skills.index)){
+//       // Check if there are no scenes refer to the skill
+//       if (isDeleteSkillPossible(lst_skills.index)){
 
-        if (removeBtnFromLst(lst_skills)) {
+//         if (removeBtnFromLst(lst_skills)) {
       
            
-            //remove it from scene skills list (tab 2)
+//             //remove it from scene skills list (tab 2)
             
         
-            removeOptionFromLst(lst_elementsSkills_tab3, lst_skills.index)
+//             // removeOptionFromLst(lst_elementsSkills_tab3, lst_skills.index)
             
-            Skills = removeItemFromArr(Skills, 'SkillID', lst_skills.index);
+//             Skills = removeItemFromArr(Skills, 'SkillID', lst_skills.index);
       
-            resetAddBtnCase2(lst_skills, txt_skill_entry, txt_skill_code_entry, btn_add_skill);
+//             resetAddBtnCase2(lst_skills, txt_skill_entry, txt_skill_code_entry, btn_add_skill);
       
-            initAfterDelCase2(lst_skills, txt_skill_entry, txt_skill_code_entry);
+//             initAfterDelCase2(lst_skills, txt_skill_entry, txt_skill_code_entry);
       
-      }
+//       }
 
-      }else {
-        showError("Skill can't be deleted, while a scene refers to it!")
-      }
+//       }else {
+//         showError("Skill can't be deleted, while a scene refers to it!")
+//       }
 
-//}
+// //}
 
-  }
+//   }
 
-});
+// });
 
 // Add Skill (Button)
 btn_add_skill.addEventListener("click", () => {
@@ -928,7 +968,7 @@ btn_add_skill.addEventListener("click", () => {
         const txt = `(${txt_skill_code_entry.value}) | ${txt_skill_entry.value}`;
          
         addNewItems(txt, txt_skill_code_entry.value, lst_skills, true).focus();
-        addNewItemsTab2(txt_skill_entry.value, txt_skill_code_entry.value, lst_elementsSkills_tab3, true);
+        // addNewItemsTab2(txt_skill_entry.value, txt_skill_code_entry.value, lst_elementsSkills_tab3, true);
         
 
       
@@ -962,8 +1002,8 @@ btn_add_skill.addEventListener("click", () => {
       
 
       // Update the option text in Tab2 skill & Scene skills if there are any
-      updateOptionText(lst_elementsSkills_tab3,lst_skills.index, txt_skill_entry.value);
-      updateOptionValue(lst_elementsSkills_tab3, lst_skills.index, txt_skill_code_entry.value);
+      // updateOptionText(lst_elementsSkills_tab3,lst_skills.index, txt_skill_entry.value);
+      // updateOptionValue(lst_elementsSkills_tab3, lst_skills.index, txt_skill_code_entry.value);
 
 
       // Back to normal mode
@@ -984,137 +1024,135 @@ btn_add_skill.addEventListener("click", () => {
 
 
 // Remove SceneType (Button)
-btn_remove_sceneType.addEventListener("click", () => {
+// btn_remove_sceneType.addEventListener("click", () => {
 
-  if (lst_sceneTypes.index != "-1") {
+//   if (lst_sceneTypes.index != "-1") {
 
 
-      if (isDeleteSTypePossible(lst_sceneTypes.index)){
+//       if (isDeleteSTypePossible(lst_sceneTypes.index)){
 
-        if (removeBtnFromLst(lst_sceneTypes)) {
+//         if (removeBtnFromLst(lst_sceneTypes)) {
 
        
         
-        // remove it from scene type list 
+//         // remove it from scene type list 
         
       
-          removeOptionFromLst(lst_sceneTypes_tab2, lst_sceneTypes.index)
+//           removeOptionFromLst(lst_sceneTypes_tab2, lst_sceneTypes.index)
           
-          SceneTypes = removeItemFromArr(SceneTypes, 'SceneTypeID', lst_sceneTypes.index);
+//           SceneTypes = removeItemFromArr(SceneTypes, 'SceneTypeID', lst_sceneTypes.index);
   
-          resetAddBtnCase2(lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code, btn_add_sceneType);
+//           resetAddBtnCase2(lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code, btn_add_sceneType);
   
-          initAfterDelCase2(lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code);
+//           initAfterDelCase2(lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code);
   
       
   
-      }
+//       }
 
-      }
-      else {
-        showError("Scene Type can't be deleted, while a scene refers to it!")
-      }
+//       }
+//       else {
+//         showError("Scene Type can't be deleted, while a scene refers to it!")
+//       }
 
-   // }
+//    // }
     
     
-  }
-});
+//   }
+// });
 
 // Add SceneType (Button)
-btn_add_sceneType.addEventListener("click", () => {
+// btn_add_sceneType.addEventListener("click", () => {
 
-  // if non empty nor digit entries
-  if (
-    txt_sceneType_entry.value != 0 &&
-    txt_sceneType_code.value != 0 &&
-    !txt_sceneType_code.value.match(/^\d/)
-  ) {
+//   // if non empty nor digit entries
+//   if (
+//     txt_sceneType_entry.value != 0 &&
+//     txt_sceneType_code.value != 0 &&
+//     !txt_sceneType_code.value.match(/^\d/)
+//   ) {
 
-    if (
-      !SceneTypes.find((st) => st.SceneTypeID == txt_sceneType_code.value)
-    ) {
+//     if (
+//       !SceneTypes.find((st) => st.SceneTypeID == txt_sceneType_code.value)
+//     ) {
 
-    if (lst_sceneTypes.mode == "normal") {
+//     if (lst_sceneTypes.mode == "normal") {
 
      
-        SceneTypes.push(
-          new SceneType(
-            txt_sceneType_code.value,
-            txt_sceneType_code.value,
-            txt_sceneType_entry.value
-          )
-        );
+//         SceneTypes.push(
+//           new SceneType(
+//             txt_sceneType_code.value,
+//             txt_sceneType_code.value,
+//             txt_sceneType_entry.value
+//           )
+//         );
             
 
-        const txt = `(${txt_sceneType_code.value}) | ${txt_sceneType_entry.value}`;
-        addNewItems(txt, txt_sceneType_code.value, lst_sceneTypes, true).focus();
-        addNewItemsTab2(
-          txt_sceneType_entry.value,
-          txt_sceneType_code.value,
-          lst_sceneTypes_tab2,
-          true
-        );
+//         const txt = `(${txt_sceneType_code.value}) | ${txt_sceneType_entry.value}`;
+//         addNewItems(txt, txt_sceneType_code.value, lst_sceneTypes, true).focus();
+//         addNewItemsTab2(
+//           txt_sceneType_entry.value,
+//           txt_sceneType_code.value,
+//           lst_sceneTypes_tab2,
+//           true
+//         );
         
       
 
-    // update mode
-    }else {
+//     // update mode
+//     }else {
 
-      // update the sceneType text locally
+//       // update the sceneType text locally
 
-      SceneTypes.find(sty => sty.SceneTypeID == lst_sceneTypes.index).SceneTypeDesc = txt_sceneType_entry.value;
-      SceneTypes.find(sty => sty.SceneTypeID == lst_sceneTypes.index).SceneTypeID = txt_sceneType_code.value;
+//       SceneTypes.find(sty => sty.SceneTypeID == lst_sceneTypes.index).SceneTypeDesc = txt_sceneType_entry.value;
+//       SceneTypes.find(sty => sty.SceneTypeID == lst_sceneTypes.index).SceneTypeID = txt_sceneType_code.value;
       
-      const txt = `(${txt_sceneType_code.value}) | ${txt_sceneType_entry.value}`;
+//       const txt = `(${txt_sceneType_code.value}) | ${txt_sceneType_entry.value}`;
     
-      // update list item text 
-      updateListItemText(lst_sceneTypes, txt);
-      updateListItemId(lst_sceneTypes, txt_sceneType_code.value);
+//       // update list item text 
+//       updateListItemText(lst_sceneTypes, txt);
+//       updateListItemId(lst_sceneTypes, txt_sceneType_code.value);
 
-      updateSTFromScenes(lst_sceneTypes.index, txt_sceneType_code.value);
+//       updateSTFromScenes(lst_sceneTypes.index, txt_sceneType_code.value);
       
      
-      // Update the option text in Tab2 
-      updateOptionText(lst_sceneTypes_tab2,lst_sceneTypes.index, txt_sceneType_entry.value);
-      updateOptionValue(lst_sceneTypes_tab2, lst_sceneTypes.index, txt_sceneType_code.value);
+//       // Update the option text in Tab2 
+//       updateOptionText(lst_sceneTypes_tab2,lst_sceneTypes.index, txt_sceneType_entry.value);
+//       updateOptionValue(lst_sceneTypes_tab2, lst_sceneTypes.index, txt_sceneType_code.value);
 
-      // Back to normal mode
-      resetAddBtnCase2(lst_sceneTypes,txt_sceneType_entry,txt_sceneType_code, btn_add_sceneType);
+//       // Back to normal mode
+//       resetAddBtnCase2(lst_sceneTypes,txt_sceneType_entry,txt_sceneType_code, btn_add_sceneType);
 
 
-    }
+//     }
 
-    } else {
-      showError("The Code is already used!");
-    }
+//     } else {
+//       showError("The Code is already used!");
+//     }
 
-    document.getElementById("txt_sceneType").value = "";
-    document.getElementById("txt_sceneType_code").value = "";
-    lst_sceneTypes.index = "-1";
-  }
+//     document.getElementById("txt_sceneType").value = "";
+//     document.getElementById("txt_sceneType_code").value = "";
+//     lst_sceneTypes.index = "-1";
+//   }
   
-});
+// });
 
 
 // Remove Scene (Button)
-btn_remove_scene.addEventListener("click", () => {
+function lst_scenes_handler(id){
 
-  if (lst_scenes.index != "-1") {
-    
     // TODO : Check if its possible to delete a Scene and the scene header
-    if (removeBtnFromLst(lst_scenes)) {
-          
-        SceneHeaders.find((sc) => sc.sceneID == lst_scenes.index)._deleted = true;
-        //SceneHeaders = removeItemFromArr(SceneHeaders, 'sceneID', lst_scenes.index);
-        //ScenesArray=removeItemFromArr(ScenesArray,"",lst_scenes.index)
+    if (removeBtnFromLst(lst_scenes, id)) {
+              
+      SceneHeaders.find((sc) => sc.sceneID == lst_scenes.index)._deleted = true;
+      //SceneHeaders = removeItemFromArr(SceneHeaders, 'sceneID', lst_scenes.index);
+      //ScenesArray=removeItemFromArr(ScenesArray,"",lst_scenes.index)
 
-        checkSceneHeaderChanges();
-        
-        // TODO: Remove the scene from scene array objects
-        resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
+      checkSceneHeaderChanges();
+      
+      // TODO: Remove the scene from scene array objects
+      resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
 
-        initAfterDel(lst_scenes, txt_sceneTitle_entry);
+      initAfterDel(lst_scenes, txt_sceneTitle_entry);
 
     }
 
@@ -1122,8 +1160,10 @@ btn_remove_scene.addEventListener("click", () => {
     updateSceneView();
 
     getFirstSceneActive();
-  }
-});
+}
+
+
+
 
 
 // Add Scene (Button)
@@ -1177,12 +1217,12 @@ btn_add_scene.addEventListener("click", () => {
         
     updateSceneView();
 
-    radiotbtn_sendToTeacherNot.checked = true;
-    radiotbtn_sendToTeacherNot.dispatchEvent( new Event('change'));
-    radiobtn_kursBuch.checked = true;
-    radiobtn_kursBuch.dispatchEvent(new Event('change'));
-    lst_sceneTypes_tab2.selectedIndex = 0;
-    lst_sceneTypes_tab2.dispatchEvent(new Event('change'));
+    // radiotbtn_sendToTeacherNot.checked = true;
+    // radiotbtn_sendToTeacherNot.dispatchEvent( new Event('change'));
+    // radiobtn_kursBuch.checked = true;
+    // radiobtn_kursBuch.dispatchEvent(new Event('change'));
+    // lst_sceneTypes_tab2.selectedIndex = 0;
+    // lst_sceneTypes_tab2.dispatchEvent(new Event('change'));
 
     }
     // Update mode
@@ -1236,9 +1276,9 @@ add_subj_scene.addEventListener("click", () => {
 
       
       let Subjx =  SceneHeaders.find( value => value.sceneID == currentScene).Subjects;
-      fillSceneElementsType(Subjx, lst_elementsType_tab3);
+      // fillSceneElementsType(Subjx, lst_elementsType_tab3);
       fillSceneElements(Subjx);
-      lst_elementsType_tab3.dispatchEvent(new Event('change'));
+      // lst_elementsType_tab3.dispatchEvent(new Event('change'));
 
       SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
     }
@@ -1264,9 +1304,9 @@ remove_subj_scene.addEventListener("click", () => {
     clearSceneElementsLst();
     
     let Subjx = SceneHeaders.find( value => value.sceneID == currentScene).Subjects;
-    fillSceneElementsType(Subjx, lst_elementsType_tab3);
+    // fillSceneElementsType(Subjx, lst_elementsType_tab3);
     fillSceneElements(Subjx);
-    lst_elementsType_tab3.dispatchEvent(new Event('change'));
+    // lst_elementsType_tab3.dispatchEvent(new Event('change'));
 
     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
   }
@@ -1318,97 +1358,100 @@ remove_subj_scene.addEventListener("click", () => {
 //   }
 // });
 
+
+
+
 function splitLines (st) {
 
   return st.split(/\r?\n|\r/g);
 }
 //update the elements
-btn_update_elements.addEventListener('click', function () {
+// btn_update_elements.addEventListener('click', function () {
 
-  if (lst_subjects.index != undefined && lst_subjects.index != "-1"){
+//   if (lst_subjects.index != undefined && lst_subjects.index != "-1"){
 
-      // find the selected subject object
-      let subj = Subjects.find(su => su.subjectID == lst_subjects.index);
+//       // find the selected subject object
+//       let subj = Subjects.find(su => su.subjectID == lst_subjects.index);
         
-      createElements(subj, txt_keywords.value, LingElementType.KeyWords);
-      createElements(subj, txt_structure.value, LingElementType.Structure);
-      createElements(subj, txt_vocals.value, LingElementType.Vocals);
-      createElements(subj , txt_grammer.value, LingElementType.Grammer);
+//       createElements(subj, txt_keywords.value, LingElementType.KeyWords);
+//       createElements(subj, txt_structure.value, LingElementType.Structure);
+//       createElements(subj, txt_vocals.value, LingElementType.Vocals);
+//       createElements(subj , txt_grammer.value, LingElementType.Grammer);
       
-      if (currentScene)    {
+//       if (currentScene)    {
         
-        let Subjx = SceneHeaders.find( value => value.sceneID == currentScene).Subjects;
-        fillSceneElementsType(Subjx, lst_elementsType_tab3);
-        fillSceneElements(Subjx);
-        lst_elementsType_tab3.dispatchEvent(new Event('change'));
-      }
+//         let Subjx = SceneHeaders.find( value => value.sceneID == currentScene).Subjects;
+//         // fillSceneElementsType(Subjx, lst_elementsType_tab3);
+//         fillSceneElements(Subjx);
+//         // lst_elementsType_tab3.dispatchEvent(new Event('change'));
+//       }
       
 
 
-  }
-  else {
+//   }
+//   else {
 
-   showError('You must at first select a subject! ');
+//    showError('You must at first select a subject! ');
 
-  }
+//   }
 
-});
+// });
 
 // Choose Scene type for the current scene
-lst_sceneTypes_tab2.addEventListener("change", (e) => {
+// lst_sceneTypes_tab2.addEventListener("change", (e) => {
 
-  if (currentScene == undefined || currentScene == null) return;
+//   if (currentScene == undefined || currentScene == null) return;
 
-  if (lst_sceneTypes_tab2.selectedIndex != -1) {
-    SceneHeaders.find((st) => st.sceneID == currentScene).sceneTypeID =
-      e.target.value;
+//   if (lst_sceneTypes_tab2.selectedIndex != -1) {
+//     SceneHeaders.find((st) => st.sceneID == currentScene).sceneTypeID =
+//       e.target.value;
 
     
-    SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
+//     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
 
-  }
-});
+//   }
+// });
 
 
 //#region scene radio buttons
 // Listener for send to teacher
 //
-radiotbtn_sendToTeacherNot.addEventListener("change", () => {
-  if (currentScene != undefined && currentScene != null) {
-    SceneHeaders.find((sid) => sid.sceneID == currentScene).sendToTeacher = 0;
+// radiotbtn_sendToTeacherNot.addEventListener("change", () => {
+//   if (currentScene != undefined && currentScene != null) {
+//     SceneHeaders.find((sid) => sid.sceneID == currentScene).sendToTeacher = 0;
    
-    SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
-  }
-});
+//     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
+//   }
+// });
 
-radiobtn_sendToTeacher.addEventListener("change", () => {
-  if (currentScene != undefined && currentScene != null) {
+// radiobtn_sendToTeacher.addEventListener("change", () => {
+//   if (currentScene != undefined && currentScene != null) {
 
-    SceneHeaders.find((sid) => sid.sceneID == currentScene).sendToTeacher = 1;
+//     SceneHeaders.find((sid) => sid.sceneID == currentScene).sendToTeacher = 1;
     
-    SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
-  }
-});
+//     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
+//   }
+// });
 
 
 // Listener for book type
 //
-radiobtn_arbeitsBuch.addEventListener("change", () => {
-  if (currentScene != undefined && currentScene != null) {
-    SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType =
-      "Workbook";
+// radiobtn_arbeitsBuch.addEventListener("change", () => {
+//   if (currentScene != undefined && currentScene != null) {
+//     SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType =
+//       "Workbook";
       
-      SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
-  }
-});
+//       SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
+//   }
+// });
 
-radiobtn_kursBuch.addEventListener("change", () => {
-  if (currentScene != undefined && currentScene != null) {
-    SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType = "Course";
+// radiobtn_kursBuch.addEventListener("change", () => {
+//   if (currentScene != undefined && currentScene != null) {
+//     SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType = "Course";
     
-    SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
-  }
-});
+//     SceneHeaders.find((st) => st.sceneID == currentScene)._changed = true;
+//   }
+// });
 
 
 ///// Listener for Scene Description
@@ -1462,12 +1505,12 @@ function createElements(sub, values, lingType) {
 
 // remove a button (item) from the list 
 // return false if there was not found otherwise true
-function removeBtnFromLst(lst){
+function removeBtnFromLst(lst, id = null){
 
-  const removed = document.querySelector(`#${lst.index}`);
+  const removed = document.querySelector(`#${id||lst.index}`).parentElement;
   
   if (removed != undefined){
-
+    
       lst.removeChild(removed);
       return true;
 
@@ -1625,18 +1668,39 @@ function get_sceneId(){
 // Add new item to the list (includes subjects, modules, lessons, skills, scene types)
 function addNewItems(txt, id_c, lst_type, added) {
   
-  const new_item = document.createElement("button");
-  const new_item_txt = document.createTextNode(txt);
+ 
 
-  new_item.type = "button";
-  new_item.className = "list-group-item list-group-item-action";
-  new_item.id = id_c;
+  const container = document.createElement("div");
+  container.className = "buttons-wrapper";
+
+  const button_list = document.createElement("button");
+  button_list.type = "button";
+  button_list.className = "buttons-in-list";
+  button_list.id = id_c;
+
+  const button_list_text = document.createTextNode(txt);
+  button_list.appendChild(button_list_text);
+
+  const close_button = document.createElement("button");
+  close_button.type = "button";
+  close_button.className = "small-close";
+  close_button.id = id_c;
+  button_list.appendChild(close_button);
+
+  close_button.addEventListener('click', function (e) {
+     lst_type.handler(e.target.id);
+     e.stopPropagation();
+    }
+  );
+
   
-  new_item.appendChild(new_item_txt);
 
-  (added)? lst_type.appendChild(new_item) : lst_type.prepend(new_item);
+  container.appendChild(button_list);
+  container.appendChild(close_button);
+
+  (added)? lst_type.appendChild(container) : lst_type.prepend(container);
     
-  return new_item;
+  return container;
 }
 
 // Add new items to select (Combobox) - includes Modules, lessons....
@@ -1661,18 +1725,18 @@ function addNewItemsTab2(txt, id_c, lst_type, added) {
 function clearSubjectsLst() {
   removeAllChildNodes(lst_subjects);
   removeAllChildNodes(lst_subjects_tab2);
-  clearSceneElementsLst();
+  // clearSceneElementsLst();
 }
 
 function clearSceneElementsLst() {
-  removeAllChildNodes(lst_elementsType_tab3);
-  removeAllChildNodes(lst_elements_tab3);
+  // removeAllChildNodes(lst_elementsType_tab3);
+  // removeAllChildNodes(lst_elements_tab3);
 }
 
 function clearSkillsLst() {
   
   removeAllChildNodes(lst_skills);
-  removeAllChildNodes(lst_elementsSkills_tab3);
+  // removeAllChildNodes(lst_elementsSkills_tab3);
   //clearSceneSkillsLst();
 }
 
@@ -1680,9 +1744,9 @@ function clearSkillsLst() {
 //   removeAllChildNodes(scene_skills);
 // }
 
-function clearSceneTypesTab2() {
-  removeAllChildNodes(lst_sceneTypes_tab2);
-}
+// function clearSceneTypesTab2() {
+//   removeAllChildNodes(lst_sceneTypes_tab2);
+// }
 
 function clearModulesLst() {
   removeAllChildNodes(lst_modules);
@@ -1703,13 +1767,13 @@ function clearScenesLst() {
   // Clear the scenes list
   removeAllChildNodes(lst_scenes);
   // clear the scene no.
-  lbl_scene_no.textContent = "";
+  // lbl_scene_no.textContent = "";
   // Clear the scene description
   textbox_scene_desc.value = "";
   // clear tab2 radio buttons
-  clearRdBtnTab2();
+  // clearRdBtnTab2();
   
-  txt_sceneTitle_entry.value = "";
+  // txt_sceneTitle_entry.value = "";
 
   clearSceneElementsLst();
   
@@ -1718,17 +1782,17 @@ function clearScenesLst() {
   currentScene = null;
 }
 
-function clearSceneTypes() {
-  removeAllChildNodes(lst_sceneTypes);
-  clearSceneTypesTab2();
-}
+// function clearSceneTypes() {
+//   removeAllChildNodes(lst_sceneTypes);
+//   // clearSceneTypesTab2();
+// }
 
-function clearRdBtnTab2() {
-  document.querySelector("#id-Arbeitbook").checked = false;
-  document.querySelector("#id-kursbook").checked = false;
-  radiobtn_sendToTeacher.checked = false;
-  radiotbtn_sendToTeacherNot.checked = false;
-}
+// function clearRdBtnTab2() {
+//   document.querySelector("#id-Arbeitbook").checked = false;
+//   document.querySelector("#id-kursbook").checked = false;
+//   radiobtn_sendToTeacher.checked = false;
+//   radiotbtn_sendToTeacherNot.checked = false;
+// }
 
 function removeAllChildNodes(parent) {
 
@@ -1787,7 +1851,7 @@ function fillModules(mod) {
   clearModulesLst();
 
   if (mod.length != 0) {
-    mod.forEach((element) => {
+      mod.forEach((element) => {
       addNewItems(element.ModuleTitle, element.ModuleID, lst_modules, true);
       addNewItemsTab2(
         element.ModuleTitle,
@@ -1870,9 +1934,9 @@ function fillSkills(sk) {
     });
     
     
-    fillSceneSkills(sk, lst_elementsSkills_tab3);
+    // fillSceneSkills(sk, lst_elementsSkills_tab3);
     
-    lst_elementsSkills_tab3_setIndex(0);
+    // lst_elementsSkills_tab3_setIndex(0);
 
   }
 
@@ -1880,47 +1944,47 @@ function fillSkills(sk) {
 }
 
 // Skills Tab2 (combobox and listbox)
-function fillSceneSkills(sk, lst_type) {
+// function fillSceneSkills(sk, lst_type) {
 
-   if (sk.length != 0) {
-    sk.forEach((element) => {
-      addNewItemsTab2(element.SkillText, element.SkillID, lst_type , true);
+//    if (sk.length != 0) {
+//     sk.forEach((element) => {
+//       addNewItemsTab2(element.SkillText, element.SkillID, lst_type , true);
 
-    });
-  }
-}
+//     });
+//   }
+// }
 
 // SceneType Tab1
-function fillSceneTypes(sceneT) {
+// function fillSceneTypes(sceneT) {
   
-  // clear the previous session
-  clearSceneTypes();
+//   // clear the previous session
+//   clearSceneTypes();
 
-  if (sceneT.length != 0) {
-    sceneT.forEach((element) => {
-      const txt = `(${element.SceneTypeID}) | ${element.SceneTypeDesc}`;
-      addNewItems(txt, element.SceneTypeID, lst_sceneTypes, true);
-    });
+//   if (sceneT.length != 0) {
+//     sceneT.forEach((element) => {
+//       const txt = `(${element.SceneTypeID}) | ${element.SceneTypeDesc}`;
+//       addNewItems(txt, element.SceneTypeID, lst_sceneTypes, true);
+//     });
 
-    fillSceneTypesTab2(sceneT);
-  }
+//     fillSceneTypesTab2(sceneT);
+//   }
 
 
-  lst_sceneTypes.index = "-1";
-}
+//   lst_sceneTypes.index = "-1";
+// }
 
 // SceneType Tab2
-function fillSceneTypesTab2(sk) {
+// function fillSceneTypesTab2(sk) {
 
-  // clear the previous session
+//   // clear the previous session
 
-  if (sk.length != 0) {
-    sk.forEach((element) => {
-      addNewItemsTab2(element.SceneTypeDesc, element.SceneTypeID, lst_sceneTypes_tab2, true);
-    });
-  }
+//   if (sk.length != 0) {
+//     sk.forEach((element) => {
+//       addNewItemsTab2(element.SceneTypeDesc, element.SceneTypeID, lst_sceneTypes_tab2, true);
+//     });
+//   }
 
-}
+// }
 
 function fillSceneElements(subjs){
 
@@ -1977,7 +2041,7 @@ lst_modules_tab2.addEventListener("change", () => {
 lst_lessons_tab2.addEventListener("change", (e) => {
   
   currentScene = null;
-
+  
   fillScenes(
     SceneHeaders.filter(
       (item) =>
@@ -1992,34 +2056,32 @@ lst_lessons_tab2.addEventListener("change", (e) => {
 
 
 // Change the contents of elements select based on the subject and the element type
-lst_elementsType_tab3.addEventListener('change', function(e) {
+// lst_elementsType_tab3.addEventListener('change', function(e) {
 
-  removeAllChildNodes(lst_elements_tab3);
+//   removeAllChildNodes(lst_elements_tab3);
 
-  if (CurrentElements.length > 0) {
+//   if (CurrentElements.length > 0) {
 
 
-    CurrentElements.forEach( function (element){
+//     CurrentElements.forEach( function (element){
 
-      if (element.elementType == e.target.value) {
-        addNewItemsTab2(element.elementText, element.id, lst_elements_tab3, true);
-      }
-    });
+//       if (element.elementType == e.target.value) {
+//         addNewItemsTab2(element.elementText, element.id, lst_elements_tab3, true);
+//       }
+//     });
 
-  }
+//   }
 
-});
+// });
 
 
 // Select the first scene automatically when the lesson changed
 function getFirstSceneActive(){
-  
   if (lst_scenes.firstChild) {
-    
-    lst_scenes.firstChild.focus();
-    currentScene = lst_scenes.firstChild.id;
-    updateSceneView();
-    resetAddBtn(lst_scenes,txt_sceneTitle_entry, btn_add_scene);
+      lst_scenes.firstChild.focus();
+      currentScene = lst_scenes.firstChild.firstChild.id;
+      updateSceneView();
+      resetAddBtn(lst_scenes,txt_sceneTitle_entry, btn_add_scene);
   } else {
     initSceneView();
   }
@@ -2028,10 +2090,10 @@ function getFirstSceneActive(){
 
 
 // // Select the first element from the list
-function lst_elementsSkills_tab3_setIndex(indx) {
-  if (lst_elementsSkills_tab3.options.length > 0)
-    lst_elementsSkills_tab3.options[indx].selected = true;
-}
+// function lst_elementsSkills_tab3_setIndex(indx) {
+//   if (lst_elementsSkills_tab3.options.length > 0)
+//     lst_elementsSkills_tab3.options[indx].selected = true;
+// }
 
 // change the selected item from the module list programmatically
 // and fire the change event
@@ -2124,51 +2186,36 @@ function fillSceneElementsType(sub, lst_type) {
 function updateSceneView() {
   
   initSceneView();
-
-  if (currentScene != undefined && currentScene != null) {
+  
+  if (currentScene != undefined && currentScene != null && currentScene!= "") {
     
     // retrieve the header of the current scene
-    cScene = SceneHeaders.find((sid) => sid.sceneID == currentScene);
-    
+    const cScene = SceneHeaders.find((sid) => sid.sceneID == currentScene);
+  
     // display the scene name
-    lbl_scene_no.textContent =
+    // lbl_scene_no.textContent =
       
-      `${Modules.find(mid => mid.ModuleID == cScene.ModuleID).ModuleTitle}` +
-      ` > ${Lessons.find(ls => ls.LessonID == cScene.LessonID).LessonTitle}` + 
-      ` > ${cScene.sceneTitle} [${SceneHeaders.length}] | ${cScene.sceneID}`;
+    //   `${Modules.find(mid => mid.ModuleID == cScene.ModuleID).ModuleTitle}` +
+    //   ` > ${Lessons.find(ls => ls.LessonID == cScene.LessonID).LessonTitle}` + 
+    //   ` > ${cScene.sceneTitle} [${SceneHeaders.length}] | ${cScene.sceneID}`;
 
     textbox_scene_desc.value = cScene.sceneDesc;
     fillSceneSubjects(cScene.Subjects,scene_subjects );
     
-    fillSceneElements(cScene.Subjects);
-    fillSceneElementsType(cScene.Subjects, lst_elementsType_tab3);
+    // fillSceneElements(cScene.Subjects);
+    // fillSceneElementsType(cScene.Subjects, lst_elementsType_tab3);
     
-    lst_sceneTypes_tab2.selectedIndex = getSceneTypeLstIndex(cScene);
-    lst_elementsType_tab3.dispatchEvent(new Event('change'));
-    if (lst_sceneTypes_tab2.selectedIndex != -1) {
-      document.querySelector("#id-scene-selected").innerHTML =
-        lst_sceneTypes_tab2.options[lst_sceneTypes_tab2.selectedIndex].text;
-        document.querySelector("#id-scene-code").innerHTML =
-        lst_sceneTypes_tab2.options[lst_sceneTypes_tab2.selectedIndex].value;
-    }
+    // lst_sceneTypes_tab2.selectedIndex = getSceneTypeLstIndex(cScene);
+    // lst_elementsType_tab3.dispatchEvent(new Event('change'));
+    // if (lst_sceneTypes_tab2.selectedIndex != -1) {
+    //   document.querySelector("#id-scene-selected").innerHTML =
+    //     lst_sceneTypes_tab2.options[lst_sceneTypes_tab2.selectedIndex].text;
+    //     document.querySelector("#id-scene-code").innerHTML =
+    //     lst_sceneTypes_tab2.options[lst_sceneTypes_tab2.selectedIndex].value;
+    //}
     
 
-    if (
-      SceneHeaders.find((sid) => sid.sceneID == currentScene).BookType ==
-      "Course"
-    ) {
-      radiobtn_kursBuch.checked = true;
-    } else {
-      radiobtn_arbeitsBuch.checked = true;
-    }
-
-    if (
-      SceneHeaders.find((sid) => sid.sceneID == currentScene).sendToTeacher == 1
-    ) {
-      radiobtn_sendToTeacher.checked = true;
-    } else {
-      radiotbtn_sendToTeacherNot.checked = true;
-    }
+    
   }
 }
 
@@ -2178,6 +2225,12 @@ function clearElementTxtarea(){
   txt_vocals.value = "";
   txt_grammer.value = "";
 }
+
+function clearSceneDesc() {
+  textbox_scene_desc.value = "";
+}
+
+
 
 lst_subjects.addEventListener('click', function () {
 
@@ -2221,29 +2274,29 @@ lst_subjects.addEventListener('click', function () {
 //re-init the different values of a scene
 function initSceneView(){
 
-  lbl_scene_no.textContent = "";
-  txt_sceneTitle_entry.value = "";
+  // lbl_scene_no.textContent = "";
+  // txt_sceneTitle_entry.value = "";
   textbox_scene_desc.value = "";
   scene_subjects.innerHTML = "";
   // scene_skills.innerHTML = "";
-  clearRdBtnTab2();
-  clearSceneElementsLst();
+  // clearRdBtnTab2();
+  // clearSceneElementsLst();
   //clearSceneSkillsLst();
-  CurrentElements.length = 0;
+  // CurrentElements.length = 0;
   txt_sceneTitle_entry.value = "";
   resetAddBtn(lst_scenes,txt_sceneTitle_entry,  btn_add_scene );
-  lst_sceneTypes_tab2.selectedIndex = -1;
-  document.querySelector("#id-scene-selected").innerHTML = "xxx";
-  document.querySelector("#id-scene-code").innerHTML = "xxx";
+  // lst_sceneTypes_tab2.selectedIndex = -1;
+  // document.querySelector("#id-scene-selected").innerHTML = "xxx";
+  // document.querySelector("#id-scene-code").innerHTML = "xxx";
 }
 
 // get the index of the stored scene type
-function getSceneTypeLstIndex(sc) {
-  for (let i = 0; i < lst_sceneTypes_tab2.options.length; i++) {
-    if (lst_sceneTypes_tab2.options[i].value == sc.sceneTypeID) return i;
-  }
-  return -1;
-}
+// function getSceneTypeLstIndex(sc) {
+//   for (let i = 0; i < lst_sceneTypes_tab2.options.length; i++) {
+//     if (lst_sceneTypes_tab2.options[i].value == sc.sceneTypeID) return i;
+//   }
+//   return -1;
+// }
 
 
 //**********************Taha ********************************* */

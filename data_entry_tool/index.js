@@ -5,29 +5,6 @@ var _busy;
 var save_busy;
 
 var logMsgs = [];
-const loggedOutLinks = document.querySelectorAll(".logged-out");
-const loggedInLinks = document.querySelectorAll(".logged-in");
-//const mainMsg = document.querySelector('#mainMsg');
-
-const setupUI = (user) => {
-  if (user) {
-    loggedInLinks.forEach((item) => (item.style.display = "block"));
-    loggedOutLinks.forEach((item) => (item.style.display = "none"));
-    // mainMsg.style.display = "none";
-  } else {
-    loggedInLinks.forEach((item) => (item.style.display = "none"));
-    loggedOutLinks.forEach((item) => (item.style.display = "block"));
-    //mainMsg.style.display = "block";
-  }
-};
-
-
-
-// setup materialize components
-//  document.addEventListener("DOMContentLoaded", function () {
-//    var modals = document.querySelectorAll(".modal");
-//    M.Modal.init(modals);
-//  });
 
  
 const saveBtn = document.querySelector("#save-btn");
@@ -1031,15 +1008,15 @@ function loadDataFromFireStore() {
 function SortObjArrays(){
 
   if (Lessons.length > 0) {
-    Lessons = Lessons.sort((a,b) => compareObjID( ConvetToDec(a.LessonID), ConvetToDec(b.LessonID)));
+    Lessons = Lessons.sort((a,b) => compareObjID( ConvertToDec(a.LessonID), ConvertToDec(b.LessonID)));
   }
 
   if (Modules.length > 0) {
-    Modules = Modules.sort((a,b) => compareObjID(ConvetToDec(a.ModuleID), ConvetToDec(b.ModuleID)));
+    Modules = Modules.sort((a,b) => compareObjID(ConvertToDec(a.ModuleID), ConvertToDec(b.ModuleID)));
   }
 
   if (Subjects.length > 0) {
-    Subjects = Subjects.sort((a,b) => compareObjID(ConvetToDec(a.subjectID), ConvetToDec(b.subjectID)));
+    Subjects = Subjects.sort((a,b) => compareObjID(ConvertToDec(a.subjectID), ConvertToDec(b.subjectID)));
   }
 
   
@@ -1065,7 +1042,7 @@ function ConvertToHexa(id){
 
 // Convert the passed id to an equivalent number (base 10) - when id has invalid characters
 // to be represent in 10 system
-function ConvetToDec(id){
+function ConvertToDec(id){
   return parseInt(id.slice(10));
 }
 
@@ -1081,19 +1058,14 @@ function clearCombo(combo) {
 // for all lists in tab1/tab2
 function clearTxtEntries(){
 
-  resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
   resetAddBtn(lst_modules, txt_module_entry, btn_add_module);
   resetAddBtn(lst_lessons, txt_lesson_entry, btn_add_lesson);
-  
-  resetAddBtnCase2
-  (lst_skills, txt_skill_entry, txt_skill_code_entry, btn_add_skill);
-  
-  resetAddBtnCase2
-  (lst_sceneTypes, txt_sceneType_entry, txt_sceneType_code, btn_add_sceneType);
-
+  resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
   resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
-
+  clearSceneDesc();
   clearElementTxtarea();
+
+  
 }
 // function clearLsts() {
 //   // Clear concepts list
@@ -1141,39 +1113,62 @@ function fillCourseInfo() {
   }
 }
 
-// A course selectes from the drop down list (courses combo box)
-// then a Change event fires and the following function executes.
+// When a course selected from the drop down list (courses combo box)
+// a Change event fires and the following function executes.
 function newCourseSelected(event) {
   // Find the current course based on the selected item from the course list combo
   currentCourse = Courses.find((courseID) => courseID.id == event.target.value);
 
   // Fill the course description
-
-
   textAreaCourseDesc.value = currentCourse.Description;
 
-  // Fill the course type (free or paid)
-  if (currentCourse.Category == 1) {
-      chkBoxCourseTypePaid.checked = true;
-  } else {
-      chkBoxCourseTypeFree.checked = true;
-  }
-
-
-  // clear all text fields tab1
+  // clear all text fields
   clearTxtEntries();
   // Clear tab2 fields
-  clearScenesLst();
-
+  //clearScenesLst();
+  //register event handler for all lists
+  registerHandlers();
   // Fill info in different sections
   fillModules(Modules.filter((mod) => mod.id == currentCourse.id));
   fillLessons(Lessons.filter((les) => les.id == currentCourse.id));
   //fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
   fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
   fillSkills(Skills);
-  fillSceneTypes(SceneTypes);
+  // fillSceneTypes(SceneTypes);
 
   // Now user can press load button again.
   _busy = false;
 }
 
+// Side Nav Section
+
+// document.getElementById("side-nav-courses").addEventListener('click',(e)=> {
+ 
+//   if (!e.target.type)
+//     CloseSideNavCourses();
+  
+// });
+
+function OpenSideNavCourses() {
+  document.getElementById("side-nav-courses").style.width = "75%";
+}
+
+function CloseSideNavCourses() {
+  document.getElementById("side-nav-courses").style.width = "0";
+}
+
+function OpenSideNavScenes() {
+  document.getElementById("side-nav-scenes").style.width = "75%";
+}
+
+function CloseSideNavScenes() {
+  document.getElementById("side-nav-scenes").style.width = "0";
+}
+
+function registerHandlers() {
+  //register the click event of small close buttons for all lists
+  lst_modules.handler = lst_modules_handler;
+  lst_lessons.handler = lst_lessons_handler;
+  lst_subjects.handler = lst_subjects_handler;
+  lst_scenes.handler = lst_scenes_handler;
+}
