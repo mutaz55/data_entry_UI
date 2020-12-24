@@ -414,19 +414,26 @@ function addLesson() {
 
 
 function updateCourseInfo() {
-  Courses.forEach(function (cour) {
+
+_courses.getCourseLst().forEach(function (course) {
+
+  let doesExist =  Courses.find( (courseItem) => courseItem.id == course.id);
+
+  // update the course
+  if (doesExist) {
+
     if (
-      cour.Description !=
-      originalCourses.find((courID) => courID.id == cour.id).Description
+      course.Description !=
+      Courses.find((courID) => courID.id == course.id).Description
     ) {
       db.collection("courses")
-        .doc(cour.id)
+        .doc(course.id)
         .update({
-          Description: cour.Description,
+          Description: course.Description,
         })
         .then(function () {
-          originalCourses.find((courID) => courID.id == cour.id).Description =
-            cour.Description;
+          Courses.find((courID) => courID.id == course.id).Description =
+          course.Description;
             showSuccess(`Course Description successfully updated! / Course ID =  ${cour.id}`);
           
         })
@@ -439,32 +446,18 @@ function updateCourseInfo() {
           
         });
     }
+  
+  }
+  // New Course has been added
+  else 
+  {
+    db.collection("courses").doc(course.id).set(JSON.parse(JSON.stringify(course)))
 
-    if (
-      cour.Category !=
-      originalCourses.find((courID) => courID.id == cour.id).Category
-    ) {
-      db.collection("courses")
-        .doc(cour.id)
-        .update({
-          Category: cour.Category,
-        })
-        .then(function () {
-          originalCourses.find((courID) => courID.id == cour.id).Category =
-            cour.Category;
+  }
 
-            showSuccess(`Course Category successfully updated! / Course ID = ${cour.id}`);
-          
-        })
-        .catch(function (error) {
-          // The document probably doesn't exist.
-          showError(`Error updaing Course Category!  / Course ID =  ${cour.id}
-          Error >> : ${error}
-          `);
-          
-        });
-    }
-  });
+
+});
+
 }
 
 
@@ -476,7 +469,7 @@ function AddSubject() {
     //TODO: Check if the elements have been changed before
     if (!currentSub  || !(JSON.stringify(sub.elements)==JSON.stringify(originalSubjects.find(subId => subId.subjectID == currentSub.subjectID).elements)) )
     {
-      // new concept has been added
+      // new subject has been added
      
         db.collection("courses").doc(sub.id).collection("Subjects").doc(sub.subjectID).set(JSON.parse(JSON.stringify(sub)))
         
@@ -756,7 +749,7 @@ function clearOringinalLessons() {
 function initArrays(){
   
   Courses.length = 0;
-  originalCourses.length = 0;
+  // originalCourses.length = 0;
   Subjects.length  =  0;
   originalSubjects.length = 0;
   Lessons.length = 0;
@@ -796,9 +789,9 @@ function loadDataFromFireStore() {
           
           // get Courses Info
             Courses.push(storeDataLocally(docu.id, docu.data(), "courses"));
-            originalCourses.push(
-              storeDataLocally(docu.id, docu.data(), "courses")
-            );
+            // originalCourses.push(
+            //   storeDataLocally(docu.id, docu.data(), "courses")
+            // );
             
 
           // get Modules Info
@@ -994,11 +987,26 @@ function loadDataFromFireStore() {
     })
       
     Promise.all(AllPromises).then(() => {
+
+      if (Courses.length > 0) {
+        _courses = new C(Courses, Courses[0].id);
+      }
+          
+      // if there are no courses
+      else {
+        _courses = new C(Courses, "");
+      }
+      
       // Sort all objects Array
       SortObjArrays();  
+     
+      
+      fillSkills(Skills);
 
       // fill courses Info
       fillCourseInfo();
+      newCourseSelected();
+
     })
     
   });
@@ -1049,7 +1057,6 @@ function ConvertToDec(id){
 // Clear drop down items (Combobox Courses)
 function clearCombo(combo) {
   if (combo.options.length > 0) {
-    combo.removeEventListener("change", courseComboChangeHandler, true);
     combo.options.length = 0;
   }
 }
@@ -1083,59 +1090,111 @@ function clearTxtEntries(){
 // }
 
 function courseComboChangeHandler(e) {
-  newCourseSelected(e);
+
+  // console.log('current course'+ _courses.currentCourse);
+  // newCourseSelected(e);
+  _courses.currentCourse = e.target.value;
+  // _courses.currentModule = _courses.getFirstModule();
+  // _courses.currentLesson = _courses.getFirstLesson();
+  // _courses.currentScene = _courses.getFirstScene();
+
+  newCourseSelected();
+  console.log("course combo changed" + e.target.value);
 
   // Select first module in Tab 2
-  lst_modules_tab2_setIndex(0);
+  // lst_modules_tab2_setIndex(0);
 }
 
 function fillCourseInfo() {
   // clear the course in combobox if there is any
   clearCombo(courseCombo);
-  //courseCombo.outerHTML = courseCombo.outerHTML;
+  courseCombo.addEventListener('change',courseComboChangeHandler );
+  
+  // Fetch the default course
+  // if default is not exist
+  // then 
+  // if there are courses
 
-  if (Courses.length != 0) {
-    Courses.forEach((x) => {
-      const newOption = document.createElement("option");
-      const optionText = document.createTextNode(x.CourseTitle);
-      // set option text
-      newOption.appendChild(optionText);
-      // and option value
-      newOption.setAttribute("value", x.id);
-      // add the option to the select box
-      courseCombo.appendChild(newOption);
-    });
-    courseCombo.addEventListener("change", courseComboChangeHandler);
+  fillCourseTitleCombo();
 
-    if (courseCombo.options.length > 0) {
-      courseCombo.dispatchEvent(new Event("change"));
-    }
-  }
+ 
+  // //courseCombo.outerHTML = courseCombo.outerHTML;
+  
+
+  // newCourseSelected();
+
+ 
+  // _courses.currentModule = _courses.getFirstModule();
+  // _courses.currentLesson = _courses.getFirstLesson();
+  // _courses.currentScene = _courses.getFirstScene();
+  console.log('first time current scene' + _courses.currentScene);
+
+}
+
+
+function fillCourseTitleCombo(){
+
+  _courses.getCourseTitles().forEach((x) => {
+    addNewItemsTab2(_courses.getCourseTitle(x.id),x.id,courseCombo,true);
+  });
+
+
+  // courseCombo.addEventListener("change", comboChangeCourse);
+
+  // if (courseCombo.options.length > 0) {
+  //   courseCombo.dispatchEvent(new Event("change"));
+  // }
+
 }
 
 // When a course selected from the drop down list (courses combo box)
 // a Change event fires and the following function executes.
-function newCourseSelected(event) {
+function newCourseSelected() {
   // Find the current course based on the selected item from the course list combo
-  currentCourse = Courses.find((courseID) => courseID.id == event.target.value);
-
-  // Fill the course description
-  textAreaCourseDesc.value = currentCourse.Description;
-
+  // currentCourse = Courses.find((courseID) => courseID.id == event.target.value);
+  
   // clear all text fields
   clearTxtEntries();
+  
+  // Fill the course description
+  txtbox_course_description.value = _courses.getCourseDesc();
+  courseTitle.textContent = _courses.getCourseObj().CourseTitle;
+  courseLang.value  = _courses.getCourseObj().Lang;
+  courseLevel.value = _courses.getCourseObj().Level;
+  courseState.value = "نشط";
+  // courseChkboxDefault
+
+   
   // Clear tab2 fields
   //clearScenesLst();
   //register event handler for all lists
   registerHandlers();
   // Fill info in different sections
-  fillModules(Modules.filter((mod) => mod.id == currentCourse.id));
-  fillLessons(Lessons.filter((les) => les.id == currentCourse.id));
-  //fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
-  fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
-  fillSkills(Skills);
-  // fillSceneTypes(SceneTypes);
+  fillModules(_courses.getModules());
+  fillLessons(_courses.getLessons());
+  // fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
+  
+  fillSubjects(_courses.getSubjects());
+  fillSubjectsTab2(_courses.getSubjects(), lst_subjects_tab2);
 
+  fillSubjElements(_courses.getSubject());
+  activiateFirstBtn(Modules);
+  document.getElementById(activiateFirstBtn(Modules))?.click();
+
+  fillScenes(_courses.getScenes()); 
+  console.log('_courses.getScenes()' + _courses.getScenes());
+  console.log('currentCourse' + _courses.currentCourse);
+
+  textbox_scene_desc.value = _courses.getSceneDesc();
+  fillSceneSubjects(_courses.getSceneSubjects());
+  // fillSkills(Skills);
+  // fillSceneTypes(SceneTypes);
+  //TODO: check if the course is default one
+  // 
+  // The course is not the default one
+  _courses.currentModule = _courses.getFirstModule();
+  _courses.currentLesson = _courses.getFirstLesson();
+  _courses.currentScene = _courses.getFirstScene();
   // Now user can press load button again.
   _busy = false;
 }

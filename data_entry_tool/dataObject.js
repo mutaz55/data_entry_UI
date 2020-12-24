@@ -18,7 +18,7 @@ const db = firebase.firestore();
 
 // initialize Array of our data objects
 var Courses = new Array();
-var originalCourses = new Array();
+// var originalCourses = new Array();
 
 var Modules = new Array();
 var originalModules = new Array();
@@ -41,19 +41,21 @@ var originalSceneHeaders = new Array();
 
 var ScenesArray = new Array();
 
+var _courses;
 
 // Classes represent the data objects stored in Firebase
 class Course {
-    constructor (id, CourseTitle, Description,  Category) {
+    constructor (id, CourseTitle, Description,  Category, Language, Level) {
         this.id = id;
         this.CourseTitle = CourseTitle;
         this.Description = Description;
         this.Category = Category;
-      
+        this.Lang = Language;
+        this.Level = Level;
 
     }
     toString() {
-        return this.id + ', ' + this.CourseTitle + ', ' + this.Description + ', ' + this.Category;
+        return this.id + ', ' + this.CourseTitle + ', ' + this.Description + ', ' + this.Category + ', ' + this.Lang +', ' + this.Level;
     }
 }
 
@@ -69,10 +71,11 @@ class Module {
 }
 
 class Subject {
-  constructor(id, subjID, subjText){
+  constructor(id, subjID, subjText, lesID){
     this.id = id;
     this.subjectID = subjID;
     this.subjectText = subjText;
+    this.LessonID = lesID;
     this.elements = [];
   }
 }
@@ -259,10 +262,10 @@ function storeDataLocally(id, data, type) {
 
 
         switch (type){
-            case 'courses':  return new Course(id,data['Course-Title'],data.Description,data.Category);
+            case 'courses':  return new Course( id,data['CourseTitle'],data.Description,data.Category, data['Lang'], data['Level']);
             case 'modules':  return new Module(id, data['Module-ID'], data['Module-Title']);
             case 'lessons':  return new Lesson(id, data['Lesson-ID'], data['Lesson-Title'], data['Module-ID']);
-            case "subjects": return new Subject(id, data["subjectID"], data["subjectText"]);
+            case "subjects": return new Subject(id, data["subjectID"], data["subjectText"], data["LessonID"]);
             case "elements": return new LingElement(id, data["LingElement-ID"], data["LingElement-Text"], data["LingElement-Type"])
             case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text']);
             case 'sceneTypes': return new SceneType(id, data['sceneT-ID'], data['sceneT-Text']);
@@ -276,4 +279,177 @@ function storeDataLocally(id, data, type) {
            
        
   }
+}
+
+class C {
+
+  constructor(_c = [], deCourse) {
+    
+    this.c_list = [];
+
+    if (_c.length > 0) {
+      _c.forEach( (x) => {
+        let newVal = new Course();
+        newVal.id = x.id;
+        newVal.CourseTitle = x.CourseTitle;
+        newVal.Description = x.Description;
+        newVal.Category = 0;
+        newVal.Lang = x.Lang;
+        newVal.Level = x.Level;
+      
+        this.c_list.push(newVal);
+        });
+    }   
+    this._currentScene = "";
+    this._currentModule = "";
+    this._currentLesson = "";
+    this._currentSubject = "";
+    this._currentCourse = deCourse;
+    this.defaultCourse = "";
+  }
+
+
+  getCourseLst(){
+    return this.c_list;
+  }
+
+  getCourseObj(_id = this.currentCourse){
+    return this.c_list.find( x => x.id == _id);
+  }
+  //getter
+  get currentCourse() {
+    return this._currentCourse;
+  }
+  
+  set currentCourse(value) {
+      this._currentCourse = value;
+       
+      
+  }
+
+  get currentScene() {
+    return this._currentScene;
+  }
+
+  set currentScene(value) {
+    this._currentScene = value;
+  }
+  
+  get currentModule(){
+    return this._currentModule;
+  }
+
+  set currentModule(value) {
+    this._currentModule = value;
+  }
+
+  get currentLesson(){
+    return this._currentLesson;
+  }
+
+  set currentLesson(value) {
+    this._currentLesson = value;
+  }
+
+  get currentSubject(){
+    return this._currentSubject;
+  }
+
+  set currentSubject(value) {
+    this._currentSubject = value;
+  }
+  addNewCourse(newC){
+    this.c_list.push(newC);
+  }
+  
+  validate(_id){
+      return !(this.c_list.find( x => x.id == _id));
+      
+  }
+  getSceneDesc( _sId = this.getFirstScene()) {
+    let desc = SceneHeaders.find( sid => sid.sceneID == _sId && sid.CourseID == this.currentCourse)?.sceneDesc; 
+    if (desc) return desc;
+    else return "";
+  }
+
+  getCourseDesc(_id = this.currentCourse){
+      let desc = this.c_list.find(cu => cu.id == _id)?.Description;
+      if (desc) return desc;
+      else return "";
+  }
+
+
+  getCourseTitle(_id = this.currentCourse) {
+    
+    return this.c_list.find(cu => cu.id == _id)?.CourseTitle;
+  }
+  
+  getCourseTitles(){
+
+    let titles = [];
+
+    this.c_list.forEach ( function(item) {
+             
+     titles.push({id: item.id, CourseTitle: item.CourseTitle});
+      
+    });
+    
+    return titles;
+  }
+
+  getModules(){
+    
+    return Modules.filter((mod) => mod.id == this.currentCourse);
+  }
+
+  getFirstModule(){
+    return Modules.find( (mod)=> mod.id == this.currentCourse)?.ModuleID;
+  }
+
+  getFirstLesson(_modId = this.getFirstModule() ){
+    return Lessons.find( x => x.id == this.currentCourse && x.ModuleID == _modId )?.LessonID;
+
+  }
+  getFirstSubject(_lesId = this.getFirstLesson()){
+    return Subjects.find(x => x.id == this.currentCourse && x.LessonID == _lesId)?.subjectID;
+
+  }
+  getFirstScene(_lesId = this.getFirstLesson()){
+    
+    return SceneHeaders.find((item) => item.CourseID == this.currentCourse && item.LessonID == _lesId && item._deleted == false)?.sceneID;
+  }
+
+  getLessons(_modId = this.getFirstModule()){
+      
+    return Lessons.filter((les) => les.id == this.currentCourse && les.ModuleID == _modId);
+  }
+
+  getSubjects(_lesId = this.getFirstLesson()) {
+            
+    return Subjects.filter( (subj) => subj.id == this.currentCourse && subj.LessonID == _lesId);
+    
+  }
+
+
+  getSubject(_subId = this.getFirstSubject()){
+    return Subjects.find(x=> x.subjectID == _subId); 
+
+  }
+
+  getScenes(_lesId = this.getFirstLesson()){
+        
+    return SceneHeaders.filter( (item) => item.CourseID == this.currentCourse && item.LessonID == _lesId);
+      
+  }
+
+  getScene(_sceneId = this.currentScene ){
+    return SceneHeaders.find( sc => sc.sceneID == _sceneId);
+  }
+
+  getSceneSubjects(_sceneId = this.getFirstScene()){
+    
+    return SceneHeaders.find( (item) => item.CourseID == this.currentCourse && item.sceneID ==_sceneId )?.Subjects;
+  }
+
+
 }

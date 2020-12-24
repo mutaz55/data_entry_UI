@@ -136,10 +136,29 @@
                              <button class="sidenav1-btn-new" id="new-course-btn">
                              <img src="img/svg-icons/plus-circle-solid.svg" alt="add course icon">
                             </button>
-                            <label class="sidenav1-labels"   for="new-course-name">إضافة كورس</label>
+                            <label class="sidenav1-labels"   for="new-course-name">إضافة كورس جديد</label>
                               <div class="sidenav1-container-hidden" id="hidden-container">
-                                <input type="text" id="new-course-name" class="inputfield-1line"/>
-                                <button class="add-btn" id="sidenav1-btn-add">إضافة</button>
+                                
+                                <div class="list-container">
+                                    
+                                      <label class="new-course-label" for="course-lang">تحديد اللغة</label>
+                                      <input type="text" class="inputfield-1line" id="course-lang" placeholder="الرجاء إدخال لغة الكورس">
+                                    
+                                      <label for="course-level" class="new-course-label">تحديد المستوى</label>
+                                      <input type="text" class="inputfield-1line" id="course-level" placeholder="الرجاء إدخال مستوى الكورس">
+
+                                    
+                                      <label for="new-course-name" class="new-course-label">اسم الكورس</label>
+                                      <input type="text" id="new-course-name" class="inputfield-1line" placeholder="الرجاء إدخال اسم الكورس"/>
+                                    
+                                      <button class="add-btn" id="sidenav1-btn-add">إضافة</button>
+
+                                      <div class="separator"></div>
+                                </div>
+                                
+                               
+
+
                               </div>
 
                           </div>
@@ -160,38 +179,8 @@
                         <div class="list-container">
 
                               <label class="label-controls" for="txt_skill">المهارات</label>
-                              <div class="list-group" id="id-skills">
-
-                                  
-                                  <div class="buttons-wrapper">
-                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
-                                      <button class="small-close"></button>
-                                  </div>
-                                  <div class="buttons-wrapper">
-                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
-                                      <button class="small-close"></button>
-                                  </div>
-                                  <div class="buttons-wrapper">
-                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
-                                      <button class="small-close"></button>
-                                  </div>
-                                  <div class="buttons-wrapper">
-                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
-                                      <button class="small-close"></button>
-                                  </div>
-                                  <div class="buttons-wrapper">
-                                      <button class="buttons-in-list" id="listening_skill">(listening_skill) | التمييز عند الاستماع - Recognition</button>
-                                      <button class="small-close"></button>
-                                  </div>
-
-
-                              </div>
-                                  <div class="input-group">
-                                    <input type="text" class="list-inputfield" id="txt_skill" placeholder="إدخال المهارة">
-                                    <input type="text" class="list-inputfield list-inputfield-code" id="txt_skill_code" placeholder="إدخال الكود">
-                                    <button class="add-btn" id="add_skill">إضافـة</button>
-                
-                                </div>
+                              <div class="list-group" id="id-skills"></div>
+                                 
                            
 
                         </div>
@@ -208,13 +197,15 @@
                     <div class="list-container">
                       <label class="label-controls">الكورس</label>
                       <div class="coursename-wrapper">
-                        <label id="tab1-lbl-coursename"> asdsad</label>
+                        <label id="tab1-lbl-coursename"></label>
 
                         <div class="coursestate-wrapper">
                           <label for="tab1-lbl-lang">اللغة</label>
-                          <input type="text" id="tab1-lbl-lang" value="اللغة العربية" readonly>
+                          <input type="text" id="tab1-lbl-lang" size="16" readonly>
+                          <label for="tab1-lbl-level">المستوى</label>
+                          <input type="text" id="tab1-lbl-level" size="6" readonly>
                           <label for="tab1-lbl-coursestate">حالة الكورس</label>
-                          <input type="text" id="tab1-lbl-coursestate" readonly>
+                          <input type="text" id="tab1-lbl-coursestate" size="10" readonly>
                           <input type="checkbox" id="tab1-chk-default">
                           <label for="tab1-chk-default">الكورس الافتراضي؟</label>
                           
@@ -237,8 +228,6 @@
                       <label class="label-controls" for="id-modules">الوحدات</label>
         
                       <div class="list-group" id="id-modules" >
-                        
-
                       </div>
 
                       <div class="input-group">
@@ -353,9 +342,7 @@
 
                           <label class="label-controls" for="id-units">اختيار الوحدة</label>
                           <select class="list-combo" id="id-units">
-                              <option value="ArabicA00">اللغة العربية مقدمة</option>
-                              <option value="ArabicA01">اللغة العربية مقدمة</option>
-                              <option value="ArabicA02">اللغة العربية مقدمة</option>س
+                              
           
                           </select>
                         </div>
@@ -367,22 +354,15 @@
 
                           <label class="label-controls" for="id-lessons-tab2" >اختيار الدرس</label>
                           <select class="list-combo" id="id-lessons-tab2" >
-                              <option value="ArabicA00">اللغة العربية مقدمة</option>
-                              <option value="ArabicA01">اللغة العربية مقدمة</option>
-                              <option value="ArabicA02">اللغة العربية مقدمة</option>س
+                             
           
                           </select>
                         </div>
 
                         <!-- Scenes Selection and Creating -->
                         <div class="list-container">
-                          <label class="label-controls" for="txt_sceneTitle_entry">المشاهد</label>
-                          <div class="list-group" id="id-scenes">
-          
-                              
-          
-          
-                          </div>
+                          <label class="label-controls" for="id-scenes">المشاهد</label>
+                          <div class="list-group" id="id-scenes"></div>
                           <div class="input-group">
                               <input type="text" class="list-inputfield"  id="txt_sceneTitle" placeholder="إدخال عنوان المشهد">
                               <button class="add-btn" id="add_sceneTitle">إضافـة</button>
@@ -404,22 +384,14 @@
 
                         <label class="label-controls" for="id-select-subject" >اختيار المواضيع</label>
                         <div class="input-group-subjects">
-                            <select class="list-combo" id="id-select-subject">
-                                
-                                <option  value="ArabicA00J2">الموضوع الثاني</option>
-                                <option value="ArabicA00J4">الموضوع الرابع</option>
-                                <option value="ArabicA00J5">الموضوع الخامس</option>
-                                
-        
-                            </select>
+                            <select class="list-combo" id="id-select-subject"></select>
         
                             <button class="add-btn" id="add_subject_to_scene"> &#x271A;</button>
                             <button class="remove-btn" id="remove_subject_from_scene"> <strong>&minus;</strong></button>
         
                         </div>
                         <select size="6" class="list-items-select" id="id-lst-subjects">
-                            <option value="ArabicA00J2">الموضوع الاول</option>
-                            <option value="ArabicA00J2">الموضوع الثاني</option>
+                            
                         </select>
         
                       </div>
