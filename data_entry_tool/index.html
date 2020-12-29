@@ -31,43 +31,43 @@
   <body>
     <!-- Navbar -->
     
-      <nav class="">
-        <div class="nav-main-wrapper">
-      
-          
-            <ul class="nav-list" >
-                
-                <li class="logged-in" style="display: none">
-                
-                    <a href="#" >Profile</a>
-                </li>
+    <nav class="">
+      <div class="nav-main-wrapper">
+    
+        
+          <ul class="nav-list" >
+              
+              <li class="logged-in" style="display: none">
+              
+                  <a href="#" >Profile</a>
+              </li>
 
-                <li class="logged-in"  style="display: none">
-                
-                    <a href="#" >Accounts</a>
-                </li>
+              <li class="logged-in"  style="display: none">
+              
+                  <a href="#" >Accounts</a>
+              </li>
 
-                <li class="logged-in" style="display: none">
-                
-                    <a href="#" id="logout">Log Out</a>
-                </li>
+              <li class="logged-in" style="display: none">
+              
+                  <a href="#" id="logout">Log Out</a>
+              </li>
 
-                <li class="logged-out" style="display: none">
-                
-                    <a href="#"  id="login" data-target="modal-login">Log in</a>
-                </li>
+              <li class="logged-out" style="display: none">
+              
+                  <a href="#"  id="login" data-target="modal-login">Log in</a>
+              </li>
 
-            </ul>
-            <a href="#" class="logo-bran">
-                <img
-                    src="img/data_entry_app_logo.PNG"
-                    
-                />
-            </a>
-        </div>
-      </nav>
+          </ul>
+          <a href="#" class="logo-bran">
+              <img
+                  src="img/data_entry_app_logo.PNG"
+                  
+              />
+          </a>
+      </div>
+    </nav>
 
-    <div id="modal-login" class="modal">
+    <section id="modal-login" class="modal">
       <div class="modal-content">
         <h4>تسجيل الدخول</h4>
         <br />
@@ -84,11 +84,11 @@
           <p class="login-error"></p>
         </form>
       </div>
-    </div>
+    </section>
 
     <!-- The Welcome Message-->
 
-    <div class="logged-out welMsg" style="display: none" id="mainMsg">
+    <section class="logged-out welMsg" style="display: none" id="mainMsg">
       <div class="card">
         <div class="card-content">
           <span class="card-title">Warning</span>
@@ -102,11 +102,11 @@
           <a href="#">Powered by zeztaa</a>
         </div>
       </div>
-    </div>
+    </section>
 
     <!--  Action Bar includes /load/store  -->
     <!-- Toolbar  --> 
-    <div class="main-tab logged-in" style="display: none;">
+    <main class="main-tab logged-in" style="display: none;">
 
       <!-- Tab 1 Button -->
       <input type="radio" name="main-tab" id="tab-courses" aria-controls="courses-view" checked>
@@ -132,9 +132,9 @@
                         <!-- Courses & Skills Management -->
                         <div class="list-container">
 
-                           <div class="sidenav1-container-add">
-                             <button class="sidenav1-btn-new" id="new-course-btn">
-                             <img src="img/svg-icons/plus-circle-solid.svg" alt="add course icon">
+                            <div class="sidenav1-container-add">
+                              <button class="sidenav1-btn-new" id="new-course-btn">
+                              <img src="img/svg-icons/plus-circle-solid.svg" alt="add course icon">
                             </button>
                             <label class="sidenav1-labels"   for="new-course-name">إضافة كورس جديد</label>
                               <div class="sidenav1-container-hidden" id="hidden-container">
@@ -156,7 +156,7 @@
                                       <div class="separator"></div>
                                 </div>
                                 
-                               
+                                
 
 
                               </div>
@@ -172,7 +172,7 @@
                               id="id-course-title"
                             ></select>
                           </div>
-                         
+                          
 
                         </div>
                         <!-- Skills View & Editing -->
@@ -180,8 +180,8 @@
 
                               <label class="label-controls" for="txt_skill">المهارات</label>
                               <div class="list-group" id="id-skills"></div>
-                                 
-                           
+                                  
+                            
 
                         </div>
 
@@ -209,7 +209,7 @@
                           <input type="checkbox" id="tab1-chk-default">
                           <label for="tab1-chk-default">الكورس الافتراضي؟</label>
                           
-  
+
                         </div>
 
                       </div>
@@ -221,7 +221,7 @@
                       <label class="label-controls" for="id-course-description">مقدمة عن الكورس</label>
                       <textarea class="textarea-description" id="id-course-description" rows="7"></textarea>
                     </div>
-                                       
+                                        
                   <!-- Course Modules -->
                     <div class="list-container">
                       
@@ -310,7 +310,7 @@
                     </div>
                         
                     
-                 
+                  
 
                   
                   </div>
@@ -347,14 +347,14 @@
                           </select>
                         </div>
 
-                               
+                                
                         <!-- Lesson Selection -->
                         
                         <div class="list-container">
 
                           <label class="label-controls" for="id-lessons-tab2" >اختيار الدرس</label>
                           <select class="list-combo" id="id-lessons-tab2" >
-                             
+                              
           
                           </select>
                         </div>
@@ -398,20 +398,288 @@
                         
                     </div>
                 </div>
-                 
+                  
+                <!-- Scene Details Container -->
+                <div  class="scene-details-container">
+
+                  <!-- Scene Details-> (Header)-> Info Section -->
+                  <section class="header__info-section" id="info-section">
+                          <h1 id="info_scene-title">اسم المشهد</h1>
+                  </section>
+
+                  
+                  <!-- Scene Details-> (Header)-> Insert Section -->
+                  <section class="header__Insert-section" id="insert-section">
+                    
+                      <div class="insert__addons">
+                        <div class="insert_labels">إضافات</div>
+                        <div class="icons-container">
+                          <ul >
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                            <li>
+                              <i class="fa fa-camera"></i>
+                              <span class="icon-name">صورة فوتوغرافية</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="insert__quiz">
+                        <div class="insert_labels">أسئلة</div>
+                        <div class="icons-container">
+                          <ul>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-plus"></i>
+                              <span class="icon-name">سؤال صح وخطأ</span>
+                            </li>
+                          </ul>
+                        </div>
+                      
+                      </div>
+                      <div class="insert__template">
+                        <div class="insert_labels">نماذج</div>
+                        <div class="icons-container">
+                          <ul>
+                            <li>
+                              <i class="fas fa-minus"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-minus"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-minus"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-minus"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-minus"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-minus"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                            <li>
+                              <i class="fas fa-minus"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                          </ul>
+                        </div>
+                      
+                      </div>
+
+                  </section>
+
+                  <!-- Scene Details - Right aside Menu (Items)-->
+                  <div class="items-container">
+
+                      <!-- Scene Details-> (right aside Menu)-> Shortcuts -->
+                      <section class="item-menu__shortcuts" id="shortcuts-section">
+                        <div class="item-menu_labels">اختصارات</div>
+                        <div class="shortcus--container">
+                          <ul>
+                            <li>item1</li>
+                            <li>item1</li>
+                            <li>item1</li>
+                          </ul>
+                        </div>
+                      </section>
 
 
-                 
+                      <!-- Scene Details-> (right aside menu)-> Items menu -->
+                      <section class="item-menu__items" id="items-menu-section">
+                        
+                          <!-- Items menu -->
+                          <div class="menu-group">
+                            <div class="item-menu_labels">العناصر</div>
+                            <div class="item-menu-group" id="id-item-menu">
+
+                                <div class="item-menu-buttons-wrapper">
+                                    <button class="buttons-in-item-menu">ميديا</button>
+                                    <button class="small-close"></button>
+                                </div>
+                                <div class="item-menu-buttons-wrapper">
+                                  <button class="buttons-q-in-item-menu">سؤال</button>
+                                  <button class="small-close"></button>
+                                </div>
+                                <div class="item-menu-buttons-wrapper">
+                                  <button class="buttons-in-item-menu">ميديا</button>
+                                  <button class="small-close"></button>
+                                </div>
+
+                            </div>
+
+                            <div class="menu-footer">
+                                <button class="save-Item">حفظ النموذج</button>
+                            </div>
+
+                        </div>
+                      
+                      </section>
+
+                  </div>
+                  
+
+
+                  <!-- Scene Details-> (Interface View)-> Data Input-->
+                  <section class="interface__data-input" id="data-input-section">id="data-input-section"</section>
+                  
+                  
+                  <!-- Scene Details-> (Interface View)-> Data Preview-->
+                  <section class="interface__data-preview"  id="data-preview-section">id="data-preview-section"</section>
+
+                  <!-- Scene Details-> (Interface View)-> Side Preview -->
+                  <section class="interface__side-preview"  id="preview-section"> id="preview-section"</section>
+
+                  <!-- Scene Details-> (left aside menu)-> slide menu-->
+                  <section class="slides-menu" id="slides-section">
+                    
+                    <div class="s-menu-group">
+                      <div class="slide-menu-header">
+                        
+                          <div class="item-menu_labels">
+                            إضافة مقطع جديد
+                            <span class="add-slide"><i class="fas fa-plus"></i></span>
+                          </div>
+                          <!-- <span class="add-slide"><i class="fas fa-plus"></i></span> -->
+                          
+              
+                      </div>
+                      <div class="slides-container" id="id-slide-menu">
+              
+                          <div class="slide-menu-buttons-wrapper">
+                              <button class="buttons-in-slide-menu">1</button>
+                              <button class="small-close"></button>
+                          </div> 
+              
+              
+              
+                      </div>
+                      <div class="slide-menu-footer">
+                          <span class="preview-slide"><i class="fas fa-desktop"></i></span>
+                          <span class="diagram-slides"><i class="fas fa-project-diagram"></i></span>
+              
+                      </div>
+                  </div>
+
+                  </section>
+
+
+
+                </div>
+
+
+
+                  
               </section>
+
+              
         </div>
 
 
-    </div>
-  </div>
-</div>
+    </main>
 
 
-    
+
 
     <!-- ############################### Scripts ################################### -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->

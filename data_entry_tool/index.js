@@ -1074,32 +1074,17 @@ function clearTxtEntries(){
 
   
 }
-// function clearLsts() {
-//   // Clear concepts list
-//   clearConceptsLst();
-//   // Clear Modules list
-//   clearModulesLst();
-//   // Clear Lessons list
-//   clearLessonsLst();
-//   // Clear Skills list
-//   clearSkillsLst();
-//   // Clear Scene Types List
-//   clearSceneTypes();
-//   // Clear Scenes List
-//   clearScenesLst();
-// }
+
 
 function courseComboChangeHandler(e) {
 
-  // console.log('current course'+ _courses.currentCourse);
-  // newCourseSelected(e);
+
   _courses.currentCourse = e.target.value;
   // _courses.currentModule = _courses.getFirstModule();
   // _courses.currentLesson = _courses.getFirstLesson();
   // _courses.currentScene = _courses.getFirstScene();
 
   newCourseSelected();
-  console.log("course combo changed" + e.target.value);
 
   // Select first module in Tab 2
   // lst_modules_tab2_setIndex(0);
@@ -1195,18 +1180,12 @@ function newCourseSelected() {
   _courses.currentModule = _courses.getFirstModule();
   _courses.currentLesson = _courses.getFirstLesson();
   _courses.currentScene = _courses.getFirstScene();
+
   // Now user can press load button again.
   _busy = false;
 }
 
 // Side Nav Section
-
-// document.getElementById("side-nav-courses").addEventListener('click',(e)=> {
- 
-//   if (!e.target.type)
-//     CloseSideNavCourses();
-  
-// });
 
 function OpenSideNavCourses() {
   document.getElementById("side-nav-courses").style.width = "75%";
