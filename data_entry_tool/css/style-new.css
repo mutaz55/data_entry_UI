@@ -1170,8 +1170,8 @@ input:-webkit-autofill:focus {
   grid-area: ins;
   display: flex;
   justify-content: space-between;
-  background-color:#e3e8e9;
-  color: #757575;
+  /* background-color:#e3e8e9; */
+  /* color: #757575; */
   border-bottom: 1px solid #b3b0b069;
   border-right: 1px solid #868c9c;
 
@@ -1190,6 +1190,7 @@ input:-webkit-autofill:focus {
 .icons-container {
   height: 70%; 
   overflow-y: scroll;
+  background-color: #ffffffba;
 }
 
 
@@ -1231,29 +1232,51 @@ input:-webkit-autofill:focus {
   /* height: 100%; */
   list-style: none;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  
-  margin: 5px 0;
-  padding: 0 10px;
 
+  margin: 8px 0;
+  padding: 0 10px;
+  
 }
 .icons-container ul li{
-  padding: 10px;
-  color: #757575;
+  padding: 5px 10px;
+  color: #666;
+  font-size: .9rem;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+}
+.icons-container ul li span{
+ 
+  line-height: 2;
+  
+}
+.icons-container ul li i:before{
+  
+  padding-left: 8px;
+  font-size: 1.5rem;
+  vertical-align: middle;
 }
 
+.icons-container ul li:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
 
+.icons-container ul li:hover i:before {
+  color: #ae0000;
+  cursor: pointer;
+}
 .insert__addons {
   width: 30%;
   border: 1px solid #eee;
   color: #1cffdf;
 }
-
+/* 
 .insert__addons ul li:hover {
   color: #42ac9e;
   cursor: pointer;
-}
+} */
 
 .insert__quiz {
   width: 40%;
