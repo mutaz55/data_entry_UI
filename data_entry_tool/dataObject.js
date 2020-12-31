@@ -41,6 +41,10 @@ var originalSceneHeaders = new Array();
 
 var ScenesArray = new Array();
 
+var addOns = new Array();
+var quizs = new Array();
+var gaddons = new Array();
+
 var _courses;
 
 // Classes represent the data objects stored in Firebase
@@ -253,7 +257,36 @@ class PreviousHelpObj {
   
   //****************************************** */
   
+class AddOns {
+  constructor(id, name, text, icon, action) {
+    this.id = id;
+    this.name = name;
+    this.text = text;
+    this.icon = icon;
+    this.action  = action;
+  }
+  
+}
 
+class GenAddons {
+  constructor(id, name, text, icon, action) {
+    this.id = id;
+    this.name = name;
+    this.text = text;
+    this.icon = icon;
+    this.action  = action;
+  }
+}
+
+class Quiz {
+  constructor(id, name, text, icon, action) {
+    this.id = id;
+    this.name = name;
+    this.text = text;
+    this.icon = icon;
+    this.action  = action;
+  }
+}
 
 
 function storeDataLocally(id, data, type) {
@@ -272,7 +305,9 @@ function storeDataLocally(id, data, type) {
             case 'sceneHeaders': return new SceneHeader(id, data['Course-ID'], data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene_Desc'], data['Scene-Seq'],
                                                             data['Scene-Type'], data['Send-To-Teacher'], data['Book-Type'] );
             case 'scene': return new Scene(id, data['exerciseText'], data['translation']);
-              
+            case 'addons': return new AddOns(id, data['Name'], data['Text'], data['Icon'], data['Action']);
+            case 'quiz': return new Quiz(id, data['Name'], data['Text'], data['Icon'], data['Action']);
+            case 'g-addons': return new GenAddons(id, data['Name'], data['Text'], data['Icon'], data['Action']);
               
         }
         

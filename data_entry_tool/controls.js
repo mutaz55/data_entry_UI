@@ -72,6 +72,15 @@ const add_subj_scene = document.querySelector("#add_subject_to_scene");
 const remove_subj_scene = document.querySelector("#remove_subject_from_scene");
 
 
+// Addons list
+const addons_list = document.getElementById('insert__addons').getElementsByTagName("ul")[0];
+
+// Quiz List
+const quiz_list = document.getElementById('insert__quiz').getElementsByTagName("ul")[0];
+
+// Gen Addons List
+const gaddons_list = document.getElementById('g-addons-section').getElementsByTagName("ul")[0];
+
 // Toast Msgs
 
 function showError(msg) {
@@ -1784,6 +1793,79 @@ function fillSubjElements(sub){
 }
 
 
+function fillFixedLists () {
+
+  fillAddonsLst();
+  fillQuizLst();
+  fillGenAddonsLst();
+
+}
+
+function fillAddonsLst(){
+  
+  removeAllChildNodes(addons_list);
+
+  if (addOns.length > 0) {
+
+    addOns.forEach( addon => {
+
+        createIcons(addons_list, addon);
+    });
+
+  }
+
+}
+
+function fillQuizLst(){
+  removeAllChildNodes(quiz_list);
+
+    if (quizs.length > 0) {
+
+      quizs.forEach( q => {
+        createIcons(quiz_list, q);
+    });
+  }
+}
+
+function fillGenAddonsLst(){
+  
+  removeAllChildNodes(gaddons_list);
+
+  if (gaddons.length > 0) {
+
+        gaddons.forEach( Ga => {
+        console.log('GA', Ga);
+        createIcons(gaddons_list, Ga);
+      });
+
+  }
+}
+
+function createIcons(lst, item) {
+  
+  let newItem = document.createElement("li");
+  let text = document.createElement("span");
+  let newIcon = document.createElement("i");
+
+
+
+  newIcon.className = item.icon;
+
+  text.className = "icon-name";
+  text.textContent = item.text;
+
+  newItem.setAttribute("data-addon-name", item.name);
+
+
+  newItem.appendChild(newIcon);
+  newItem.appendChild(text);
+
+  newItem.addEventListener("click", () => {
+      console.log(item.action);
+  })
+
+  lst.appendChild(newItem);
+}
 //#endregion
 
 

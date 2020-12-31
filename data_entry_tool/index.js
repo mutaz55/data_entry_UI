@@ -764,6 +764,10 @@ function initArrays(){
   originalSceneHeaders.length = 0;
   ScenesArray.length = 0;
 
+  addOns.length = 0;
+  quizs.length = 0;
+  gaddons.length = 0;
+
 }
 
 function loadDataFromFireStore() {
@@ -835,6 +839,58 @@ function loadDataFromFireStore() {
       })
       .catch((er) =>
         console.log("Error while loading skills info data..." + er)
+      )
+  );
+
+  var docRef_ad = db.collection("Addons");
+  AllPromises.push(
+    docRef_ad
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          addOns.push(storeDataLocally(doc.id, doc.data(), "addons"));
+          // originalSkills.push(
+          //   storeDataLocally(doc.id, doc.data(), "skills")
+          // );
+        });
+      })
+      .catch((er) =>
+        console.log("Error while loading Addons info data..." + er)
+      )
+  );
+
+  var docRef_qz = db.collection("Quiz");
+  AllPromises.push(
+    docRef_qz
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          quizs.push(storeDataLocally(doc.id, doc.data(), "quiz"));
+          // originalSkills.push(
+          //   storeDataLocally(doc.id, doc.data(), "skills")
+          // );
+        });
+      })
+      .catch((er) =>
+        console.log("Error while loading Quiz info data..." + er)
+      )
+  );
+
+  
+  var docRef_ga = db.collection("Gen_Addons");
+  AllPromises.push(
+    docRef_ga
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          gaddons.push(storeDataLocally(doc.id, doc.data(), "g-addons"));
+          // originalSkills.push(
+          //   storeDataLocally(doc.id, doc.data(), "skills")
+          // );
+        });
+      })
+      .catch((er) =>
+        console.log("Error while loading General Addons info data..." + er)
       )
   );
 
@@ -1000,8 +1056,9 @@ function loadDataFromFireStore() {
       // Sort all objects Array
       SortObjArrays();  
      
-      
+      // Fill fixed lists
       fillSkills(Skills);
+      fillFixedLists();
 
       // fill courses Info
       fillCourseInfo();
@@ -1025,6 +1082,10 @@ function SortObjArrays(){
 
   if (Subjects.length > 0) {
     Subjects = Subjects.sort((a,b) => compareObjID(ConvertToDec(a.subjectID), ConvertToDec(b.subjectID)));
+  }
+
+  if (addOns.length > 0) {
+    addOns = addOns.sort((a,b) => compareObjID(ConvertToDec(a.id), ConvertToDec(b.id)));
   }
 
   
@@ -1172,6 +1233,8 @@ function newCourseSelected() {
 
   textbox_scene_desc.value = _courses.getSceneDesc();
   fillSceneSubjects(_courses.getSceneSubjects());
+
+
   // fillSkills(Skills);
   // fillSceneTypes(SceneTypes);
   //TODO: check if the course is default one
