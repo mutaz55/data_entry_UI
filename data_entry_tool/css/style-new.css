@@ -818,7 +818,7 @@ color:#ffffff;
     border: none;
     border-radius: 20%;
     outline: none;
-
+    transition: background-color .3s;
 
 }
 
@@ -1260,6 +1260,7 @@ input:-webkit-autofill:focus {
   padding-left: 8px;
   font-size: 1.5rem;
   vertical-align: middle;
+  transition: color .3s;
 }
 
 .icons-container ul li:hover,
@@ -1280,6 +1281,7 @@ input:-webkit-autofill:focus {
 #insert__addons ul li:hover {
   color: #42ac9e;
   cursor: pointer;
+  transition: color .3s;
 }
 
 #insert__quiz {
@@ -1291,6 +1293,8 @@ input:-webkit-autofill:focus {
 #insert__quiz ul li:hover {
   color: #fe6625;
   cursor: pointer;
+  transition: color .3s;
+
 }
 
 #insert__template {
@@ -1302,6 +1306,8 @@ input:-webkit-autofill:focus {
 #insert__template ul li:hover {
   color: #66a819;
   cursor: pointer;
+  transition: color .3s;
+
 }
 
 /* Items menu section */
@@ -1309,7 +1315,8 @@ input:-webkit-autofill:focus {
 
 .items-container {
   grid-area: item;
-  
+  display: flex;
+  flex-direction: column;
 }
 
 .item-menu__g-addons {
@@ -1320,11 +1327,11 @@ overflow: hidden;
 }
 
 .g-addons--container {
-  height: 95%;
+  height: 75%;
   background-color: #fafafa;
   text-align: right;
   color: #666;
-  padding: 7px 9px 0px 0px;
+  padding: 10px 9px 0px 0px;
   overflow-y: scroll;
 }
 
@@ -1344,6 +1351,7 @@ overflow: hidden;
 .g-addons--container ul li i:before{
   vertical-align: middle;
   padding-left: 7px;
+  transition: all .4s;
 }
 
 .item-menu__items {
@@ -1402,7 +1410,7 @@ overflow: hidden;
   cursor: pointer;
   outline: none;
   margin: 4px;
-
+  transition: background-color .3s;
 }
 
 .buttons-q-in-item-menu {
@@ -1420,6 +1428,7 @@ overflow: hidden;
   cursor: pointer;
   outline: none;
   margin: 4px;
+  transition: background-color .3s;
 }
 .buttons-in-item-menu:hover,
 .buttons-in-item-menu:active {
@@ -1454,6 +1463,7 @@ overflow: hidden;
   cursor: pointer;
   outline: none;
   border: 1px solid #2a9292;
+  transition: background-color .3s;
 }
 
 
@@ -1487,6 +1497,7 @@ overflow: hidden;
   cursor: pointer;
   left: 5px;
   top : 5px;
+  transition: color .3s;
 }
 
 .slides-container {
@@ -1528,7 +1539,7 @@ overflow: hidden;
   cursor: pointer;
   outline: none;
   box-shadow: 2px 2px rgba(128, 128, 128, 0.294);
-
+  transition: color .3s;
 }
 
 
@@ -1559,7 +1570,7 @@ overflow: hidden;
   font-weight: bold;
   color: #fff;
   cursor: pointer;
-
+  transition : color .3s;
 }
 
 .diagram-slides {
@@ -1567,7 +1578,7 @@ overflow: hidden;
   font-weight: bold;
   color: #fff;
   cursor: pointer;
-
+  transition: color .3s;
 
 }
 
