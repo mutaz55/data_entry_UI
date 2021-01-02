@@ -1854,7 +1854,7 @@ function createIcons(lst, item) {
   text.className = "icon-name";
   text.textContent = item.text;
 
-  newItem.setAttribute("data-addon-name", item.name);
+  newItem.dataset.addon_name = item.name;
 
 
   newItem.appendChild(newIcon);
