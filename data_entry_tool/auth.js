@@ -1,3 +1,27 @@
+// Web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyAFpD1e9Y1RSK9PNAQ84WI6lWAJQophybc",
+    authDomain: "arabiclang-b1f66.firebaseapp.com",
+    databaseURL: "https://arabiclang-b1f66.firebaseio.com",
+    projectId: "arabiclang-b1f66",
+    storageBucket: "arabiclang-b1f66.appspot.com",
+    messagingSenderId: "271833257572",
+    appId: "1:271833257572:web:68071f6a0bead4a499b171",
+  };
+  
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  
+  // make references for auth and firestore
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  
+  // get the current user info
+  
+  
+  var _currentUser = undefined;
+
+
 // Authentication Process
 const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
@@ -22,6 +46,14 @@ const setupUI = (user) => {
 auth.onAuthStateChanged( user => {
     if (user) {
         setupUI(user);
+
+  
+  // for(var key in auth) {
+  //   var value = auth[key];
+  //   console.log("key = "+ key + "///" + "auth prop" + value);
+  // }
+        _currentUser = auth.currentUser.email;
+
     }else {
         setupUI();
     }
@@ -41,7 +73,8 @@ loginForm.addEventListener('submit', (e)=> {
 
     auth.signInWithEmailAndPassword(email,password). then ( cred => {
 
-      
+        _currentUser = auth.currentUser.email;
+
 
         // close the modal form and reset it
         //const modal = document.querySelector('#modal-login');

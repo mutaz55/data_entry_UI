@@ -1196,6 +1196,7 @@ input:-webkit-autofill:focus {
   height: 70%; 
   overflow-y: scroll;
   background-color: #ffffffba;
+  border-bottom: 1px solid #9E9E9E;
 }
 
 
@@ -1235,7 +1236,7 @@ input:-webkit-autofill:focus {
   grid-template-columns: repeat(4,auto);
   justify-items: baseline;
   grid-auto-flow: row;
-  margin-top: 9px;
+  margin-top: 5px;
   margin-bottom: 1rem;
   padding-right: 20px;
   
@@ -1541,7 +1542,9 @@ overflow: hidden;
   box-shadow: 2px 2px rgba(128, 128, 128, 0.294);
   transition: color .3s;
 }
-
+.buttons-in-slide-menu--selected {
+  border:2px solid  rgb(251, 50, 101);
+}
 
 .slides-footer {
   height: 6%;

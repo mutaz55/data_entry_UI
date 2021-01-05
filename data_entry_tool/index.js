@@ -1,9 +1,9 @@
 
-var currentCourse;
-var currentScene;
+
+var user_settings = new Settings();
 var _busy;
 var save_busy;
-
+var IsDefaultCourseAvailable = false;
 var logMsgs = [];
 
  
@@ -28,7 +28,8 @@ saveBtn.addEventListener("click", (event) => {
   if (save_busy) return;
   save_busy = true;
 
-  if (Courses.length <= 0) showError("Nothing to save");
+  if ((originalCourses.length <= 0)&& (_courses.getCourseLst().length <= 0)) 
+        showError("Nothing to save");
   
   
 
@@ -36,7 +37,7 @@ saveBtn.addEventListener("click", (event) => {
   // Check if the Course Description or Course Category have been changed
   // And update the new values into the database.
   updateCourseInfo();
-
+  updateSettings();
   // Check if Subjects  have been changed and save the changes
   // Delete Subjects
   //deleteConcept();
@@ -63,15 +64,15 @@ saveBtn.addEventListener("click", (event) => {
   
   // Check the skills info changes and save them
   //Delete skills
-  deleteSkill();
+  // deleteSkill();
   // Add new skills
-  addSkill();
+  // addSkill();
 
   // Check the scene types info changes and save them
-  // Delete scene types
-  deleteSceneType();
-  // Add new scene types
-  addSceneType();
+  // // Delete scene types
+  // deleteSceneType();
+  // // Add new scene types
+  // addSceneType();
 
   // Check the scene Headers info changes and save them
 
@@ -87,37 +88,37 @@ saveBtn.addEventListener("click", (event) => {
   save_busy = false;
 });
 
-function addSceneType() {
-  SceneTypes.forEach(function (st) {
-    if (
-      originalSceneTypes.findIndex(
-        (stId) =>
-          stId.SceneTypeID == st.SceneTypeID &&
-          stId.SceneTypeDesc == st.SceneTypeDesc
-      ) == -1
-    ) {
-      // new Module has been added
+// function addSceneType() {
+//   SceneTypes.forEach(function (st) {
+//     if (
+//       originalSceneTypes.findIndex(
+//         (stId) =>
+//           stId.SceneTypeID == st.SceneTypeID &&
+//           stId.SceneTypeDesc == st.SceneTypeDesc
+//       ) == -1
+//     ) {
+//       // new Module has been added
 
-      db.collection("sceneTypes")
-        .add({
-          "sceneT-ID": st.SceneTypeID,
-          "sceneT-Text": st.SceneTypeDesc,
-        })
-        .then(() => {
-          originalSceneTypes.push(
-            new SceneType(st.SceneTypeID, st.SceneTypeID, st.SceneTypeDesc)
-          );
-          console.log(
-            `Scene Type with Id : ${st.SceneTypeID} has been successuflly added!`
-          );
-        })
-        .catch((err) =>
-          console.log(`Error while adding Scene Type with Id ${st.SceneTypeID}  
-              Details:  ${err}`)
-        );
-    }
-  });
-}
+//       db.collection("sceneTypes")
+//         .add({
+//           "sceneT-ID": st.SceneTypeID,
+//           "sceneT-Text": st.SceneTypeDesc,
+//         })
+//         .then(() => {
+//           originalSceneTypes.push(
+//             new SceneType(st.SceneTypeID, st.SceneTypeID, st.SceneTypeDesc)
+//           );
+//           console.log(
+//             `Scene Type with Id : ${st.SceneTypeID} has been successuflly added!`
+//           );
+//         })
+//         .catch((err) =>
+//           console.log(`Error while adding Scene Type with Id ${st.SceneTypeID}  
+//               Details:  ${err}`)
+//         );
+//     }
+//   });
+// }
 
 function deleteSceneHeader() {
   let AllPromises = [];
@@ -176,7 +177,7 @@ function addScenes(){
     
     if (sHeader._new || sHeader._changed) {
 
-      AllPromises.push(db.collection("Scenes").doc(sHeader.sceneID).set(JSON.parse(JSON.stringify(ScenesArray.find(sc => sc.id == sHeader.sceneID)))));
+      AllPromises.push(db.collection("Scenes").doc(sHeader.sceneID).set(JSON.parse(JSON.stringify(Scenes.find(sc => sc.id == sHeader.sceneID)))));
 
     }
     
@@ -305,35 +306,35 @@ function addSceneHeader() {
   });
 }
 
-function addSkill() {
-  Skills.forEach(function (sk) {
-    if (
-      originalSkills.findIndex(
-        (skId) => skId.SkillID == sk.SkillID && skId.SkillText == sk.SkillText
-      ) == -1
-    ) {
-      // new Skill has been added
+// function addSkill() {
+//   Skills.forEach(function (sk) {
+//     if (
+//       originalSkills.findIndex(
+//         (skId) => skId.SkillID == sk.SkillID && skId.SkillText == sk.SkillText
+//       ) == -1
+//     ) {
+//       // new Skill has been added
 
-      db.collection("skills")
-        .add({
-          "Skill-ID": sk.SkillID,
-          "Skill-Text": sk.SkillText,
-        })
-        .then(() => {
-          originalSkills.push(
-            new Skill(sk.SkillID, sk.SkillID, sk.SkillText)
-          );
-          console.log(
-            `Skill with Id : ${sk.SkillID} has been successuflly added!`
-          );
-        })
-        .catch((err) =>
-          console.log(`Error while adding skill with Id ${sk.SkillID}  
-              Details:  ${err}`)
-        );
-    }
-  });
-}
+//       db.collection("skills")
+//         .add({
+//           "Skill-ID": sk.SkillID,
+//           "Skill-Text": sk.SkillText,
+//         })
+//         .then(() => {
+//           originalSkills.push(
+//             new Skill(sk.SkillID, sk.SkillID, sk.SkillText)
+//           );
+//           console.log(
+//             `Skill with Id : ${sk.SkillID} has been successuflly added!`
+//           );
+//         })
+//         .catch((err) =>
+//           console.log(`Error while adding skill with Id ${sk.SkillID}  
+//               Details:  ${err}`)
+//         );
+//     }
+//   });
+// }
 
 function addModule() {
   Modules.forEach(function (mod) {
@@ -347,7 +348,7 @@ function addModule() {
     ) {
       // new Module has been added
 
-      db.collection("courses")
+      db.collection("originalCourses")
         .doc(mod.id)
         .update({
           Modules: firebase.firestore.FieldValue.arrayUnion({
@@ -413,53 +414,97 @@ function addLesson() {
 }
 
 
+// Update the course Info (Description, ...)
 function updateCourseInfo() {
 
-_courses.getCourseLst().forEach(function (course) {
+  _courses.getCourseLst().forEach(function (course) {
 
-  let doesExist =  Courses.find( (courseItem) => courseItem.id == course.id);
+    let doesExist =  originalCourses.find( (courseItem) => courseItem.id == course.id);
 
-  // update the course
-  if (doesExist) {
+    // update the course info
+    if (doesExist) {
 
-    if (
-      course.Description !=
-      Courses.find((courID) => courID.id == course.id).Description
-    ) {
-      db.collection("courses")
-        .doc(course.id)
-        .update({
-          Description: course.Description,
-        })
-        .then(function () {
-          Courses.find((courID) => courID.id == course.id).Description =
-          course.Description;
-            showSuccess(`Course Description successfully updated! / Course ID =  ${cour.id}`);
-          
-        })
-        .catch(function (error) {
-          
-          // The document probably doesn't exist.
-          showError(`Error updaing Course Description!  Course ID =  ${cour.id}
-          Error >> : ${error}
-          `);
-          
-        });
+      if (
+        course.Description !=
+        originalCourses.find((courID) => courID.id == course.id).Description
+        ) {
+
+        db.collection("courses")
+          .doc(course.id)
+          .update({
+            Description: course.Description,
+          })
+          .then(function () {
+            originalCourses.find((courID) => courID.id == course.id).Description =
+            course.Description;
+              showSuccess(`Course Description successfully updated! / Course ID =  ${course.id}`);
+            
+          })
+          .catch(function (error) {
+            
+            // The document probably doesn't exist.
+            showError(`Error updaing Course Description!  Course ID =  ${course.id}
+            Error >> : ${error}
+            `);
+            
+          });
+      }
+    
     }
-  
-  }
-  // New Course has been added
-  else 
-  {
-    db.collection("courses").doc(course.id).set(JSON.parse(JSON.stringify(course)))
+    // New Course has been added
+    else 
+    {
+      db.collection("courses").doc(course.id).set(JSON.parse(JSON.stringify(course)))
 
-  }
+    }
 
 
-});
+  });
 
 }
 
+async function updateSettings(){
+
+  user_settings = new Settings(_currentUser, _courses.currentCourse, _courses.currentModule,
+                               _courses.currentLesson, _courses.currentScene);
+
+  const settingsRef = db.collection('Settings').doc(_currentUser);
+
+  const settingsDoc = await settingsRef.get();
+    
+    if (!settingsDoc.exists) {
+        settingsRef.set(JSON.parse(JSON.stringify(user_settings)));
+        showSuccess(`Settings successfully created! / FOR USER =  ${_currentUser}`);
+
+    } else {
+
+        settingsRef.update({
+        'savedCourse': user_settings.savedCourse,
+        'savedModule': user_settings.savedModule,
+        'savedLesson': user_settings.savedLesson,
+        'savedScene':  user_settings.savedScene,
+        'savedSlide': "user_settings.savedSlide",
+        'savedItem': "user_settings.savedItem"
+
+      })
+      .then(function () {
+      
+          showSuccess(`Settings successfully updated! / FOR USER =  ${_currentUser}`);
+        
+      })
+      .catch(function (error) {
+        
+        // The document probably doesn't exist.
+        showError(`Error while updating settings!  FOR USER =  ${_currentUser}
+        Error >> : ${error}
+        `);
+        
+      });
+    }
+    
+
+  
+}
 
 function AddSubject() {
   Subjects.forEach(function (sub) {
@@ -614,57 +659,57 @@ function deleteLesson() {
   });
 }
 
-function deleteSkill() {
-  let AllPromises = [];
+// function deleteSkill() {
+//   let AllPromises = [];
 
-  originalSkills.forEach(function (del) {
-    if (Skills.findIndex((skId) => skId.id == del.id) == -1) {
-      AllPromises.push(
-        deleteSkillFromDB(del)
-          .then(() => {
-            console.log(
-              `Skill with Id:  ${del.id} has been successuflly deleted!`
-            );
-            del.id = "-1";
-          })
-          .catch((err) =>
-            console.log(`Error while deleting skill with Id:  ${del.id} 
-          Details:  ${err}`)
-          )
-      );
-    }
-  });
+//   originalSkills.forEach(function (del) {
+//     if (Skills.findIndex((skId) => skId.id == del.id) == -1) {
+//       AllPromises.push(
+//         deleteSkillFromDB(del)
+//           .then(() => {
+//             console.log(
+//               `Skill with Id:  ${del.id} has been successuflly deleted!`
+//             );
+//             del.id = "-1";
+//           })
+//           .catch((err) =>
+//             console.log(`Error while deleting skill with Id:  ${del.id} 
+//           Details:  ${err}`)
+//           )
+//       );
+//     }
+//   });
 
-  Promise.all(AllPromises).then(() => {
-    clearOriginalSkills();
-  });
-}
+//   Promise.all(AllPromises).then(() => {
+//     clearOriginalSkills();
+//   });
+// }
 
-function deleteSceneType() {
-  let AllPromises = [];
+// function deleteSceneType() {
+//   let AllPromises = [];
 
-  originalSceneTypes.forEach(function (del) {
-    if (SceneTypes.findIndex((skId) => skId.id == del.id) == -1) {
-      AllPromises.push(
-        deleteSceneTypeFromDB(del)
-          .then(() => {
-            console.log(
-              `Scene type with Id:  ${del.id} has been successuflly deleted!`
-            );
-            del.id = "-1";
-          })
-          .catch((err) =>
-            console.log(`Error while deleting scene type with Id:  ${del.id} 
-          Details:  ${err}`)
-          )
-      );
-    }
-  });
+//   originalSceneTypes.forEach(function (del) {
+//     if (SceneTypes.findIndex((skId) => skId.id == del.id) == -1) {
+//       AllPromises.push(
+//         deleteSceneTypeFromDB(del)
+//           .then(() => {
+//             console.log(
+//               `Scene type with Id:  ${del.id} has been successuflly deleted!`
+//             );
+//             del.id = "-1";
+//           })
+//           .catch((err) =>
+//             console.log(`Error while deleting scene type with Id:  ${del.id} 
+//           Details:  ${err}`)
+//           )
+//       );
+//     }
+//   });
 
-  Promise.all(AllPromises).then(() => {
-    clearOriginalSceneTypes();
-  });
-}
+//   Promise.all(AllPromises).then(() => {
+//     clearOriginalSceneTypes();
+//   });
+// }
 
 function deleteSceneHeaderFromDB(del) {
   return db.collection("sceneHeaders").doc(del.id).delete();
@@ -674,12 +719,12 @@ function deleteSceneFromDB(del) {
   return db.collection("Scenes").doc(del.id).delete();
 }
 
-function deleteSceneTypeFromDB(del) {
-  return db.collection("sceneTypes").doc(del.id).delete();
-}
-function deleteSkillFromDB(del) {
-  return db.collection("skills").doc(del.id).delete();
-}
+// function deleteSceneTypeFromDB(del) {
+//   return db.collection("sceneTypes").doc(del.id).delete();
+// }
+// function deleteSkillFromDB(del) {
+//   return db.collection("skills").doc(del.id).delete();
+// }
 
 function deleteLessonFromDB(del) {
   return db
@@ -719,12 +764,12 @@ function deleteSubjectFromDB(del) {
 }
 
 
-function clearOriginalSceneTypes() {
-  originalSceneTypes = originalSceneTypes.filter((conId) => conId.id != "-1");
-}
-function clearOriginalSkills() {
-  originalSkills = originalSkills.filter((conId) => conId.id != "-1");
-}
+// function clearOriginalSceneTypes() {
+//   originalSceneTypes = originalSceneTypes.filter((conId) => conId.id != "-1");
+// }
+// function clearOriginalSkills() {
+//   originalSkills = originalSkills.filter((conId) => conId.id != "-1");
+// }
 
 
 function clearOriginalSubjects(){
@@ -748,7 +793,7 @@ function clearOringinalLessons() {
 // re-init the array of obejcts
 function initArrays(){
   
-  Courses.length = 0;
+  originalCourses.length = 0;
   // originalCourses.length = 0;
   Subjects.length  =  0;
   originalSubjects.length = 0;
@@ -757,12 +802,12 @@ function initArrays(){
   Modules.length = 0;
   originalModules.length = 0;
   Skills.length = 0;
-  originalSkills.length = 0;
-  SceneTypes.length = 0;
-  originalSceneTypes.length = 0;
+  // originalSkills.length = 0;
+  // SceneTypes.length = 0;
+  // originalSceneTypes.length = 0;
   SceneHeaders.length = 0;
   originalSceneHeaders.length = 0;
-  ScenesArray.length = 0;
+  Scenes.length = 0;
 
   addOns.length = 0;
   quizs.length = 0;
@@ -783,6 +828,30 @@ function loadDataFromFireStore() {
 
   let AllPromises = [];
 
+  var docSet = db.collection("Settings");
+  AllPromises.push(
+    docSet
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (docu) {
+          
+          if (docu.id == _currentUser) {
+              user_settings = storeDataLocally(docu.id, docu.data(), "settings");
+              IsDefaultCourseAvailable = true;
+          }
+                 
+
+        });
+        
+      })
+      .catch((er) => {
+        console.log("Error while loading settings data..." + er);
+        user_settings.id = "none";
+        IsDefaultCourseAvailable = false;
+      })
+  );
+
+
   var docRef = db.collection("courses");
   AllPromises.push(
     docRef
@@ -792,7 +861,7 @@ function loadDataFromFireStore() {
           
           
           // get Courses Info
-            Courses.push(storeDataLocally(docu.id, docu.data(), "courses"));
+            originalCourses.push(storeDataLocally(docu.id, docu.data(), "courses"));
             // originalCourses.push(
             //   storeDataLocally(docu.id, docu.data(), "courses")
             // );
@@ -832,9 +901,9 @@ function loadDataFromFireStore() {
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           Skills.push(storeDataLocally(doc.id, doc.data(), "skills"));
-          originalSkills.push(
-            storeDataLocally(doc.id, doc.data(), "skills")
-          );
+          // originalSkills.push(
+          //   storeDataLocally(doc.id, doc.data(), "skills")
+          // );
         });
       })
       .catch((er) =>
@@ -894,22 +963,22 @@ function loadDataFromFireStore() {
       )
   );
 
-  var docRef_st = db.collection("sceneTypes");
-  AllPromises.push(
-    docRef_st
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          SceneTypes.push(
-            storeDataLocally(doc.id, doc.data(), "sceneTypes")
-          );
-          originalSceneTypes.push(
-            storeDataLocally(doc.id, doc.data(), "sceneTypes")
-          );
-        });
-      })
-      .catch((er) => console.log(er))
-  );
+  // var docRef_st = db.collection("sceneTypes");
+  // AllPromises.push(
+  //   docRef_st
+  //     .get()
+  //     .then(function (querySnapshot) {
+  //       querySnapshot.forEach(function (doc) {
+  //         SceneTypes.push(
+  //           storeDataLocally(doc.id, doc.data(), "sceneTypes")
+  //         );
+  //         originalSceneTypes.push(
+  //           storeDataLocally(doc.id, doc.data(), "sceneTypes")
+  //         );
+  //       });
+  //     })
+  //     .catch((er) => console.log(er))
+  // );
 
   var docRef_SHeaders = db.collection("sceneHeaders");
 
@@ -944,70 +1013,70 @@ function loadDataFromFireStore() {
   var docRef_Scenes = db.collection("Scenes");
 
   AllPromises.push(
-    docRef_Scenes
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
+    // docRef_Scenes
+    //   .get()
+    //   .then(function (querySnapshot) {
+    //     querySnapshot.forEach(function (doc) {
           
-          let scene = storeDataLocally(doc.id, doc.data(), "scene");
+    //       let scene = storeDataLocally(doc.id, doc.data(), "scene");
           
-          let hintObj = doc.data()["exerciseHintObj"];
-          if(hintObj) {
-            scene.exerciseHintObj = new HintObj(hintObj.id, hintObj.text);
-            scene.exerciseHintObj.draggableHint = hintObj.draggableHint;
-            scene.exerciseHintObj.previousHelp = new PreviousHelpObj(hintObj["previousHelp"].id, hintObj["previousHelp"].description, hintObj["previousHelp"].fileName);
+    //       let hintObj = doc.data()["exerciseHintObj"];
+    //       if(hintObj) {
+    //         scene.exerciseHintObj = new HintObj(hintObj.id, hintObj.text);
+    //         scene.exerciseHintObj.draggableHint = hintObj.draggableHint;
+    //         scene.exerciseHintObj.previousHelp = new PreviousHelpObj(hintObj["previousHelp"].id, hintObj["previousHelp"].description, hintObj["previousHelp"].fileName);
             
-          }
+    //       }
         
-          if (doc.data()["questions"]) {
-              doc.data()["questions"].forEach(function (qu) {
+    //       if (doc.data()["questions"]) {
+    //           doc.data()["questions"].forEach(function (qu) {
 
-                let quest = new Question(qu.id);
+    //             let quest = new Question(qu.id);
 
-                qu["mediaObjects"].forEach(function (md) {
+    //             qu["mediaObjects"].forEach(function (md) {
 
-                  let mdObj = new MediaObjectData(md.id, md.text, md.filename, md.type);
+    //               let mdObj = new MediaObjectData(md.id, md.text, md.filename, md.type);
 
-                  quest.mediaObjects.push(mdObj);
+    //               quest.mediaObjects.push(mdObj);
 
-                });
+    //             });
                 
-                qu["statementsAnswers"].forEach(function (sAns) {
+    //             qu["statementsAnswers"].forEach(function (sAns) {
 
-                  let stateAns = new statementAnswersObj(sAns.id, sAns.statement);
+    //               let stateAns = new statementAnswersObj(sAns.id, sAns.statement);
 
-                  if (sAns["Answers"]) {
-                      sAns["Answers"].forEach( function (ans){
+    //               if (sAns["Answers"]) {
+    //                   sAns["Answers"].forEach( function (ans){
 
-                        let answer = new Answers(ans.answerId, ans.answerText, ans.mediaAnswer, ans.correct);
-                        stateAns.Answers.push(answer);
+    //                     let answer = new Answers(ans.answerId, ans.answerText, ans.mediaAnswer, ans.correct);
+    //                     stateAns.Answers.push(answer);
 
-                      });
+    //                   });
                     
-                  }
+    //               }
 
-                  quest.statementsAnswers.push(stateAns);
+    //               quest.statementsAnswers.push(stateAns);
 
-                });
+    //             });
 
-                scene.questions.push(quest);
+    //             scene.questions.push(quest);
                   
-              });
+    //           });
               
-          }
+    //       }
 
 
-          ScenesArray.push(scene);
-        });
-      })
-      .catch((er) => console.log(er))
+    //       ScenesArray.push(scene);
+    //     });
+    //   })
+    //   .catch((er) => console.log(er))
   );
 
   Promise.all(AllPromises).then(() => {
     
     
     AllPromises = [];
-    Courses.forEach( function (courseItem) {
+    originalCourses.forEach( function (courseItem) {
 
       const subRef = docRef.doc(courseItem.id).collection("Subjects");
 
@@ -1044,25 +1113,18 @@ function loadDataFromFireStore() {
       
     Promise.all(AllPromises).then(() => {
 
-      if (Courses.length > 0) {
-        _courses = new C(Courses, Courses[0].id);
-      }
-          
-      // if there are no courses
-      else {
-        _courses = new C(Courses, "");
-      }
-      
-      // Sort all objects Array
-      SortObjArrays();  
-     
-      // Fill fixed lists
-      fillSkills(Skills);
-      fillFixedLists();
+        // Create a new application object of the courses
+        _courses = new AppObjects(originalCourses, "");
+        
+        // fill courses Info
+        fillCourseInfo();
 
-      // fill courses Info
-      fillCourseInfo();
-      newCourseSelected();
+        // Sort all objects Array
+        SortObjArrays();  
+     
+        // Fill fixed lists
+        fillSkills(Skills);
+        fillFixedLists();
 
     })
     
@@ -1073,21 +1135,26 @@ function loadDataFromFireStore() {
 function SortObjArrays(){
 
   if (Lessons.length > 0) {
-    Lessons = Lessons.sort((a,b) => compareObjID( ConvertToDec(a.LessonID), ConvertToDec(b.LessonID)));
+      Lessons = Lessons.sort((a,b) => compareObjID( ConvertToDec(a.LessonID), ConvertToDec(b.LessonID)));
   }
 
   if (Modules.length > 0) {
-    Modules = Modules.sort((a,b) => compareObjID(ConvertToDec(a.ModuleID), ConvertToDec(b.ModuleID)));
+      Modules = Modules.sort((a,b) => compareObjID(ConvertToDec(a.ModuleID), ConvertToDec(b.ModuleID)));
   }
 
   if (Subjects.length > 0) {
-    Subjects = Subjects.sort((a,b) => compareObjID(ConvertToDec(a.subjectID), ConvertToDec(b.subjectID)));
+      Subjects = Subjects.sort((a,b) => compareObjID(ConvertToDec(a.subjectID), ConvertToDec(b.subjectID)));
   }
 
   if (addOns.length > 0) {
-    addOns = addOns.sort((a,b) => compareObjID(ConvertToDec(a.id), ConvertToDec(b.id)));
+      addOns = addOns.sort((a,b) => compareObjID(ConvertToDec(a.id), ConvertToDec(b.id)));
   }
 
+  if (quizs.length > 0) {
+      quizs = quizs.sort((a,b) =>  compareObjID(ConvertToDec(a.id), ConvertToDec(b.id)));
+  }
+
+  
   
 }
 
@@ -1139,117 +1206,163 @@ function clearTxtEntries(){
 
 function courseComboChangeHandler(e) {
 
-
   _courses.currentCourse = e.target.value;
-  // _courses.currentModule = _courses.getFirstModule();
-  // _courses.currentLesson = _courses.getFirstLesson();
-  // _courses.currentScene = _courses.getFirstScene();
-
-  newCourseSelected();
-
-  // Select first module in Tab 2
-  // lst_modules_tab2_setIndex(0);
+ 
 }
 
 function fillCourseInfo() {
+
   // clear the course in combobox if there is any
   clearCombo(courseCombo);
+
+  // register the combbox change event.
   courseCombo.addEventListener('change',courseComboChangeHandler );
-  
-  // Fetch the default course
-  // if default is not exist
-  // then 
-  // if there are courses
-
+    
+  // fill course combo box
   fillCourseTitleCombo();
-
- 
-  // //courseCombo.outerHTML = courseCombo.outerHTML;
   
 
-  // newCourseSelected();
-
- 
-  // _courses.currentModule = _courses.getFirstModule();
-  // _courses.currentLesson = _courses.getFirstLesson();
-  // _courses.currentScene = _courses.getFirstScene();
-  console.log('first time current scene' + _courses.currentScene);
+  // Fetch the default course value
+  // only when there are already courses
+  if (courseCombo.options.length > 0) {
+  
+      if (IsDefaultCourseAvailable){
+      // if default course value is exist
+      
+              
+        if (selectValueCombo(courseCombo, user_settings.savedCourse)) {
+            _courses.currentCourse = user_settings.savedCourse;
+        }
+        
+      
+      }
+  
+      // when there is no default course saved yet
+      // select the first course on the list and
+      // assign it as the current course
+      else {
+        courseCombo.options[0].selected = true;
+        _courses.currentCourse = courseCombo.options[0].value;
+      }
+   
+  }
 
 }
 
 
+// to select a value programmatically from a combo box (select)
+// return true if it successed
+// return false if the value wasn't found
+function selectValueCombo(comb, _val){
+
+  for (var i = 0; i < comb.options.length; i++)  {
+    if ( comb.options[i].value == _val) 
+    {
+      comb.options[i].selected = true;
+      return true;
+    }
+  }
+
+  return false;
+  
+
+}
+
+// fill combo box courses
 function fillCourseTitleCombo(){
 
   _courses.getCourseTitles().forEach((x) => {
     addNewItemsTab2(_courses.getCourseTitle(x.id),x.id,courseCombo,true);
   });
 
-
-  // courseCombo.addEventListener("change", comboChangeCourse);
-
-  // if (courseCombo.options.length > 0) {
-  //   courseCombo.dispatchEvent(new Event("change"));
-  // }
-
 }
 
-// When a course selected from the drop down list (courses combo box)
-// a Change event fires and the following function executes.
+// When a course changed or initalized the observable
+// executes the following function.
 function newCourseSelected() {
-  // Find the current course based on the selected item from the course list combo
-  // currentCourse = Courses.find((courseID) => courseID.id == event.target.value);
-  
-  // clear all text fields
+
+  // clear all text fields of Tab1 and Tab2
   clearTxtEntries();
   
+  //*********************************** Fill Tab1 ******************************************//
   // Fill the course description
   txtbox_course_description.value = _courses.getCourseDesc();
   courseTitle.textContent = _courses.getCourseObj().CourseTitle;
   courseLang.value  = _courses.getCourseObj().Lang;
   courseLevel.value = _courses.getCourseObj().Level;
   courseState.value = "نشط";
-  // courseChkboxDefault
 
-   
-  // Clear tab2 fields
-  //clearScenesLst();
   //register event handler for all lists
   registerHandlers();
-  // Fill info in different sections
-  fillModules(_courses.getModules());
-  fillLessons(_courses.getLessons());
-  // fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
-  
-  fillSubjects(_courses.getSubjects());
-  fillSubjectsTab2(_courses.getSubjects(), lst_subjects_tab2);
 
-  fillSubjElements(_courses.getSubject());
+  // Fill info in different sections
+  // Fill the course modules
+  fillModulesTab1(_courses.getModules());
+  // select the first module of the current course
   activiateFirstBtn(Modules);
+  // send click event on the first module
+  // which fires series of click event
+  // >> 1st Modules click >> 1st Lesson click >> 1st subject click 
+  // >> fill subject element of the first subject
   document.getElementById(activiateFirstBtn(Modules))?.click();
 
-  fillScenes(_courses.getScenes()); 
-  console.log('_courses.getScenes()' + _courses.getScenes());
-  console.log('currentCourse' + _courses.currentCourse);
 
-  textbox_scene_desc.value = _courses.getSceneDesc();
-  fillSceneSubjects(_courses.getSceneSubjects());
+  //*********************************** Fill Tab2 ******************************************//
+
+  // change contents of the module list in tab2
+  // and change the current module based on the user settings
+  // if there was no prefered settings the first one would be chosen
+  // when the currentModule changed this would fire series of notifications
+  // fillModulesTab2 >> fillLessonsTab1 >> 
+  fillModulesTab2(_courses.getModules());
+  // console.log('after fillmodule');
+  // if ((IsDefaultCourseAvailable) && ( _courses.currentCourse == user_settings.savedCourse) ){
+
+  //     if (selectValueCombo(lst_modules_tab2, user_settings.savedModule)) {
+  //         _courses.currentModule = user_settings.savedModule;
+
+  //         if(selectValueCombo(lst_lessons_tab2, user_settings.savedLesson)) {
+  //             _courses.currentLesson = user_settings.savedLesson;
+
+  //             if((lst_scenes.childNodes.length > 0)){
+  //               //_courses.currentScene = user_settings.savedScene;
+  //               document.getElementById(user_settings.savedScene)?.focus();
+  //               document.getElementById(user_settings.savedScene)?.click();
+  //             }
+  //         }
+  //     }
+      
+  // }else {
+  //     lst_modules_tab2.options[0].selected = true;
+  //     _courses.currentModule = lst_modules_tab2.options[0].value;
+  // }
+  
+  // console.log("current module " + _courses.currentModule);
+
+  // fillLessonsTab1(_courses.getLessons());
+  // fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
+  
+  // fillSubjects(_courses.getSubjects());
+  // fillSubjectsTab2(_courses.getSubjects(), lst_subjects_tab2);
+
+  // fillSubjElements(_courses.getSubject());
 
 
-  // fillSkills(Skills);
-  // fillSceneTypes(SceneTypes);
-  //TODO: check if the course is default one
-  // 
-  // The course is not the default one
-  _courses.currentModule = _courses.getFirstModule();
-  _courses.currentLesson = _courses.getFirstLesson();
-  _courses.currentScene = _courses.getFirstScene();
+  // Fill Tab2
+  // fillScenes(_courses.getScenes()); 
+
+
+  // textbox_scene_desc.value = _courses.getSceneDesc();
+  // fillSceneSubjects(_courses.getSceneSubjects());
+
+
 
   // Now user can press load button again.
   _busy = false;
 }
 
-// Side Nav Section
 
+// Side Nav Section
 function OpenSideNavCourses() {
   document.getElementById("side-nav-courses").style.width = "75%";
 }
