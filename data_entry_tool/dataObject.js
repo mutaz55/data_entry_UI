@@ -44,17 +44,18 @@ class Settings {
     }
 }
 class Course {
-    constructor (id, CourseTitle, Description,  Category, Language, Level) {
-        this.id = id;
-        this.CourseTitle = CourseTitle;
-        this.Description = Description;
-        this.Category = Category;
-        this.Lang = Language;
-        this.Level = Level;
+    constructor (_id, _courseTitle, _description,  _category, _language, _level, _type) {
+        this.id = _id;
+        this.CourseTitle = _courseTitle;
+        this.Description = _description;
+        this.Category = _category;
+        this.Lang = _language;
+        this.Level = _level;
+        this.type = _type;
 
     }
     toString() {
-        return this.id + ', ' + this.CourseTitle + ', ' + this.Description + ', ' + this.Category + ', ' + this.Lang +', ' + this.Level;
+        return this.id + ', ' + this.CourseTitle + ', ' + this.Description + ', ' + this.Category + ', ' + this.Lang +', ' + this.Level +', ' + this.type;
     }
 }
 
@@ -188,8 +189,7 @@ class Scene {
 }
 //****************************************** */
 class SlideObj {
-  constructor(sceneId, slideId, layout = "none") {
-      this.sID = sceneId;  
+  constructor(slideId, layout = "none") {
       this.id = slideId;
       this.Items = []; // Array of Quiz or AddonsObj
       this.layout = layout;
@@ -475,7 +475,7 @@ function storeDataLocally(id, data, type) {
 
 
         switch (type){
-            case 'courses':  return new Course( id,data['CourseTitle'],data.Description,data.Category, data['Lang'], data['Level']);
+            case 'courses':  return new Course( id,data['CourseTitle'],data.Description,data.Category, data['Lang'], data['Level'],data.type);
             case 'modules':  return new Module(id, data['Module-ID'], data['Module-Title']);
             case 'lessons':  return new Lesson(id, data['Lesson-ID'], data['Lesson-Title'], data['Module-ID']);
             case "subjects": return new Subject(id, data["subjectID"], data["subjectText"], data["LessonID"]);
@@ -513,7 +513,7 @@ class AppObjects {
         newVal.Category = 0;
         newVal.Lang = x.Lang;
         newVal.Level = x.Level;
-      
+        newVal.type = x.type;
         this.c_list.push(newVal);
         });
     }   
@@ -601,15 +601,21 @@ class AppObjects {
  
   }
 
-  addNewSlide(s_id) {
-    let new_slide = new SlideObj(s_id, get_slideId(s_id));
-    let sc = Scenes.find( item => item.id == s_id);
-    console.log('sc '+ sc);
+  addNewSlide(s_id = this.currentScene) {
+    let sc = this.getScene();
+    
+    let slide_id = "";
     if (sc) {
+      slide_id = get_slideId(s_id);
+      let new_slide = new SlideObj(slide_id);
       sc.slides.push(new_slide);
-      this.currentSlide = new_slide.id;
     }
     
+    return slide_id;
+  }
+
+  removeSlide(s_id){
+    this.getScene().slides = this.getScene().slides.filter( slide => slide.id != s_id);
   }
   validate(_id){
       return !(this.c_list.find( x => x.id == _id));
@@ -694,13 +700,16 @@ class AppObjects {
 
   }
 
-  getScenes(_lesId = this.getFirstLesson()){
+  getScenesHeader(_lesId = this.getFirstLesson()){
         
     return SceneHeaders.filter( (item) => item.CourseID == this.currentCourse && item.LessonID == _lesId);
       
   }
 
-  getScene(_sceneId = this.currentScene ){
+  getScene(sID = this.currentScene){
+    return Scenes.find( scene => scene.id == sID);
+  }
+  getSceneHeader(_sceneId = this.currentScene ){
     return SceneHeaders.find( sc => sc.sceneID == _sceneId);
   }
 

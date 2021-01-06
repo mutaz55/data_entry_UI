@@ -145,8 +145,25 @@
                                       <input type="text" class="inputfield-1line" id="course-lang" placeholder="الرجاء إدخال لغة الكورس">
                                     
                                       <label for="course-level" class="new-course-label">تحديد المستوى</label>
-                                      <input type="text" class="inputfield-1line" id="course-level" placeholder="الرجاء إدخال مستوى الكورس">
-
+                                      <select class="sidenav1-combo" id="course-level">
+                                        <option>A1.1</option>
+                                        <option>A1.2</option>
+                                        <option>A1.3</option>
+                                        <option>A2.1</option>
+                                        <option>A2.2</option>
+                                        <option>A2.3</option>
+                                        <option>B1.1</option>
+                                        <option>B1.2</option>
+                                        <option>B1.3</option>
+                                        <option>B2.1</option>
+                                        <option>B2.2</option>
+                                        <option>B2.3</option>
+                                      </select>
+                                      <label for="course-type" class="new-course-label">نوع الكورس</label>
+                                      <select class="sidenav1-combo" id="course-type">
+                                        <option value="1">برنامج تفاعلي</option>
+                                        <option value="2">فيديوهات YouTube</option>
+                                      </select>
                                     
                                       <label for="new-course-name" class="new-course-label">اسم الكورس</label>
                                       <input type="text" id="new-course-name" class="inputfield-1line" placeholder="الرجاء إدخال اسم الكورس"/>
@@ -204,8 +221,8 @@
                           <input type="text" id="tab1-lbl-lang" size="16" readonly>
                           <label for="tab1-lbl-level">المستوى</label>
                           <input type="text" id="tab1-lbl-level" size="6" readonly>
-                          <label for="tab1-lbl-coursestate">حالة الكورس</label>
-                          <input type="text" id="tab1-lbl-coursestate" size="10" readonly>
+                          <label for="tab1-lbl-courseType">نوع الكورس</label>
+                          <input type="text" id="tab1-lbl-courseType" size="15" readonly>
                           <input type="checkbox" id="tab1-chk-default">
                           <label for="tab1-chk-default">الكورس الافتراضي؟</label>
                           
@@ -525,11 +542,10 @@
                     <div class="s-menu-group">
                       <div class="slide-menu-header">
                         
-                          <div class="item-menu_labels">
+                          <div class="item-menu_labels" id = "add-new-slide">
                             إضافة مقطع جديد
                             <span class="add-slide"><i class="fas fa-plus"></i></span>
                           </div>
-                          <!-- <span class="add-slide"><i class="fas fa-plus"></i></span> -->
                           
               
                       </div>

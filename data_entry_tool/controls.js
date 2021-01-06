@@ -7,6 +7,7 @@ const btn_addNewCourse = document.getElementById('sidenav1-btn-add');
 const courseTitle_entry = document.getElementById("new-course-name");
 const courseLang_entry = document.getElementById('course-lang');
 const courseLevel_entry = document.getElementById('course-level');
+const courseType_entry = document.getElementById('course-type');
 
 // The course combo box (dropdown list)
 const courseCombo = document.getElementById("id-course-title");
@@ -18,7 +19,7 @@ const lst_skills = document.querySelector("#id-skills");
 const courseTitle = document.getElementById('tab1-lbl-coursename');
 const courseLang  = document.getElementById('tab1-lbl-lang');
 const courseLevel = document.getElementById('tab1-lbl-level');
-const courseState = document.getElementById('tab1-lbl-coursestate');
+const courseType = document.getElementById('tab1-lbl-courseType');
 const courseChkboxDefault = document.getElementById('tab1-chk-default');
 
 
@@ -86,6 +87,8 @@ const scene_title = document.getElementById('info_scene-title');
 
 const slide_container = document.getElementById('id-slide-menu');
 
+const add_new_slide_btn = document.getElementById('add-new-slide');
+
 // Toast Msgs
 
 function showError(msg) {
@@ -145,6 +148,9 @@ addSubLstHandlers();
 
 //Scenes
 addSceneLstHandlers();
+
+//Slides
+slidesLstHandlers();
 
 
 function addModLstHandlers() {
@@ -270,6 +276,35 @@ function addSceneLstHandlers(){
   keyHandlers(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
 }
 
+// to handle clicks on the slides
+// and to change the current slide based on it.
+function slidesLstHandlers(){
+
+  slide_container.index = "-1";
+
+
+  slide_container.addEventListener('click', function(e) {
+
+    if (slide_container.length <= 0) return;
+    if (!e.target.classList.contains("buttons-in-slide-menu")) return;
+    // the user clicked the same slide
+    if (e.target.classList.contains("buttons-in-slide-menu--selected")) return;
+    
+    cleanSlidesStyle();
+    e.target.classList.add ("buttons-in-slide-menu--selected");
+    slide_container.index = e.target.id;
+    _courses.currentSlide = slide_container.index;
+    
+      
+    console.log(' slide id = ' + _courses.currentSlide);
+     
+      
+    
+  });
+  
+}
+
+
 function keyHandlers(lst, txt_entry, btn_add){
       // select the text when its being clicked
       txt_entry.addEventListener('click', ()=> {
@@ -342,6 +377,17 @@ function updateListItemId(lst, _id){
   document.querySelector(`#${lst.index}`).id = _id;
 }
 
+
+// to clean the clicked style of the slides
+function cleanSlidesStyle(){
+
+  const allSlides = document.getElementsByClassName('buttons-in-slide-menu--selected');
+  if (allSlides) {
+    Array.from(allSlides).forEach( slide => {
+      slide.classList.remove('buttons-in-slide-menu--selected');
+    })
+  }
+}
 //#endregion
 
 
@@ -363,14 +409,15 @@ btn_addNewCourse.addEventListener('click', ()=> {
     
       newCourse.Lang = courseLang_entry.value;
       newCourse.Level = courseLevel_entry.value;
-      newCourse.id = getCourseID();
       newCourse.Category = 0;
+      newCourse.type = courseType_entry.value;
+      newCourse.id = getCourseID();
 
       if (_courses.validate(newCourse.id)) {
           _courses.addNewCourse(newCourse);
       
 
-          addNewItemsTab2(newCourse.CourseTitle,newCourse.id,courseCombo,true);
+          addNewItemsTab2(newCourse.CourseTitle, newCourse.id, courseCombo, true);
           courseCombo.options[courseCombo.length-1].selected = true;
           
           clearNewCourseTxtValues();
@@ -426,24 +473,49 @@ function getCourseID(){
           case 'اللغة العربية' :
           case 'عربي' :
           case 'العربي': 
-                course_id = "Arabic";
+                course_id = "Ar";
                 break;
           case "english":
           case 'English':
-                course_id = "English";
+                course_id = "En";
                 break;
 
-          default: course_id = "Unkown";
+          default: course_id = "Un";
 
 
   }
 
   let lvl = courseLevel_entry.value.removeChar('.');
 
-  lvl = courseTitle_entry.value.length + lvl;
-  course_id += lvl;
+  lvl = courseType_entry.value + lvl;
+  course_id += lvl + "_";
 
-  return course_id;
+   
+  course_id_tail = 1;
+  
+  if (_courses.getCourseLst()?.length > 0) {
+
+    let partOfcoursesID = _courses.getCourseLst().map( function (course) {
+            if (course.id.indexOf(course_id) != -1) {
+                return course.id.substring(course.id.indexOf(course_id) + course_id.length, course.id.length );
+            }else return -1;
+      
+    } );
+    partOfcoursesID = partOfcoursesID.filter( x => x != -1);
+
+    if (partOfcoursesID?.length > 0) {
+      course_id_tail = Math.max(...partOfcoursesID) + 1;
+    }else {
+      course_id_tail = 1;
+    }
+      
+   
+  }
+    
+  course_id += course_id_tail;
+
+  return  course_id ;
+
 }
 
 // remove a specific char from a string
@@ -530,7 +602,7 @@ function checkSceneHeaderChanges(){
 
     if ((item._deleted && item._new)) {
 
-        ScenesArray = ScenesArray.filter((scene) => scene.id != item.sceneID);
+        Scenes = Scenes.filter((scene) => scene.id != item.sceneID);
         result.push(item.sceneID);
     }
     if (item._new || item._deleted) {
@@ -952,7 +1024,7 @@ function lst_scenes_handler(id){
 
     }
 
-    _courses.currentScene = "";
+    
     
     let firstSceneId = _courses.getFirstScene(_courses.currentLesson);
     
@@ -962,12 +1034,28 @@ function lst_scenes_handler(id){
         firstSc.focus();
         firstSc.click();
       }
+    }else {
+      _courses.currentScene = "";
     }
 
 }
 
 
+function slides_container_handler(id){
+  
+  id = id.split('_')[1];
 
+  if (removeBtnFromLst(slide_container, id)) {
+
+      console.log('id => ' + id);
+
+
+      activateAfterDelete(_courses.getSlides(), id);
+      _courses.removeSlide(id);
+
+  }
+
+}
 
 
 // Add Scene (Button)
@@ -1448,28 +1536,16 @@ function get_slideId(sId){
   
   let cScene =  Scenes.find( item => item.id == sId);
   
-  if (cScene) {
+  if (cScene.slides?.length > 0) {
+    // console.log('map?? ' + cScene.slides[0].id.substring(cScene.slides[0].id.indexOf("SL") + 2, cScene.slides[0].id.length ));
 
-    id_slide =
-        Math.max.apply(
-          Math,
-          cScene.filter(function (item) {
-            return item.sID == sId
-          }).map(function (scene) {
-            return scene.sID.substring(
-              scene.sID.indexOf("SL") + 1,
-              scene.sID.length
-            );
-          })
-        ) + 1;
-
-  }else {
-    id_slide = sId + "SL" + 1;
-
+    slides = cScene.slides.map( slide =>  slide.id.substring(slide.id.indexOf("SL") + 2, slide.id.length ));
+    id_slide = Math.max(...slides) + 1;
+   
   }
     
-
-    return id_slide;
+    // console.log("id_slide " +id_slide);
+    return  sId + "SL" + id_slide;
 }
 // Add new item to the list (includes subjects, modules, lessons, skills, scene types)
 function addNewItems(txt, id_c, lst_type, added) {
@@ -1958,7 +2034,7 @@ function module_changedHandler_tab2() {
 function lesson_changeHandler_tab2(){
 
   initSceneView();
-  fillScenes(_courses.getScenes(_courses.currentLesson));
+  fillScenes(_courses.getScenesHeader(_courses.currentLesson));
   
   fillSubjectsTab2(_courses.getSubjects(_courses.currentLesson),lst_subjects_tab2);
 
@@ -2083,40 +2159,9 @@ function getModuleValue() {
 // Run when the current scene is changed
 function updateSceneView() {
   
-
-  
-  
-
   initSceneView();
   textbox_scene_desc.value = _courses.getSceneDesc();
-  // if (_courses.currentScene != undefined && _courses.currentScene != null && _courses.currentScene!= "") {
-    
-    // retrieve the header of the current scene
-    //const cScene = _courses.getScene();
-  
-    // display the scene name
-    // lbl_scene_no.textContent =
-      
-    //   `${Modules.find(mid => mid.ModuleID == cScene.ModuleID).ModuleTitle}` +
-    //   ` > ${Lessons.find(ls => ls.LessonID == cScene.LessonID).LessonTitle}` + 
-    //   ` > ${cScene.sceneTitle} [${SceneHeaders.length}] | ${cScene.sceneID}`;
-
-    
-    // fillSceneElements(cScene.Subjects);
-    // fillSceneElementsType(cScene.Subjects, lst_elementsType_tab3);
-    
-    // lst_sceneTypes_tab2.selectedIndex = getSceneTypeLstIndex(cScene);
-    // lst_elementsType_tab3.dispatchEvent(new Event('change'));
-    // if (lst_sceneTypes_tab2.selectedIndex != -1) {
-    //   document.querySelector("#id-scene-selected").innerHTML =
-    //     lst_sceneTypes_tab2.options[lst_sceneTypes_tab2.selectedIndex].text;
-    //     document.querySelector("#id-scene-code").innerHTML =
-    //     lst_sceneTypes_tab2.options[lst_sceneTypes_tab2.selectedIndex].value;
-    //}
-    
-
-    
-//  }
+ 
 }
 
 function clearElementTxtarea(){
@@ -2196,8 +2241,19 @@ function initSceneView(){
 //   }
 //   return -1;
 // }
+add_new_slide_btn.addEventListener('click' , () =>{
 
-function addNewSlideBtn(id_c){
+  let newSlide_id = _courses.addNewSlide();
+  console.log('new slide is = ' + newSlide_id);
+  if (newSlide_id) {
+    slide_container.appendChild(addNewSlideLstBtn(newSlide_id));
+    activateLasttBtn(_courses.getSlides());
+  }
+  
+  
+});
+
+function addNewSlideLstBtn(id_c){
   
   const container = document.createElement("div");
   container.className = "slide-menu-buttons-wrapper";
@@ -2205,6 +2261,7 @@ function addNewSlideBtn(id_c){
   const button_list = document.createElement("button");
   button_list.type = "button";
   button_list.className = "buttons-in-slide-menu";
+  
   button_list.id = id_c;
 
   const button_list_text = document.createTextNode(id_c.substring(id_c.indexOf('SL') + 2 ,id_c.length));
@@ -2219,7 +2276,7 @@ function addNewSlideBtn(id_c){
   close_button.addEventListener('click', function (e) {
     e.preventDefault(); 
     e.stopImmediatePropagation();
-    //  lst_type.handler(e.target.id);
+    slide_container.handler(e.target.id);
     }
   );
 
@@ -2232,6 +2289,66 @@ function addNewSlideBtn(id_c){
   return container;
 }
 
+
+function activateFirstBtn(arrObj){
+  
+  if (arrObj?.length <= 0) return;
+
+  let firstId = arrObj[0];
+
+  let requiredId =  firstId.subjectID || firstId.LessonID || firstId.ModuleID || firstId.id;
+  
+  if (requiredId) {
+    let HTMLElement = document.getElementById(requiredId);
+    if (HTMLElement) {
+      HTMLElement.focus();
+      HTMLElement.click();
+    }
+  }
+  
+}
+
+
+function activateLasttBtn(arrObj){
+  
+  if (arrObj?.length <= 0) return;
+
+  let lastId = arrObj[arrObj.length - 1];
+
+  let requiredId =  lastId.subjectID || lastId.LessonID || lastId.ModuleID || lastId.id;
+  
+  if (requiredId) {
+    let HTMLElement = document.getElementById(requiredId);
+    if (HTMLElement) {
+      HTMLElement.focus();
+      HTMLElement.click();
+    }
+  }
+  
+}
+
+function activateAfterDelete(arrObj, _id){
+  
+  if (arrObj?.length <= 0) return;
+
+  let currentId_index = arrObj.findIndex( slideId => slideId.id == _id);
+  if ((currentId_index - 1 ) >= 0) {
+
+    let lastId = arrObj[currentId_index - 1];
+
+    let requiredId =  lastId.subjectID || lastId.LessonID || lastId.ModuleID || lastId.id;
+  
+    if (requiredId) {
+      let HTMLElement = document.getElementById(requiredId);
+      if (HTMLElement) {
+          HTMLElement.focus();
+          HTMLElement.click();
+      }
+    }
+  }
+
+  
+}
 //**********************____{ Taha }____********************************* */
 
 function createEmptyScene(newSceneId) {
@@ -2272,9 +2389,9 @@ Scene_change.subscribe(Fill_SlideMenu);
 // Scene_change.subscribe(Fill_ItemsMenu);
 // Scene_change.subscribe(Fill_Interface);
 
-Slide_add.subscribe(Fill_SlideMenu);
-Slide_add.subscribe(Fill_ItemsMenu);
-Slide_add.subscribe(Fill_Interface);
+// Slide_add.subscribe(Fill_SlideMenu);
+// Slide_add.subscribe(Fill_ItemsMenu);
+// Slide_add.subscribe(Fill_Interface);
 
 Slide_change.subscribe(Fill_ItemsMenu);
 Slide_change.subscribe(Fill_Interface);
@@ -2290,38 +2407,50 @@ AddonsQuiz_add.subscribe(Fill_Insert);
 
 
 function Fill_Info(){
-  console.log("Fill Infor");
+  console.log("Fill Info");
   // implement the Fill Info Code.
   scene_title.textContent = "اسم المشهد";
   if (_courses.currentScene.length == 0) return;
-  scene_title.textContent = _courses.getSceneTitle();
+      scene_title.textContent = _courses.getSceneTitle();
   
 }
 function Fill_SlideMenu(){
 
+  
+  // implement the Fill Slide Menu Code.
+  console.log("Fill SlideMenu");
+
   // clear the slide menu
-  // removeAllChildNodes(slide_container);
+  removeAllChildNodes(slide_container);
 
-  // let slides = _courses.getSlides();
+  let slides = _courses.getSlides();
 
-  // if (slides) {
-  //     slides.forEach ( slide => {
+  if (slides) {
 
-  //       slide_container.appendChild(addNewSlideBtn(slide.id));
+      // add the stored scene slides into the slide menu
+      slides.forEach ( slide => {
+
+        slide_container.appendChild(addNewSlideLstBtn(slide.id));
 
 
-  //     });
+      });
 
-  //     if (slides.length == 0){
-  //       console.log('here');
-  //       _courses.addNewSlide(_courses.currentScene);
-  //     }
-  //}
+      // a new Scene which has no slides yet
+      if (slides.length == 0){
+        
+        let newSlideId = _courses.addNewSlide();
+        if (newSlideId)
+            slide_container.appendChild(addNewSlideLstBtn(newSlideId));
+        
+
+      }
+
+      // Activate the first slide
+      activateFirstBtn(slides);
+  }
    
   
 
-  // implement the Fill Slide Menu Code.
-  console.log("Fill SlideMenu");
 
 }
 function Fill_ItemsMenu(){

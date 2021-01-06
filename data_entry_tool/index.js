@@ -1290,7 +1290,7 @@ function newCourseSelected() {
   courseTitle.textContent = _courses.getCourseObj().CourseTitle;
   courseLang.value  = _courses.getCourseObj().Lang;
   courseLevel.value = _courses.getCourseObj().Level;
-  courseState.value = "نشط";
+  courseType.value =  courseType_entry.options[_courses.getCourseObj().type - 1].textContent;
 
   //register event handler for all lists
   registerHandlers();
@@ -1349,7 +1349,6 @@ function newCourseSelected() {
 
 
   // Fill Tab2
-  // fillScenes(_courses.getScenes()); 
 
 
   // textbox_scene_desc.value = _courses.getSceneDesc();
@@ -1385,4 +1384,5 @@ function registerHandlers() {
   lst_lessons.handler = lst_lessons_handler;
   lst_subjects.handler = lst_subjects_handler;
   lst_scenes.handler = lst_scenes_handler;
+  slide_container.handler = slides_container_handler;
 }

@@ -692,7 +692,6 @@ color:#ffffff;
 /* Input text for course name */
 .inputfield-1line {
 
-
     outline: none;
     border: 1px solid var(--border-color-normal);
     border-bottom-right-radius: 10px;
@@ -739,6 +738,18 @@ color:#ffffff;
   
   line-height: 2;
   padding-top: 3rem;
+}
+
+.sidenav1-combo {
+  border: 1px solid var(--border-color-normal);
+  border-bottom-right-radius: 10px; 
+  padding: 0.25em 0.5em;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-font);
+  background-image: linear-gradient(to top, #f9f9f9, var(--control-bk-color), 33%);
+  outline-color: var(--main-color-jgreen);
 }
 
 /* Textare for Course Description */
@@ -1044,7 +1055,8 @@ input:-webkit-autofill:focus {
 .textarea-description:hover,
 .list-items-select:hover,
 .dropdown-subjects:hover,
-.txt-entry-subjects:hover
+.txt-entry-subjects:hover,
+.sidenav1-combo:hover
 {
     border: 1px solid var(--main-color-jgreen);
 } 
@@ -1113,7 +1125,8 @@ input:-webkit-autofill:focus {
   direction: rtl;
   color:rgba(0, 0, 0, 0.52);
   /*********/
-  min-height: 100vh;
+  min-height: 92vh;
+  max-height: 100vh;
   display: grid;
   text-align: center;
   line-height: initial;
@@ -1315,6 +1328,7 @@ input:-webkit-autofill:focus {
 
 
 .items-container {
+  max-height: 100%;
   grid-area: item;
   display: flex;
   flex-direction: column;
@@ -1367,6 +1381,7 @@ overflow: hidden;
   text-align: right;  
   font-size: .8rem;
   color: #FAFAFA;
+  cursor: pointer;
   
 }
 .menu-group {
@@ -1478,10 +1493,11 @@ overflow: hidden;
 
 .slides-menu {
   grid-area :sd;
+  /* max-height: 80%; */
 }
 
 .s-menu-group {
-  height: 100%;
+   height: 100%;
 }
 
 
@@ -1504,7 +1520,6 @@ overflow: hidden;
 .slides-container {
   height: 88%;
   display: flex;
- 
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
@@ -1543,7 +1558,8 @@ overflow: hidden;
   transition: color .3s;
 }
 .buttons-in-slide-menu--selected {
-  border:2px solid  rgb(251, 50, 101);
+  border:1px solid  rgb(251, 50, 101);
+  background-color: beige;
 }
 
 .slides-footer {
