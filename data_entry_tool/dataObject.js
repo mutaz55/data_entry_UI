@@ -32,14 +32,14 @@ var _courses;
 
 // Classes represent the data objects stored in Firebase
 class Settings {
-    constructor(id = "none",cCourse = "", cModule = "", cLesson = "", cScene = "", cSlide = "none", cItem = "none") {
+    constructor(id = "none",cCourse = ""){ //, cModule = "", cLesson = "", cScene = "", cSlide = "none", cItem = "none") {
       this.id = id;
       this.savedCourse = cCourse;
-      this.savedModule = cModule;
-      this.savedLesson = cLesson;
-      this.savedScene = cScene;
-      this.savedSlide = cSlide;
-      this.savedItem = cItem;
+      // this.savedModule = cModule;
+      // this.savedLesson = cLesson;
+      // this.savedScene = cScene;
+      // this.savedSlide = cSlide;
+      // this.savedItem = cItem;
 
     }
 }
@@ -489,8 +489,8 @@ function storeDataLocally(id, data, type) {
             case 'quiz': return new QuizAddons(id, data['Name'], data['Text'], data['Icon'], data['Action']);
             case 'g-addons': return new GenAddons(id, data['Name'], data['Text'], data['Icon'], data['Action']);
               
-            case 'settings': return new Settings(data.id, data['savedCourse'],data['savedModule'], data['savedLesson'],
-                                                  data['savedScene'], data['savedSlide'],data['savedItem']);
+            case 'settings': return new Settings(data.id, data['savedCourse']); //,data['savedModule'], data['savedLesson'],
+                                                                                  //data['savedScene'], data['savedSlide'],data['savedItem']);
         }
         
            
@@ -543,7 +543,13 @@ class AppObjects {
   set currentCourse(value) {
       this._currentCourse = value;
       console.log('course fire');
+      this._currentScene = "";
+      this._currentModule = "";
+      this._currentLesson = "";
+      this._currentSubject = "";
+      this._currentSlide = "";
       course_changed.fire();
+
   }
 
   get currentScene() {

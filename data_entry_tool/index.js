@@ -13,8 +13,8 @@ const saveBtn = document.querySelector("#save-btn");
 document.querySelector("#load-btn").addEventListener("click", (e) => {
   e.preventDefault();
  
-    
-    loadDataFromFireStore();
+  
+  loadDataFromFireStore();
  
   
 });
@@ -465,8 +465,8 @@ function updateCourseInfo() {
 
 async function updateSettings(){
 
-  user_settings = new Settings(_currentUser, _courses.currentCourse, _courses.currentModule,
-                               _courses.currentLesson, _courses.currentScene);
+  // user_settings = new Settings(_currentUser, _courses.currentCourse, _courses.currentModule,
+  //                              _courses.currentLesson, _courses.currentScene);
 
   const settingsRef = db.collection('Settings').doc(_currentUser);
 
@@ -480,11 +480,11 @@ async function updateSettings(){
 
         settingsRef.update({
         'savedCourse': user_settings.savedCourse,
-        'savedModule': user_settings.savedModule,
-        'savedLesson': user_settings.savedLesson,
-        'savedScene':  user_settings.savedScene,
-        'savedSlide': "user_settings.savedSlide",
-        'savedItem': "user_settings.savedItem"
+        // 'savedModule': user_settings.savedModule,
+        // 'savedLesson': user_settings.savedLesson,
+        // 'savedScene':  user_settings.savedScene,
+        // 'savedSlide': "user_settings.savedSlide",
+        // 'savedItem': "user_settings.savedItem"
 
       })
       .then(function () {
@@ -1197,11 +1197,15 @@ function clearTxtEntries(){
   resetAddBtn(lst_lessons, txt_lesson_entry, btn_add_lesson);
   resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
   resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
-  clearSceneDesc();
   clearElementTxtarea();
-
+  clearModulesLst();
+  clearLessonsLst();
+  clearScenesLst();
+  clearSubjectsLst();
+  clearSubjectsTab2();
   
-}
+  
+} 
 
 
 function courseComboChangeHandler(e) {
@@ -1292,6 +1296,19 @@ function newCourseSelected() {
   courseLevel.value = _courses.getCourseObj().Level;
   courseType.value =  courseType_entry.options[_courses.getCourseObj().type - 1].textContent;
 
+    // Change the default check box value based on the saved user settings
+    if (_courses.currentCourse == user_settings.savedCourse) {
+
+      courseChkboxDefault.checked = true;
+
+    }else {
+
+      courseChkboxDefault.checked = false;
+
+    }
+    
+
+
   //register event handler for all lists
   registerHandlers();
 
@@ -1315,46 +1332,7 @@ function newCourseSelected() {
   // when the currentModule changed this would fire series of notifications
   // fillModulesTab2 >> fillLessonsTab1 >> 
   fillModulesTab2(_courses.getModules());
-  // console.log('after fillmodule');
-  // if ((IsDefaultCourseAvailable) && ( _courses.currentCourse == user_settings.savedCourse) ){
-
-  //     if (selectValueCombo(lst_modules_tab2, user_settings.savedModule)) {
-  //         _courses.currentModule = user_settings.savedModule;
-
-  //         if(selectValueCombo(lst_lessons_tab2, user_settings.savedLesson)) {
-  //             _courses.currentLesson = user_settings.savedLesson;
-
-  //             if((lst_scenes.childNodes.length > 0)){
-  //               //_courses.currentScene = user_settings.savedScene;
-  //               document.getElementById(user_settings.savedScene)?.focus();
-  //               document.getElementById(user_settings.savedScene)?.click();
-  //             }
-  //         }
-  //     }
-      
-  // }else {
-  //     lst_modules_tab2.options[0].selected = true;
-  //     _courses.currentModule = lst_modules_tab2.options[0].value;
-  // }
   
-  // console.log("current module " + _courses.currentModule);
-
-  // fillLessonsTab1(_courses.getLessons());
-  // fillSubjects(Subjects.filter((subj) => subj.id == currentCourse.id));
-  
-  // fillSubjects(_courses.getSubjects());
-  // fillSubjectsTab2(_courses.getSubjects(), lst_subjects_tab2);
-
-  // fillSubjElements(_courses.getSubject());
-
-
-  // Fill Tab2
-
-
-  // textbox_scene_desc.value = _courses.getSceneDesc();
-  // fillSceneSubjects(_courses.getSceneSubjects());
-
-
 
   // Now user can press load button again.
   _busy = false;
@@ -1378,11 +1356,14 @@ function CloseSideNavScenes() {
   document.getElementById("side-nav-scenes").style.width = "0";
 }
 
+
+//Register the click event of the small close buttons for all lists
 function registerHandlers() {
-  //register the click event of small close buttons for all lists
+
   lst_modules.handler = lst_modules_handler;
   lst_lessons.handler = lst_lessons_handler;
   lst_subjects.handler = lst_subjects_handler;
   lst_scenes.handler = lst_scenes_handler;
   slide_container.handler = slides_container_handler;
+  // items
 }

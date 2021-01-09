@@ -1,5 +1,8 @@
 /////////////////////////// Initialization /////////////////////////////
 
+// Main Tab buttons
+const sceneInfo_tabBtn = document.getElementById('tab-scenes');
+
 // side nav1 - new course 
 const show_addNewBtn = document.getElementById('new-course-btn');
 const container_addNewBtn = document.getElementById('hidden-container');
@@ -84,22 +87,39 @@ const gaddons_list = document.getElementById('g-addons-section').getElementsByTa
 
 // Scene Interface
 const scene_title = document.getElementById('info_scene-title');
-
 const slide_container = document.getElementById('id-slide-menu');
-
 const add_new_slide_btn = document.getElementById('add-new-slide');
+
 
 // Toast Msgs
 
 function showError(msg) {
-  console.log({ html: msg, classes: "toast-style" });
+  console.log('Erorr: ' + msg);
+  showToast(msg, "error");
+
 }
 
 function showSuccess(msg){
-  console.log({html:msg, classes: "toast-success"});
+  console.log('Sucess: ' + msg);
+  showToast(msg, "toast-sucess");
+  
 }
 
+function showToast(msg, classes) {
+  var x = document.getElementById("toast-msg");
+  
+  x.textContent = msg;
+  x.classList.add(classes);
+  // Add the "show" class to DIV
+  x.classList.add("show");
+  
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ 
+    x.className = x.className.replace("show", ""); 
+    x.className = x.className.replace(classes, ""); 
+  }, 3000);
 
+}
 
 // Observable Variables
 var Scene_change = new Observable();
@@ -163,9 +183,12 @@ function addModLstHandlers() {
        
               if (lst_modules.length <= 0) return;
               if (!e.target.classList.contains("buttons-in-list")) return;
-               
-              lst_modules.index = e.target.id;
-              fillLessonsTab1();
+              
+              if (lst_modules.index != e.target.id) {
+                lst_modules.index = e.target.id;
+                fillLessonsTab1();
+              }
+              
 
               if (e.detail == 2) {
                 txt_module_entry.value = e.target.textContent;
@@ -180,7 +203,6 @@ function addModLstHandlers() {
         keyHandlers(lst_modules, txt_module_entry, btn_add_module);
 }
 
-
 function addLesLstHandlers() {
 
        
@@ -194,9 +216,11 @@ function addLesLstHandlers() {
         if (lst_lessons.length <= 0) return;
         if (!e.target.classList.contains("buttons-in-list")) return;
          
-        lst_lessons.index = e.target.id;
-       
-        fillSubjectsTab1();
+        if (lst_lessons.index != e.target.id) {
+            lst_lessons.index = e.target.id;
+            fillSubjectsTab1();
+        }
+        
         
         if (e.detail == 2) {
           txt_lesson_entry.value = e.target.textContent;
@@ -214,7 +238,6 @@ function addLesLstHandlers() {
   keyHandlers(lst_lessons, txt_lesson_entry, btn_add_lesson);
 }
 
-
 function addSubLstHandlers(){
   
   lst_subjects.index = "-1";
@@ -226,16 +249,19 @@ function addSubLstHandlers(){
         if (lst_subjects.length <= 0) return;
         if (!e.target.classList.contains("buttons-in-list")) return;
          
+        if (lst_subjects.index != e.target.id) {
             lst_subjects.index = e.target.id;
             fillSubjElements(_courses.getSubject(lst_subjects.index));
+        }
+          
             
-            if (e.detail == 2) {
-              txt_subject_entry.value = e.target.textContent;
-              btn_add_subject.textContent = "تعديل"
-              lst_subjects.mode = "update";
-            } else {
-              resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
-            }
+        if (e.detail == 2) {
+          txt_subject_entry.value = e.target.textContent;
+          btn_add_subject.textContent = "تعديل"
+          lst_subjects.mode = "update";
+        } else {
+          resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
+        }
 
   });
   
@@ -290,10 +316,13 @@ function slidesLstHandlers(){
     // the user clicked the same slide
     if (e.target.classList.contains("buttons-in-slide-menu--selected")) return;
     
-    cleanSlidesStyle();
-    e.target.classList.add ("buttons-in-slide-menu--selected");
-    slide_container.index = e.target.id;
-    _courses.currentSlide = slide_container.index;
+   
+        slide_container.index = e.target.id;
+        cleanSlidesStyle();
+        e.target.classList.add ("buttons-in-slide-menu--selected");
+        _courses.currentSlide = slide_container.index;
+   
+    
     
       
     console.log(' slide id = ' + _courses.currentSlide);
@@ -413,22 +442,19 @@ btn_addNewCourse.addEventListener('click', ()=> {
       newCourse.type = courseType_entry.value;
       newCourse.id = getCourseID();
 
-      if (_courses.validate(newCourse.id)) {
-          _courses.addNewCourse(newCourse);
+      _courses.addNewCourse(newCourse);
+  
+
+      addNewItemsTab2(newCourse.CourseTitle, newCourse.id, courseCombo, true);
+      courseCombo.options[courseCombo.length-1].selected = true;
       
+      clearNewCourseTxtValues();
+      show_addNewBtn.dispatchEvent(new Event('click'));
 
-          addNewItemsTab2(newCourse.CourseTitle, newCourse.id, courseCombo, true);
-          courseCombo.options[courseCombo.length-1].selected = true;
-          
-          clearNewCourseTxtValues();
-          show_addNewBtn.dispatchEvent(new Event('click'));
-          courseCombo.dispatchEvent(new Event('change'));
+      showSuccess('New course has been created!' + courseTitle_entry.value);
 
-          showSuccess('add new course' + courseTitle_entry.value);
-
-    }else {
-          showError('The course is already exist!!');
-    }
+      _courses.currentCourse = newCourse.id;
+   
     
     
   }
@@ -540,8 +566,6 @@ show_addNewBtn.addEventListener('click', (e)=> {
     e.stopPropagation();
 
 });
-
-
 
 
 // delete subject from all scenes
@@ -661,6 +685,7 @@ function lst_subjects_handler(id) {
       initAfterDel(lst_subjects, txt_subject_entry);
       // clearElementTxtarea();
 
+      //activateAfterDelete(Subjects)
       let firstSubjectId = activiateFirstBtn(Subjects);
 
       if (firstSubjectId) {
@@ -2330,11 +2355,18 @@ function activateLasttBtn(arrObj){
 function activateAfterDelete(arrObj, _id){
   
   if (arrObj?.length <= 0) return;
+  if (_id != _courses.currentSlide) return;
 
   let currentId_index = arrObj.findIndex( slideId => slideId.id == _id);
-  if ((currentId_index - 1 ) >= 0) {
 
-    let lastId = arrObj[currentId_index - 1];
+  if (currentId_index  >= 0) {
+
+    let lastId = "";
+    if ((currentId_index - 1) > 0) 
+        lastId = arrObj[currentId_index - 1];
+    else
+        lastId = arrObj[0];
+
 
     let requiredId =  lastId.subjectID || lastId.LessonID || lastId.ModuleID || lastId.id;
   
@@ -2349,35 +2381,10 @@ function activateAfterDelete(arrObj, _id){
 
   
 }
-//**********************____{ Taha }____********************************* */
-
-function createEmptyScene(newSceneId) {
-  let emptyScene = new Scene(newSceneId, "", "", "");
-
-  // create first question and push it to Scene.
-  let firstQuestion = new Question("id-question-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
-  let firstHintObj = new HintObj("id-hintObj-Q1-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
-  let firstPreviousHelpObj = new PreviousHelpObj("id-prevHelp-Q1-1"); //id will be changed as per naming policy of the objects the Ask Mutaz
-
-
-
-  // Test Data to be changed with real datafrom DBs
-  emptyScene.exerciseText = "Test-data 1";
-  emptyScene.translation = "Test-data 2";
-  firstHintObj.text = "Test-data 3";
-  firstPreviousHelpObj.description = "Test-data 4";
-
-  firstHintObj.previousHelp = firstPreviousHelpObj;
-      emptyScene.exerciseHintObj = firstHintObj;
-
-  emptyScene.questions.push(firstQuestion);
-
-  return emptyScene;
-}
 
 //***************************************************** */
-
 // Subscribing
+
 course_changed.subscribe(newCourseSelected);
 module_changed.subscribe(module_changedHandler_tab2);
 lesson_changed.subscribe(lesson_changeHandler_tab2);
@@ -2395,11 +2402,12 @@ Scene_change.subscribe(Fill_SlideMenu);
 
 Slide_change.subscribe(Fill_ItemsMenu);
 Slide_change.subscribe(Fill_Interface);
+Item_change.subscribe(Fill_Interface);
 
 Icon_add.subscribe(Fill_ItemsMenu);
 Icon_add.subscribe(Fill_Interface);
 
-Item_change.subscribe(Fill_Interface);
+
 
 Template_save.subscribe(Fill_templateList);
 
@@ -2409,14 +2417,15 @@ AddonsQuiz_add.subscribe(Fill_Insert);
 function Fill_Info(){
   console.log("Fill Info");
   // implement the Fill Info Code.
+
   scene_title.textContent = "اسم المشهد";
   if (_courses.currentScene.length == 0) return;
-      scene_title.textContent = _courses.getSceneTitle();
+  
+  scene_title.textContent = _courses.getSceneTitle();
   
 }
 function Fill_SlideMenu(){
 
-  
   // implement the Fill Slide Menu Code.
   console.log("Fill SlideMenu");
 
@@ -2469,3 +2478,17 @@ function Fill_Insert(){
   console.log("Fill Insert")
   // implement the Fill Addons Quiz Code.
 }
+
+courseChkboxDefault.addEventListener('change', (e)=> {
+
+  if (e.isTrusted) {
+    if (courseChkboxDefault.checked) {
+      user_settings.savedCourse = _courses.currentCourse;
+    }else {
+      user_settings.savedCourse = "";
+    }
+
+    console.log('changed event fire');
+  }
+    
+});
