@@ -77,7 +77,7 @@ saveBtn.addEventListener("click", (event) => {
   // Check the scene Headers info changes and save them
 
   // save new/changed scenes into DB
-  addScenes();
+  //addScenes();
   //Delete scene Header
   deleteSceneHeader();
   // Add new Scene Header
@@ -348,7 +348,7 @@ function addModule() {
     ) {
       // new Module has been added
 
-      db.collection("originalCourses")
+      db.collection("courses")
         .doc(mod.id)
         .update({
           Modules: firebase.firestore.FieldValue.arrayUnion({

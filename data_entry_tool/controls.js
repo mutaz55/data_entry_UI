@@ -288,13 +288,18 @@ function addSceneLstHandlers(){
       btn_add_scene.textContent = "تعديل"
       lst_scenes.mode = "update";
     }else {
-      resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
+      //resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
     }
   
-      if (_courses.currentScene != lst_scenes.index)
+      if (_courses.currentScene != lst_scenes.index) {
+          cleanSlidesStyle("buttons-in-list--selected");
+          e.target.classList.add ("buttons-in-list--selected");
           _courses.currentScene = lst_scenes.index;
+      }
+        
       
      
+
       
     
   });
@@ -318,7 +323,7 @@ function slidesLstHandlers(){
     
    
         slide_container.index = e.target.id;
-        cleanSlidesStyle();
+        cleanSlidesStyle("buttons-in-slide-menu--selected");
         e.target.classList.add ("buttons-in-slide-menu--selected");
         _courses.currentSlide = slide_container.index;
    
@@ -408,12 +413,12 @@ function updateListItemId(lst, _id){
 
 
 // to clean the clicked style of the slides
-function cleanSlidesStyle(){
+function cleanSlidesStyle(_class){
 
-  const allSlides = document.getElementsByClassName('buttons-in-slide-menu--selected');
-  if (allSlides) {
-    Array.from(allSlides).forEach( slide => {
-      slide.classList.remove('buttons-in-slide-menu--selected');
+  const allElements = document.getElementsByClassName(_class);
+  if (allElements) {
+    Array.from(allElements).forEach( element => {
+      element.classList.remove(_class);
     })
   }
 }
@@ -665,7 +670,7 @@ function isDeleteModulePossible(_id, _index){
 // Remove Subject (Button)
 function lst_subjects_handler(id) {
 
-  id = id.split('_')[1];
+  id = id.split('-')[1];
 
   if (isDeleteSubjectPossible(id)) {
 
@@ -880,7 +885,7 @@ btn_add_module.addEventListener("click", () => {
 
 function lst_modules_handler(id) {
 
-  id = id.split('_')[1];
+  id = id.split('-')[1];
   // Check if there are no lessons within the Module
   if (isDeleteModulePossible(_courses.currentCourse, id)) {
 
@@ -917,7 +922,7 @@ function lst_modules_handler(id) {
 // Remove Lesson (Button)
 function lst_lessons_handler(id) {
 
-  id = id.split('_')[1];
+  id = id.split('-')[1];
 
   // Check if there are no scenes within the lesson
   if (isDeleteLessonPossible(_courses.currentCourse, id)) {
@@ -1030,7 +1035,7 @@ btn_add_lesson.addEventListener("click", () => {
 // Remove Scene (Button)
 function lst_scenes_handler(id){
 
-    id = id.split('_')[1];
+    id = id.split('-')[1];
 
     // TODO : Check if its possible to delete a Scene and the scene header
     if (removeBtnFromLst(lst_scenes, id)) {
@@ -1068,7 +1073,9 @@ function lst_scenes_handler(id){
 
 function slides_container_handler(id){
   
-  id = id.split('_')[1];
+  
+  id = id.split('-')[1];
+  
 
   if (removeBtnFromLst(slide_container, id)) {
 
@@ -1103,64 +1110,31 @@ btn_add_scene.addEventListener("click", () => {
 
     //TODO Change this
     let lessonNo = _courses.currentLesson.substring(_courses.currentLesson.indexOf('L'));
-    let id_scene_key = _courses.currentCourse + lessonNo + "S" + id_scene;
+    let id_scene_key = `${_courses.currentCourse + lessonNo}S${id_scene}`;
     
 
-    // Assign the current scene id
-    // _courses.currentScene = id_scene_key;
-    // let _id = _courses.currentCourse + lessonNo + "S" + id_scene;
-
-    // store the scene header locally
-    SceneHeaders.push(
-      new SceneHeader(
-        id_scene_key,
-        _courses.currentCourse,
-        id_scene_key,
-        _courses.currentModule,
-        _courses.currentLesson,
-        txt_sceneTitle_entry.value,
-        "",
-        lessonNo + id_scene,
-        "",
-        "",
-        "",
-        true
-      )
-    );
-    
-    // Add new record of a scene header
-    // ScenesArray.push(createEmptyScene(id_scene_key));
-
-    _courses.addNewScene(id_scene_key);
+    // store the scene locally
+    _courses.addNewScene(id_scene_key,lessonNo + id_scene, txt_sceneTitle_entry.value);
    
     addNewItems(txt_sceneTitle_entry.value, id_scene_key, lst_scenes, true);
-    document.getElementById(id_scene_key)?.focus();
-    document.getElementById(id_scene_key)?.click();
 
-
-        
-    // updateSceneView();
-
-    // radiotbtn_sendToTeacherNot.checked = true;
-    // radiotbtn_sendToTeacherNot.dispatchEvent( new Event('change'));
-    // radiobtn_kursBuch.checked = true;
-    // radiobtn_kursBuch.dispatchEvent(new Event('change'));
-    // lst_sceneTypes_tab2.selectedIndex = 0;
-    // lst_sceneTypes_tab2.dispatchEvent(new Event('change'));
-
+    activateCurrentBtn(id_scene_key);
+    
     }
     // Update mode
     else {
       
       // update the scene text locally
-      SceneHeaders.find(sH => sH.sceneID == _courses.currentScene).sceneTitle = txt_sceneTitle_entry.value;
-      SceneHeaders.find((st) => st.sceneID == _courses.currentScene)._changed = true;
-
+      _courses.updateSceneTitle(txt_sceneTitle_entry.value);
+      
 
       // update list item text Tab1
       updateListItemText(_courses.currentScene, txt_sceneTitle_entry.value);
+
       // Back to normal mode
       resetAddBtn(lst_scenes,txt_sceneTitle_entry,btn_add_scene);
+
+      activateCurrentBtn(_courses.currentScene);
     }
  
   }
@@ -1168,6 +1142,13 @@ btn_add_scene.addEventListener("click", () => {
 });
 
 
+function activateCurrentBtn(_id) {
+
+    document.getElementById(_id)?.click();
+    document.getElementById(_id)?.focus();
+
+
+}
 
 // Add Subject to a scene
 add_subj_scene.addEventListener("click", () => {
@@ -1400,6 +1381,10 @@ function createElements(sub, values, lingType) {
 // return false if there was not found otherwise true
 function removeBtnFromLst(lst, id){
 
+  console.log('id = ' + id) ;
+  console.log('lst' + lst);
+  console.log(' parent node ' + document.getElementById(`${id}`).parentNode);
+
   const removed = document.getElementById(`${id}`).parentNode;
 
   if (removed != undefined){
@@ -1589,7 +1574,7 @@ function addNewItems(txt, id_c, lst_type, added) {
   const close_button = document.createElement("button");
   close_button.type = "button";
   close_button.className = "small-close";
-  close_button.id = "c_" + id_c;
+  close_button.id = "c-" + id_c;
   button_list.appendChild(close_button);
 
   close_button.addEventListener('click', function (e) {
@@ -2186,7 +2171,7 @@ function updateSceneView() {
   
   initSceneView();
   textbox_scene_desc.value = _courses.getSceneDesc();
- 
+  document.getElementById(_courses.currentScene)?.focus();
 }
 
 function clearElementTxtarea(){
@@ -2295,7 +2280,7 @@ function addNewSlideLstBtn(id_c){
   const close_button = document.createElement("button");
   close_button.type = "button";
   close_button.className = "small-close";
-  close_button.id = "c_" + id_c;
+  close_button.id = "c-" + id_c;
   button_list.appendChild(close_button);
 
   close_button.addEventListener('click', function (e) {
@@ -2390,9 +2375,10 @@ module_changed.subscribe(module_changedHandler_tab2);
 lesson_changed.subscribe(lesson_changeHandler_tab2);
 
 
-Scene_change.subscribe(scene_changeHandler_tab2);
+
 Scene_change.subscribe(Fill_Info);
 Scene_change.subscribe(Fill_SlideMenu);
+Scene_change.subscribe(scene_changeHandler_tab2);
 // Scene_change.subscribe(Fill_ItemsMenu);
 // Scene_change.subscribe(Fill_Interface);
 
@@ -2401,17 +2387,18 @@ Scene_change.subscribe(Fill_SlideMenu);
 // Slide_add.subscribe(Fill_Interface);
 
 Slide_change.subscribe(Fill_ItemsMenu);
-Slide_change.subscribe(Fill_Interface);
-Item_change.subscribe(Fill_Interface);
 
-Icon_add.subscribe(Fill_ItemsMenu);
-Icon_add.subscribe(Fill_Interface);
+// Slide_change.subscribe(Fill_Interface);
+// Item_change.subscribe(Fill_Interface);
+
+// Icon_add.subscribe(Fill_ItemsMenu);
+// Icon_add.subscribe(Fill_Interface);
 
 
 
-Template_save.subscribe(Fill_templateList);
+// Template_save.subscribe(Fill_templateList);
 
-AddonsQuiz_add.subscribe(Fill_Insert);
+// AddonsQuiz_add.subscribe(Fill_Insert);
 
 
 function Fill_Info(){

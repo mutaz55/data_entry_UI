@@ -192,9 +192,19 @@ class SlideObj {
   constructor(slideId, layout = "none") {
       this.id = slideId;
       this.Items = []; // Array of Quiz or AddonsObj
+      this.GenItems=[];//General Addons
       this.layout = layout;
       this.Objectives = []; // Array of ObjectiveObj
       this.transitionAnime = "transitionAnimeId";
+  }
+}
+
+//***************************************** */
+class Item{
+  constructor(itemId, viewAction,ObjectItem){
+      this.id=itemId;
+      this.viewAction=viewAction;
+      this.objectItem=ObjectItem;
   }
 }
 
@@ -247,224 +257,39 @@ class mediaObjData {
   }
 }
 
-//*****************Add-ons************************* */
-
-// Text - word - Array
-class TextWordArray {
-  constructor(textArrayId, showTypeId, hasSound) {
-      this.id = textArrayId;
-      this.type = "TextWordArray";
-      this.showType = showTypeId; // read fro Project Library with the showTypeId
-      this.sound = hasSound; //true or false
-      this.Words = [];
-
-  }
-}
-
-class WordObj {
-  constructor(wordId, word, meaning, PicDescription) {
-      this.wordId = wordId;
-      this.word = word;
-      this.meaning = meaning;
-      this.picDes = PicDescription;
-
-  }
-}
-
-
-// Video all types
-
-class VideoObj {
-  constructor(videoId, videoType) {
-      this.id = videoId;
-      this.type = videoType;
-      this.videoScenes = [];
-  }
-}
-
-class VideoSceneObj {
-  constructor(videoSceneId, videoSceneName, locationId, timeID) {
-      this.id = videoSceneId;
-      this.name = videoSceneName;
-      this.location = locationId;
-      this.time = timeID;
-      this.sequence = []; //DialogObj, InteractiveQuizObj
-  }
-}
-
-class DialogObj {
-  constructor(dialogId, action, dialogText, IsVoiceOver) {
-      this.id = dialogId;
-      this.character = []; //CharacterId more than one if they talking in the same time.
-      this.action = action;
-      this.text = dialogText;
-      this.voiceOver = IsVoiceOver;
-  }
-}
-
-class InteractiveQuizObj {
-  constructor(interQuizId, statement, feedbackCorrect, feedbackWrong) {
-      this.id = interQuizId;
-      this.statement = statement;
-      this.Answers = []; //AnswerObj
-      this.feedBackCorrect = feedbackCorrect;
-      this.feedbackWrong = feedbackWrong;
-
-  }
-}
-
-// Animation
-
-class AnimationClipObj {
-  constructor(aniId, backgroundId) {
-      this.id = aniId;
-      this.backgroundId = backgroundId;
-      this.animationObjects = [];
-  }
-}
-
-class animationObj {
-  constructor(aniSceneObjId, aniObjectId, animationType, animationDes, SoundDes) {
-      this.Id = aniSceneObjId;
-      this.aniObjectId = aniObjectId;
-      this.animationType = animationType;
-      this.animationDes = animationDes;
-      this.SoundDes = SoundDes;
-
-  }
-}
-
-// Feedback
-class Feedback {
-  constructor(feedbackId, feedbackType) {
-      this.Id = feedbackId;
-      this.type = feedbackType;
-  }
-}
-
-
-// Memory Game
-
-class MemoryGame {
-  constructor(memoryGameId) {
-      this.Id = memoryGameId;
-      this.CardsCom = [];
-  }
-}
-
-class CardComObj {
-  constructor(cardComId, card1, card2) {
-      this.Id = cardComId;
-      this.card1 = card1;
-      this.card2 = card2;
-
-  }
-}
-
-class CardObj {
-  constructor(cardId, picObj, textObj, soundObj) {
-      this.Id = cardId;
-      this.pic = picObj; //mediaObj
-      this.text = textObj; //mediaObj
-      this.sound = soundObj; //mediaObj
-  }
-}
-
-
-// Config and Library Object
-
-class ProjectLibrary {
-  constructor() {
-      this.times = [];
-      this.characters = [];
-      this.avatarPics = []; //{PicLink,Id,name}
-      this.animationObjects = [];
-      this.locations = [];
-      this.backgrounds = [];
-
-      this.slideTransitions = [] // research needed {animation video link,id,name}
-      this.animationTypes = []; //Move, change color, scale, ...(need research)
-      this.WordsArrayShowTypes = [] //flash-cards, dialog-cards, oneByone-showingFromSide, oneByone-showingFromUp, floating-word
-      this.FeedbackTypes = []; //sound-sendFile, sound-record, text-typing, text-hand-writing, video-sendFile, video-record, online-oneToOne, online-class
-  }
-}
-
-class CharacterObj {
-  constructor(characterId, name, avatarPiclink, description) {
-      this.id = characterId;
-      this.name = name;
-      this.picLink = avatarPiclink;
-      this.description = description;
-  }
-}
-
-class aniObject {
-  constructor(aniObjId, name, description) {
-      this.id = aniObjId;
-      this.name = name;
-      this.description = description;
-  }
-}
-
-
-class LocationObj {
-  constructor(locationId, name, description) {
-      this.id = locationId;
-      this.name = name;
-      this.description = description;
-  }
-}
-
-class BackgroundObj {
-  constructor(backgroundId, name, description, animationDes, soundEffectDes) {
-      this.id = backgroundId;
-      this.name = name;
-      this.description = description;
-      this.animationDes = animationDes;
-      this.soundEffectDes = soundEffectDes;
-  }
-}
-
-class WordsArrayShowTypeObj {
-  constructor(WordArrSTId, typeNameArabic, typeNameEnglish, LinkToAnifile) {
-      this.Id = WordArrSTId;
-      this.typeNameArabic = typeNameArabic;
-      this.typeNameEnglish = typeNameEnglish;
-      this.filename = LinkToAnifile;
-  }
-
-}
-  
   //****************************************** */
   
 class AddOns {
-  constructor(id, name, text, icon, action) {
+  constructor(id, name, text, icon, action, _data) {
     this.id = id;
     this.name = name;
     this.text = text;
     this.icon = icon;
     this.action  = action;
+    this.dataObjName = _data;
   }
   
 }
 
 class GenAddons {
-  constructor(id, name, text, icon, action) {
+  constructor(id, name, text, icon, action, _data) {
     this.id = id;
     this.name = name;
     this.text = text;
     this.icon = icon;
     this.action  = action;
+    this.dataObjName = _data;
   }
 }
 
 class QuizAddons {
-  constructor(id, name, text, icon, action) {
+  constructor(id, name, text, icon, action, _data) {
     this.id = id;
     this.name = name;
     this.text = text;
     this.icon = icon;
     this.action  = action;
+    this.dataObjName = _data;
   }
 }
 
@@ -485,9 +310,9 @@ function storeDataLocally(id, data, type) {
             case 'sceneHeaders': return new SceneHeader(id, data['Course-ID'], data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene_Desc'], data['Scene-Seq'],
                                                             data['Scene-Type'], data['Send-To-Teacher'], data['Book-Type'] );
             case 'scene': return new Scene(id, data['exerciseText'], data['translation']);
-            case 'addons': return new AddOns(id, data['Name'], data['Text'], data['Icon'], data['Action']);
-            case 'quiz': return new QuizAddons(id, data['Name'], data['Text'], data['Icon'], data['Action']);
-            case 'g-addons': return new GenAddons(id, data['Name'], data['Text'], data['Icon'], data['Action']);
+            case 'addons': return new AddOns(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
+            case 'quiz': return new QuizAddons(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
+            case 'g-addons': return new GenAddons(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
               
             case 'settings': return new Settings(data.id, data['savedCourse']); //,data['savedModule'], data['savedLesson'],
                                                                                   //data['savedScene'], data['savedSlide'],data['savedItem']);
@@ -600,13 +425,36 @@ class AppObjects {
     this.c_list.push(newC);
   }
   
-  addNewScene(s_id){
+  addNewScene(s_id, seq, title){
+
+    SceneHeaders.push(
+      new SceneHeader(
+        s_id,
+        this.currentCourse,
+        s_id,
+        this.currentModule,
+        this.currentLesson,
+        title,
+        "",
+        seq,
+        "",
+        "",
+        "",
+        true
+      )
+    );
+
     let sc = new Scene(s_id);
     
     Scenes.push(sc);
  
   }
 
+  updateSceneTitle(title, _sid = _courses.currentScene) {
+      let sceneH = SceneHeaders.find(sH => sH.sceneID == _sid);
+      sceneH.sceneTitle = title;
+      sceneH._changed = true;
+  }
   addNewSlide(s_id = this.currentScene) {
     let sc = this.getScene();
     
@@ -757,4 +605,25 @@ class Observable{
 
       })
   }
+}
+
+
+
+
+class RegisterPressFactory {
+  constructor(){
+    this.plugins={};
+  }
+
+register(plugin) {
+   const { name, exec } = plugin;
+   this.plugins[name] = exec;
+ }
+
+ press(buttonName,TypeArg) {
+   const func = this.plugins[buttonName];
+   return func(TypeArg);
+ }
+ 
+
 }
