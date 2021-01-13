@@ -916,12 +916,23 @@ function loadDataFromFireStore() {
     docRef_ad
       .get()
       .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          addOns.push(storeDataLocally(doc.id, doc.data(), "addons"));
-          // originalSkills.push(
-          //   storeDataLocally(doc.id, doc.data(), "skills")
-          // );
-        });
+
+        querySnapshot.docs.map(function (doc) {
+
+         // let _Addons = new AddOns(doc.id, doc.data());
+        //  let _Addons = new AddOns(Object.assign(doc.data(), {id: doc.id}));
+          
+        //  addOns.push(_Addons);
+            addOns.push(new AddOns(Object.assign(doc.data(), {id: doc.id})));
+        }); 
+
+
+        // querySnapshot.forEach(function (doc) {
+        //   addOns.push(storeDataLocally(doc.id, doc.data(), "addons"));
+        //   // originalSkills.push(
+        //   //   storeDataLocally(doc.id, doc.data(), "skills")
+        //   // );
+        // });
       })
       .catch((er) =>
         console.log("Error while loading Addons info data..." + er)
@@ -933,12 +944,24 @@ function loadDataFromFireStore() {
     docRef_qz
       .get()
       .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          quizs.push(storeDataLocally(doc.id, doc.data(), "quiz"));
-          // originalSkills.push(
-          //   storeDataLocally(doc.id, doc.data(), "skills")
-          // );
-        });
+        // querySnapshot.forEach(function (doc) {
+          
+        //   quizs.push(storeDataLocally(doc.id, doc.data(), "quiz"));
+        //   // originalSkills.push(
+        //   //   storeDataLocally(doc.id, doc.data(), "skills")
+        //   // );
+        // });
+
+        querySnapshot.docs.map(function (doc) {
+         
+          let quizAddons = Object.assign(doc.data(), {id: doc.id});
+          quizAddons.prototype = Object.create(QuizAddons.prototype);
+
+          // let quizAddons = new QuizAddons(doc.id, doc.data());
+          quizs.push(quizAddons);
+         
+        }); 
+
       })
       .catch((er) =>
         console.log("Error while loading Quiz info data..." + er)
@@ -951,15 +974,27 @@ function loadDataFromFireStore() {
     docRef_ga
       .get()
       .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          gaddons.push(storeDataLocally(doc.id, doc.data(), "g-addons"));
-          // originalSkills.push(
-          //   storeDataLocally(doc.id, doc.data(), "skills")
-          // );
-        });
+
+        querySnapshot.docs.map(function (doc) {
+          
+
+          let genAddons = new GenAddons(doc.id, doc.data());
+          //let genAddons = Object.assign(doc.data(), {id: doc.id});
+          //genAddons.prototype = Object.create(GenAddons.prototype);
+          
+          gaddons.push(genAddons);
+
+        }); 
+
+        // querySnapshot.forEach(function (doc) {
+        //   gaddons.push(storeDataLocally(doc.id, doc.data(), "g-addons"));
+        //   // originalSkills.push(
+        //   //   storeDataLocally(doc.id, doc.data(), "skills")
+        //   // );
+        // });
       })
       .catch((er) =>
-        console.log("Error while loading General Addons info data..." + er)
+        console.log("Error while loading General Addons info data..." + er.msg)
       )
   );
 

@@ -194,32 +194,33 @@ class SlideObj {
       this.Items = []; // Array of Quiz or AddonsObj
       this.GenItems=[];//General Addons
       this.layout = layout;
-      this.Objectives = []; // Array of ObjectiveObj
-      this.transitionAnime = "transitionAnimeId";
+      //this.Objectives = []; // Array of ObjectiveObj
+      //this.transitionAnime = "transitionAnimeId";
   }
 }
 
 //***************************************** */
 class Item{
-  constructor(itemId, viewAction,ObjectItem){
+  constructor(itemId, name, viewAction,dataObjectItem){
       this.id=itemId;
+      this.name = name;
       this.viewAction=viewAction;
-      this.objectItem=ObjectItem;
+      this.dataObj =dataObjectItem;
   }
 }
 
 //****************************************** */
 //every ObjectiveObj save one element and one skill.
-class ObjectiveObj {
-  constructor(objectiveId, category, Element, skill, linkId) {
-      this.id = objectiveId;
-      this.type = category; //كلمات مفتاحية، تراكيب، صوتيات، قواعد
-      this.element = Element // categroyيحفظ هنا العناصر التي يجب أن يتم تدريسها أو تقييمها مصنفة حسب 
-      this.skill = skill; //الاستماع(استماع لنطق السليم، تمييز النطق السليم)، القراءة، الكتابة(الإملاء، التعبير بالتراكيب اللغوية) ، 
-      //المحادثة( النطق السليم، التعبير بالتراكيب اللغوية)
-      this.linkId = linkId; // id of the statement - quiz in case of assessment or slide id in case of solution.
-  }
-}
+// class ObjectiveObj {
+//   constructor(objectiveId, category, Element, skill, linkId) {
+//       this.id = objectiveId;
+//       this.type = category; //كلمات مفتاحية، تراكيب، صوتيات، قواعد
+//       this.element = Element // categroyيحفظ هنا العناصر التي يجب أن يتم تدريسها أو تقييمها مصنفة حسب 
+//       this.skill = skill; //الاستماع(استماع لنطق السليم، تمييز النطق السليم)، القراءة، الكتابة(الإملاء، التعبير بالتراكيب اللغوية) ، 
+//       //المحادثة( النطق السليم، التعبير بالتراكيب اللغوية)
+//       this.linkId = linkId; // id of the statement - quiz in case of assessment or slide id in case of solution.
+//   }
+// }
 //****************************************** */
 class Quiz {
   constructor(quizId, quizType, slideLink) {
@@ -259,37 +260,145 @@ class mediaObjData {
 
   //****************************************** */
   
-class AddOns {
-  constructor(id, name, text, icon, action, _data) {
-    this.id = id;
-    this.name = name;
-    this.text = text;
-    this.icon = icon;
-    this.action  = action;
-    this.dataObjName = _data;
+  
+  // Config and Library Object
+  
+  class ProjectLibrary {
+    constructor() {
+        this.times = [];
+        this.characters = [];
+        this.avatarPics = []; //{PicLink,Id,name}
+        this.animationObjects = [];
+        this.locations = [];
+        this.backgrounds = [];
+  
+        this.slideTransitions = [] // research needed {animation video link,id,name}
+        this.animationTypes = []; //Move, change color, scale, ...(need research)
+        this.WordsArrayShowTypes = [] //flash-cards, dialog-cards, oneByone-showingFromSide, oneByone-showingFromUp, floating-word
+        this.FeedbackTypes = []; //sound-sendFile, sound-record, text-typing, text-hand-writing, video-sendFile, video-record, online-oneToOne, online-class
+    }
   }
   
+  class CharacterObj {
+    constructor(characterId, name, avatarPiclink, description) {
+        this.id = characterId;
+        this.name = name;
+        this.picLink = avatarPiclink;
+        this.description = description;
+    }
+  }
+  
+  class aniObject {
+    constructor(aniObjId, name, description) {
+        this.id = aniObjId;
+        this.name = name;
+        this.description = description;
+    }
+  }
+  
+  
+  class LocationObj {
+    constructor(locationId, name, description) {
+        this.id = locationId;
+        this.name = name;
+        this.description = description;
+    }
+  }
+  
+  class BackgroundObj {
+    constructor(backgroundId, name, description, animationDes, soundEffectDes) {
+        this.id = backgroundId;
+        this.name = name;
+        this.description = description;
+        this.animationDes = animationDes;
+        this.soundEffectDes = soundEffectDes;
+    }
+  }
+  
+  class WordsArrayShowTypeObj {
+    constructor(WordArrSTId, typeNameArabic, typeNameEnglish, LinkToAnifile) {
+        this.Id = WordArrSTId;
+        this.typeNameArabic = typeNameArabic;
+        this.typeNameEnglish = typeNameEnglish;
+        this.filename = LinkToAnifile;
+    }
+  
+  }
+  //(***************************************************)//
+class AddOns {
+  // constructor(id, arg) {
+  //   this.id = id;
+  //   this.Name = arg.Name;
+  //   this.Text = arg.Text;
+  //   this.Icon = arg.Icon;
+  //   this.Action  = arg.Action;
+  //   this.dataObj = arg.dataObj;
+  // }
+  constructor(obj) {
+    obj && Object.assign(this, obj);
+  }
+
+  getAddonsText(){
+    return this.Text;
+  }
+
+  getAddonsIcon(){
+    return this.Icon;
+  }
 }
 
 class GenAddons {
-  constructor(id, name, text, icon, action, _data) {
+  constructor(id, arg) {
     this.id = id;
-    this.name = name;
-    this.text = text;
-    this.icon = icon;
-    this.action  = action;
-    this.dataObjName = _data;
+    this.Name = arg.Name;
+    this.Text = arg.Text;
+    this.Icon = arg.Icon;
+    this.Action  = arg.Action;
+    this.dataObj = arg.dataObj;
   }
+//  constructor(id, name, txt, icon, action, _data) {
+//     this.id = id;
+//     this.Name = name;
+//     this.Text = txt;
+//     this.Icon = icon;
+//     this.Action  = action;
+//     this.dataObj = _data;
+//   }
+
+  getAddonsText(){
+    return this.Text;
+  }
+
+  getAddonsIcon(){
+    return this.Icon;
+  }
+
 }
 
 class QuizAddons {
-  constructor(id, name, text, icon, action, _data) {
-    this.id = id;
-    this.name = name;
-    this.text = text;
-    this.icon = icon;
-    this.action  = action;
-    this.dataObjName = _data;
+  // constructor(id, arg) {
+  //   this.id = id;
+  //   this.Name = arg.Name;
+  //   this.Text = arg.Text;
+  //   this.Icon = arg.Icon;
+  //   this.Action  = arg.Action;
+  //   this.dataObj = arg.dataObj;
+  // }
+  constructor(id, name, txt, icon, action, _data) {
+        this.id = id;
+        this.Name = name;
+        this.Text = txt;
+        this.Icon = icon;
+        this.Action  = action;
+        this.dataObj = _data;
+      }
+  
+  getAddonsText(){
+    return this.Text;
+  }
+
+  getAddonsIcon(){
+    return this.Icon;
   }
 }
 
@@ -310,9 +419,9 @@ function storeDataLocally(id, data, type) {
             case 'sceneHeaders': return new SceneHeader(id, data['Course-ID'], data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene_Desc'], data['Scene-Seq'],
                                                             data['Scene-Type'], data['Send-To-Teacher'], data['Book-Type'] );
             case 'scene': return new Scene(id, data['exerciseText'], data['translation']);
-            case 'addons': return new AddOns(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
-            case 'quiz': return new QuizAddons(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
-            case 'g-addons': return new GenAddons(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
+            //case 'addons': return new AddOns(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
+            //case 'quiz': return new QuizAddons(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
+           // case 'g-addons': return new GenAddons(id, data['Name'], data['Text'], data['Icon'], data['Action'], data['dataObj']);
               
             case 'settings': return new Settings(data.id, data['savedCourse']); //,data['savedModule'], data['savedLesson'],
                                                                                   //data['savedScene'], data['savedSlide'],data['savedItem']);
@@ -348,6 +457,7 @@ class AppObjects {
     this._currentSubject = "";
     this._currentCourse = "";
     this._currentSlide = "";
+    this._currentItem  = "";
   }
 
 
@@ -373,6 +483,7 @@ class AppObjects {
       this._currentLesson = "";
       this._currentSubject = "";
       this._currentSlide = "";
+      this._currentItem = "";
       course_changed.fire();
 
   }
@@ -421,6 +532,16 @@ class AppObjects {
   set currentSubject(value) {
     this._currentSubject = value;
   }
+
+  get currentItem(){
+    return this._currentItem;
+  }
+
+  set currentItem(value) {
+    this._currentItem = value;
+    Item_changed.fire();
+  }
+
   addNewCourse(newC){
     this.c_list.push(newC);
   }
@@ -468,6 +589,33 @@ class AppObjects {
     return slide_id;
   }
 
+  addNewItem(item, itemArr, typeChar) {
+
+    let item_id = "";
+    let _addons = null;
+
+    let _currentSlideObj = this.getCurrentSlideObj();
+
+    if (_currentSlideObj) {
+      
+      item_id = get_ItemId(this.currentSlide, itemArr, typeChar);
+
+      // data object to be build
+      _addons = new Item(item_id, item.Name, item.Action, item.dataObj);
+
+      _currentSlideObj.Items.push(_addons);
+
+
+    }
+    
+    return _addons;
+    
+  }
+ 
+  getCurrentItem(){
+    return this.getCurrentSlideObj().Items.find(item => item.id == this.currentItem);
+  }
+
   removeSlide(s_id){
     this.getScene().slides = this.getScene().slides.filter( slide => slide.id != s_id);
   }
@@ -490,6 +638,16 @@ class AppObjects {
   getSlides(_sid = this.currentScene) {
     return Scenes.find( item => item.id == _sid)?.slides;
   }
+
+  getCurrentSlideObj( sl_id = this.currentSlide) {
+    return this.getScene().slides.find(slide => slide.id == sl_id);
+  }
+
+  removeItem(item_id) {
+    let slide = this.getCurrentSlideObj();
+    slide.Items = slide.Items.filter( item => item.id != item_id);
+  }
+
   getCourseDesc(_id = this.currentCourse){
       let desc = this.c_list.find(cu => cu.id == _id)?.Description;
       if (desc) return desc;

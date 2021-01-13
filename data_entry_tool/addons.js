@@ -167,69 +167,6 @@ class TextWordArray {
     }
   }
   
-  // Config and Library Object
-  
-  class ProjectLibrary {
-    constructor() {
-        this.times = [];
-        this.characters = [];
-        this.avatarPics = []; //{PicLink,Id,name}
-        this.animationObjects = [];
-        this.locations = [];
-        this.backgrounds = [];
-  
-        this.slideTransitions = [] // research needed {animation video link,id,name}
-        this.animationTypes = []; //Move, change color, scale, ...(need research)
-        this.WordsArrayShowTypes = [] //flash-cards, dialog-cards, oneByone-showingFromSide, oneByone-showingFromUp, floating-word
-        this.FeedbackTypes = []; //sound-sendFile, sound-record, text-typing, text-hand-writing, video-sendFile, video-record, online-oneToOne, online-class
-    }
-  }
-  
-  class CharacterObj {
-    constructor(characterId, name, avatarPiclink, description) {
-        this.id = characterId;
-        this.name = name;
-        this.picLink = avatarPiclink;
-        this.description = description;
-    }
-  }
-  
-  class aniObject {
-    constructor(aniObjId, name, description) {
-        this.id = aniObjId;
-        this.name = name;
-        this.description = description;
-    }
-  }
-  
-  
-  class LocationObj {
-    constructor(locationId, name, description) {
-        this.id = locationId;
-        this.name = name;
-        this.description = description;
-    }
-  }
-  
-  class BackgroundObj {
-    constructor(backgroundId, name, description, animationDes, soundEffectDes) {
-        this.id = backgroundId;
-        this.name = name;
-        this.description = description;
-        this.animationDes = animationDes;
-        this.soundEffectDes = soundEffectDes;
-    }
-  }
-  
-  class WordsArrayShowTypeObj {
-    constructor(WordArrSTId, typeNameArabic, typeNameEnglish, LinkToAnifile) {
-        this.Id = WordArrSTId;
-        this.typeNameArabic = typeNameArabic;
-        this.typeNameEnglish = typeNameEnglish;
-        this.filename = LinkToAnifile;
-    }
-  
-  }
 
   //every ObjectiveObj save one element and one skill.
 class ObjectivesList {
@@ -255,6 +192,21 @@ class ObjectivesList {
 
 
   
+
+// PlugIns Interfaces Classes (Addons/Quizes) 
+
+//Quizes
+// s_sorting_quiz
+// l_sorting_quiz
+// t_or_f_quiz
+// category_quiz
+// dragdrop_quiz
+// m_choices_quiz
+// fib_quiz
+// h_word_quiz
+// s_question_quiz
+
+
 class SSortingQuiz {
     create(){
       let classLabel=document.createElement("label");
@@ -337,7 +289,206 @@ class SSortingQuiz {
     }
   }
   
+  //Addons
   
+  // (text_addons) or text_read_addons 
+  // text_array_addons
+  // (pic_addons) or drawing_addons
+  // pic_hotspot_addons
+  // (sound_addons) or sound_Effect_addons
+  // table_addons
+  // (video_addons)video_photo_addons/video_slideShow_addons/video_anim_addons/video_Interactive_addons
+  // animation_addons
+  // MemoryGame_addons
+  // Sendto_addons
+  // OnlineOTO_addons
+  // OnlineClass_addons
+  
+  class TextAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="text_addons or text_read_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class TextArrayAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="text_array_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class PicAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="pic_addons Or Drawing_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  
+  
+  class PicHotSpotAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="pic_hotspot_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class SoundAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="sound_addons or sound_Effect_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class tableAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="table_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class VideoAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="video_photo_addons/video_slideShow_addons/video_anim_addons/video_Interactive_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class AnimationAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="animation_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class MemoryGameAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="MemoryGame_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class SendToAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="Sendto_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class OnineOTOAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="OnlineOTO_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class OnineClassAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="OnlineClass_addons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  
+  //General
+  // AnimSlideTrans_GAaddons
+  // Question_title_GAddons
+  // Question_hint_GAddons
+  // Previous_link_GAddons
+  // Objectives_GAddons
+  // TestTime_GAddons
+  // qustion_score_GAddons
+  
+  
+  class AnimSlideTransGAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="AnimSlideTrans_GAddons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class QuestionTitleGAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="Question_title_GAddons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class QuestionHitGAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="Question_hint_GAddons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class PreviousLinkGAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="Previous_link_GAddons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class ObjectivesGAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="Objectives_GAddons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class TestTimeGAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="TestTime_GAddons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+  
+  class QuestionScoreGAddons {
+    create(){
+      let classLabel=document.createElement("label");
+      classLabel.textContent="qustion_score_GAddons";
+      classLabel.classList.add("label-class");
+      return classLabel;
+    }
+  }
+
+
 
 // Add PlugIns Interface Variables (Addons/Quizes) 
 
@@ -683,7 +834,7 @@ let Quiz_DObj = {
     name: 'Quiz_DObj',
     exec: function(TypeArgs) {
   
-      let quizId="quiz_Id" //Generate ID function
+      let quizId= TypesArgs.id + "C"; //quiz_Id" //Generate ID function
       let quizType=TypeArgs
       let slideLink=""
         return new Quiz(quizId,quizType,slideLink);
@@ -711,7 +862,7 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
       
       // mediaId, text, type
-     let mediaId = "media_Id"; //Generate media Id
+     let mediaId = TypeArgs.id + "C1";//"media_Id"; //Generate media Id
      let text = "";
      let mediatype ="";    
   
@@ -728,7 +879,7 @@ let Quiz_DObj = {
   
        // textArrayId, showTypeId, hasSound
       
-       let textArrayId = "textArray_id"; //Generate Id
+       let textArrayId =  TypeArgs.id + "C2"; // textArray_id"; //Generate Id
        let showTypeId = "";
        let hasSound = false;
   
@@ -744,7 +895,7 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
   
       // picHotSpotId, mediaObj
-      let picHotSpotId="picHoteSpotId_id"; //Generate Id
+      let picHotSpotId=  TypeArgs.id + "C3" //picHoteSpotId_id"; //Generate Id
       let mediaObj="";
       
         return new PicWithHotSpot(picHotSpotId,mediaObj);
@@ -757,7 +908,7 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
   
       // tableId
-      let tableId = "table_id"; //Generate Id
+      let tableId = TypeArgs.id + "C4" //"table_id"; //Generate Id
         return new TableObj(tableId);
         
     }
@@ -768,7 +919,7 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
   
       // videoId, videoType
-      let videoId = "video_id"; //Generate Id
+      let videoId =  TypeArgs.id + "C5"; //"video_id"; //Generate Id
       let videoType="";
       
         return new VideoObj(videoId,videoType);
@@ -781,8 +932,8 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
   
       // aniId, backgroundId
-      let aniId = "ani_id"; //Generate Id
-      let backgroundId="";
+      let aniId =  TypeArgs.id + "C6"; //"ani_id"; //Generate Id
+      let backgroundId ="";
       
         return new AnimationClipObj(aniId,backgroundId);
         
@@ -794,7 +945,7 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
   
       // memoryGameId
-      let memoryGameId="memoryGame_id"; //Generate Id
+      let memoryGameId = TypesArgs.id + "C7";//"memoryGame_id"; //Generate Id
       
         return new MemoryGame(memoryGameId);
         
@@ -806,7 +957,7 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
   
       // feedbackId, feedbackType
-      let feedbackId="feedback_id"; //Generate Id
+      let feedbackId= TypesArgs.id + "C8"; //"feedback_id"; //Generate Id
       let feedbackType="";
         return new Feedback(feedbackId,feedbackType);
         
@@ -818,7 +969,7 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
   
       // slideTransId, name,movieLink
-      let slideTransId="slideTransition_id"; //Generate Id
+      let slideTransId= TypesArgs.id + "C9"; //"slideTransition_id"; //Generate Id
       let name = "";
       let movieLink="";
         return new SlideTransitionObj(slideTransId,name,movieLink);
@@ -831,7 +982,7 @@ let Quiz_DObj = {
     exec: function(TypeArgs) {
   
       // objectiveListId
-      let objectiveListId="objectiveList_id"; //Generate Id
+      let objectiveListId=  TypeArgs.id + "C10"; //"objectiveList_id"; //Generate Id
       
         return new ObjectivesList(objectiveListId);
         

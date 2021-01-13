@@ -837,10 +837,33 @@ color:#ffffff;
     background-color: rgb(255, 49, 49);
 }
 
-.small-close:after {
+.small-close:after,
+.small-close--items:after  {
     content: '✖';
 }
 
+.small-close--items {
+  position: absolute;
+  appearance: none;
+  background-color: transparent;
+  color: #D32F2F;
+  top: 0;
+  left: 0;
+  padding: 0 3px;
+  margin: 5px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 20%;
+  outline: none;
+  transition: background-color .3s;
+}
+
+.small-close--items:hover{
+  text-decoration: underline;
+
+}
+/*********************************************************/
 .buttons-in-list:hover {
   background-color: rgb(245, 247, 255);
 }
@@ -1144,8 +1167,8 @@ input:-webkit-autofill:focus {
   grid-template:
   "info info info info info info info info info info" minmax(6%, 7%)
   "ins  ins  ins  ins  ins  ins  ins  ins  ins  ins" minmax(14%, 14%)
-  "item inp  inp  inp  inp  inp  inp  inp  inp  sd" minmax(50%, auto)
-  "item d-p  d-p  d-p  d-p  d-p  sd-p sd-p sd-p sd" minmax(30%, auto)
+  "item main main main main main main main main  sd" minmax(50%, auto)
+  
          / 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   margin-top: -4rem;
   width: 100%;
@@ -1153,7 +1176,7 @@ input:-webkit-autofill:focus {
  }
 
 
-
+/* 
 .interface__data-input {
   grid-area: inp;
   align-self: center;
@@ -1169,7 +1192,7 @@ input:-webkit-autofill:focus {
   grid-area: sd-p;
   align-self: center;
 
-}
+} */
 
 
 /* Info Section */
@@ -1423,28 +1446,48 @@ overflow: hidden;
 
 .buttons-in-item-menu {
   appearance: none;
-  background-color: #167070;
+  background-color: #ecf0f1;
   border: 2px solid #2fa091;
   font-family: 'Almarai', sans-serif;
-  color:#fafafa;
+  color:#167070;
   width: 100%;
   border-radius: .25rem;
-  text-align: center;
+   text-align: center;
   font-size: 1rem;
   line-height: 1rem;
   padding: 10px;
   cursor: pointer;
   outline: none;
   margin: 4px;
-  transition: background-color .3s;
+  position: relative;
+  transition: all ease-out .3s;
+}
+.buttons-in-item-menu i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1.25rem;
+}
+
+
+.buttons-in-item-menu:hover
+ {
+  background-color: #105f5f;
+  color: #fafafa;
+  
+
+}
+.buttons-in-item-menu:active {
+  background-color: #2f7e7e;
+  color: #e2e0e0;
 }
 
 .buttons-q-in-item-menu {
   appearance: none;
-  background-color: #fe6625;
+  background-color:  #ecf0f1;
   border: 2px solid #e96025;
   font-family: 'Almarai', sans-serif;
-  color:#fafafa;
+  color:#fe6625;
   width: 100%;
   border-radius: .25rem;
   text-align: center;
@@ -1454,19 +1497,34 @@ overflow: hidden;
   cursor: pointer;
   outline: none;
   margin: 4px;
-  transition: background-color .3s;
+  transition: all ease-out .3s;
 }
-.buttons-in-item-menu:hover,
-.buttons-in-item-menu:active {
-  background-color: #167070ce;
+
+.buttons-q-in-item-menu i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1.5rem;
+}
+
+.buttons-q-in-item-menu:hover
+{
+  background-color:#e96025;
+  color: #e2e0e0;
 
 }
 
-.buttons-q-in-item-menu:hover,
-.buttons-q-in-item-menu:active {
-  background-color:#fe6625cc;
+.buttons-q-in-item-menu:active  {
+  background-color:#ee7b4a;
+  color: #e2e0e0;
 
 }
+
+.icon-name {
+  font-size:   .8rem;;
+  padding-left: 25px;
+}
+
 .menu-footer {
 
  
@@ -1617,6 +1675,15 @@ overflow: hidden;
 .diagram-slides:hover,
 .buttons-in-slide-menu:hover {
   color: rgb(251, 50, 101);
+}
+
+
+/* Interface View */
+
+.interface__view {
+  grid-area: main;
+  
+  /* align-self: center; */
 }
 
 /* Toast Msgs styling */

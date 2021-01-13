@@ -90,6 +90,9 @@ const scene_title = document.getElementById('info_scene-title');
 const slide_container = document.getElementById('id-slide-menu');
 const add_new_slide_btn = document.getElementById('add-new-slide');
 
+const itemsButtons_container = document.getElementById('id-item-menu');
+
+const interfaceContainer = document.getElementById("interface-container");
 
 // Toast Msgs
 
@@ -126,7 +129,7 @@ var Scene_change = new Observable();
 var Slide_add = new Observable();
 var Slide_change = new Observable();
 var Icon_add = new Observable();
-var Item_change = new Observable();
+var Item_changed = new Observable();
 var Template_save = new Observable();
 var AddonsQuiz_add = new Observable();
 
@@ -1081,10 +1084,11 @@ function slides_container_handler(id){
 
       console.log('id => ' + id);
 
-
-      activateAfterDelete(_courses.getSlides(), id);
+       activateAfterDelete(_courses.getSlides(), id);
       _courses.removeSlide(id);
+      if (_courses.getSlides().length == 0)  _courses.currentSlide = "";
 
+      
   }
 
 }
@@ -1547,16 +1551,40 @@ function get_slideId(sId){
   let cScene =  Scenes.find( item => item.id == sId);
   
   if (cScene.slides?.length > 0) {
-    // console.log('map?? ' + cScene.slides[0].id.substring(cScene.slides[0].id.indexOf("SL") + 2, cScene.slides[0].id.length ));
 
     slides = cScene.slides.map( slide =>  slide.id.substring(slide.id.indexOf("SL") + 2, slide.id.length ));
     id_slide = Math.max(...slides) + 1;
    
   }
     
-    // console.log("id_slide " +id_slide);
     return  sId + "SL" + id_slide;
 }
+
+function get_ItemId(slideId,itemarray, typeChar){
+
+  let id_item = 1;
+  
+  let cSlide =  _courses.getSlides()?.find( slide => slide.id == slideId);
+  
+  
+  if (cSlide[itemarray]?.length > 0) {
+
+    let items = cSlide[itemarray].map( function (item) {
+    
+      if (item.id.indexOf(typeChar) != -1 ) {
+          return item.id.substring(item.id.indexOf(typeChar) + typeChar.length, item.id.length );
+      }else return 0;
+      
+    });
+    id_item = Math.max(...items) + 1;
+   
+    
+  }
+    
+    
+    return  slideId + typeChar + id_item;
+}
+
 // Add new item to the list (includes subjects, modules, lessons, skills, scene types)
 function addNewItems(txt, id_c, lst_type, added) {
   
@@ -1678,6 +1706,130 @@ function clearSubjectsTab2(){
 
 //#endregion
 ////////////////////////
+
+
+
+// create Factory & Register PlugIns (Addons/Quizes) for view
+var viewFactory = new RegisterPressFactory();
+
+
+// create Factory & Register PlugIns (Addons/Quizes) for view
+// var viewFactory = new RegisterPressFactory();
+
+//Quizes
+// s_sorting_quiz
+// l_sorting_quiz
+// t_or_f_quiz
+// category_quiz
+// dragdrop_quiz
+// m_choices_quiz
+// fib_quiz
+// h_word_quiz
+// s_question_quiz
+
+viewFactory.register(s_sorting_quiz);
+viewFactory.register(l_sorting_quiz);
+viewFactory.register(t_or_f_quiz);
+viewFactory.register(category_quiz);
+viewFactory.register(dragdrop_quiz);
+viewFactory.register(m_choices_quiz);
+viewFactory.register(fib_quiz);
+viewFactory.register(h_word_quiz);
+viewFactory.register(s_question_quiz);
+
+//Addons
+
+// (text_addons)
+// text_read_addons 
+// text_array_addons
+// (pic_addons) 
+// drawing_addons
+// pic_hotspot_addons
+// (sound_addons) 
+// sound_Effect_addons
+// table_addons
+// (video_photo_addons)
+//video_slideShow_addons
+//video_anim_addons
+//video_Interactive_addons
+// animation_addons
+// MemoryGame_addons
+// Sendto_addons
+// OnlineOTO_addons
+// OnlineClass_addons
+
+viewFactory.register(text_addons);
+viewFactory.register(text_read_addons);
+
+viewFactory.register(text_array_addons);
+viewFactory.register(pic_addons);
+viewFactory.register(drawing_addons);
+
+viewFactory.register(pic_hotspot_addons);
+viewFactory.register(sound_addons);
+viewFactory.register(sound_Effect_addons);
+
+viewFactory.register(table_addons);
+viewFactory.register(video_photo_addons);
+viewFactory.register(video_slideShow_addons);
+viewFactory.register(video_anim_addons);
+viewFactory.register(video_Interactive_addons);
+
+viewFactory.register(animation_addons);
+viewFactory.register(MemoryGame_addons);
+viewFactory.register(Sendto_addons);
+viewFactory.register(OnlineOTO_addons);
+viewFactory.register(OnlineClass_addons);
+
+
+//General
+// AnimSlideTrans_GAaddons
+// Question_title_GAddons
+// Question_hint_GAddons
+// Previous_link_GAddons
+// Objectives_GAddons
+// TestTime_GAddons
+// qustion_score_GAddons
+viewFactory.register(AnimSlideTrans_GAaddons);
+viewFactory.register(Question_title_GAddons);
+viewFactory.register(Question_hint_GAddons);
+viewFactory.register(Previous_link_GAddons);
+viewFactory.register(Objectives_GAddons);
+viewFactory.register(TestTime_GAddons);
+viewFactory.register(qustion_score_GAddons);
+
+
+
+// create Factory & Register PlugIns (Addons/Quizes) for Data
+var dataItemsFactory = new RegisterPressFactory();
+
+///Quizes
+// Quiz (Quiz_DObj)
+dataItemsFactory.register(Quiz_DObj);
+
+
+///Addons & GA Addons
+// mediaObjData (mediaObjData_DObj)
+// TextWordArray (TextWordArray_DObj)
+// PicWithHotSpot (PicWithHotSpot_DObj)
+// TableObj (TableObj_DObj)
+// VideoObj (VideoObj_DObj)
+// AnimationClipObj (AnimationClipObj_DObj)
+// MemoryGame (MemoryGame_DObj)
+// Feedback (Feedback_DObj)
+//SlideTransitionObj (SlideTransitionObj_DObj)
+// ObjectiveObj (ObjectiveObj_DObj)
+
+dataItemsFactory.register(mediaObjData_DObj);
+dataItemsFactory.register(TextWordArray_DObj);
+dataItemsFactory.register(PicWithHotSpot_DObj);
+dataItemsFactory.register(TableObj_DObj);
+dataItemsFactory.register(VideoObj_DObj);
+dataItemsFactory.register(AnimationClipObj_DObj);
+dataItemsFactory.register(MemoryGame_DObj);
+dataItemsFactory.register(Feedback_DObj);
+dataItemsFactory.register(SlideTransitionObj_DObj);
+dataItemsFactory.register(ObjectivesList_DObj);
 
 
 //#region  Fill lists Tab1 and Tab2
@@ -1951,7 +2103,7 @@ function fillAddonsLst(){
 
       addOns.forEach( addon => {
 
-          createIcons(addons_list, addon);
+          createIconsAddons(addons_list, addon);
       });
 
   }
@@ -1964,7 +2116,7 @@ function fillQuizLst(){
     if (quizs.length > 0) {
 
       quizs.forEach( q => {
-        createIcons(quiz_list, q);
+        createIconsQuiz(quiz_list, q);
     });
   }
 }
@@ -1976,13 +2128,87 @@ function fillGenAddonsLst(){
   if (gaddons.length > 0) {
 
         gaddons.forEach( Ga => {
-        createIcons(gaddons_list, Ga);
+        createIconsGenAddons(gaddons_list, Ga);
       });
 
   }
 }
 
-function createIcons(lst, item) {
+function createIconsAddons(lst, item) {
+  
+
+  let newItem = createIconHTML(item);
+
+  newItem.addEventListener("click", () => {
+      console.log(item.Action);
+      
+          let _currentItem = _courses.addNewItem(item, "Items", 'I');
+          
+          if (_currentItem?.id.length > 0) {
+              
+              createItemHTML(_currentItem);
+
+              // Add addons button
+
+              _courses.currentItem = _currentItem.id;
+              console.log('item has been saved in the slide ... Item Id : ' + _currentItem);
+
+          }else {
+            showError(` Addon ${item.Name} could not be added!`);
+          }
+      
+  })
+
+  lst.appendChild(newItem);
+}
+
+
+function createIconsGenAddons(lst, item) {
+  
+
+  let newItem = createIconHTML(item);
+
+  newItem.addEventListener("click", () => {
+      console.log(item.Action); 
+      
+      
+  })
+
+  lst.appendChild(newItem);
+}
+
+function createIconsQuiz(lst, item) {
+  
+
+  let newItem = createIconHTML(item);
+
+  newItem.addEventListener("click", () => {
+      console.log(item.Action);
+      
+          let _currentItem = _courses.addNewItem(item, "Items", 'Q');
+          console.log('_currentItem ' + _currentItem);
+          if (_currentItem?.id.length > 0) {
+              
+              createItemHTML(_currentItem);
+
+              // Add addons button
+
+              _courses.currentItem = _currentItem.id;
+              console.log('item has been saved in the slide ... Item Id : ' + _currentItem);
+
+          }else {
+            showError(` Addon ${item.Name} could not be added!`);
+          }
+      
+  })
+
+  lst.appendChild(newItem);
+}
+
+
+
+
+function createIconHTML (item){
   
   let newItem = document.createElement("li");
   let text = document.createElement("span");
@@ -1990,27 +2216,91 @@ function createIcons(lst, item) {
 
 
 
-  newIcon.className = item.icon;
+  newIcon.className = item.Icon;
 
-  text.className = "icon-name";
-  text.textContent = item.text;
+  // text.className = "icon-name";
+  text.textContent = item.Text;
 
-  newItem.dataset.addon_name = item.name;
+  newItem.dataset.addon_name = item.Name;
 
 
   newItem.appendChild(newIcon);
   newItem.appendChild(text);
 
-  newItem.addEventListener("click", () => {
-      console.log(item.action);
-  })
-
-  lst.appendChild(newItem);
+  return newItem;
 }
 //#endregion
 
 
+function createItemHTML(item) {
 
+  let wrapper = document.createElement("div");
+  wrapper.className = "item-menu-buttons-wrapper";
+
+  
+  const item_button = document.createElement("button");
+  item_button.type = "button";
+  
+  
+  // item_button.id = item.id;
+  let addonsFromArr = null;
+
+  
+
+  if (item.id.includes('I')) {
+      item_button.className = "buttons-in-item-menu";
+      addonsFromArr = addOns.find( _addons => _addons.Name == item.name);
+  }else {
+      item_button.className = "buttons-q-in-item-menu";
+      addonsFromArr = quizs.find( _addons => _addons.Name == item.name);
+  }
+
+  for(keys in addonsFromArr) {
+    console.log('keys => ' + keys + "  Value = " + addonsFromArr[keys]);
+    console.log(addonsFromArr.constructor.name);
+  }
+  console.log('addonsFromArr ' + typeof(addonsFromArr))  ;
+  
+  let Item_text = document.createElement("span");
+  let Item_icon = document.createElement("i");
+  
+  Item_icon.className = addonsFromArr.Icon; //|| addonsFromArr.getAddonsIcon();
+  Item_text.className = "icon-name";
+  Item_text.textContent = addonsFromArr.Text;  //prototype.getAddonsText() || addonsFromArr.getAddonsText();
+
+  item_button.dataset.itemId = item.id;
+  item_button.appendChild(Item_icon);
+  item_button.appendChild(Item_text);
+  
+  item_button.addEventListener('click', function (e){
+    //e.stopPropagation();
+    if (_courses.currentItem != e.currentTarget.dataset.itemId)
+        _courses.currentItem = e.currentTarget.dataset.itemId;
+  });
+  
+  const close_button = document.createElement("button");
+  close_button.type = "button";
+  close_button.className = "small-close--items";
+  close_button.id = item.id;
+
+  close_button.addEventListener('click', function (e) {
+    e.preventDefault(); 
+    e.stopImmediatePropagation();
+     
+     itemsButtons_container.removeChild(e.target.parentNode);
+     // remove from slide items array
+     _courses.removeItem(e.target.id);
+
+     // change the current item
+    }
+  );
+  
+
+  wrapper.appendChild(item_button);
+  wrapper.appendChild(close_button);
+
+  itemsButtons_container.appendChild(wrapper);
+}
 
 // Select Module - and filter the lessons based on it
 lst_modules_tab2.addEventListener("change", () => {
@@ -2027,7 +2317,6 @@ function module_changedHandler_tab2() {
   
   // clearLessonsTab2();
   
-  // _courses.currnetLesson = null;
 
   fillLessonsTab2(_courses.getLessons(_courses.currentModule));
   clearScenesLst();
@@ -2347,10 +2636,12 @@ function activateAfterDelete(arrObj, _id){
   if (currentId_index  >= 0) {
 
     let lastId = "";
-    if ((currentId_index - 1) > 0) 
-        lastId = arrObj[currentId_index - 1];
-    else
+    if ((currentId_index - 1) < 0) 
+        lastId = arrObj[1];
+    else if ((currentId_index - 1) == 0) 
         lastId = arrObj[0];
+    else
+        lastId = arrObj[currentId_index - 1];
 
 
     let requiredId =  lastId.subjectID || lastId.LessonID || lastId.ModuleID || lastId.id;
@@ -2365,6 +2656,21 @@ function activateAfterDelete(arrObj, _id){
   }
 
   
+}
+
+function activateFirstItem(){
+
+  if (_courses.getCurrentSlideObj().Items?.length > 0) {
+    let requiredId = _courses.getCurrentSlideObj().Items[0].id;
+
+    if (requiredId) {
+      let HTMLElement = document.body.querySelector(`[data-item-id="${requiredId}"]`);
+      if (HTMLElement) {
+          HTMLElement.focus();
+          HTMLElement.click();
+      }
+    }
+  }
 }
 
 //***************************************************** */
@@ -2387,6 +2693,8 @@ Scene_change.subscribe(scene_changeHandler_tab2);
 // Slide_add.subscribe(Fill_Interface);
 
 Slide_change.subscribe(Fill_ItemsMenu);
+
+Item_changed.subscribe(Fill_Interface);
 
 // Slide_change.subscribe(Fill_Interface);
 // Item_change.subscribe(Fill_Interface);
@@ -2419,42 +2727,74 @@ function Fill_SlideMenu(){
   // clear the slide menu
   removeAllChildNodes(slide_container);
 
-  let slides = _courses.getSlides();
+  if (_courses.currentScene) {
 
-  if (slides) {
+    
+    let slides = _courses.getSlides();
 
-      // add the stored scene slides into the slide menu
-      slides.forEach ( slide => {
+    if (slides) {
 
-        slide_container.appendChild(addNewSlideLstBtn(slide.id));
+        // add the stored scene slides into the slide menu
+        slides.forEach ( slide => {
+
+          slide_container.appendChild(addNewSlideLstBtn(slide.id));
 
 
-      });
+        });
 
-      // a new Scene which has no slides yet
-      if (slides.length == 0){
-        
-        let newSlideId = _courses.addNewSlide();
-        if (newSlideId)
-            slide_container.appendChild(addNewSlideLstBtn(newSlideId));
-        
+        // a new Scene which has no slides yet
+        if (slides.length == 0){
+          
+          let newSlideId = _courses.addNewSlide();
+          if (newSlideId)
+              slide_container.appendChild(addNewSlideLstBtn(newSlideId));
+          
 
-      }
+        }
 
-      // Activate the first slide
-      activateFirstBtn(slides);
-  }
-   
+        // Activate the first slide
+        activateFirstBtn(slides);
+    }
+    
   
-
+}
 
 }
 function Fill_ItemsMenu(){
   console.log("Fill ItemsMenu");
+  removeAllChildNodes(itemsButtons_container);
+  _courses.currentItem = "";
+  if (_courses.currentSlide) {
+
+      
+      _courses.getCurrentSlideObj().Items?.forEach( function(item) {
+
+      createItemHTML(item);
+
+      activateFirstItem();
+
+    });
+    
+  }
   // implement the Fill Item Menu Code.
 }
 function Fill_Interface(){
+
+  //clear interface view from any previous session
+  removeAllChildNodes(interfaceContainer);
   console.log("Fill Interface");
+
+  if (_courses.currentItem) {
+    console.log("Interface Action Clicked" + _courses.getCurrentItem().viewAction);
+    interfaceContainer.innerHTML="";
+    let newItem = viewFactory.press(_courses.getCurrentItem().viewAction);
+    console.log(newItem.create());
+    interfaceContainer.appendChild(newItem.create());
+  }
+
+  
+
+  
   // implement the Fill Interface Code.
 }
 function Fill_templateList(){
