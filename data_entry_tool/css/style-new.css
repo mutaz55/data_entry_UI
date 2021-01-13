@@ -1379,7 +1379,7 @@ overflow: hidden;
   background-color: #fafafa;
   text-align: right;
   color: #666;
-  padding: 10px 9px 0px 0px;
+  padding: 6px 9px 0px 0px;
   overflow-y: scroll;
 }
 
@@ -1391,9 +1391,10 @@ overflow: hidden;
 }
 
 .g-addons--container ul li{
-  padding-bottom: 6px;
+  padding: 3px;
   font-size: 1rem;
   font-weight: 600;
+  
 } 
 
 .g-addons--container ul li i:before{
@@ -1402,6 +1403,12 @@ overflow: hidden;
   transition: all .4s;
 }
 
+.g-addons--selected {
+    /* color: #FF5722;
+    background-color: #EEEEEE; */
+    color: #29769c;
+
+}
 .item-menu__items {
   height: 80%;
 }

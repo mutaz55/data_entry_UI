@@ -601,7 +601,8 @@ class AppObjects {
       item_id = get_ItemId(this.currentSlide, itemArr, typeChar);
 
       // data object to be build
-      _addons = new Item(item_id, item.Name, item.Action, item.dataObj);
+
+      _addons = new Item(item_id, item.Name, item.Action, dataItemsFactory.press(item.dataObj, {id:item_id, Type:item.Name }));
 
       _currentSlideObj.Items.push(_addons);
 
@@ -611,9 +612,37 @@ class AppObjects {
     return _addons;
     
   }
- 
+  addNewGenItem(item) {
+
+    let gItem_id = "";
+    let _gAddons = null;
+
+    let _currentSlideObj = this.getCurrentSlideObj();
+
+    if (_currentSlideObj) {
+      
+      gItem_id = get_ItemId(this.currentSlide, 'GenItems', 'G');
+
+      // data object to be build
+
+      _gAddons = new Item(gItem_id, item.Name, item.Action, dataItemsFactory.press(item.dataObj, {id:gItem_id, Type:item.Name }));
+
+      _currentSlideObj.GenItems.push(_gAddons);
+
+
+    }
+    
+    return _gAddons;
+    
+  }
   getCurrentItem(){
-    return this.getCurrentSlideObj().Items.find(item => item.id == this.currentItem);
+    let itemObj = this.getCurrentSlideObj().Items.find(item => item.id == this.currentItem) || 
+                  this.getCurrentSlideObj().GenItems.find(gItem => gItem.id == this.currentItem);
+    return itemObj;
+  }
+
+  getItems(){
+    return this.getCurrentSlideObj().Items;
   }
 
   removeSlide(s_id){

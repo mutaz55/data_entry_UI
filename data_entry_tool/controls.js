@@ -1082,7 +1082,6 @@ function slides_container_handler(id){
 
   if (removeBtnFromLst(slide_container, id)) {
 
-      console.log('id => ' + id);
 
        activateAfterDelete(_courses.getSlides(), id);
       _courses.removeSlide(id);
@@ -1790,7 +1789,7 @@ viewFactory.register(OnlineClass_addons);
 // Objectives_GAddons
 // TestTime_GAddons
 // qustion_score_GAddons
-viewFactory.register(AnimSlideTrans_GAaddons);
+viewFactory.register(AnimSlideTrans_GAddons);
 viewFactory.register(Question_title_GAddons);
 viewFactory.register(Question_hint_GAddons);
 viewFactory.register(Previous_link_GAddons);
@@ -2171,7 +2170,28 @@ function createIconsGenAddons(lst, item) {
   newItem.addEventListener("click", () => {
       console.log(item.Action); 
       
-      
+
+      if (newItem.classList.contains('g-addons--selected')) {
+      // the genItem is already exist  
+         if (_courses.currentItem != newItem.dataset.id)
+            _courses.currentItem = newItem.dataset.id;
+      }else {
+      // create a new genItem
+        console.log('create new');
+        let _currentGenItem = _courses.addNewGenItem(item);
+
+        if (_currentGenItem?.id.length > 0) {
+            
+            newItem.classList.add('g-addons--selected');
+            _courses.currentItem = _currentGenItem.id;
+            console.log('Gen item has been saved in the slide ... GenItem Id : ' + _currentGenItem);
+
+        }else {
+          showError(` GenAddon ${item.Name} could not be added!`);
+        }
+        
+      }
+      //let _currentGItem  = _courses.addNewItem(item, "Items", 'Q');
   })
 
   lst.appendChild(newItem);
@@ -2287,11 +2307,14 @@ function createItemHTML(item) {
     e.preventDefault(); 
     e.stopImmediatePropagation();
      
+    activateAfterDelete2(_courses.getItems(), e.target.id);
      itemsButtons_container.removeChild(e.target.parentNode);
      // remove from slide items array
      _courses.removeItem(e.target.id);
+     if (_courses.getItems().length == 0) _courses.currentItem = "";
 
-     // change the current item
+
+
     }
   );
   
@@ -2630,24 +2653,63 @@ function activateAfterDelete(arrObj, _id){
   
   if (arrObj?.length <= 0) return;
   if (_id != _courses.currentSlide) return;
+  
+  
 
-  let currentId_index = arrObj.findIndex( slideId => slideId.id == _id);
+  let currentId_index = arrObj.findIndex( arrObjItem => arrObjItem.id == _id);
 
   if (currentId_index  >= 0) {
 
     let lastId = "";
-    if ((currentId_index - 1) < 0) 
+    if (((currentId_index - 1) < 0) &&  (arrObj[1]))
         lastId = arrObj[1];
     else if ((currentId_index - 1) == 0) 
         lastId = arrObj[0];
-    else
+    else if ((currentId_index - 1) > 0) 
         lastId = arrObj[currentId_index - 1];
+    else return;
 
 
-    let requiredId =  lastId.subjectID || lastId.LessonID || lastId.ModuleID || lastId.id;
+    let requiredId =  lastId.id;
   
     if (requiredId) {
       let HTMLElement = document.getElementById(requiredId);
+      if (HTMLElement) {
+          HTMLElement.focus();
+          HTMLElement.click();
+      }
+    }
+  }
+
+  
+}
+
+
+function activateAfterDelete2(arrObj, _id){
+  
+  if (arrObj?.length <= 0) return;
+  if (_id != _courses.currentItem) return;
+  
+  
+
+  let currentId_index = arrObj.findIndex( arrObjItem => arrObjItem.id == _id);
+
+  if (currentId_index  >= 0) {
+
+    let lastId = "";
+    if (((currentId_index - 1) < 0) &&  (arrObj[1]))
+        lastId = arrObj[1];
+    else if ((currentId_index - 1) == 0) 
+        lastId = arrObj[0];
+    else if ((currentId_index - 1) > 0) 
+        lastId = arrObj[currentId_index - 1];
+    else return;
+
+
+    let requiredId =  lastId.id;
+  
+    if (requiredId) {
+      let HTMLElement = document.body.querySelector(`[data-item-id="${requiredId}"]`);
       if (HTMLElement) {
           HTMLElement.focus();
           HTMLElement.click();
@@ -2775,6 +2837,18 @@ function Fill_ItemsMenu(){
 
     });
     
+    gaddons_list.childNodes.forEach( function (node) {
+       node.classList.remove("g-addons--selected");
+       
+    });
+
+    _courses.getCurrentSlideObj().GenItems.forEach( function (genItem) {
+
+      
+      let HTMLElement = document.body.querySelector(`[data-addon_name="${genItem.name}"]`);
+      HTMLElement.dataset.id = genItem.id;
+      HTMLElement.classList.add("g-addons--selected");
+    });
   }
   // implement the Fill Item Menu Code.
 }
