@@ -28,8 +28,13 @@ var addOns = new Array();
 var quizs = new Array();
 var gaddons = new Array();
 
-var _courses;
+// = new ProjectLibrary();
+var libChanges = new Set();
+var libraryCollections = [ '_times','_characters','_avatarPics','_animationObjects','_locations', '+_backgrounds', 'templates', 
+                           '_slideTransitions', '_animationTypes', '_WordsArrayShowTypes', '_FeedbackTypes'];
 
+var _courses;
+var _projLib;
 // Classes represent the data objects stored in Firebase
 class Settings {
     constructor(id = "none",cCourse = ""){ //, cModule = "", cLesson = "", cScene = "", cSlide = "none", cItem = "none") {
@@ -263,67 +268,80 @@ class mediaObjData {
   
   // Config and Library Object
   
-  class ProjectLibrary {
-    constructor() {
-        this.times = [];
-        this.characters = [];
-        this.avatarPics = []; //{PicLink,Id,name}
-        this.animationObjects = [];
-        this.locations = [];
-        this.backgrounds = [];
-  
-        this.slideTransitions = [] // research needed {animation video link,id,name}
-        this.animationTypes = []; //Move, change color, scale, ...(need research)
-        this.WordsArrayShowTypes = [] //flash-cards, dialog-cards, oneByone-showingFromSide, oneByone-showingFromUp, floating-word
-        this.FeedbackTypes = []; //sound-sendFile, sound-record, text-typing, text-hand-writing, video-sendFile, video-record, online-oneToOne, online-class
-    }
+class ProjectLibrary {
+  constructor() {
+      this.times = [];
+      this.characters = [];
+      this.avatarPics = []; //{PicLink,Id,name}
+      this.animationObjects = [];
+      this.locations = [];
+      this.backgrounds = [];
+      this.templates=[];
+      this.slideTransitions = [] // research needed {animation video link,id,name}
+      this.animationTypes = []; //Move, change color, scale, ...(need research)
+      this.WordsArrayShowTypes = [] //flash-cards, dialog-cards, oneByone-showingFromSide, oneByone-showingFromUp, floating-word
+      this.FeedbackTypes = []; //sound-sendFile, sound-record, text-typing, text-hand-writing, video-sendFile, video-record, online-oneToOne, online-class
   }
-  
-  class CharacterObj {
-    constructor(characterId, name, avatarPiclink, description) {
-        this.id = characterId;
-        this.name = name;
-        this.picLink = avatarPiclink;
-        this.description = description;
-    }
+}
+
+class CharacterObj {
+  constructor(characterId, name, avatarPiclink, description) {
+      this.id = characterId;
+      this.name = name;
+      this.picLink = avatarPiclink;
+      this.description = description;
   }
-  
-  class aniObject {
-    constructor(aniObjId, name, description) {
-        this.id = aniObjId;
-        this.name = name;
-        this.description = description;
-    }
+}
+
+class aniObject {
+  constructor(aniObjId, name, description) {
+      this.id = aniObjId;
+      this.name = name;
+      this.description = description;
   }
-  
-  
-  class LocationObj {
-    constructor(locationId, name, description) {
-        this.id = locationId;
-        this.name = name;
-        this.description = description;
-    }
+}
+
+
+class LocationObj {
+  constructor(locationId, name, description) {
+      this.id = locationId;
+      this.name = name;
+      this.description = description;
   }
-  
-  class BackgroundObj {
-    constructor(backgroundId, name, description, animationDes, soundEffectDes) {
-        this.id = backgroundId;
-        this.name = name;
-        this.description = description;
-        this.animationDes = animationDes;
-        this.soundEffectDes = soundEffectDes;
-    }
+}
+
+class BackgroundObj {
+  constructor(backgroundId, name, description, animationDes, soundEffectDes) {
+      this.id = backgroundId;
+      this.name = name;
+      this.description = description;
+      this.animationDes = animationDes;
+      this.soundEffectDes = soundEffectDes;
   }
-  
-  class WordsArrayShowTypeObj {
-    constructor(WordArrSTId, typeNameArabic, typeNameEnglish, LinkToAnifile) {
-        this.Id = WordArrSTId;
-        this.typeNameArabic = typeNameArabic;
-        this.typeNameEnglish = typeNameEnglish;
-        this.filename = LinkToAnifile;
-    }
-  
+}
+
+class WordsArrayShowTypeObj {
+  constructor(WordArrSTId, typeNameArabic, typeNameEnglish, LinkToAnifile) {
+      this.Id = WordArrSTId;
+      this.typeNameArabic = typeNameArabic;
+      this.typeNameEnglish = typeNameEnglish;
+      this.filename = LinkToAnifile;
   }
+
+}
+  
+  
+class Template {
+  constructor(templateId,templateName,SceneType,sceneObj){
+  this.id = templateId;
+  this.name=templateName;
+  this.type=SceneType;
+  this.SceneObj=sceneObj;
+
+  this.toSave = true;
+  }
+}
+
   //(***************************************************)//
 class AddOns {
   // constructor(id, arg) {
@@ -546,7 +564,7 @@ class AppObjects {
     this.c_list.push(newC);
   }
   
-  addNewScene(s_id, seq, title){
+  addNewScene(s_id, seq, stype, title){
 
     SceneHeaders.push(
       new SceneHeader(
@@ -558,7 +576,7 @@ class AppObjects {
         title,
         "",
         seq,
-        "",
+        stype,
         "",
         "",
         true
@@ -576,6 +594,12 @@ class AppObjects {
       sceneH.sceneTitle = title;
       sceneH._changed = true;
   }
+  updateSceneType(stype, _sid = _courses.currentScene) {
+    let sceneH = SceneHeaders.find(sH => sH.sceneID == _sid);
+    sceneH.sceneTypeID = stype;
+    sceneH._changed = true;
+}
+
   addNewSlide(s_id = this.currentScene) {
     let sc = this.getScene();
     
@@ -664,6 +688,19 @@ class AppObjects {
     else return "";
   }
 
+  overwriteScene(temp){
+
+    replaceId(temp.SceneObj['slides'], temp.SceneObj.id);
+    temp.SceneObj.id = this.currentScene;
+    let readyTempObj  = JSON.parse(JSON.stringify(temp.SceneObj));
+    // [...temp.SceneObj.slides];
+    //scene =  JSON.parse(JSON.stringify(temp.SceneObj));
+     Object.assign(Scenes.find( scene => scene.id == this.currentScene), readyTempObj);
+
+    Scene_change.fire();
+  }
+
+  
   getSlides(_sid = this.currentScene) {
     return Scenes.find( item => item.id == _sid)?.slides;
   }
@@ -796,6 +833,40 @@ class Observable{
 
 
 
+function replaceId(arr, _id){
+
+  Array.from(arr).forEach( obj => {
+
+      replaceIdObj(obj, _id);
+
+  });
+  
+  
+}
+
+function replaceIdObj(obj, _id) {
+
+  Object.entries(obj).forEach( ([key, value]) => {
+      console.log(key);
+      if (Array.isArray (value)) {
+          replaceId(value, _id);
+      }
+      else if (key == 'id') {
+          //change id
+          obj.id = obj.id.replace(_id, _courses.currentScene);
+      
+      }else {
+          if (value.hasOwnProperty('id')) {
+              replaceIdObj(value, _id);
+          }
+              
+         
+          
+      }
+
+  });
+
+}
 
 class RegisterPressFactory {
   constructor(){

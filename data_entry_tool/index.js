@@ -10,14 +10,14 @@ var logMsgs = [];
 const saveBtn = document.querySelector("#save-btn");
 // get data from database
 
-document.querySelector("#load-btn").addEventListener("click", (e) => {
-  e.preventDefault();
+// document.querySelector("#load-btn").addEventListener("click", (e) => {
+//   e.preventDefault();
  
   
-  loadDataFromFireStore();
+//   // loadDataFromFireStore();
  
   
-});
+// });
 
 //#region Save Operation
 // save data into database
@@ -73,11 +73,11 @@ saveBtn.addEventListener("click", (event) => {
   // deleteSceneType();
   // // Add new scene types
   // addSceneType();
-
+  addProjLibrary();
   // Check the scene Headers info changes and save them
 
   // save new/changed scenes into DB
-  //addScenes();
+  addScenes();
   //Delete scene Header
   deleteSceneHeader();
   // Add new Scene Header
@@ -185,6 +185,36 @@ function addScenes(){
 
   Promise.all(AllPromises);
 }
+
+function addProjLibrary(){
+
+  let AllPromises = [];
+
+  libChanges.forEach( function (item) {
+
+    let ref = db.collection(item);
+
+
+        _projLib[item].forEach ( (_document) => {
+
+            if (_document.toSave) {
+                _document.toSave = false;
+                AllPromises.push(ref.doc(_document.id).set(JSON.parse(JSON.stringify(_document))));
+            }
+          
+        });
+    
+    
+
+  });
+
+  Promise.all(AllPromises).then(()=>{
+    if (AllPromises.length > 0) console.log('ProjectLibrary saved..!');
+  }).catch(()=> {
+    console.log('Error while saving ProjectLibrary object..!');
+  });
+}
+
 
 function addSceneHeader() {
   SceneHeaders.forEach(function (sH) {
@@ -924,6 +954,7 @@ function loadDataFromFireStore() {
           
         //  addOns.push(_Addons);
             addOns.push(new AddOns(Object.assign(doc.data(), {id: doc.id})));
+            
         }); 
 
 
@@ -998,22 +1029,6 @@ function loadDataFromFireStore() {
       )
   );
 
-  // var docRef_st = db.collection("sceneTypes");
-  // AllPromises.push(
-  //   docRef_st
-  //     .get()
-  //     .then(function (querySnapshot) {
-  //       querySnapshot.forEach(function (doc) {
-  //         SceneTypes.push(
-  //           storeDataLocally(doc.id, doc.data(), "sceneTypes")
-  //         );
-  //         originalSceneTypes.push(
-  //           storeDataLocally(doc.id, doc.data(), "sceneTypes")
-  //         );
-  //       });
-  //     })
-  //     .catch((er) => console.log(er))
-  // );
 
   var docRef_SHeaders = db.collection("sceneHeaders");
 
@@ -1048,64 +1063,50 @@ function loadDataFromFireStore() {
   var docRef_Scenes = db.collection("Scenes");
 
   AllPromises.push(
-    // docRef_Scenes
-    //   .get()
-    //   .then(function (querySnapshot) {
-    //     querySnapshot.forEach(function (doc) {
+    docRef_Scenes
+      .get()
+      .then(function (querySnapshot) {
+
+       querySnapshot.docs.map(function (doc) {
           
-    //       let scene = storeDataLocally(doc.id, doc.data(), "scene");
-          
-    //       let hintObj = doc.data()["exerciseHintObj"];
-    //       if(hintObj) {
-    //         scene.exerciseHintObj = new HintObj(hintObj.id, hintObj.text);
-    //         scene.exerciseHintObj.draggableHint = hintObj.draggableHint;
-    //         scene.exerciseHintObj.previousHelp = new PreviousHelpObj(hintObj["previousHelp"].id, hintObj["previousHelp"].description, hintObj["previousHelp"].fileName);
-            
-    //       }
-        
-    //       if (doc.data()["questions"]) {
-    //           doc.data()["questions"].forEach(function (qu) {
+          let scene = new Scene(doc.id);
+          Object.assign(scene,doc.data());
+          Scenes.push(scene);
 
-    //             let quest = new Question(qu.id);
-
-    //             qu["mediaObjects"].forEach(function (md) {
-
-    //               let mdObj = new MediaObjectData(md.id, md.text, md.filename, md.type);
-
-    //               quest.mediaObjects.push(mdObj);
-
-    //             });
-                
-    //             qu["statementsAnswers"].forEach(function (sAns) {
-
-    //               let stateAns = new statementAnswersObj(sAns.id, sAns.statement);
-
-    //               if (sAns["Answers"]) {
-    //                   sAns["Answers"].forEach( function (ans){
-
-    //                     let answer = new Answers(ans.answerId, ans.answerText, ans.mediaAnswer, ans.correct);
-    //                     stateAns.Answers.push(answer);
-
-    //                   });
-                    
-    //               }
-
-    //               quest.statementsAnswers.push(stateAns);
-
-    //             });
-
-    //             scene.questions.push(quest);
-                  
-    //           });
-              
-    //       }
-
-
-    //       ScenesArray.push(scene);
-    //     });
-    //   })
-    //   .catch((er) => console.log(er))
+        });
+      })
+      .catch((er) => console.log(er))
   );
+
+
+  _projLib = new ProjectLibrary();
+
+  libraryCollections.forEach( function(property) {
+
+    if (!property.startsWith('_')) {
+
+      let docRef_Lib = db.collection(property);
+
+      AllPromises.push(
+
+        docRef_Lib.get().then(function(querySnapshot) {
+
+          querySnapshot.forEach( function (doc) {
+            
+            _projLib[property].push(doc.data());
+
+          })
+        })
+      
+          .catch((er) => console.log(er))
+      );
+
+    }
+  
+
+});
+  
+
 
   Promise.all(AllPromises).then(() => {
     
@@ -1150,16 +1151,18 @@ function loadDataFromFireStore() {
 
         // Create a new application object of the courses
         _courses = new AppObjects(originalCourses, "");
-        
+
+        // Fill fixed lists
+        fillSkills(Skills);
+        fillFixedLists();
+
         // fill courses Info
         fillCourseInfo();
 
         // Sort all objects Array
         SortObjArrays();  
      
-        // Fill fixed lists
-        fillSkills(Skills);
-        fillFixedLists();
+      
 
     })
     
@@ -1238,7 +1241,7 @@ function clearTxtEntries(){
   clearScenesLst();
   clearSubjectsLst();
   clearSubjectsTab2();
-  
+  clearInterfaceView();
   
 } 
 
@@ -1391,6 +1394,13 @@ function CloseSideNavScenes() {
   document.getElementById("side-nav-scenes").style.width = "0";
 }
 
+function clearInterfaceView(){
+
+  removeAllChildNodes(interfaceContainer);
+  removeAllChildNodes(itemsButtons_container);
+  removeAllChildNodes(slide_container);
+  scene_title.textContent = "";
+}
 
 //Register the click event of the small close buttons for all lists
 function registerHandlers() {

@@ -53,6 +53,7 @@ auth.onAuthStateChanged( user => {
   //   console.log("key = "+ key + "///" + "auth prop" + value);
   // }
         _currentUser = auth.currentUser.email;
+        loadDataFromFireStore();
 
     }else {
         setupUI();
@@ -79,7 +80,6 @@ loginForm.addEventListener('submit', (e)=> {
         // close the modal form and reset it
         //const modal = document.querySelector('#modal-login');
         removeLoginProcess();
-       
 
     }).catch (error => {
         loginForm.querySelector('.login-error').innerHTML = error.message;

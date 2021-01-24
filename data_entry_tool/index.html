@@ -115,7 +115,7 @@
       <input type="radio" name="main-tab"  id="tab-scenes" aria-controls="scenes-view">
       <label class="tab-labels" for="tab-scenes">معلومات المشاهد</label>
 
-      <button class="tab-main-btn" id="load-btn">تحميل البيانات</button>
+      <!-- <button class="tab-main-btn" id="load-btn">تحميل البيانات</button> -->
       <button class="tab-main-btn" id="save-btn">حفظ البيانات</button>
         <div class="main-tab-panels">
 
@@ -385,6 +385,25 @@
                           </div>
                         </div>
 
+                      <!-- Scene Type -->
+                      <div class="list-container">
+
+                        <label class="label-controls" for="scene_type_combo" >اختيار نوع المشهد</label>
+                        <select class="list-combo" id="scene_type_combo" >
+                            <optgroup label="تشخيص">
+                              <option value="train">تدريب</option>
+                              <option value="review">مراجعة</option>
+                              <option value="test">اختبار</option>
+                              <option value="assignment">وظيفة</option>
+                            </optgroup>
+                            <optgroup label="تعليم وعلاج">
+                              <option value="tutorials">شرح</option>
+                              <option value="summary">ملخص</option>
+                            </optgroup>
+        
+                        </select>
+                      </div>
+
 
                       <!-- Scene Desc -->
                       <div class="list-container">
@@ -443,33 +462,7 @@
                       <div id="insert__template">
                         <div class="insert_labels">نماذج</div>
                         <div class="icons-container">
-                          <ul>
-                            <li>
-                              <i class="fab fa-wpforms"></i>
-                              <span class="icon-name">نموذج واحد</span>
-                            </li>
-                            <li>
-                              <i class="fab fa-wpforms"></i>
-                              <span class="icon-name">نموذج اثنان</span>
-                            </li>
-                            <li>
-                              <i class="fab fa-wpforms"></i>
-                              <span class="icon-name">نموذج ثلاثة</span>
-                            </li>
-                            <li>
-                              <i class="fab fa-wpforms"></i>
-                              <span class="icon-name">نموذج أربعة</span>
-                            </li>
-                            <li>
-                              <i class="fab fa-wpforms"></i>
-                              <span class="icon-name">نموذج خمسة</span>
-                            </li>
-                            <li>
-                              <i class="fab fa-wpforms"></i>
-                              <span class="icon-name">نموذج واحد</span>
-                            </li>
-                            
-                          </ul>
+                          <ul></ul>
                         </div>
                       
                       </div>
@@ -499,7 +492,7 @@
                             <div class="item-menu-group" id="id-item-menu"></div>
 
                             <div class="menu-footer">
-                                <button class="save-Item">حفظ النموذج</button>
+                                <button class="save-Item" id="save-template">حفظ النموذج</button>
                             </div>
 
                         </div>
@@ -571,6 +564,34 @@
 
     </main>
 
+    <!-- Simple pop-up dialog box containing a form -->
+    <dialog id="template_Dialog" class="modal-dialog">
+      <form method="dialog" class="modal-dialog-content">
+      <label for="template_name">اختيار اسم للنموذج</label>
+      <input type="text" id="template_name" required>
+
+      <label>اختيار نوع النموذج
+          <select id="template_type">
+            <optgroup label="تشخيص">
+              <option value="train" selected>تدريب</option>
+              <option value="review">مراجعة</option>
+              <option value="test">اختبار</option>
+              <option value="assignment">وظيفة</option>
+            </optgroup>
+            <optgroup label="تعليم وعلاج">
+              <option value="tutorials">شرح</option>
+              <option value="summary">ملخص</option>
+            </optgroup>
+          </select>
+      </label>
+
+      <menu>
+        <button id="confirmBtn" value="default">حفظ</button>
+        <button  value="cancel" id="cancelBtn_template" onclick="return false;">إلغاء</button>
+      </menu>
+
+      </form>
+    </dialog>
 
     <div id="toast-msg" class="">something ...</div>
 
@@ -596,63 +617,3 @@
 </html>
 
 
-
-
-<!-- 
-
-
-<div class="form-group group-element">
-  <label class="label-course col-lg-3" for="id-table-subjects" >
-    اختيار العناصر</label>
-  <div id="id-table-subjects" class="table-subjects">
-    
-    <table dir="rtl" class="table table-bordered" style="width: 100%;">
-      
-      <thead >
-        <tr>
-          <th scope="col" class="align-middle" ><select
-            class="form-control dropdown-subjects"
-            style="max-height: 50px"
-            id="id-select-elementType"
-          >
-            
-        </select></th>
-          <th scope="col" class="align-middle"><select
-            class="form-control dropdown-subjects"
-            style="max-height: 50px"
-            id="id-select-element"
-          ></select></th>
-          <th scope="col" class="align-middle"><select
-            class="form-control dropdown-subjects"
-            style="max-height: 50px"
-            id="id-select-elementSkills"
-          ></select></th>
-          
-        </tr>
-      </thead>
-    </table>
-
-    
-  </div>
-    <div class="input-group mb-3">
-      <div class="input-group-append">
-        <button
-          class="btn btn-outline-success"
-          type="button"
-          id="add_concept_to_scene"
-        >
-          إضافة
-        </button>
-        <button
-          class="btn btn-outline-danger"
-          type="button"
-          id="remove_concept_from_scene"
-        >
-          حذف
-        </button>
-      </div>
-    </div>
-
-
-
-</div> -->

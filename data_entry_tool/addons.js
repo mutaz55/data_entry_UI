@@ -1,4 +1,4 @@
-
+// 0-29 Quiz Type
 
 // Quiz Type 
 const QuizType = {
@@ -14,6 +14,7 @@ const QuizType = {
     s_question_quiz: 8
 }
 
+// 30 - 79 Addons Type
 const AddonsType = {
     text_addons : 9,
     text_read_addons: 10,
@@ -33,6 +34,8 @@ const AddonsType = {
     Sendto_addons: 24,
     OnlineOTO_addons: 25,
     OnlineClass_addons: 26,
+
+    // 80 - 99 GAddons
     AnimSlideTrans_GAddons:27,
     Question_title_GAddons:28,
     Question_hint_GAddons:29,

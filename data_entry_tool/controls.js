@@ -64,7 +64,7 @@ const lst_lessons_tab2 = document.querySelector("#id-lessons-tab2");
 const btn_add_scene = document.querySelector("#add_sceneTitle");
 const lst_scenes = document.querySelector("#id-scenes");
 const txt_sceneTitle_entry = document.getElementById("txt_sceneTitle");
-
+const sceneTypeCombo = document.getElementById("scene_type_combo");
 
 // Scene Description
 const textbox_scene_desc = document.querySelector("#id-scene-description");
@@ -85,6 +85,10 @@ const quiz_list = document.getElementById('insert__quiz').getElementsByTagName("
 // Gen Addons List
 const gaddons_list = document.getElementById('g-addons-section').getElementsByTagName("ul")[0];
 
+// Templates List
+const templates_lst = document.getElementById('insert__template').getElementsByTagName("ul")[0];
+
+
 // Scene Interface
 const scene_title = document.getElementById('info_scene-title');
 const slide_container = document.getElementById('id-slide-menu');
@@ -93,6 +97,9 @@ const add_new_slide_btn = document.getElementById('add-new-slide');
 const itemsButtons_container = document.getElementById('id-item-menu');
 
 const interfaceContainer = document.getElementById("interface-container");
+
+// 
+
 
 // Toast Msgs
 
@@ -139,7 +146,27 @@ var lesson_changed = new Observable();
 
 let CurrentElements = [];
 
+///
 
+//Scene Type Enums
+const SceneTypeEnums = {
+  train: 0,
+  review: 1,
+  test: 2,
+  assignment: 3,
+  tutorials: 4,
+  summary: 5
+
+}
+
+
+// Dialog
+const templateDialog = document.getElementById('template_Dialog');
+const select_values = document.getElementById('template_type');
+const confirmBtn = document.getElementById('confirmBtn');
+const cancelBtn_template = document.getElementById('cancelBtn_template');
+const template_name = document.getElementById('template_name');
+const save_template = document.getElementById('save-template');
 
 
 ///////////////////// Tab 1 /////////////////////
@@ -1117,7 +1144,7 @@ btn_add_scene.addEventListener("click", () => {
     
 
     // store the scene locally
-    _courses.addNewScene(id_scene_key,lessonNo + id_scene, txt_sceneTitle_entry.value);
+    _courses.addNewScene(id_scene_key,lessonNo + id_scene,sceneTypeCombo.value, txt_sceneTitle_entry.value);
    
     addNewItems(txt_sceneTitle_entry.value, id_scene_key, lst_scenes, true);
 
@@ -1130,10 +1157,10 @@ btn_add_scene.addEventListener("click", () => {
       // update the scene text locally
       _courses.updateSceneTitle(txt_sceneTitle_entry.value);
       
-
       // update list item text Tab1
       updateListItemText(_courses.currentScene, txt_sceneTitle_entry.value);
 
+    
       // Back to normal mode
       resetAddBtn(lst_scenes,txt_sceneTitle_entry,btn_add_scene);
 
@@ -1491,6 +1518,28 @@ function get_id(obj, _objID, char) {
   return id_obj_key;
 }
 
+function get_template_id(obj, _objID, char) {
+
+  let id_obj = 1;
+  let cCourse = _courses.currentCourse;
+  if (obj.length > 0) {
+    id_obj =
+      Math.max.apply(
+        Math,
+        obj.map(function (objId) {
+          return objId[_objID].substring(
+            objId[_objID].indexOf(char) + 1,
+            objId[_objID].length
+          );
+        })
+      ) + 1;
+  }
+
+  let id_obj_key = cCourse + char + id_obj;
+
+  return id_obj_key;
+}
+
 function get_element_id(sub) {
 
   let id_obj = 1;
@@ -1710,10 +1759,6 @@ function clearSubjectsTab2(){
 
 // create Factory & Register PlugIns (Addons/Quizes) for view
 var viewFactory = new RegisterPressFactory();
-
-
-// create Factory & Register PlugIns (Addons/Quizes) for view
-// var viewFactory = new RegisterPressFactory();
 
 //Quizes
 // s_sorting_quiz
@@ -2091,7 +2136,7 @@ function fillFixedLists () {
   fillAddonsLst();
   fillQuizLst();
   fillGenAddonsLst();
-
+  fillTemplateLst();
 }
 
 function fillAddonsLst(){
@@ -2120,6 +2165,19 @@ function fillQuizLst(){
   }
 }
 
+function fillTemplateLst(){
+   removeAllChildNodes(templates_lst);
+
+   if (_projLib.templates?.length > 0) {
+
+      _projLib.templates.forEach( temp => {
+          createTemplateIcon(templates_lst, temp);
+      });
+
+   }
+}
+
+
 function fillGenAddonsLst(){
   
   removeAllChildNodes(gaddons_list);
@@ -2127,7 +2185,7 @@ function fillGenAddonsLst(){
   if (gaddons.length > 0) {
 
         gaddons.forEach( Ga => {
-        createIconsGenAddons(gaddons_list, Ga);
+          gaddons_list.appendChild(createIconsGenAddons(Ga));
       });
 
   }
@@ -2147,8 +2205,8 @@ function createIconsAddons(lst, item) {
               
               createItemHTML(_currentItem);
 
-              // Add addons button
-
+    
+              addSelectStyle(_currentItem.id);
               _courses.currentItem = _currentItem.id;
               console.log('item has been saved in the slide ... Item Id : ' + _currentItem);
 
@@ -2161,8 +2219,63 @@ function createIconsAddons(lst, item) {
   lst.appendChild(newItem);
 }
 
+function createTemplateIcon(lst, tempItem){
 
-function createIconsGenAddons(lst, item) {
+  
+  let newItem = createTemplateIconHTML(tempItem);
+
+  newItem.addEventListener("click", () => {
+      
+    //TODO: Are you sure dialog?
+
+          console.log('Are you sure ');
+        _courses.overwriteScene(_projLib.templates.find( temp => temp.id == newItem.id));
+  });
+
+  lst.appendChild(newItem);
+
+}
+
+function createTemplateIconHTML(tempItem) {
+  
+  let newItem = document.createElement("li");
+  let text = document.createElement("span");
+  let newIcon = document.createElement("i");
+
+
+
+  newIcon.className = "fab fa-wpforms";
+
+  
+  text.textContent = tempItem.name;
+  text.className = "icon-name";
+
+  newItem.id = tempItem.id;
+
+
+  newItem.appendChild(newIcon);
+  newItem.appendChild(text);
+
+  return newItem;
+}
+
+function addSelectStyle( _id) {
+
+  if (_id) {
+    
+    cleanSlidesStyle("buttons-in-item-menu--selected");
+    
+    let newItem = document.querySelector(`[data-item-id=${_id}]`);
+
+    if (newItem) {
+      newItem.classList.add("buttons-in-item-menu--selected");
+      newItem.focus();
+    }
+    
+  }
+
+}
+function createIconsGenAddons(item) {
   
 
   let newItem = createIconHTML(item);
@@ -2184,6 +2297,7 @@ function createIconsGenAddons(lst, item) {
             
             newItem.classList.add('g-addons--selected');
             _courses.currentItem = _currentGenItem.id;
+            newItem.dataset.id = _currentGenItem.id;
             console.log('Gen item has been saved in the slide ... GenItem Id : ' + _currentGenItem);
 
         }else {
@@ -2193,8 +2307,7 @@ function createIconsGenAddons(lst, item) {
       }
       //let _currentGItem  = _courses.addNewItem(item, "Items", 'Q');
   })
-
-  lst.appendChild(newItem);
+  return newItem;
 }
 
 function createIconsQuiz(lst, item) {
@@ -2206,13 +2319,14 @@ function createIconsQuiz(lst, item) {
       console.log(item.Action);
       
           let _currentItem = _courses.addNewItem(item, "Items", 'Q');
-          console.log('_currentItem ' + _currentItem);
+
           if (_currentItem?.id.length > 0) {
               
               createItemHTML(_currentItem);
 
               // Add addons button
-
+              
+              addSelectStyle(_currentItem.id);
               _courses.currentItem = _currentItem.id;
               console.log('item has been saved in the slide ... Item Id : ' + _currentItem);
 
@@ -2275,12 +2389,7 @@ function createItemHTML(item) {
       addonsFromArr = quizs.find( _addons => _addons.Name == item.name);
   }
 
-  for(keys in addonsFromArr) {
-    console.log('keys => ' + keys + "  Value = " + addonsFromArr[keys]);
-    console.log(addonsFromArr.constructor.name);
-  }
-  console.log('addonsFromArr ' + typeof(addonsFromArr))  ;
-  
+ 
   let Item_text = document.createElement("span");
   let Item_icon = document.createElement("i");
   
@@ -2291,11 +2400,21 @@ function createItemHTML(item) {
   item_button.dataset.itemId = item.id;
   item_button.appendChild(Item_icon);
   item_button.appendChild(Item_text);
-  
+ 
+
   item_button.addEventListener('click', function (e){
     //e.stopPropagation();
-    if (_courses.currentItem != e.currentTarget.dataset.itemId)
+    if (_courses.currentItem != e.currentTarget.dataset.itemId) {
+        // remove selected class style
+        cleanSlidesStyle("buttons-in-item-menu--selected");
+        // add selected class style
+        e.currentTarget.classList.add("buttons-in-item-menu--selected");
         _courses.currentItem = e.currentTarget.dataset.itemId;
+
+      console.log('clicked');
+    }
+      
+
   });
   
   const close_button = document.createElement("button");
@@ -2390,6 +2509,16 @@ function scene_changeHandler_tab2(){
       updateSceneView();
 
 }
+
+// Change scene type
+sceneTypeCombo.addEventListener('change', function(event) {
+  
+  if (lst_scenes.index == -1) return;
+  // update the scene type locally  
+  _courses.updateSceneType(sceneTypeCombo.value);
+  
+});
+
 
 // change the selected item from the module list programmatically
 // and fire the change event
@@ -2766,7 +2895,7 @@ Item_changed.subscribe(Fill_Interface);
 
 
 
-// Template_save.subscribe(Fill_templateList);
+Template_save.subscribe(Fill_templateList);
 
 // AddonsQuiz_add.subscribe(Fill_Insert);
 
@@ -2781,6 +2910,7 @@ function Fill_Info(){
   scene_title.textContent = _courses.getSceneTitle();
   
 }
+
 function Fill_SlideMenu(){
 
   // implement the Fill Slide Menu Code.
@@ -2788,6 +2918,7 @@ function Fill_SlideMenu(){
 
   // clear the slide menu
   removeAllChildNodes(slide_container);
+  removeAllChildNodes(itemsButtons_container);
 
   if (_courses.currentScene) {
 
@@ -2823,8 +2954,9 @@ function Fill_SlideMenu(){
 
 }
 function Fill_ItemsMenu(){
-  console.log("Fill ItemsMenu");
   removeAllChildNodes(itemsButtons_container);
+
+  
   _courses.currentItem = "";
   if (_courses.currentSlide) {
 
@@ -2832,26 +2964,33 @@ function Fill_ItemsMenu(){
       _courses.getCurrentSlideObj().Items?.forEach( function(item) {
 
       createItemHTML(item);
-
-      activateFirstItem();
+      console.log("Fill ItemsMenu");
+      
 
     });
-    
+
+    cleanSlidesStyle("buttons-in-item-menu--selected");
+    activateFirstItem();
+
     gaddons_list.childNodes.forEach( function (node) {
-       node.classList.remove("g-addons--selected");
-       
+      console.log('node -> : ' + node);
+        node.classList.remove("g-addons--selected");
+        if (node.dataset.id)
+         delete node.dataset.id;
     });
 
     _courses.getCurrentSlideObj().GenItems.forEach( function (genItem) {
-
-      
+ 
       let HTMLElement = document.body.querySelector(`[data-addon_name="${genItem.name}"]`);
       HTMLElement.dataset.id = genItem.id;
       HTMLElement.classList.add("g-addons--selected");
     });
+
   }
-  // implement the Fill Item Menu Code.
+
 }
+
+
 function Fill_Interface(){
 
   //clear interface view from any previous session
@@ -2859,6 +2998,7 @@ function Fill_Interface(){
   console.log("Fill Interface");
 
   if (_courses.currentItem) {
+    console.log('currentItem is not empty');
     console.log("Interface Action Clicked" + _courses.getCurrentItem().viewAction);
     interfaceContainer.innerHTML="";
     let newItem = viewFactory.press(_courses.getCurrentItem().viewAction);
@@ -2873,12 +3013,10 @@ function Fill_Interface(){
 }
 function Fill_templateList(){
   console.log("Fill templateList");
-  // implement the Fill template List Code.
+  fillTemplateLst();
 }
-function Fill_Insert(){
-  console.log("Fill Insert")
-  // implement the Fill Addons Quiz Code.
-}
+
+
 
 courseChkboxDefault.addEventListener('change', (e)=> {
 
@@ -2893,3 +3031,56 @@ courseChkboxDefault.addEventListener('change', (e)=> {
   }
     
 });
+
+
+
+save_template.addEventListener('click', function onOpen() {
+
+    if (typeof templateDialog.showModal === "function") {
+      templateDialog.showModal();
+
+    } else {
+
+      alert("The <dialog> API is not supported by this browser");
+    }
+});
+
+select_values.addEventListener('change', function onSelect(e) {
+  if (template_name.length != 0) {
+    confirmBtn.value = [select_values.value, template_name.value].join(';');
+  }else {
+    confirmBtn.value = "default";
+  }
+});
+
+template_name.addEventListener('change', function onBlur(e) {
+  if (template_name.length != 0) {
+    confirmBtn.value = [select_values.value, template_name.value].join(';');
+  }else {
+    confirmBtn.value = "default";
+  }
+  
+});
+
+templateDialog.addEventListener('close', function onClose() {
+    
+    if ((templateDialog.returnValue) && (templateDialog.returnValue != 'cancel') && (templateDialog.returnValue != 'default')) {
+
+      let result = templateDialog.returnValue.split(';');
+      let newTemplate = new Template(get_template_id(_projLib.templates,'id','T'), result[1], result[0], JSON.parse(JSON.stringify(_courses.getScene()))  );
+      _projLib.templates.push(newTemplate);
+      template_name.value = "";
+      // templateDialog.returnValue = "";
+      libChanges.add('templates');
+      Template_save.fire();
+    
+    }
+
+
+});
+
+cancelBtn_template.addEventListener('click', (e) => { 
+  templateDialog.returnValue= 'cancel';
+
+  templateDialog.close()
+})
