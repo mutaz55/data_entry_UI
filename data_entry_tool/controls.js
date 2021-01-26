@@ -18,6 +18,8 @@ const courseCombo = document.getElementById("id-course-title");
 // Skills
 const lst_skills = document.querySelector("#id-skills");
 
+
+//
 // Tab 1
 const courseTitle = document.getElementById('tab1-lbl-coursename');
 const courseLang  = document.getElementById('tab1-lbl-lang');
@@ -97,6 +99,7 @@ const add_new_slide_btn = document.getElementById('add-new-slide');
 const itemsButtons_container = document.getElementById('id-item-menu');
 
 const interfaceContainer = document.getElementById("interface-container");
+
 
 // 
 

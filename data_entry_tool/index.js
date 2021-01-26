@@ -6,8 +6,61 @@ var save_busy;
 var IsDefaultCourseAvailable = false;
 var logMsgs = [];
 
- 
+
 const saveBtn = document.querySelector("#save-btn");
+
+const onlineSync = document.getElementById('online-switch');
+const onlineSyncLbl = document.getElementById('lbl-online-switch');
+
+
+window.addEventListener('online', function() {
+  onlineSync.checked = true;
+  onlineSyncLbl.textContent = "البيانات متزامنة";
+});
+
+window.addEventListener('offline', function() {
+  onlineSync.checked = false;
+  onlineSyncLbl.textContent = "البيانات غير متزامنة";
+
+});
+
+onlineSync.addEventListener('click', onlineSyncHandler);
+
+
+function onlineSyncHandler() {
+
+  if (this.checked) {
+   
+    firebase.firestore().enableNetwork()
+    .then(function() {
+        // Do online actions
+        onlineSyncLbl.textContent = "البيانات متزامنة";
+    });
+    
+
+  }else {
+    
+    firebase.firestore().disableNetwork()
+    .then(function() {
+        // Do offline actions
+        onlineSyncLbl.textContent = "البيانات غير متزامنة";
+    });
+
+  }
+}
+
+
+function disableNetworkd() {
+
+  onlineSync.checked = false;
+  firebase.firestore().disableNetwork()
+  .then(function() {
+      // Do offline actions
+      onlineSyncLbl.textContent = "البيانات غير متزامنة";
+  });
+
+}
+disableNetworkd();
 // get data from database
 
 // document.querySelector("#load-btn").addEventListener("click", (e) => {

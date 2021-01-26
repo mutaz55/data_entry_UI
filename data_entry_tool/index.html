@@ -117,6 +117,12 @@
 
       <!-- <button class="tab-main-btn" id="load-btn">تحميل البيانات</button> -->
       <button class="tab-main-btn" id="save-btn">حفظ البيانات</button>
+
+      <div class="main-bar">
+        <input name="chkbox" id="online-switch" type="checkbox" class="switch" checked>
+        <label id="lbl-online-switch" for="online-switch">البيانات متزامنة</label>
+      </div>
+      
         <div class="main-tab-panels">
 
               <!-- Tab 1 View (Courses) -->
@@ -462,7 +468,33 @@
                       <div id="insert__template">
                         <div class="insert_labels">نماذج</div>
                         <div class="icons-container">
-                          <ul></ul>
+                          <ul>
+                            <li>
+                              <i class="fab fa-wpforms"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                            <li>
+                              <i class="fab fa-wpforms"></i>
+                              <span class="icon-name">نموذج اثنان</span>
+                            </li>
+                            <li>
+                              <i class="fab fa-wpforms"></i>
+                              <span class="icon-name">نموذج ثلاثة</span>
+                            </li>
+                            <li>
+                              <i class="fab fa-wpforms"></i>
+                              <span class="icon-name">نموذج أربعة</span>
+                            </li>
+                            <li>
+                              <i class="fab fa-wpforms"></i>
+                              <span class="icon-name">نموذج خمسة</span>
+                            </li>
+                            <li>
+                              <i class="fab fa-wpforms"></i>
+                              <span class="icon-name">نموذج واحد</span>
+                            </li>
+                            
+                          </ul>
                         </div>
                       
                       </div>
@@ -587,7 +619,7 @@
 
       <menu>
         <button id="confirmBtn" value="default">حفظ</button>
-        <button  value="cancel" id="cancelBtn_template" onclick="return false;">إلغاء</button>
+        <button  type="reset" value="cancel" id="cancelBtn_template" onclick="return false;">إلغاء</button>
       </menu>
 
       </form>

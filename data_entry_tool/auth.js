@@ -12,6 +12,21 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   
+  
+  firebase.firestore().enablePersistence()
+  .catch(function(err) {
+      if (err.code == 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          // ...
+      } else if (err.code == 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
+          // ...
+      }
+  });
+
+
   // make references for auth and firestore
   const auth = firebase.auth();
   const db = firebase.firestore();
@@ -143,4 +158,6 @@ window.addEventListener('keydown', (e) => {
         if (e.key  === 'Escape') 
             removeLoginProcess();
 });
+
+
 
