@@ -60,7 +60,7 @@ function disableNetworkd() {
   });
 
 }
-disableNetworkd();
+//disableNetworkd();
 // get data from database
 
 // document.querySelector("#load-btn").addEventListener("click", (e) => {

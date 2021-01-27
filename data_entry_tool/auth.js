@@ -13,7 +13,14 @@ var firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
   
   
-  firebase.firestore().enablePersistence()
+  // make references for auth and firestore
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  
+
+  // Enable local cache
+  db.enablePersistence()
+  .then( ()=> {console.log('Persistence Enabled!')})
   .catch(function(err) {
       if (err.code == 'failed-precondition') {
           // Multiple tabs open, persistence can only be enabled
@@ -27,14 +34,8 @@ var firebaseConfig = {
   });
 
 
-  // make references for auth and firestore
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-  
-  // get the current user info
-  
-  
-  var _currentUser = undefined;
+// get the current user info
+var _currentUser = undefined;
 
 
 // Authentication Process
@@ -66,8 +67,9 @@ auth.onAuthStateChanged( user => {
   // for(var key in auth) {
   //   var value = auth[key];
   //   console.log("key = "+ key + "///" + "auth prop" + value);
-  // }
+  // }  
         _currentUser = auth.currentUser.email;
+        console.log('Loading Data from Firestore...')
         loadDataFromFireStore();
 
     }else {
@@ -111,6 +113,8 @@ logout.addEventListener('click', (e) => {
 });
 
 const login = document.querySelector('#login');
+
+
 login.addEventListener('click', e=> {
     e.preventDefault();
     modalOverlay = document.createElement("div");
