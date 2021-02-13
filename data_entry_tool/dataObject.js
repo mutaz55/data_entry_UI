@@ -105,13 +105,14 @@ class LingElement {
 
 
 class Skill {
-  constructor(id, SkillID, SkillText) {
+  constructor(id, SkillID, SkillText, skillIcon) {
     this.id = id;
     this.SkillID = SkillID;
     this.SkillText = SkillText;
+    this.SkillIcon = skillIcon;
   }
   toString() {
-    return this.id + ", " + this.SkillID + ", " + this.SkillText;
+    return this.id + ", " + this.SkillID + ", " + this.SkillText + ", " + this.SkillIcon;
   }
 }
 
@@ -432,7 +433,7 @@ function storeDataLocally(id, data, type) {
             case 'lessons':  return new Lesson(id, data['Lesson-ID'], data['Lesson-Title'], data['Module-ID']);
             case "subjects": return new Subject(id, data["subjectID"], data["subjectText"], data["LessonID"]);
             case "elements": return new LingElement(id, data["LingElement-ID"], data["LingElement-Text"], data["LingElement-Type"])
-            case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text']);
+            case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text'], data['Skill-Icon']);
             case 'sceneTypes': return new SceneType(id, data['sceneT-ID'], data['sceneT-Text']);
             case 'sceneHeaders': return new SceneHeader(id, data['Course-ID'], data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene_Desc'], data['Scene-Seq'],
                                                             data['Scene-Type'], data['Send-To-Teacher'], data['Book-Type'] );
@@ -700,6 +701,13 @@ class AppObjects {
     Scene_change.fire();
   }
 
+  sceneChanged(){
+  
+    if (this.getSceneHeader())
+      this.getSceneHeader()._changed = true;
+  
+    
+  }
   
   getSlides(_sid = this.currentScene) {
     return Scenes.find( item => item.id == _sid)?.slides;
@@ -796,6 +804,9 @@ class AppObjects {
     return SceneHeaders.find( (item) => item.CourseID == this.currentCourse && item.sceneID ==_sceneId )?.Subjects;
   }
 
+  getSkillIcon(skill_id) {
+    return Skills.find( sk => sk.SkillID == skill_id)?.SkillIcon;
+  }
 
 }
 
@@ -847,7 +858,7 @@ function replaceId(arr, _id){
 function replaceIdObj(obj, _id) {
 
   Object.entries(obj).forEach( ([key, value]) => {
-      console.log(key);
+   
       if (Array.isArray (value)) {
           replaceId(value, _id);
       }

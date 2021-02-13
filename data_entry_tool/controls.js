@@ -589,14 +589,30 @@ String.prototype.removeChar = function (i) {
 
 show_addNewBtn.addEventListener('click', (e)=> {
 
-    if (container_addNewBtn.style.display != "block" && container_addNewBtn.style.display != "none")
-        container_addNewBtn.style.display = "none";
+    // if (container_addNewBtn.style.display != "block" && container_addNewBtn.style.display != "none") {
+    //   container_addNewBtn.style.display = "none";
+    //   show_addNewBtn.style.transform = "rotate(0deg)";
+    // }
+        
 
-    if (container_addNewBtn.style.display == "none") {
-        container_addNewBtn.style.display = "block";
+    if (container_addNewBtn.classList.contains("sidenav1-container-hidden")) {
+        //container_addNewBtn.style.display = "none";
+        show_addNewBtn.style.transform = "rotate(45deg)";
+        //container_addNewBtn.style.visibility = "hidden";
+        // container_addNewBtn.style.opacity = 0;
+        // container_addNewBtn.style.height = 0;
+        // container_addNewBtn.style.transition= "opacity 1s linear";
+        // container_addNewBtn.style.overflow = "hidden";
+        container_addNewBtn.className = "sidenav1-container-shown";
+
+
     }
     else {
-        container_addNewBtn.style.display = "none";
+        //container_addNewBtn.style.display = "block";
+        show_addNewBtn.style.transform = "rotate(0deg)";
+        container_addNewBtn.className = "sidenav1-container-hidden";
+
+        
     }
 
 
@@ -1636,6 +1652,32 @@ function get_ItemId(slideId,itemarray, typeChar){
     return  slideId + typeChar + id_item;
 }
 
+function getId_fromArry(mainId, _arry, _typeChar){
+
+  let _id = 1;
+  
+
+  if (_arry?.length > 0) {
+
+    
+
+    let items = _arry.map( function (item) {
+    
+      if (item.id.indexOf(_typeChar) != -1 ) {
+          return item.id.substring(item.id.indexOf(_typeChar) + _typeChar.length, item.id.length );
+      }else return 0;
+      
+    });
+
+    _id = Math.max(...items) + 1;
+   
+  }
+    
+    
+    return  mainId + _typeChar + _id;
+
+}
+
 // Add new item to the list (includes subjects, modules, lessons, skills, scene types)
 function addNewItems(txt, id_c, lst_type, added) {
   
@@ -1894,8 +1936,17 @@ function fillSkills(sk) {
       skill_item.type = "button";
       skill_item.className = "buttons-in-list";
       skill_item.id = element.SkillID;
-    
+      const icon_item = document.createElement("i");
+      icon_item.className = "skill-icon fas";
+      icon_item.classList.add(element.SkillIcon);
+
+      
+      
+      
       const skill_item_text = document.createTextNode(element.SkillText);
+
+      skill_item.appendChild(icon_item);
+
       skill_item.appendChild(skill_item_text);
     
       lst_skills.appendChild(skill_item)
@@ -2614,6 +2665,7 @@ function getModuleValue() {
 function updateSceneView() {
   
   initSceneView();
+  _courses.sceneChanged();
   textbox_scene_desc.value = _courses.getSceneDesc();
   document.getElementById(_courses.currentScene)?.focus();
 }
@@ -2698,7 +2750,7 @@ function initSceneView(){
 add_new_slide_btn.addEventListener('click' , () =>{
 
   let newSlide_id = _courses.addNewSlide();
-  console.log('new slide is = ' + newSlide_id);
+
   if (newSlide_id) {
     slide_container.appendChild(addNewSlideLstBtn(newSlide_id));
     activateLasttBtn(_courses.getSlides());

@@ -19,8 +19,7 @@ window.addEventListener('online', function() {
 });
 
 window.addEventListener('offline', function() {
-  onlineSync.checked = false;
-  onlineSyncLbl.textContent = "البيانات غير متزامنة";
+  disableNet();
 
 });
 
@@ -50,7 +49,7 @@ function onlineSyncHandler() {
 }
 
 
-function disableNetworkd() {
+function disableNet() {
 
   onlineSync.checked = false;
   firebase.firestore().disableNetwork()
@@ -555,11 +554,11 @@ async function updateSettings(){
 
   const settingsDoc = await settingsRef.get();
     
-    if (!settingsDoc.exists) {
+    if (settingsDoc.exists == false) {
         settingsRef.set(JSON.parse(JSON.stringify(user_settings)));
         showSuccess(`Settings successfully created! / FOR USER =  ${_currentUser}`);
 
-    } else {
+    } else { 
 
         settingsRef.update({
         'savedCourse': user_settings.savedCourse,
