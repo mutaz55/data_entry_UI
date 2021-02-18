@@ -4,10 +4,14 @@
 //Level 0 components
 
 class TextareaComponent {
-  constructor(textareaId,rowNumber){
+  constructor(textareaId,rowNumber, cssArr = ["textarea-description", "textarea-resize-vertically"]){
     let textareaElement =document.createElement("textarea");
-    textareaElement.classList.add("textarea-description");
-    textareaElement.classList.add("textarea-resize-vertically");
+    
+    cssArr.forEach( cssClass => {
+      textareaElement.classList.add(cssClass);
+    });
+    
+    
     textareaElement.id=textareaId;
     textareaElement.rows=rowNumber;
     this.HTMLElement= textareaElement;
@@ -27,6 +31,9 @@ class LabelComponent {
     this.HTMLElement= this.labeltitle;
   }
 
+  changeLblTxt(newTxt) {
+    this.labeltitle.textContent = newTxt;
+  }
 } 
 
 class CloseBoxComponent {
@@ -196,11 +203,13 @@ addElementToHiddenDiv(htmlElement){
 
 
 class ListOfRadioOrCheckBoxComponent{
-  constructor(listId){
-  
+
+  constructor(listId, cssArry = ["list-radio-checkbox", "padding__meduim"]){
+    
     let divList = document.createElement("div");
-    divList.classList.add("list-radio-checkbox");
-    divList.classList.add("padding__meduim");
+    cssArry.forEach(cssClass => {
+      divList.classList.add(cssClass);
+    });
     divList.id=listId;
     this.HTMLElement= divList;
   }
@@ -235,6 +244,7 @@ class ListOfRadioOrCheckBoxComponent{
     this.HTMLElement.appendChild(newCheckBox.HTMLElement);
   }
 
+  // to fix this later
   resetCheckBoxValues(){
     let arrCheckBox=this.HTMLElement.querySelectorAll("[type='checkbox']");
     arrCheckBox.forEach((item)=>{
@@ -513,60 +523,61 @@ class ComboComponent {
     this.comboSelect.id=comboId;
     this.HTMLElement=this.comboSelect;
   }
-clearCombo(){
-  if (this.HTMLElement.firstChild) {
-    while (this.HTMLElement.firstChild) {
-      this.HTMLElement.removeChild(this.HTMLElement.firstChild);
-    }
-  }
- }
-
-addOptionToCombo(txtOption, OptionValue, addToEnd){
- 
-    let newOption = document.createElement("option");
-    let optionText = document.createTextNode(txtOption);
-    // set option text
-    newOption.appendChild(optionText);
-    // and option value
-    newOption.setAttribute("value", OptionValue);
-    // add the option to the select box
-    (addToEnd)? this.comboSelect.appendChild(newOption): this.comboSelect.prepend(newOption);
-   
-}
-removeOption(OptionValue){
-  
-  Array.from(this.comboSelect.options).forEach((element) => {
-      if (element.value == OptionValue) {
-        element.remove();
+    clearCombo(){
+      if (this.HTMLElement.firstChild) {
+        while (this.HTMLElement.firstChild) {
+          this.HTMLElement.removeChild(this.HTMLElement.firstChild);
+        }
       }
-    });
-  
-}
-
-checkIfAdded(OptionValue){
-  let available = false
-  Array.from(this.comboSelect.options).forEach((element) => {
-    
-    if(element.value==OptionValue) {
-      available=true;
     }
-  });
-  
-  return available;
 
-}
+    addOptionToCombo(txtOption, OptionValue, addToEnd){
+    
+        let newOption = document.createElement("option");
+        let optionText = document.createTextNode(txtOption);
+        // set option text
+        newOption.appendChild(optionText);
+        // and option value
+        newOption.setAttribute("value", OptionValue);
+        // add the option to the select box
+        (addToEnd)? this.comboSelect.appendChild(newOption): this.comboSelect.prepend(newOption);
+      
+    }
 
-onChange(fn){
-this.comboSelect.addEventListener("change",(e)=>{
-fn(e);
-});
-}
+    removeOption(OptionValue){
+      
+      Array.from(this.comboSelect.options).forEach((element) => {
+          if (element.value == OptionValue) {
+            element.remove();
+          }
+        });
+      
+    }
 
-onBlur(fn){
-  this.comboSelect.addEventListener("blur",(e)=>{
+    checkIfAdded(OptionValue){
+      let available = false
+      Array.from(this.comboSelect.options).forEach((element) => {
+        
+        if(element.value==OptionValue) {
+          available=true;
+        }
+      });
+      
+      return available;
+
+    }
+
+    onChange(fn){
+    this.comboSelect.addEventListener("change",(e)=>{
     fn(e);
-  })
-}
+    });
+    }
+
+    onBlur(fn){
+      this.comboSelect.addEventListener("blur",(e)=>{
+        fn(e);
+      })
+    }
 
 
 }
@@ -596,6 +607,30 @@ class TextareaLabelComponent {
 }
 
 
+class InputLabelComponent {
+  constructor(inputId, labelTitle, cssArr){
+    let divWrapper = document.createElement("div");
+    let labeltitle = new LabelComponent(labelTitle,inputId);
+    this.labelTitle = labeltitle.HTMLElement;
+
+    this.inputBox = document.createElement("INPUT");
+    this.inputBox.setAttribute("type", "text");
+    
+    cssArr.forEach( cssClass => {
+      this.inputBox.classList.add(cssClass);
+    });
+    
+    divWrapper.classList.add("component-container--vertical");
+     
+    divWrapper.appendChild(this.labelTitle);
+    divWrapper.appendChild(this.inputBox);
+
+    this.HTMLElement = divWrapper;
+
+  }
+ 
+}
+
 
 
 class TextareaLabelWithClose {
@@ -622,6 +657,44 @@ class TextareaLabelWithClose {
 
 
 
+class mediaObjEntry {
+
+  constructor(tabsetId, tabpnlId) {
+
+  let arrObjectiveType = [addOns[0].Text, addOns[3].Text, addOns[4].Text, addOns[6].Text];
+
+  this.mediaObjTab = new TabComponent(arrObjectiveType, tabsetId, tabpnlId);
+
+  
+  // add Label and Tab Panel to the Tab
+  this.mediaObjTab.addLabel("ادخال مكونات الجملة");
+  this.mediaObjTab.changeTabLblCss(["buttons-panelHeader"]);
+
+  this.mediaObjTab.addIconsTabLbl( [addOns[0].Icon,addOns[3].Icon, addOns[4].Icon, addOns[6].Icon]);
+
+  let tabPanel1 = new TextareaComponent('txtEntry-Text',5);
+  this.mediaObjTab.fillTabPanel(1,tabPanel1.HTMLElement);
+  let tabPanel2 = new TextareaComponent('txtEntry-Picture',5);
+  this.mediaObjTab.fillTabPanel(2,tabPanel2.HTMLElement);
+  let tabPanel3 = new TextareaComponent('txtEntry-Drawings',5);
+  this.mediaObjTab.fillTabPanel(3,tabPanel3.HTMLElement);
+  let tabPanel4 = new TextareaComponent('txtEntry-Sound',5);
+  this.mediaObjTab.fillTabPanel(4,tabPanel4.HTMLElement);
+  
+  
+  this.mediaObjTab.changeTabPanelCss("tab-panel-component-media");
+  this.mediaObjTab.clickTabset(1);
+
+  this.HTMLElement = this.mediaObjTab.HTMLElement;
+
+  }
+
+  changeLbl(lbl_header) {
+    this.mediaObjTab.addLabel(lbl_header);
+    
+  }
+
+}
 
 class ComboLabelComponent{
 
@@ -743,6 +816,7 @@ class ListWithLabelAndInputComponent{
 
     this.HTMLElement=divWrapper;
   }
+  
 }
 
 
@@ -751,7 +825,7 @@ class InputTextWithAddBtnForListComponent {
 
     let divWrapper= document.createElement("div");
     this.inputText = new InputTextForListComponent(inputTextId,placeholder);
-    this.addButton = new AddBtnWordComponent(btnId,"add-btn","إضافة");
+    this.addButton = new AddBtnWordComponent(btnId,"إضافة", ["add-btn"]);
 
     divWrapper.classList.add("input-group")
 
@@ -779,16 +853,48 @@ class InputTextForListComponent {
 
 }
 
+
+// class AddBtnWordComponent {
+//   constructor(btnId,btnClassCSS,txt){
+//     //<button id="add_lesson" class="add-btn">إضافـة</button>
+//     //<button class="add-btn" id="add_subject_to_scene"> &#x271A;</button>
+//     //<button class="remove-btn" id="remove_subject_from_scene"> <strong>&minus;</strong></button> 
+//     const addBtn = document.createElement("button");
+//     addBtn.type="button";
+//     addBtn.id=btnId;
+//     addBtn.classList.add(btnClassCSS);
+//     //addBtn.classList.add("font-large")
+//     const btnText = document.createTextNode(txt);
+//     addBtn.appendChild(btnText);
+//     this.HTMLElement=addBtn;
+
+//   }
+
+//   onClick(fn){
+      
+//     this.HTMLElement.addEventListener('click', function (e) {
+//         fn(e);
+        
+        
+//     });
+
+
+// }
+// }
+
 class AddBtnWordComponent {
-  constructor(btnId,btnClassCSS,txt){
+  constructor(btnId,txt, cssArr){
     //<button id="add_lesson" class="add-btn">إضافـة</button>
     //<button class="add-btn" id="add_subject_to_scene"> &#x271A;</button>
     //<button class="remove-btn" id="remove_subject_from_scene"> <strong>&minus;</strong></button> 
     const addBtn = document.createElement("button");
     addBtn.type="button";
     addBtn.id=btnId;
-    addBtn.classList.add(btnClassCSS);
-    //addBtn.classList.add("font-large")
+    
+    cssArr.forEach(cssClass => {
+      addBtn.classList.add(cssClass);
+    });
+    
     const btnText = document.createTextNode(txt);
     addBtn.appendChild(btnText);
     this.HTMLElement=addBtn;
@@ -821,8 +927,8 @@ class ComboListAddRemoveComponent{
 
     this.labelTitle = new LabelComponent(combo1Title,combo1Id)
     this.combo1 = new ComboComponent(combo1Id)
-    this.addButton = new AddBtnWordComponent(btnAddId,"add-btn","+")
-    this.removeButton = new AddBtnWordComponent(btnRemoveId,"remove-btn","-")
+    this.addButton = new AddBtnWordComponent(btnAddId,"+", ["add-btn"]);
+    this.removeButton = new AddBtnWordComponent(btnRemoveId,"-",["remove-btn"]);
     this.combo2 = new ComboComponent(combo2Id)
     this.combo2.HTMLElement.size = 6;
 
@@ -933,64 +1039,226 @@ updateCheckboxeValue(checkBoxId,value){
 } 
 
 
+// class TabsetClass {
+//   constructor(tabText,tabsetId){
+      
+//     let tabLabel = document.createElement("label");
+//     tabLabel.className="tab-label-component";
+//     tabLabel.id=tabsetId;
+       
+//     tabLabel.textContent=tabText;
+//     this.HTMLElement= tabLabel;
+ 
+//   }
+// }
+
+// class TabPanelClass {
+//   constructor(tabPanelId){
+
+//     let tabSection = document.createElement("section");
+//     tabSection.id=tabPanelId;
+//     tabSection.className= "tab-panel-component"
+//     this.HTMLElement=tabSection;
+//   }
+// }
+
+// class TabComponent{
+      
+//   constructor(arrTabNames){
+//     let divWrapper = document.createElement("div")
+//     let divTabset = document.createElement("div");
+//     let divTapanels = document.createElement("div");
+    
+//     this.tabLabel="";
+//     this.tabSets=[];
+//     this.tabPanels=[];
+
+//     divWrapper.classList.add("component-container--vertical");  
+//     divTabset.classList.add("tabset-component");
+//     divTapanels.classList.add("tab-panels-component");
+
+//     arrTabNames.forEach((value,index)=>{
+//       let tabsetId = "Id-tabset-"+(index+1);
+//       let tabPanelId = "Id-panel-"+(index+1);
+//       this.tabSets.push(new TabsetClass(value,tabsetId));
+//       this.tabPanels.push(new TabPanelClass(tabPanelId))
+
+//       divTabset.appendChild(this.tabSets[index].HTMLElement);
+//       divTapanels.appendChild(this.tabPanels[index].HTMLElement)
+      
+//     });
+
+
+//     divTabset.appendChild(divTapanels);
+//     divWrapper.appendChild(divTabset);
+
+//     this.HTMLElement=divWrapper;
+
+//     this.tabSets.forEach((value,index)=>{
+         
+      
+//       this.HTMLElement.querySelector("#"+value.HTMLElement.id).addEventListener("click",()=>{
+//         this.clickTabset(index+1)
+          
+//         })
+    
+//       })
+
+               
+//   }
+
+//   fillTabPanel(tabsetNumber,tabPanelHTML){
+//     if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
+//       this.HTMLElement.querySelector("#"+"Id-panel-"+tabsetNumber).appendChild(tabPanelHTML);
+//       if(tabsetNumber===1){
+//           this.clickTabset(1)
+
+//       } 
+//     } else{
+//         console.log("Please insert a valid Integer tabset Number within the range")
+//       }
+//   }
+    
+  
+//   clickTabset(tabsetNumber){
+//     if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
+//       let tabsetId = "Id-tabset-"+tabsetNumber;
+//       let tabPanelId = "Id-panel-"+tabsetNumber;
+      
+//       //fix the color of the clicked tabset and reset the others
+//       let tabsets = this.HTMLElement.querySelectorAll(".tab-label-component")
+//       tabsets.forEach((item)=>{
+//       item.classList.remove("tab-label-focus");
+//       })
+      
+//       this.HTMLElement.querySelector("#"+tabsetId).classList.add("tab-label-focus")
+      
+//       //make the tabPanel visible and hide the others  
+//       let tabPanels = this.HTMLElement.querySelectorAll(".tab-panel-component")
+//       tabPanels.forEach((item)=>{
+//         item.classList.remove("tab-panel-show");
+//       })
+      
+//       this.HTMLElement.querySelector("#"+tabPanelId).classList.add("tab-panel-show")
+    
+//     } else{
+//       console.log("Please insert a valid Integer tabset Number within the range")
+//     }
+//   }
+
+//   addLabel(labelTitle){
+//     let tabId="Id-TabLabel";
+//     if (this.tabLabel ===""){
+      
+//       this.tabLabel= new LabelComponent(labelTitle,tabId);
+//       this.HTMLElement.prepend(this.tabLabel.HTMLElement);
+//     } else{
+//       this.HTMLElement.querySelector("#"+tabId).textContent=labelTitle;
+//     }
+    
+//   }
+
+//   addTab(){
+
+//   }
+
+//   removeTab(){
+
+//   }
+
+// }
+
+
 class TabsetClass {
   constructor(tabText,tabsetId){
-      
-    let tabLabel = document.createElement("label");
-    tabLabel.className="tab-label-component";
-    tabLabel.id=tabsetId;
+    this.tabLabel = document.createElement("button");
+    this.tabLabel.className = "tab-label-component";
+    
+    this.tabLabel.id=tabsetId;
        
-    tabLabel.textContent=tabText;
-    this.HTMLElement= tabLabel;
+    this.tabLabel.textContent=tabText;
+    this.HTMLElement= this.tabLabel;
  
   }
+
+  changeCssClass(newCssClass){
+      this.tabLabel.className = newCssClass;  
+  }
+  addIcon (iconName) {
+      
+
+      let Item_text = document.createElement("span");
+      let Item_icon = document.createElement("i");
+
+      Item_icon.className = iconName;
+      Item_text.className = "tab-header--icons";
+
+      this.tabLabel.appendChild(Item_icon);
+      this.tabLabel.appendChild(Item_text);
+
+  }
+
 }
 
 class TabPanelClass {
   constructor(tabPanelId){
 
-    let tabSection = document.createElement("section");
-    tabSection.id=tabPanelId;
-    tabSection.className= "tab-panel-component"
-    this.HTMLElement=tabSection;
+    this.tabSection = document.createElement("section");
+    this.tabSection.id=tabPanelId;
+    this.tabSection.className= "tab-panel-component";
+    this.HTMLElement = this.tabSection;
+  }
+
+  changeCssClass(newCssClass){
+      this.tabSection.className= newCssClass;
   }
 }
 
+
 class TabComponent{
-      
-  constructor(arrTabNames){
+        
+  constructor( arrTabNames, tabsetId_stem = "Id-tabset-", tabPnlId_stem = "Id-panel-"){
     let divWrapper = document.createElement("div")
-    let divTabset = document.createElement("div");
-    let divTapanels = document.createElement("div");
-    
+    this.divTabset = document.createElement("div");
+    this.divTapanels = document.createElement("div");
+    this.divExtraControls = document.createElement("div");
+
+
     this.tabLabel="";
     this.tabSets=[];
     this.tabPanels=[];
+    this.headerCssClass = ["tab-label-component"];
+    this.panelCssClass = "tab-panel-component";
+
+    this.tabsetId_stem = tabsetId_stem;
+    this.tabPnlId_stem = tabPnlId_stem;
 
     divWrapper.classList.add("component-container--vertical");  
-    divTabset.classList.add("tabset-component");
-    divTapanels.classList.add("tab-panels-component");
+    this.divTabset.classList.add("tabset-component");
+    this.divTapanels.classList.add("tab-panels-component");
 
     arrTabNames.forEach((value,index)=>{
-      let tabsetId = "Id-tabset-"+(index+1);
-      let tabPanelId = "Id-panel-"+(index+1);
+      let tabsetId =  tabsetId_stem + (index+1);
+      let tabPanelId = tabPnlId_stem + (index+1);
       this.tabSets.push(new TabsetClass(value,tabsetId));
-      this.tabPanels.push(new TabPanelClass(tabPanelId))
+      this.tabPanels.push(new TabPanelClass(tabPanelId));
 
-      divTabset.appendChild(this.tabSets[index].HTMLElement);
-      divTapanels.appendChild(this.tabPanels[index].HTMLElement)
+      this.divTabset.appendChild(this.tabSets[index].HTMLElement);
+      this.divTapanels.appendChild(this.tabPanels[index].HTMLElement)
       
     });
 
 
-    divTabset.appendChild(divTapanels);
-    divWrapper.appendChild(divTabset);
+    this.divTabset.appendChild(this.divTapanels);
+    this.divTabset.appendChild(this.divExtraControls);
+    divWrapper.appendChild(this.divTabset);
+    
 
     this.HTMLElement=divWrapper;
 
     this.tabSets.forEach((value,index)=>{
          
-      
+      console.log('value.HTMLElement.id ' + value.HTMLElement.id);
       this.HTMLElement.querySelector("#"+value.HTMLElement.id).addEventListener("click",()=>{
         this.clickTabset(index+1)
           
@@ -1001,12 +1269,53 @@ class TabComponent{
                
   }
 
+  changeTabLblCss(cssArr){
+      this.tabSets.forEach((value,index)=>{
+
+          if (cssArr.length <= 0) {
+              throw Error('Must specify at least one css class!')
+          }
+          
+          if (cssArr[index]) {
+
+              value.changeCssClass(cssArr[index]);
+          }else {
+
+              value.changeCssClass(cssArr[0]);
+          }
+
+          this.headerCssClass = [];
+          this.headerCssClass = [...cssArr];
+      });
+  }
+  changeTabPanelCss(newCss) {
+      this.tabPanels.forEach( item => item.changeCssClass(newCss));
+      this.panelCssClass = newCss;
+  }
+
+  addIconsTabLbl(iconsArry) {
+      this.tabSets.forEach((value,index)=>{
+
+          if (iconsArry.length <= 0) {
+              throw Error('Must specify at least one Icon!')
+          }
+          
+          if (iconsArry[index]) {
+
+              value.addIcon(iconsArry[index]);
+        
+          }
+
+      });
+  }
+
   fillTabPanel(tabsetNumber,tabPanelHTML){
+  console.log('tanpnl id ' + `#${this.tabPnlId_stem}${tabsetNumber}` );
     if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
-      this.HTMLElement.querySelector("#"+"Id-panel-"+tabsetNumber).appendChild(tabPanelHTML);
+      this.HTMLElement.querySelector(`#${this.tabPnlId_stem}${tabsetNumber}`).appendChild(tabPanelHTML);
       if(tabsetNumber===1){
           this.clickTabset(1)
-
+       
       } 
     } else{
         console.log("Please insert a valid Integer tabset Number within the range")
@@ -1015,20 +1324,23 @@ class TabComponent{
     
   
   clickTabset(tabsetNumber){
+
     if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
-      let tabsetId = "Id-tabset-"+tabsetNumber;
-      let tabPanelId = "Id-panel-"+tabsetNumber;
-      
+      let tabsetId = this.tabsetId_stem + tabsetNumber;
+      let tabPanelId = this.tabPnlId_stem +tabsetNumber;
+
       //fix the color of the clicked tabset and reset the others
-      let tabsets = this.HTMLElement.querySelectorAll(".tab-label-component")
+      let cssClass = this.headerCssClass[tabsetNumber] || this.headerCssClass[0];
+
+      let tabsets = this.HTMLElement.querySelectorAll(`.${cssClass}`);
       tabsets.forEach((item)=>{
-      item.classList.remove("tab-label-focus");
+      item.classList.remove(cssClass + "--selected");
       })
       
-      this.HTMLElement.querySelector("#"+tabsetId).classList.add("tab-label-focus")
+      this.HTMLElement.querySelector("#"+tabsetId).classList.add(cssClass + "--selected")
       
       //make the tabPanel visible and hide the others  
-      let tabPanels = this.HTMLElement.querySelectorAll(".tab-panel-component")
+      let tabPanels = this.HTMLElement.querySelectorAll(`.${this.panelCssClass}`);
       tabPanels.forEach((item)=>{
         item.classList.remove("tab-panel-show");
       })
@@ -1038,22 +1350,48 @@ class TabComponent{
     } else{
       console.log("Please insert a valid Integer tabset Number within the range")
     }
+
   }
 
   addLabel(labelTitle){
-    let tabId="Id-TabLabel";
+    let tabId="Id-TabLabel_"+labelTitle.length;
+    
     if (this.tabLabel ===""){
       
       this.tabLabel= new LabelComponent(labelTitle,tabId);
       this.HTMLElement.prepend(this.tabLabel.HTMLElement);
     } else{
-      this.HTMLElement.querySelector("#"+tabId).textContent=labelTitle;
+      // this.HTMLElement.querySelector("#"+tabId).textContent=labelTitle;
+      this.tabLabel.changeLblTxt(labelTitle);
     }
     
   }
 
-  addTab(){
+  addControls(control, cssClasses ){
+    this.divExtraControls.appendChild(control.HTMLElement);
+    cssClasses.forEach( cssClass => this.divExtraControls.classList.add(cssClass));
+  }
 
+  addTab(_number, headerTxt ){
+
+    let tabsetId =  this.tabsetId_stem + _number;
+    let tabPanelId = this.tabPnlId_stem + _number;
+
+    this.tabSets.forEach((tab)=> { console.log(tab)});
+
+    this.tabSets.splice(_number-1, 0 , new TabsetClass(headerTxt,tabsetId));
+    
+    this.tabPanels.splice(_number-1, 0 , new TabPanelClass(tabPanelId));
+
+    
+    this.divTabset.insertBefore(this.tabSets[_number - 1].HTMLElement, this.divTabset.children[this.divTabset.childElementCount - 2]);
+    this.divTapanels.appendChild(this.tabPanels[_number - 1].HTMLElement);
+
+    
+    this.tabSets[_number - 1].HTMLElement.addEventListener("click", ()=> {
+      this.clickTabset(_number);
+    });
+    
   }
 
   removeTab(){

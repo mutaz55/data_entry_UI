@@ -42,7 +42,7 @@
       this.newObjectiveTab.fillTabPanel(3,tabPanel3.HTMLElement);
       this.newObjectiveTab.fillTabPanel(4,tabPanel4.HTMLElement);
   
-      this.newObjectiveTab.on
+      //this.newObjectiveTab.on
   
       this.tapPanels.push(tabPanel1);
       this.tapPanels.push(tabPanel2);

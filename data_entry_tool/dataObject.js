@@ -238,22 +238,29 @@ class Quiz {
 }
 
 //****************************************** */
-class statementAnswersObj {
-  constructor(statementId, statement) {
-      this.id = statementId;
-      this.statement = statement;
+class SubQuizObj {
+  constructor(subQuizId, subQuizMediaWrapper) {
+      this.id = subQuizId;
+      this.subQuiz = subQuizMediaWrapper;
       this.Answers = []; //Array of AnswerObj
   }
 }
 //****************************************** */
 class AnswerObj {
-  constructor(answerId, mediaObjData, correct) {
+  constructor(answerId, answerMediaWrapper, correct) {
       this.answerId = answerId;
-      this.answer = mediaObjData;
+      this.answer = answerMediaWrapper; //Wrapper object Answer {id, mediaObjects[]};
       this.correct = correct; //Boolean
   }
 }
 
+class MediaObjectsWrapper {
+  constructor(wrapperId){
+  this.id=wrapperId;
+  this.mediaObjects =[];
+
+  }
+}
 //****************************************** */
 class mediaObjData {
   constructor(mediaId, text, type) {
@@ -266,6 +273,217 @@ class mediaObjData {
 
   //****************************************** */
   
+
+//*****************Add-ons************************* */
+
+// Text - word - Array
+class TextWordArray {
+  constructor(textArrayId, showTypeId, hasSound) {
+      this.id = textArrayId;
+      this.type = "TextWordArray";
+      this.showType = showTypeId; // read fro Project Library with the showTypeId
+      this.sound = hasSound; //true or false
+      this.Words = [];
+
+  }
+}
+
+class WordObj {
+  constructor(wordId, word, meaning, PicDescription) {
+      this.wordId = wordId;
+      this.word = word;
+      this.meaning = meaning;
+      this.picDes = PicDescription;
+
+  }
+}
+
+
+
+// pic with Hot Spot
+class PicWithHotSpot {
+  constructor(picHotSpotId, mediaObj){
+      this.id=picHotSpotId;
+      this.pic=mediaObj;
+      this.hotSpots=[];
+  }
+}
+
+class HotSpotObj {
+  constructor(HotSpotId,HotSpotText,YorN){
+      this.id=HotSpotId;
+      this.text=HotSpotText;
+      this.sound=YorN;
+  }
+}
+
+
+// TableObj
+class TableObj {
+  constructor(tableId) {
+      this.id=tableId;
+      this.colsNumber="";
+      this.records=[]; //Save ColObj check before add if ColObj.cols.length === TableObj.colsNumber
+  }
+}
+
+class ColObj {
+  constructor(colId){
+      this.id =colId;
+      this.cols = []; //Save mediaObj
+  }
+}
+
+
+// Video all types
+
+class VideoObj {
+  constructor(videoId, videoType) {
+      this.id = videoId;
+      this.type = videoType;
+      this.videoScenes = [];
+  }
+}
+
+class VideoSceneObj {
+  constructor(videoSceneId, videoSceneName, locationId, timeID) {
+      this.id = videoSceneId;
+      this.name = videoSceneName;
+      this.location = locationId;
+      this.time = timeID;
+      this.sequence = []; //DialogObj, InteractiveQuizObj
+  }
+}
+
+class DialogObj {
+  constructor(dialogId, action, dialogText, IsVoiceOver) {
+      this.id = dialogId;
+      this.character = []; //CharacterId more than one if they talking in the same time.
+      this.action = action;
+      this.text = dialogText;
+      this.voiceOver = IsVoiceOver;
+  }
+}
+
+class InteractiveQuizObj {
+  constructor(interQuizId, statement, feedbackCorrect, feedbackWrong) {
+      this.id = interQuizId;
+      this.statement = statement;
+      this.Answers = []; //AnswerObj
+      this.feedBackCorrect = feedbackCorrect;
+      this.feedbackWrong = feedbackWrong;
+
+  }
+}
+
+// Animation
+
+class AnimationClipObj {
+  constructor(aniId, backgroundId) {
+      this.id = aniId;
+      this.backgroundId = backgroundId;
+      this.animationObjects = [];
+  }
+}
+
+class animationObj {
+  constructor(aniSceneObjId, aniObjectId, animationType, animationDes, SoundDes) {
+      this.Id = aniSceneObjId;
+      this.aniObjectId = aniObjectId;
+      this.animationType = animationType;
+      this.animationDes = animationDes;
+      this.SoundDes = SoundDes;
+
+  }
+}
+
+// Feedback
+class Feedback {
+  constructor(feedbackId, feedbackType) {
+      this.Id = feedbackId;
+      this.type = feedbackType;
+  }
+}
+
+
+// Memory Game
+
+class MemoryGame {
+  constructor(memoryGameId) {
+      this.Id = memoryGameId;
+      this.CardsCom = [];
+  }
+}
+
+class CardComObj {
+  constructor(cardComId, card1, card2) {
+      this.Id = cardComId;
+      this.card1 = card1;
+      this.card2 = card2;
+
+  }
+}
+
+class CardObj {
+  constructor(cardId, picObj, textObj, soundObj) {
+      this.Id = cardId;
+      this.pic = picObj; //mediaObj
+      this.text = textObj; //mediaObj
+      this.sound = soundObj; //mediaObj
+  }
+}
+
+
+class SlideTransitionObj {
+  constructor (slideTransId, name,movieLink){
+      this.id =slideTransId;
+      this.name=name;
+      this.movieLink=movieLink;       
+  }
+}
+
+
+//every ObjectiveObj save one element and one skill.
+class ObjectivesList {
+  constructor(objectiveListId){
+    this.id =objectiveListId;
+    this.Objectives=[]; //add ObjectiveObj
+  }
+}
+
+class ObjectiveObj {
+    constructor(objectiveId, lingElement, linkId) {
+        this.id = objectiveId;
+        this.lingElement = lingElement
+        this.skills = []; //الاستماع(استماع لنطق السليم، تمييز النطق السليم)، القراءة، الكتابة(الإملاء، التعبير بالتراكيب اللغوية) ، 
+        //المحادثة( النطق السليم، التعبير بالتراكيب اللغوية)
+        this.linkId = linkId; // id of the statement - quiz in case of assessment or slide id in case of solution.
+        // this.type = category;                   //كلمات مفتاحية، تراكيب، صوتيات، قواعد
+        // this.element = elementValue // categroyيحفظ هنا العناصر التي يجب أن يتم تدريسها أو تقييمها مصنفة حسب 
+    }
+}
+
+class SkillObj{
+  constructor(skillId,skillIcon){
+    this.skillId=skillId;
+    this.skillIcon=skillIcon
+    
+  }
+}
+
+
+//****************************************** */
+
+/******************************************************************/
+
+
+
+
+
+
+
+
+
   
   // Config and Library Object
   

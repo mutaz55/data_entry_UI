@@ -2465,7 +2465,6 @@ function createItemHTML(item) {
         e.currentTarget.classList.add("buttons-in-item-menu--selected");
         _courses.currentItem = e.currentTarget.dataset.itemId;
 
-      console.log('clicked');
     }
       
 
@@ -3057,7 +3056,7 @@ function Fill_Interface(){
     console.log("Interface Action Clicked" + _courses.getCurrentItem().viewAction);
     interfaceContainer.innerHTML="";
     let newItem = viewFactory.press(_courses.getCurrentItem().viewAction);
-    console.log(newItem.create());
+    // console.log(newItem.create());
     interfaceContainer.appendChild(newItem.create());
   }
 
