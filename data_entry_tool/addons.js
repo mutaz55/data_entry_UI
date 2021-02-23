@@ -306,14 +306,21 @@ create(){
 }
 }
 
-class LSortingQuiz {
-  create(){
+class LSorttingQuiz_Interface
+
+{
+  constructor( container_css = "component-container--vertical"){
+    this.divWrapper = document.createElement("div");
+    this.divWrapper.classList.add(container_css);
+
+  }
+
+ build () {
+
+     let divDataInput = document.createElement("div");
     
-    
-  let divWrapper = document.createElement("div");
-  //   let divDataInput = document.createElement("div");
-  //   let divDataPreview = document.createElement("div");
-    
+    //Layout
+    divDataInput.classList.add("Quiz-layout-input");
     
   
     
@@ -323,27 +330,71 @@ class LSortingQuiz {
 
     let inputbox_answer = new TextareaLabelComponent('i-sorting-answerTxt', "الإجابة الصحيحة", 1);
     
-    let addBtn = new AddBtnWordComponent('add_DragAndDrop','إضافة',["margin--top-10","add-btn"]);
+    let addBtn = new AddBtnWordComponent('add_DragAndDrop','إضافة السؤال',["margin--top-10","add-btn"]);
     
-    addBtn.onClick(()=> {console.log('btn clicked')});
-  
-    
-    
-    
-    
-    
-    
-    
-    //Layout
-    divWrapper.classList.add("component-container--vertical");
-    divWrapper.appendChild(mobjEntry.HTMLElement);
-    divWrapper.appendChild(inputbox_answer.HTMLElement);
-    divWrapper.appendChild(addBtn.HTMLElement);
-    
-    
-  
-    return divWrapper;
 
+
+
+    let previewSection = document.createElement("div");
+    previewSection.className = "Quiz-layout-preview";
+  
+    
+    this.prvContainer = new PreviewContainer();
+  
+
+    previewSection.appendChild(this.prvContainer.HTMLElement);
+
+    let prvSide = new SidePreview("id-side-preview","العناصر والمهارات");
+    previewSection.appendChild(prvSide.HTMLElement);
+    previewSection.style.display = "none";
+
+
+    addBtn.onClick(()=> {
+      previewSection.style.display = "flex";
+      this.addItemToPrv(1);
+      this.addItemToPrv(2);
+      this.addItemToPrv(3);
+      this.addItemToPrv(4);
+    });
+
+
+  
+    
+
+
+    divDataInput.appendChild(mobjEntry.HTMLElement);
+    divDataInput.appendChild(inputbox_answer.HTMLElement);
+    divDataInput.appendChild(addBtn.HTMLElement);
+
+
+    this.divWrapper.appendChild(divDataInput);
+
+    this.divWrapper.appendChild(previewSection);
+
+  
+    return this.divWrapper;
+
+    
+ }
+  
+ addItemToPrv(_number ){
+  // check if its already exist
+
+
+  let divLSquizItem = new previewItemManyToOne(_number)
+
+  this.prvContainer.addPreviewItem("item_id"+_number, divLSquizItem, "item_id_close"+_number,null,null);
+
+
+ }
+
+}
+class LSortingQuiz {
+  create(){
+    let lsorting_quiz = new LSorttingQuiz_Interface();
+    return lsorting_quiz.build();
+
+    
   }
 }
 
@@ -405,9 +456,10 @@ class TorFQuiz {
     
     actionContainer.className = "radioBtns-addBtn-container";
     
+
     
     //Layout
-    divWrapper.classList.add("component-container--vertical");
+    divWrapper.classList.add("Quiz-layout-input");
     divWrapper.appendChild(mobjEntry.HTMLElement);
     divWrapper.appendChild(actionContainer);
     
@@ -625,7 +677,7 @@ class MChoicesQuiz {
 
       let answers_incorrect = new mediaObjEntry('ansSet-incorrect-'+ addAnswerBtn.noOfAnswers, 'ansPnl-incorrect-'+ addAnswerBtn.noOfAnswers);
 
-      answers_incorrect.changeLbl("إدخال الإجابة");
+      answers_incorrect.changeLbl(`إدخال الإجابة ${(addAnswerBtn.noOfAnswers + 1)}`);
 
       answersTabset.addTab(addAnswerBtn.noOfAnswers + 1, "الإجابة " + (addAnswerBtn.noOfAnswers + 1));
 
@@ -637,10 +689,8 @@ class MChoicesQuiz {
 
     answersTabset.addControls(addAnswerBtn,["any"]);
     
-    // answersTabset.HTMLElement.appendChild(addAnswerBtn.HTMLElement);
-    // innerWrapper.appendChild(innerMObjEntry.HTMLElement);
     innerWrapper.appendChild(answersTabset.HTMLElement);
-    // innerWrapper.appendChild(addAnswerBtn.HTMLElement);
+    
 
 
 

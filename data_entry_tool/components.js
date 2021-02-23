@@ -654,9 +654,73 @@ class TextareaLabelWithClose {
 
 } 
 
+class mediaObjPreview {
+  constructor(txtarea_stemId, tabsetId, tabpnlId){
 
+    let txtEntry_Text_id = `txtEntry-Text-${txtarea_stemId}`;
+    let txtEntry_Picture_id = `txtEntry-Picture-${txtarea_stemId}`;
+    let txtEntry_Drawings_id = `txtEntry-Drawings-${txtarea_stemId}`;
+    let txtEntry_Sound_id = `txtEntry-Sound-${txtarea_stemId}`;
 
+    let arrObjectiveType = ["", "", "", ""];
 
+    this.mObjPreviewTab = new TabComponent(arrObjectiveType,tabsetId, tabpnlId);
+    this.mObjPreviewTab.divTabset.parentNode.className = "SL-quizItemsPreview--mediaObj";
+    this.mObjPreviewTab.changeTabLblCss(["tab-labels-mObjPrv"]);
+    this.mObjPreviewTab.addIconsTabLbl([addOns[0].Icon,addOns[3].Icon, addOns[4].Icon, addOns[6].Icon]);
+
+    let tabPanel1 = new TextareaComponent(txtEntry_Text_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
+    this.mObjPreviewTab.fillTabPanel(1,tabPanel1.HTMLElement);
+    let tabPanel2 = new TextareaComponent(txtEntry_Picture_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
+    this.mObjPreviewTab.fillTabPanel(2,tabPanel2.HTMLElement);
+    let tabPanel3 = new TextareaComponent(txtEntry_Drawings_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
+    this.mObjPreviewTab.fillTabPanel(3,tabPanel3.HTMLElement);
+    let tabPanel4 = new TextareaComponent(txtEntry_Sound_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
+    this.mObjPreviewTab.fillTabPanel(4,tabPanel4.HTMLElement);
+    
+    
+    this.mObjPreviewTab.changeTabPanelCss("tab-panel-component-media");
+    this.mObjPreviewTab.clickTabset(1);
+
+    this.HTMLElement = this.mObjPreviewTab.HTMLElement;
+
+    
+  }
+
+  assignQuizNo(_number){
+
+    let no_lbl = this.mObjPreviewTab.divTabset.querySelector('#tab-number-label');
+
+    if (!no_lbl) {
+      no_lbl = document.createElement("label");
+      no_lbl.id = "tab-number-label";
+      this.mObjPreviewTab.divTabset.appendChild(no_lbl);
+    }
+
+    no_lbl.textContent = _number;
+
+    
+  }
+}
+
+class previewItemManyToOne {
+  constructor(_number) {
+
+     let divLSquizItem =  document.createElement("div");
+      divLSquizItem.className = "SL-quizItemsPreview--container";
+
+      let mObjPreview = new mediaObjPreview( _number,"tabset-id-" + _number, "tabpnl-id-" + _number);
+
+      mObjPreview.assignQuizNo(_number);
+      
+      let answerPreview = new TextareaComponent("answer-SL-quiz-Id-" + _number , 2,["SL-quizAnswerPreview"]);
+     
+      divLSquizItem.appendChild(mObjPreview.HTMLElement);
+      divLSquizItem.appendChild(answerPreview.HTMLElement);
+
+      return divLSquizItem;
+  }
+}
 class mediaObjEntry {
 
   constructor(tabsetId, tabpnlId) {
@@ -664,6 +728,7 @@ class mediaObjEntry {
   let arrObjectiveType = [addOns[0].Text, addOns[3].Text, addOns[4].Text, addOns[6].Text];
 
   this.mediaObjTab = new TabComponent(arrObjectiveType, tabsetId, tabpnlId);
+
 
   
   // add Label and Tab Panel to the Tab
@@ -1184,6 +1249,7 @@ class TabsetClass {
   changeCssClass(newCssClass){
       this.tabLabel.className = newCssClass;  
   }
+
   addIcon (iconName) {
       
 
@@ -1220,8 +1286,9 @@ class TabComponent{
   constructor( arrTabNames, tabsetId_stem = "Id-tabset-", tabPnlId_stem = "Id-panel-"){
     let divWrapper = document.createElement("div")
     this.divTabset = document.createElement("div");
+    
     this.divTapanels = document.createElement("div");
-    this.divExtraControls = document.createElement("div");
+    this.divExtraControls = null;
 
 
     this.tabLabel="";
@@ -1249,9 +1316,11 @@ class TabComponent{
     });
 
 
-    this.divTabset.appendChild(this.divTapanels);
-    this.divTabset.appendChild(this.divExtraControls);
+    // this.divTabset.appendChild(this.divTapanels);
+    // this.divTabset.appendChild(this.divExtraControls);
     divWrapper.appendChild(this.divTabset);
+    divWrapper.appendChild(this.divTapanels);
+    // divWrapper.appendChild(this.divExtraControls);
     
 
     this.HTMLElement=divWrapper;
@@ -1310,7 +1379,7 @@ class TabComponent{
   }
 
   fillTabPanel(tabsetNumber,tabPanelHTML){
-  console.log('tanpnl id ' + `#${this.tabPnlId_stem}${tabsetNumber}` );
+
     if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
       this.HTMLElement.querySelector(`#${this.tabPnlId_stem}${tabsetNumber}`).appendChild(tabPanelHTML);
       if(tabsetNumber===1){
@@ -1368,6 +1437,10 @@ class TabComponent{
   }
 
   addControls(control, cssClasses ){
+    if (!this.divExtraControls) {
+        this.divExtraControls = document.createElement("div");
+        this.HTMLElement.appendChild(this.divExtraControls);
+    }
     this.divExtraControls.appendChild(control.HTMLElement);
     cssClasses.forEach( cssClass => this.divExtraControls.classList.add(cssClass));
   }
@@ -1384,7 +1457,8 @@ class TabComponent{
     this.tabPanels.splice(_number-1, 0 , new TabPanelClass(tabPanelId));
 
     
-    this.divTabset.insertBefore(this.tabSets[_number - 1].HTMLElement, this.divTabset.children[this.divTabset.childElementCount - 2]);
+    // this.divTabset.insertBefore(this.tabSets[_number - 1].HTMLElement, this.divTabset.children[this.divTabset.childElementCount - 2]);
+    this.divTabset.appendChild(this.tabSets[_number - 1].HTMLElement);
     this.divTapanels.appendChild(this.tabPanels[_number - 1].HTMLElement);
 
     
@@ -1404,18 +1478,28 @@ class TabComponent{
 class PreviewContainer {
  
 constructor(){
-  let divWrapper = document.createElement("div");
+
+
+
+
+  
+  // let divDataPreview = document.createElement("div");
+  // divDataPreview.classList.add("component-container--horizontal");
+  // divDataPreview.id = "data_preview_section";
+
+
+
   this.divContainer =document.createElement("div");
-  this.divFooter = document.createElement("div");
+  // this.divFooter = document.createElement("div");
 
-  divWrapper.classList.add("component-container--vertical");
-  this.divContainer.classList.add("preview-container")
+
+  this.divContainer.classList.add("preview-container");
   this.divContainer.id="id-preview-list";
-  this.divFooter.classList.add("preview-list-footer");
-  divWrapper.appendChild(this.divContainer);
-  divWrapper.appendChild(this.divFooter);
+  // this.divFooter.classList.add("preview-list-footer");
+  // divDataPreview.appendChild(this.divContainer);
+  // divDataPreview.appendChild(this.divFooter);
 
-  this.HTMLElement=divWrapper;
+  this.HTMLElement= this.divContainer;
 
 }
 
@@ -1433,11 +1517,11 @@ clearPreviewContainer(){
  resetAllpreviewWrapperBorder() {
   let previewWrapper = document.querySelectorAll(".preview-item-wrapper")
   previewWrapper.forEach(item => {
-    item.style.border = "1px solid #868c9c";
+    item.style.boxShadow = "none";
   })
 }
 
-addPreviewItem(previewItemId,statementSorting,id_c,fnAtEventClick,fnAtEventClose) {
+addPreviewItem(previewItemId,embededObj,id_c,fnAtEventClick,fnAtEventClose) {
 
   let previewWrapper = document.createElement("div");
   let buttonSmallClose = new CloseBoxComponent(id_c);
@@ -1446,12 +1530,12 @@ addPreviewItem(previewItemId,statementSorting,id_c,fnAtEventClick,fnAtEventClose
   previewWrapper.classList.add("preview-item-wrapper");
  
 
-  previewWrapper.appendChild(statementSorting);
+  previewWrapper.appendChild(embededObj);
   previewWrapper.appendChild(buttonSmallClose.HTMLElement);
 
   previewWrapper.addEventListener("click", (e) => {
     this.resetAllpreviewWrapperBorder()
-    previewWrapper.style.border = "5px solid #868c9c";
+    previewWrapper.style.boxShadow = "0 0 0 3px #868c9c";
     fnAtEventClick();
   })
 
@@ -1468,14 +1552,16 @@ addPreviewItem(previewItemId,statementSorting,id_c,fnAtEventClick,fnAtEventClose
 class SidePreview {
   constructor(sidePreviewId,sidePreviewTitle){
 
+
+   
     let divWrapper = document.createElement("div");
     let divTitle = document.createElement("div");
     this.divlist = document.createElement("div");
     let txtTitle = document.createTextNode(sidePreviewTitle);
     
-    divWrapper.classList.add("side-preview-list");
-    divTitle.classList.add("side-preview-main-title");
-    this.divlist.classList.add("component-container--vertical")
+    divWrapper.classList.add("side-preview");
+    divTitle.classList.add("sidepreviewLst-label");
+    this.divlist.classList.add("side-preview-list")
     this.divlist.classList.add("padding__meduim")
 
     this.divlist.id=sidePreviewId;
