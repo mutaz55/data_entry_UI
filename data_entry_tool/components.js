@@ -5,27 +5,44 @@
 
 class TextareaComponent {
   constructor(textareaId,rowNumber, cssArr = ["textarea-description", "textarea-resize-vertically"]){
+    
     let textareaElement =document.createElement("textarea");
+    textareaElement.id=textareaId;
+    textareaElement.rows=rowNumber;
+
     
     cssArr.forEach( cssClass => {
       textareaElement.classList.add(cssClass);
     });
     
     
-    textareaElement.id=textareaId;
-    textareaElement.rows=rowNumber;
     this.HTMLElement= textareaElement;
   }
 
   onEvent(eventName,fn){
     this.HTMLElement.addEventListener(eventName,fn);
   }
+
+  getTextValue(){
+    return this.HTMLElement.value;
+  }
+  setTextValue(_value){
+    this.HTMLElement.value = _value;
+  }
+  clearValues(){
+    this.HTMLElement.value="";
+  }
 }
 
 class LabelComponent {
-  constructor(labelTitle,forId){
+  constructor(labelTitle,forId, cssArr = ["label-component"]){
+
     this.labeltitle=document.createElement("label");
-    this.labeltitle.classList.add("label-component");
+
+    cssArr.forEach( cssClass => {
+      this.labeltitle.classList.add(cssClass);
+    });
+
     this.labeltitle.for=forId;
     this.labeltitle.textContent=labelTitle;
     this.HTMLElement= this.labeltitle;
@@ -59,25 +76,37 @@ class CloseBoxComponent {
 
 
 class RadioComponent {
+
 constructor(radioId,radioName,radioValue,labelTxt){
+
 let divWrapper=document.createElement("div");
-let inputRadio = document.createElement("input");
+this.inputRadio = document.createElement("input");
+
 divWrapper.classList.add("radio-checkbox")
-inputRadio.id=radioId;
-inputRadio.type = "radio";
-inputRadio.classList.add("radioBtn");
-inputRadio.style.opacity=1;
-inputRadio.name=radioName;
-inputRadio.value=radioValue;
-this.checked=inputRadio.checked;
+this.inputRadio.id=radioId;
+
+this.inputRadio.type = "radio";
+this.inputRadio.classList.add("radioBtn");
+this.inputRadio.style.opacity=1;
+this.inputRadio.name=radioName;
+this.inputRadio.value=radioValue;
+
+if (radioValue == 1) {
+  this.inputRadio.checked = true;
+}else {
+  this.inputRadio.checked = false;
+}
+
+this.checked = this.inputRadio.checked;
 
 let labelRadio = document.createElement("label");
 labelRadio.htmlFor=radioId;
 labelRadio.textContent=labelTxt;
 
-divWrapper.appendChild(inputRadio);
+divWrapper.appendChild(this.inputRadio);
 divWrapper.appendChild(labelRadio);
 this.HTMLElement=divWrapper;
+
 }
 onClick(fn){
       
@@ -87,6 +116,10 @@ onClick(fn){
         
     
   });
+}
+
+getCheckedState(){
+  return this.checked;
 }
 
 }
@@ -207,12 +240,15 @@ class ListOfRadioOrCheckBoxComponent{
   constructor(listId, cssArry = ["list-radio-checkbox", "padding__meduim"]){
     
     let divList = document.createElement("div");
+
+    this.Radios = [];
     cssArry.forEach(cssClass => {
       divList.classList.add(cssClass);
     });
     divList.id=listId;
     this.HTMLElement= divList;
   }
+
   clearList(){
     if (this.HTMLElement.firstChild) {
       while (this.HTMLElement.firstChild) {
@@ -220,6 +256,7 @@ class ListOfRadioOrCheckBoxComponent{
       }
     }
   }
+
   addRadio(radioId,radioName,radioValue,labelTxt,fnClick){
     let newRadio = new RadioComponent(radioId,radioName,radioValue,labelTxt)
     newRadio.HTMLElement.classList.add("list-item-radio-checkbox");
@@ -227,6 +264,8 @@ class ListOfRadioOrCheckBoxComponent{
     newRadio.onClick((e)=>{
       fnClick(e);
     })
+
+    this.Radios.push(newRadio);
 
     this.HTMLElement.appendChild(newRadio.HTMLElement);
   
@@ -252,6 +291,14 @@ class ListOfRadioOrCheckBoxComponent{
     })
   }
 
+  clearRadiosState(){
+    this.Radios.forEach(radio => radio.inputRadio.checked = false);
+  }
+
+  getRadioValue(id){
+     let result = this.Radios.find(radio => radio.inputRadio.id == id);
+     return result.inputRadio.checked;
+  }
 
 }
 
@@ -413,9 +460,11 @@ class ListComponent {
     let divList = document.createElement("div");
     divList.classList.add("list-group");
     divList.id=listId;
+     
     this.HTMLElement= divList;
   }
 
+ 
   clearList(){
     if (this.HTMLElement.firstChild) {
       while (this.HTMLElement.firstChild) {
@@ -438,21 +487,18 @@ class ListComponent {
   }
 
 
-  addButtonWithCloseBoxToList(TextValue,listButtonId,id_c,fnOnClick,fnOnClose){
+  addButtonWithCloseBoxToList(TextValue,listButtonId,id_c,fnOnClick,fnOnClose,_super){
        
     let divWrapper=document.createElement("div");
     divWrapper.classList.add("buttons-wrapper");
-
+    
     const listBtn = new BtnInListComponent(TextValue,listButtonId); 
     const closeBox = new CloseBoxComponent(id_c);
     
-    listBtn.HTMLElement.addEventListener("click",(e)=>{
-      fnOnClick(e);
-    })
+    listBtn.HTMLElement.addEventListener("click", (e) => {fnOnClick(e,_super)});
 
-    closeBox.HTMLElement.addEventListener("click",(e)=>{
-      fnOnClose(e);
-    })
+    closeBox.HTMLElement.addEventListener("click",(e) => { fnOnClose(e, _super); });
+    
 
 
     divWrapper.appendChild(listBtn.HTMLElement);
@@ -603,6 +649,15 @@ class TextareaLabelComponent {
     this.HTMLElement= divWrapper;
   
   }
+  getTextValue(){
+    return this.textarea.getTextValue();
+  }
+  setTextValue(_value){
+    this.text.setTextValue(_value);
+  }
+  clearValue(){
+    this.textarea.clearValues();
+  }
   
 }
 
@@ -655,35 +710,38 @@ class TextareaLabelWithClose {
 } 
 
 class mediaObjPreview {
-  constructor(txtarea_stemId, tabsetId, tabpnlId){
+  constructor(txtarea_stemId,txtEntryPostFix, tabsetId, tabpnlId){
 
-    let txtEntry_Text_id = `txtEntry-Text-${txtarea_stemId}`;
-    let txtEntry_Picture_id = `txtEntry-Picture-${txtarea_stemId}`;
-    let txtEntry_Drawings_id = `txtEntry-Drawings-${txtarea_stemId}`;
-    let txtEntry_Sound_id = `txtEntry-Sound-${txtarea_stemId}`;
+    let txtEntry_Text_id = `Id-txtEntryPreview-${MediaType.Text_sentence}-${txtEntryPostFix}-${txtarea_stemId}`;
+    let txtEntry_Picture_id = `Id-txtEntryPreview-${MediaType.pic_photo}-${txtEntryPostFix}-${txtarea_stemId}`;
+    let txtEntry_Drawings_id = `Id-txtEntryPreview-${MediaType.pic_drawing}-${txtEntryPostFix}-${txtarea_stemId}`;
+    let txtEntry_Sound_id = `Id-txtEntryPreview-${MediaType.sound_record}-${txtEntryPostFix}-${txtarea_stemId}`;
 
     let arrObjectiveType = ["", "", "", ""];
 
-    this.mObjPreviewTab = new TabComponent(arrObjectiveType,tabsetId, tabpnlId);
-    this.mObjPreviewTab.divTabset.parentNode.className = "SL-quizItemsPreview--mediaObj";
+    this.mObjPreviewTab = new TabComponent(arrObjectiveType, 4,tabsetId, tabpnlId);
+    this.mObjPreviewTab.divTabset.parentNode.className = "SL-quizItemsPreview--mediaObj";       //discuss with Mutaz
     this.mObjPreviewTab.changeTabLblCss(["tab-labels-mObjPrv"]);
     this.mObjPreviewTab.addIconsTabLbl([addOns[0].Icon,addOns[3].Icon, addOns[4].Icon, addOns[6].Icon]);
 
-    let tabPanel1 = new TextareaComponent(txtEntry_Text_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
-    this.mObjPreviewTab.fillTabPanel(1,tabPanel1.HTMLElement);
-    let tabPanel2 = new TextareaComponent(txtEntry_Picture_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
-    this.mObjPreviewTab.fillTabPanel(2,tabPanel2.HTMLElement);
-    let tabPanel3 = new TextareaComponent(txtEntry_Drawings_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
-    this.mObjPreviewTab.fillTabPanel(3,tabPanel3.HTMLElement);
-    let tabPanel4 = new TextareaComponent(txtEntry_Sound_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
-    this.mObjPreviewTab.fillTabPanel(4,tabPanel4.HTMLElement);
+    this.tabPanel1 = new TextareaComponent(txtEntry_Text_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
+    this.mObjPreviewTab.fillTabPanel(0,this.tabPanel1.HTMLElement);
+    this.tabPanel2 = new TextareaComponent(txtEntry_Picture_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
+    this.mObjPreviewTab.fillTabPanel(1,this.tabPanel2.HTMLElement);
+    this.tabPanel3 = new TextareaComponent(txtEntry_Drawings_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
+    this.mObjPreviewTab.fillTabPanel(2,this.tabPanel3.HTMLElement);
+    this.tabPanel4 = new TextareaComponent(txtEntry_Sound_id,5,["textarea-description-preview", "textarea-resize-vertically"]);
+    this.mObjPreviewTab.fillTabPanel(3,this.tabPanel4.HTMLElement);
     
     
     this.mObjPreviewTab.changeTabPanelCss("tab-panel-component-media");
-    this.mObjPreviewTab.clickTabset(1);
+    this.mObjPreviewTab.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
+
+    
 
     this.HTMLElement = this.mObjPreviewTab.HTMLElement;
 
+    
     
   }
 
@@ -701,34 +759,78 @@ class mediaObjPreview {
 
     
   }
-}
+  setEntries(_subQuizObj){
 
-class previewItemManyToOne {
-  constructor(_number) {
+    _subQuizObj.mediaObjects.forEach( mObj => {
 
-     let divLSquizItem =  document.createElement("div");
-      divLSquizItem.className = "SL-quizItemsPreview--container";
+        if (mObj.type == MediaType.Text_sentence){
+            this.tabPanel1.setTextValue(mObj.text);
+        }else if (mObj.type == MediaType.pic_photo){
+          this.tabPanel2.setTextValue(mObj.text);
+        }else if (mObj.type == MediaType.pic_drawing){
+          this.tabPanel3.setTextValue(mObj.text);
+        }else if (mObj.type == MediaType.sound_record){
+          this.tabPanel4.setTextValue(mObj.text);
+        }
+        else throw Error("unknow media type");
 
-      let mObjPreview = new mediaObjPreview( _number,"tabset-id-" + _number, "tabpnl-id-" + _number);
+    });
 
-      mObjPreview.assignQuizNo(_number);
+  }
+
+  
+  activateOnEvent(event,subQuizId){
+    
+                  
+    this.tabPanel1.HTMLElement.addEventListener(event,(e)=>{
       
-      let answerPreview = new TextareaComponent("answer-SL-quiz-Id-" + _number , 2,["SL-quizAnswerPreview"]);
-     
-      divLSquizItem.appendChild(mObjPreview.HTMLElement);
-      divLSquizItem.appendChild(answerPreview.HTMLElement);
+      let saveSubQuiz1 = new SaveSubQuizToDB(subQuizId,e.target.value,MediaType.Text_sentence)
+      saveSubQuiz1.execute();
 
-      return divLSquizItem;
+    });
+
+
+    this.tabPanel2.HTMLElement.addEventListener(event,(e)=>{
+
+      let saveSubQuiz2 = new SaveSubQuizToDB(subQuizId,e.target.value,MediaType.pic_photo)
+      saveSubQuiz2.execute();
+
+    })
+ 
+  
+
+    this.tabPanel3.HTMLElement.addEventListener(event,(e)=>{
+
+      let saveSubQuiz3 = new SaveSubQuizToDB(subQuizId,e.target.value,MediaType.pic_drawing)
+      saveSubQuiz3.execute();
+
+    })
+
+
+    this.tabPanel4.HTMLElement.addEventListener(event,(e)=>{
+
+      let saveSubQuiz4 = new SaveSubQuizToDB(subQuizId,e.target.value,MediaType.sound_record)
+      saveSubQuiz4.execute();
+
+    })
+
+
   }
 }
-class mediaObjEntry {
 
-  constructor(tabsetId, tabpnlId) {
+
+class mediaObjEntry {
+  
+  constructor(tabsetId, tabpnlId,txtEntryIdPostfix) {
+
+  let txtEntry_textId = `Id-txtEntry-${MediaType.Text_sentence}-${txtEntryIdPostfix}`; //[SI] for subQuiz [AI + Number]for Answers ==> Input
+  let txtEntry_picId = `Id-txtEntry-${MediaType.pic_photo}-${txtEntryIdPostfix}`; //[SP] for subQuiz [AP + Number]for Answers ==> Preview
+  let txtEntry_drawingId = `Id-txtEntry-${MediaType.pic_drawing}-${txtEntryIdPostfix}`; 
+  let txtEntry_soundId = `Id-txtEntry-${MediaType.sound_record}-${txtEntryIdPostfix}`; 
 
   let arrObjectiveType = [addOns[0].Text, addOns[3].Text, addOns[4].Text, addOns[6].Text];
 
-  this.mediaObjTab = new TabComponent(arrObjectiveType, tabsetId, tabpnlId);
-
+  this.mediaObjTab = new TabComponent(arrObjectiveType,4, tabsetId, tabpnlId);
 
   
   // add Label and Tab Panel to the Tab
@@ -737,18 +839,21 @@ class mediaObjEntry {
 
   this.mediaObjTab.addIconsTabLbl( [addOns[0].Icon,addOns[3].Icon, addOns[4].Icon, addOns[6].Icon]);
 
-  let tabPanel1 = new TextareaComponent('txtEntry-Text',5);
-  this.mediaObjTab.fillTabPanel(1,tabPanel1.HTMLElement);
-  let tabPanel2 = new TextareaComponent('txtEntry-Picture',5);
-  this.mediaObjTab.fillTabPanel(2,tabPanel2.HTMLElement);
-  let tabPanel3 = new TextareaComponent('txtEntry-Drawings',5);
-  this.mediaObjTab.fillTabPanel(3,tabPanel3.HTMLElement);
-  let tabPanel4 = new TextareaComponent('txtEntry-Sound',5);
-  this.mediaObjTab.fillTabPanel(4,tabPanel4.HTMLElement);
+  this.tabPanel1 = new TextareaComponent(txtEntry_textId,5);
+  this.mediaObjTab.fillTabPanel(0,this.tabPanel1.HTMLElement);
+  this.tabPanel2 = new TextareaComponent(txtEntry_picId,5);
+  this.mediaObjTab.fillTabPanel(1,this.tabPanel2.HTMLElement);
+  this.tabPanel3 = new TextareaComponent(txtEntry_drawingId,5);
+  this.mediaObjTab.fillTabPanel(2,this.tabPanel3.HTMLElement);
+  this.tabPanel4 = new TextareaComponent(txtEntry_soundId,5);
+  this.mediaObjTab.fillTabPanel(3,this.tabPanel4.HTMLElement);
   
   
   this.mediaObjTab.changeTabPanelCss("tab-panel-component-media");
-  this.mediaObjTab.clickTabset(1);
+  
+  
+  this.mediaObjTab.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
+  //this.mediaObjTab.clickTabset(0);
 
   this.HTMLElement = this.mediaObjTab.HTMLElement;
 
@@ -759,8 +864,42 @@ class mediaObjEntry {
     
   }
 
-}
+  getEntries(){
+  
+    let result = [];
 
+    let txtEntry_text = this.tabPanel1.getTextValue();
+    if (txtEntry_text.length > 0) {
+      result.push({text: txtEntry_text, type: MediaType.Text_sentence});
+    }
+
+    let txtEntry_pic = this.tabPanel2.getTextValue();
+    if (txtEntry_pic.length > 0) {
+      result.push({text: txtEntry_pic, type: MediaType.pic_photo});
+    }
+
+    let txtEntry_drawing = this.tabPanel3.getTextValue();
+    if (txtEntry_drawing.length > 0) {
+        result.push({text: txtEntry_drawing, type: MediaType.pic_drawing})
+    }
+
+    let txtEntry_sound = this.tabPanel4.getTextValue();
+    if (txtEntry_sound.length > 0) {
+       result.push({text: txtEntry_sound, type: MediaType.sound_record});
+    }
+    
+    return result;
+    
+  }
+  clearEntry(){
+    this.tabPanel1.clearValues();
+    this.tabPanel2.clearValues();
+    this.tabPanel3.clearValues();
+    this.tabPanel4.clearValues();
+  }
+
+
+}
 class ComboLabelComponent{
 
   constructor(comboId,comboTitle){
@@ -782,6 +921,33 @@ class ComboLabelComponent{
 
 } 
 
+class ContainerLabelComponent {
+  constructor(_id, containerTitle, cssArr) {
+
+    let divWrapper = document.createElement("div");
+
+    let labeltitle=new LabelComponent(containerTitle,"lbl_"+ _id);
+    this.Container = document.createElement("div");
+    this.Container.id = _id;
+
+    cssArr.forEach(cssClass => {
+      this.Container.classList.add(cssClass);
+    });
+            
+    divWrapper.classList.add("component-container--vertical");
+      
+    divWrapper.appendChild(labeltitle.HTMLElement);
+    divWrapper.appendChild(this.Container);
+  
+    this.HTMLElement=divWrapper;
+  }
+
+  addControl(ctrl) {
+    if (ctrl) {
+      this.Container.appendChild(ctrl);
+    }
+  }
+}
 class ComboTextLabelComponent {
   constructor(comboId,textareaId,comboLabelTitle,textareaLabelTitle,textareaNumberOfRows ){
     let divWrapper = document.createElement("div");
@@ -865,6 +1031,7 @@ class ListWithLabelAndInputComponent{
     
     
   constructor(listId,labelTitle,inputTextId,placeholder,addBtnId){
+
     let divWrapper = document.createElement("div");
 
     let listWithLabelElement = new ListWithLabelComponent(listId,labelTitle);
@@ -875,13 +1042,143 @@ class ListWithLabelAndInputComponent{
     this.addbutton = inputTextAddBtn.addButton;
 
 
+    this.lstCatObj = [];
+    this.currentValue = "-1";
+    this.listElement.HTMLElement.mode = "normal";
+    // this.addLstHandler(this, this.listElement.HTMLElement);
+    this.keyHandlers(this, this.listElement,this.inputText,this.addbutton.HTMLElement);
+
+
     divWrapper.classList.add("component-container--vertical");
     divWrapper.appendChild(listWithLabelElement.HTMLElement);
     divWrapper.appendChild(inputTextAddBtn.HTMLElement);
 
     this.HTMLElement=divWrapper;
+
+  }
+
+  getTextValue(){
+    return this.inputText.getTextValue();
   }
   
+  getLstLength(){
+    return this.listElement.HTMLElement.children.length;
+  }
+  clearTxtBox(){
+    this.inputText.clearTxtBox();
+  }
+  addLstHandler(_super, lst) {
+
+    lst.index = "-1";
+    lst.mode = "normal";
+    
+
+    lst.addEventListener('click', function(e) {
+
+      
+      if (lst.length <= 0) return;
+
+
+      if (!e.target.classList.contains("buttons-in-list")) return;
+    
+          lst.index = e.target.id;
+
+      if (e.detail == 2) {
+          _super.inputText.HTMLElement.value = e.target.textContent;
+          _super.addbutton.HTMLElement.textContent = "تعديل"
+          lst.mode = "update";
+
+      }else {
+        resetAddBtn(this.listElement, _super.inputText.HTMLElement, _super.addbutton.HTMLElement);
+
+      }
+
+      //if (_super.currentValue != lst.index) {
+        cleanStyleinLst(lst, "buttons-in-list--selected");
+        e.target.classList.add ("buttons-in-list--selected");
+        _super.currentValue = lst.index;
+      //}
+
+
+
+    });
+
+  }
+  
+  clickOnLstBtn(e,_super){
+
+      if (e.detail == 2) {
+        _super.inputText.HTMLElement.value = e.target.textContent;
+        _super.addbutton.HTMLElement.textContent = "تعديل"
+        _super.listElement.HTMLElement.mode = "update";
+        _super.inputText.HTMLElement.click();
+
+      }else {
+        resetAddBtn(_super.listElement.HTMLElement, _super.inputText.HTMLElement, _super.addbutton.HTMLElement);
+
+      }
+
+    //if (_super.currentValue != lst.index) {
+      cleanStyleinLst(_super.listElement.HTMLElement, "buttons-in-list--selected");
+      e.target.classList.add ("buttons-in-list--selected");
+      _super.currentValue = e.target.id;
+    //}
+
+  }
+
+  clkOnClose(e, _super){
+
+      let _id = e.target.id.split('-')[1];
+      
+
+      if (removeBtnFromLst(_super.listElement.HTMLElement, _id)) {
+
+          activateAfterDelete(_super.lstCatObj, _id, _super.currentValue);
+          _super.lstCatObj = _super.lstCatObj.filter(item => item.id != _id);
+      }
+
+  }
+
+  // Reset the add button (switch from update mode)
+  reset_AddBtn(lst, txt,btn){
+    lst.mode = "normal";
+    txt.HTMLElement.value = "";
+    btn.textContent = "إضافة";
+  }
+
+  keyHandlers(_super, lst, txt_entry, btn_add){
+    // select the text when its being clicked
+    txt_entry.onEvent('click', ()=> {
+      _super.selectAllTxt(txt_entry);
+    });
+
+    // when press Enter key on the input of a list item
+    // fires add button
+    txt_entry.onEvent('keydown', function (e) {
+
+        if (e.key === 'Enter') {
+
+        btn_add.dispatchEvent(new Event('click'));
+
+        // escape the update mode on the list
+        }else if (e.key  === 'Escape')  {
+
+          _super.reset_AddBtn(lst, txt_entry, btn_add);
+        }
+
+    });
+  }
+
+  
+  // select all text in an input box
+  selectAllTxt(txt) {
+    console.log('here select text')
+    if (txt.HTMLElement.value.length)  
+        txt.HTMLElement.select();
+  }
+
+
+
 }
 
 
@@ -899,6 +1196,11 @@ class InputTextWithAddBtnForListComponent {
 
     this.HTMLElement=divWrapper;
   }
+
+  getTextValue(){
+    return this.inputText.getTextValue();
+  }
+  
 }
 
 
@@ -909,43 +1211,22 @@ class InputTextForListComponent {
     inputText.type ="text";
     inputText.classList.add("list-inputfield");
     inputText.id=inputTextId;
-    inputText.placeholder=placeholder;
+    inputText.placeholder=placeholder;  
     this.HTMLElement=inputText;
   }
   onEvent(eventName,fn){
     this.HTMLElement.addEventListener(eventName,fn);
   }
 
+
+  getTextValue(){
+    return this.HTMLElement.value;
+  }
+  clearTxtBox(){
+    this.HTMLElement.value = "";
+  }
+
 }
-
-
-// class AddBtnWordComponent {
-//   constructor(btnId,btnClassCSS,txt){
-//     //<button id="add_lesson" class="add-btn">إضافـة</button>
-//     //<button class="add-btn" id="add_subject_to_scene"> &#x271A;</button>
-//     //<button class="remove-btn" id="remove_subject_from_scene"> <strong>&minus;</strong></button> 
-//     const addBtn = document.createElement("button");
-//     addBtn.type="button";
-//     addBtn.id=btnId;
-//     addBtn.classList.add(btnClassCSS);
-//     //addBtn.classList.add("font-large")
-//     const btnText = document.createTextNode(txt);
-//     addBtn.appendChild(btnText);
-//     this.HTMLElement=addBtn;
-
-//   }
-
-//   onClick(fn){
-      
-//     this.HTMLElement.addEventListener('click', function (e) {
-//         fn(e);
-        
-        
-//     });
-
-
-// }
-// }
 
 class AddBtnWordComponent {
   constructor(btnId,txt, cssArr){
@@ -1104,150 +1385,34 @@ updateCheckboxeValue(checkBoxId,value){
 } 
 
 
-// class TabsetClass {
-//   constructor(tabText,tabsetId){
-      
-//     let tabLabel = document.createElement("label");
-//     tabLabel.className="tab-label-component";
-//     tabLabel.id=tabsetId;
-       
-//     tabLabel.textContent=tabText;
-//     this.HTMLElement= tabLabel;
- 
-//   }
-// }
-
-// class TabPanelClass {
-//   constructor(tabPanelId){
-
-//     let tabSection = document.createElement("section");
-//     tabSection.id=tabPanelId;
-//     tabSection.className= "tab-panel-component"
-//     this.HTMLElement=tabSection;
-//   }
-// }
-
-// class TabComponent{
-      
-//   constructor(arrTabNames){
-//     let divWrapper = document.createElement("div")
-//     let divTabset = document.createElement("div");
-//     let divTapanels = document.createElement("div");
-    
-//     this.tabLabel="";
-//     this.tabSets=[];
-//     this.tabPanels=[];
-
-//     divWrapper.classList.add("component-container--vertical");  
-//     divTabset.classList.add("tabset-component");
-//     divTapanels.classList.add("tab-panels-component");
-
-//     arrTabNames.forEach((value,index)=>{
-//       let tabsetId = "Id-tabset-"+(index+1);
-//       let tabPanelId = "Id-panel-"+(index+1);
-//       this.tabSets.push(new TabsetClass(value,tabsetId));
-//       this.tabPanels.push(new TabPanelClass(tabPanelId))
-
-//       divTabset.appendChild(this.tabSets[index].HTMLElement);
-//       divTapanels.appendChild(this.tabPanels[index].HTMLElement)
-      
-//     });
-
-
-//     divTabset.appendChild(divTapanels);
-//     divWrapper.appendChild(divTabset);
-
-//     this.HTMLElement=divWrapper;
-
-//     this.tabSets.forEach((value,index)=>{
-         
-      
-//       this.HTMLElement.querySelector("#"+value.HTMLElement.id).addEventListener("click",()=>{
-//         this.clickTabset(index+1)
-          
-//         })
-    
-//       })
-
-               
-//   }
-
-//   fillTabPanel(tabsetNumber,tabPanelHTML){
-//     if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
-//       this.HTMLElement.querySelector("#"+"Id-panel-"+tabsetNumber).appendChild(tabPanelHTML);
-//       if(tabsetNumber===1){
-//           this.clickTabset(1)
-
-//       } 
-//     } else{
-//         console.log("Please insert a valid Integer tabset Number within the range")
-//       }
-//   }
-    
-  
-//   clickTabset(tabsetNumber){
-//     if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
-//       let tabsetId = "Id-tabset-"+tabsetNumber;
-//       let tabPanelId = "Id-panel-"+tabsetNumber;
-      
-//       //fix the color of the clicked tabset and reset the others
-//       let tabsets = this.HTMLElement.querySelectorAll(".tab-label-component")
-//       tabsets.forEach((item)=>{
-//       item.classList.remove("tab-label-focus");
-//       })
-      
-//       this.HTMLElement.querySelector("#"+tabsetId).classList.add("tab-label-focus")
-      
-//       //make the tabPanel visible and hide the others  
-//       let tabPanels = this.HTMLElement.querySelectorAll(".tab-panel-component")
-//       tabPanels.forEach((item)=>{
-//         item.classList.remove("tab-panel-show");
-//       })
-      
-//       this.HTMLElement.querySelector("#"+tabPanelId).classList.add("tab-panel-show")
-    
-//     } else{
-//       console.log("Please insert a valid Integer tabset Number within the range")
-//     }
-//   }
-
-//   addLabel(labelTitle){
-//     let tabId="Id-TabLabel";
-//     if (this.tabLabel ===""){
-      
-//       this.tabLabel= new LabelComponent(labelTitle,tabId);
-//       this.HTMLElement.prepend(this.tabLabel.HTMLElement);
-//     } else{
-//       this.HTMLElement.querySelector("#"+tabId).textContent=labelTitle;
-//     }
-    
-//   }
-
-//   addTab(){
-
-//   }
-
-//   removeTab(){
-
-//   }
-
-// }
-
-
 class TabsetClass {
-  constructor(tabText,tabsetId){
+
+  constructor(tabText,tabsetId, tabStyle = "tab-label-component"){
     this.tabLabel = document.createElement("button");
-    this.tabLabel.className = "tab-label-component";
+    this.tabLabel.className = tabStyle;
     
-    this.tabLabel.id=tabsetId;
+    this.tabLabel.id = tabsetId;
        
     this.tabLabel.textContent=tabText;
+
     this.HTMLElement= this.tabLabel;
  
   }
 
-  changeCssClass(newCssClass){
-      this.tabLabel.className = newCssClass;  
+  changeCssClass(newTabStyle){
+      this.tabLabel.className = newTabStyle;  
+  }
+
+  addClose(func_close, extra_close_work = null){
+      let closeBtn = new CloseBoxComponent(this.tabLabel.id);
+      closeBtn.onClick(func_close);
+
+      if (extra_close_work) {
+          closeBtn.onClick(extra_close_work);
+      }
+          
+
+      this.tabLabel.appendChild(closeBtn.HTMLElement);
   }
 
   addIcon (iconName) {
@@ -1283,14 +1448,24 @@ class TabPanelClass {
 
 class TabComponent{
         
-  constructor( arrTabNames, tabsetId_stem = "Id-tabset-", tabPnlId_stem = "Id-panel-"){
-    let divWrapper = document.createElement("div")
+  constructor( arrTabNames, maxNo = 4, tabsetId_stem = "Id-tabset-", tabPnlId_stem = "Id-panel-"){
+
+    if (arrTabNames.length > maxNo) {
+        throw new Error('Tab numbers assigned are greater than the initialized max number');
+    }
+
+    let divWrapper = document.createElement("div");
+    divWrapper.classList.add("component-container--vertical");  
+
     this.divTabset = document.createElement("div");
-    
+    this.divTabset.classList.add("tabset-component");
+
     this.divTapanels = document.createElement("div");
+    this.divTapanels.classList.add("tab-panels-component");
+
     this.divExtraControls = null;
 
-
+    this.maxTabsetNo = maxNo;
     this.tabLabel="";
     this.tabSets=[];
     this.tabPanels=[];
@@ -1300,45 +1475,49 @@ class TabComponent{
     this.tabsetId_stem = tabsetId_stem;
     this.tabPnlId_stem = tabPnlId_stem;
 
-    divWrapper.classList.add("component-container--vertical");  
-    this.divTabset.classList.add("tabset-component");
-    this.divTapanels.classList.add("tab-panels-component");
 
     arrTabNames.forEach((value,index)=>{
-      let tabsetId =  tabsetId_stem + (index+1);
-      let tabPanelId = tabPnlId_stem + (index+1);
-      this.tabSets.push(new TabsetClass(value,tabsetId));
-      this.tabPanels.push(new TabPanelClass(tabPanelId));
+      let tabsetId =  tabsetId_stem + (index);
+      let tabPanelId = tabPnlId_stem + (index);
+      
+      let new_tabset = new TabsetClass(value,tabsetId);
+      new_tabset.index = index;
+      this.tabSets.push(new_tabset);
 
-      this.divTabset.appendChild(this.tabSets[index].HTMLElement);
-      this.divTapanels.appendChild(this.tabPanels[index].HTMLElement)
+      let new_tabpnl = new TabPanelClass(tabPanelId);
+      new_tabpnl.index = index;
+      
+      this.tabPanels.push(new_tabpnl);
+
+      this.divTabset.appendChild(new_tabset.HTMLElement);
+      this.divTapanels.appendChild(new_tabpnl.HTMLElement)
       
     });
 
-
-    // this.divTabset.appendChild(this.divTapanels);
-    // this.divTabset.appendChild(this.divExtraControls);
+    // the index Where the new tabset must inserted
+    this.tabSets.index = this.tabSets.length;
+    
     divWrapper.appendChild(this.divTabset);
     divWrapper.appendChild(this.divTapanels);
-    // divWrapper.appendChild(this.divExtraControls);
+
     
 
     this.HTMLElement=divWrapper;
 
-    this.tabSets.forEach((value,index)=>{
+    this.tabSets.forEach((value) => {
          
-      console.log('value.HTMLElement.id ' + value.HTMLElement.id);
-      this.HTMLElement.querySelector("#"+value.HTMLElement.id).addEventListener("click",()=>{
-        this.clickTabset(index+1)
-          
-        })
+      value.HTMLElement.addEventListener("click",(e)=>{
+        this.clickTabset(e);
+        });
     
-      })
+      });
 
+ 
                
   }
 
   changeTabLblCss(cssArr){
+
       this.tabSets.forEach((value,index)=>{
 
           if (cssArr.length <= 0) {
@@ -1357,12 +1536,14 @@ class TabComponent{
           this.headerCssClass = [...cssArr];
       });
   }
+
   changeTabPanelCss(newCss) {
-      this.tabPanels.forEach( item => item.changeCssClass(newCss));
+      this.tabPanels.forEach (item => item.changeCssClass(newCss));
       this.panelCssClass = newCss;
   }
 
   addIconsTabLbl(iconsArry) {
+
       this.tabSets.forEach((value,index)=>{
 
           if (iconsArry.length <= 0) {
@@ -1378,47 +1559,67 @@ class TabComponent{
       });
   }
 
-  fillTabPanel(tabsetNumber,tabPanelHTML){
+  fillTabPanel(tabsetNumber, tabPanelHTML){
 
-    if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
-      this.HTMLElement.querySelector(`#${this.tabPnlId_stem}${tabsetNumber}`).appendChild(tabPanelHTML);
-      if(tabsetNumber===1){
-          this.clickTabset(1)
-       
-      } 
-    } else{
-        console.log("Please insert a valid Integer tabset Number within the range")
+  //   if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
+      // this.HTMLElement.querySelector(`#${this.tabPnlId_stem}${tabsetNumber}`).appendChild(tabPanelHTML);
+      let currentPnl = this.tabPanels.find (tpnl => tpnl.index == tabsetNumber);
+      if (currentPnl) {
+        currentPnl.HTMLElement.appendChild(tabPanelHTML);
       }
+        
+
+      // if(tabsetNumber===1){
+      //      this.clickTabset(1)
+      //  } 
+      // }else{
+      //   console.log("Please insert a valid Integer tabset Number within the range")
+      // }
   }
     
   
-  clickTabset(tabsetNumber){
+  clickTabset(e){
 
-    if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
-      let tabsetId = this.tabsetId_stem + tabsetNumber;
-      let tabPanelId = this.tabPnlId_stem +tabsetNumber;
+  //   if (Number.isInteger(tabsetNumber) && tabsetNumber<=this.tabSets.length){
+      let tabsetId = e.currentTarget.id; //this.tabsetId_stem + tabsetNumber;
+      let tabsetNumber = this.tabSets.find( tabs => tabs.tabLabel.id == tabsetId).index;
+      let currentPnl = this.tabPanels.find (tpnl => tpnl.index == tabsetNumber);
 
+     
+      
+
+      // let tabPanelId = currentPnl.HTMLElement.id;
+      // let tabPanelId = this.tabPanels.find ( pnl => pnl.index == tabsetNumber).tabSection.id;
+      
       //fix the color of the clicked tabset and reset the others
       let cssClass = this.headerCssClass[tabsetNumber] || this.headerCssClass[0];
-
-      let tabsets = this.HTMLElement.querySelectorAll(`.${cssClass}`);
-      tabsets.forEach((item)=>{
-      item.classList.remove(cssClass + "--selected");
-      })
       
-      this.HTMLElement.querySelector("#"+tabsetId).classList.add(cssClass + "--selected")
+      this.tabSets.forEach( tabset => {
+          let found = null;
+          tabset.HTMLElement.classList.forEach ( 
+             (cssFile) => {
+                  if (cssFile.includes('--selected')) {
+                      found = cssFile;
+                  }
+              });
+          if (found) { tabset.HTMLElement.classList.remove(found);}
+      });
+
+      e.currentTarget.classList.add(cssClass + "--selected")
       
       //make the tabPanel visible and hide the others  
       let tabPanels = this.HTMLElement.querySelectorAll(`.${this.panelCssClass}`);
+
       tabPanels.forEach((item)=>{
         item.classList.remove("tab-panel-show");
       })
-      
-      this.HTMLElement.querySelector("#"+tabPanelId).classList.add("tab-panel-show")
-    
-    } else{
-      console.log("Please insert a valid Integer tabset Number within the range")
-    }
+
+      currentPnl.HTMLElement.classList.add("tab-panel-show");
+      // let x = this.HTMLElement.querySelector("#"+tabPanelId);//.classList.add("tab-panel-show");
+      // console.log(x);
+  //   } else{
+  //     console.log("Please insert a valid Integer tabset Number within the range")
+  //   }
 
   }
 
@@ -1445,31 +1646,97 @@ class TabComponent{
     cssClasses.forEach( cssClass => this.divExtraControls.classList.add(cssClass));
   }
 
-  addTab(_number, headerTxt ){
+  addTab(headerTxt, closeFunc, css_Style ){
 
-    let tabsetId =  this.tabsetId_stem + _number;
-    let tabPanelId = this.tabPnlId_stem + _number;
+    let tabsetId =  this.tabsetId_stem + this.tabSets.index;
+    let tabPanelId = this.tabPnlId_stem + this.tabSets.index;
 
-    this.tabSets.forEach((tab)=> { console.log(tab)});
+    let newTab = new TabsetClass(headerTxt,tabsetId);
+      newTab.changeCssClass(css_Style);
+      this.headerCssClass.push(css_Style);
+      newTab.index = this.tabSets.index;
 
-    this.tabSets.splice(_number-1, 0 , new TabsetClass(headerTxt,tabsetId));
+      newTab.addClose((e)=> {
+      e.stopPropagation();
+      let removed = (e.target).parentNode;
+      if (removed) {
+         this.removeTab(removed.id);
+      }
+    }, closeFunc);
+
+
+    this.tabSets.push(newTab);
     
-    this.tabPanels.splice(_number-1, 0 , new TabPanelClass(tabPanelId));
+    let newPnl = new TabPanelClass(tabPanelId);
+    newPnl.index = this.tabSets.index;
+    this.tabPanels.push(newPnl);
 
     
-    // this.divTabset.insertBefore(this.tabSets[_number - 1].HTMLElement, this.divTabset.children[this.divTabset.childElementCount - 2]);
-    this.divTabset.appendChild(this.tabSets[_number - 1].HTMLElement);
-    this.divTapanels.appendChild(this.tabPanels[_number - 1].HTMLElement);
-
-    
-    this.tabSets[_number - 1].HTMLElement.addEventListener("click", ()=> {
-      this.clickTabset(_number);
+    newTab.HTMLElement.addEventListener("click", (e)=> {
+      this.clickTabset(e);
     });
+
+    this.divTabset.appendChild(newTab.HTMLElement);
+    this.divTapanels.appendChild(newPnl.HTMLElement);
+
+    
     
   }
 
-  removeTab(){
+  removeTab(_tabSetId){
 
+
+          let _index = this.tabSets.findIndex( tab_set => tab_set.tabLabel.id == _tabSetId);
+
+          
+          for (let tabetIndex = _index + 1; tabetIndex <= this.tabSets.length -1 ; tabetIndex++) {
+
+              this.tabSets[tabetIndex].HTMLElement.id  = this.tabsetId_stem +  (this.tabSets[tabetIndex].index - 1);
+              this.tabSets[tabetIndex].HTMLElement.childNodes[0].textContent = "الإجابة " + (this.tabSets[tabetIndex].index);
+              if (this.tabPanels[tabetIndex].HTMLElement.querySelector("label")){
+                this.tabPanels[tabetIndex].HTMLElement.querySelector("label")
+                .textContent = `إدخال الإجابة ${this.tabSets[tabetIndex].index}`;
+              }
+              this.tabPanels[tabetIndex].HTMLElement.id = this.tabPnlId_stem +  (this.tabSets[tabetIndex].index - 1);
+              this.tabSets[tabetIndex].index -= 1; 
+              this.tabPanels[tabetIndex].index = this.tabSets[tabetIndex].index;
+
+          }
+
+          let tempIndex = this.tabSets.index;
+
+          this.divTabset.removeChild(this.tabSets[_index].HTMLElement);
+          this.divTapanels.removeChild(this.tabPanels[_index].HTMLElement);
+
+          this.tabSets[_index] = null;
+          this.tabSets = this.tabSets.filter( tabset => tabset != null)
+          
+          this.tabPanels[_index] = null;
+          this.tabPanels = this.tabPanels.filter( tabpnl => tabpnl != null)
+          
+          this.tabSets.index = tempIndex - 1;
+
+         
+
+  }
+  clearTabs(){
+    while (this.divTabset.childNodes.length > 1) {
+        this.divTabset.removeChild(this.divTabset.lastChild);
+    } 
+    while ( this.divTapanels.childNodes.length > 1) {
+        this.divTapanels.removeChild(this.divTapanels.lastChild);
+    }
+    let tab0 = this.tabSets.shift();
+    this.tabSets = [];
+    this.tabSets.push(tab0);
+
+    let pnl0 = this.tabPanels.shift();
+    this.tabPanels = [];
+    this.tabPanels.push(pnl0);
+
+    this.tabSets.index = 1;
+    this.tabPanels.index = 1;
+    this.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
   }
 
 }
@@ -1477,104 +1744,229 @@ class TabComponent{
 
 class PreviewContainer {
  
-constructor(){
-
-
-
-
-  
-  // let divDataPreview = document.createElement("div");
-  // divDataPreview.classList.add("component-container--horizontal");
-  // divDataPreview.id = "data_preview_section";
-
-
-
-  this.divContainer =document.createElement("div");
-  // this.divFooter = document.createElement("div");
-
-
-  this.divContainer.classList.add("preview-container");
-  this.divContainer.id="id-preview-list";
-  // this.divFooter.classList.add("preview-list-footer");
-  // divDataPreview.appendChild(this.divContainer);
-  // divDataPreview.appendChild(this.divFooter);
-
-  this.HTMLElement= this.divContainer;
-
-}
-
-clearPreviewContainer(){
- 
-  let PreviewContainer = document.getElementById("id-preview-list")
-  let PreviewListItems = PreviewContainer.children;
-  let arrPreviewListItems = [...PreviewListItems];
-
-  arrPreviewListItems.forEach((item) => {
-      item.remove();
-  });
-}
-
- resetAllpreviewWrapperBorder() {
-  let previewWrapper = document.querySelectorAll(".preview-item-wrapper")
-  previewWrapper.forEach(item => {
-    item.style.boxShadow = "none";
-  })
-}
-
-addPreviewItem(previewItemId,embededObj,id_c,fnAtEventClick,fnAtEventClose) {
-
-  let previewWrapper = document.createElement("div");
-  let buttonSmallClose = new CloseBoxComponent(id_c);
-
-  previewWrapper.id=previewItemId;
-  previewWrapper.classList.add("preview-item-wrapper");
- 
-
-  previewWrapper.appendChild(embededObj);
-  previewWrapper.appendChild(buttonSmallClose.HTMLElement);
-
-  previewWrapper.addEventListener("click", (e) => {
-    this.resetAllpreviewWrapperBorder()
-    previewWrapper.style.boxShadow = "0 0 0 3px #868c9c";
-    fnAtEventClick();
-  })
-
-  buttonSmallClose.HTMLElement.addEventListener("click", (e) => {
-    let removeItem = e.target.parentElement;
-    fnAtEventClose();
-    removeItem.remove();
-  }, 0);
-  this.divContainer.appendChild(previewWrapper);
-}
-}
-
-
-class SidePreview {
-  constructor(sidePreviewId,sidePreviewTitle){
-
-
-   
-    let divWrapper = document.createElement("div");
-    let divTitle = document.createElement("div");
-    this.divlist = document.createElement("div");
-    let txtTitle = document.createTextNode(sidePreviewTitle);
+  constructor(){
     
-    divWrapper.classList.add("side-preview");
-    divTitle.classList.add("sidepreviewLst-label");
-    this.divlist.classList.add("side-preview-list")
-    this.divlist.classList.add("padding__meduim")
+  
+  
+  
+    
+    // let divDataPreview = document.createElement("div");
+    // divDataPreview.classList.add("component-container--horizontal");
+    // divDataPreview.id = "data_preview_section";
+  
+  
+  
+    this.divContainer =document.createElement("div");
+    // this.divFooter = document.createElement("div");
+  
+  
+    this.divContainer.classList.add("preview-container");
+    this.divContainer.id="id-preview-list";
+    // this.divFooter.classList.add("preview-list-footer");
+    // divDataPreview.appendChild(this.divContainer);
+    // divDataPreview.appendChild(this.divFooter);
+  
+    this.HTMLElement= this.divContainer;
+  
+  }
+  
+  clearPreviewContainer(){
+   
+    let PreviewContainer = document.getElementById("id-preview-list")
+    let PreviewListItems = PreviewContainer.children;
+    let arrPreviewListItems = [...PreviewListItems];
+  
+    arrPreviewListItems.forEach((item) => {
+        item.remove();
+    });
+  }
+  
+   resetAllpreviewWrapperBorder() {
+    let previewWrapper = document.querySelectorAll(".preview-item-wrapper")
+    previewWrapper.forEach(item => {
+      item.style.boxShadow = "none";
+    })
+  }
+  
+  addPreviewItem(previewItemId,embededObj,id_c,fnAtEventClick,fnAtEventClose) {
+  
+    let previewWrapper = document.createElement("div");
+    let buttonSmallClose = new CloseBoxComponent(id_c);
+  
+    previewWrapper.id=previewItemId;
+    previewWrapper.classList.add("preview-item-wrapper");
+   
+  
+    previewWrapper.appendChild(embededObj);
+    previewWrapper.appendChild(buttonSmallClose.HTMLElement);
+  
+    previewWrapper.addEventListener("click", (e) => {
+      
+      this.resetAllpreviewWrapperBorder()
+      previewWrapper.style.boxShadow = "0 0 0 3px #868c9c";
+      fnAtEventClick(e);
+    })
+  
+    buttonSmallClose.HTMLElement.addEventListener("click", (e) => {
+      let removeItem = e.target.parentElement;
+      
+      fnAtEventClose(e);
+      removeItem.remove();
+    }, 0);
+    this.divContainer.appendChild(previewWrapper);
+  }
+  }
+  
 
-    this.divlist.id=sidePreviewId;
-    divTitle.appendChild(txtTitle);
 
-    divWrapper.appendChild(divTitle);
-    divWrapper.appendChild(this.divlist);
+  class SidePreview {
+    constructor(sidePreviewId,sidePreviewTitle){
+  
+      let divWrapper = document.createElement("div");
+      let divTitle = document.createElement("div");
+      this.divlist = document.createElement("div");
+      
+      let txtTitle = document.createTextNode(sidePreviewTitle);
+      
+      divWrapper.classList.add("side-preview");
+      divTitle.classList.add("sidepreviewLst-label");
+      this.divlist.classList.add("side-preview-list")
+      this.divlist.classList.add("padding__meduim")
+  
+      this.divlist.id=sidePreviewId;
+      divTitle.appendChild(txtTitle);
+  
+      divWrapper.appendChild(divTitle);
+      divWrapper.appendChild(this.divlist);
+  
+      this.HTMLElement=divWrapper;
+    }
+  
+    addItem(itemHTML){
+      this.divlist.appendChild(itemHTML)
+    }
+    clearItems(){
+      if (this.divlist.firstChild) {
+        while (this.divlist.firstChild) {
+          
+          this.divlist.removeChild(this.divlist.firstChild);
+        }
+      }
+    }
+  
+  }
+  
 
-    this.HTMLElement=divWrapper;
+//Table Component
+
+class TableComponent {
+  constructor(table_id,arrTableCss,arrThCss,arrTdCss){
+    let tableRef = document.createElement('table');
+    this.columnMaps = [];
+    this.ThCss = arrThCss;
+    this.TdCss=arrTdCss;
+      
+    tableRef.id = table_id;
+   
+    arrTableCss.forEach((cssClass)=>tableRef.classList.add(cssClass));
+
+
+    this.HTMLElement = tableRef;
+    
   }
 
-  addItem(itemHTML){
-    this.divlist.appendChild(itemHTML)
+  // data => object contains {headerName: {w:width%, type: text or icon or color }}
+  // visibilty => determines whether to show the headername or not
+  generateTableHead(data, visibilty) {
+      let thead = this.HTMLElement.createTHead();
+      
+      let row = thead.insertRow();
+      let count = 0;
+      for (let key of Object.keys(data)) {
+
+        let th = document.createElement("th");
+        this.ThCss.forEach((cssClass)=>th.classList.add(cssClass));
+
+        th.style.width = data[key].w;
+        this.columnMaps.push ( {columnIndex : count++, Type: data[key].type });
+        th.id = `th-${count}`;
+        if (visibilty) {
+          let text = document.createTextNode(key);
+          th.appendChild(text);
+        }
+        
+        row.appendChild(th);
+      }
   }
+
+  generateTable( data_As_Obj, requiredFields) {
+      //reduce data_as_obj to only required fields
+      let subset = [];
+      data_As_Obj.forEach(element => {
+          subset.push (requiredFields.reduce((item, key) => (item[key] = element[key], item), {}));
+          
+      });
+      
+      for (let element of subset) {
+        let row = this.HTMLElement.insertRow();
+        let index = 0;
+        for (let key in element) {
+          let cell = row.insertCell();
+
+          this.TdCss.forEach((cssClass)=>cell.classList.add(cssClass));
+
+          let col = this.columnMaps.filter(x => x.columnIndex == index);
+          let colType = col[0].Type;
+          index++;
+
+          switch (colType) {
+              case 'text':
+                  cell.appendChild(document.createTextNode(element[key]));
+                  break;
+              case 'color':
+                  cell.style.backgroundColor =  this.getColorHexa(element[key]);
+              case 'icons':
+                  cell.innerHTML = element[key];
+              default:
+                  break;
+          }
+         
+        }
+      }
+    }
+
+
+    // should be object with following properties
+    // type: integer, color: #colorHexa
+    setUpColorsValues( _colorObjMap ) {
+      this.colorsMap = _colorObjMap;
+    }
+
+    getColorHexa(type) {
+        return this.colorsMap[type];
+    }
+
+    
 
 }
+
+
+//Table Ex:
+    // newTable = new TableComponent('table_id');
+
+    // let colorObjMap = ['#3dbbec','#F64740', '#41337A', '#59CD90' ];
+    
+    //  let headers = {elementyType:{w:'10%', type:'color'}, 
+    //                elementText:{w:'50%', type:'text'}, 
+    //                skillsBadges:{w:'50%', type:'icons'} };
+
+    // let data = [{ id:'1', elementColor:'color', elementText: 'elem text', skillsBadges:'icon' },
+    //             { id:'2', elementColor:'color', elementText: 'elem text', skillsBadges:'icon' },
+    //             { id: '3', elementColor:'color', elementText: 'elem text', skillsBadges:'icon' }];
+
+    // newTable.setUpColorsValues(colorObjMap);
+    // requiredFields = ['elementColor', 'elementText','skillsBadges'];
+    // newTable.generateTableHead(headers, false);
+
+    // newTable.generateTable(data, requiredFields);
+    // container.appendChild(newTable.HTMLElement);

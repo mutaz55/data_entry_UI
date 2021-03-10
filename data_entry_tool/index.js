@@ -9,67 +9,6 @@ var logMsgs = [];
 
 const saveBtn = document.querySelector("#save-btn");
 
-const onlineSync = document.getElementById('online-switch');
-const onlineSyncLbl = document.getElementById('lbl-online-switch');
-
-
-window.addEventListener('online', function() {
-  onlineSync.checked = true;
-  onlineSyncLbl.textContent = "البيانات متزامنة";
-});
-
-window.addEventListener('offline', function() {
-  disableNet();
-
-});
-
-onlineSync.addEventListener('click', onlineSyncHandler);
-
-
-function onlineSyncHandler() {
-
-  if (this.checked) {
-   
-    firebase.firestore().enableNetwork()
-    .then(function() {
-        // Do online actions
-        onlineSyncLbl.textContent = "البيانات متزامنة";
-    });
-    
-
-  }else {
-    
-    firebase.firestore().disableNetwork()
-    .then(function() {
-        // Do offline actions
-        onlineSyncLbl.textContent = "البيانات غير متزامنة";
-    });
-
-  }
-}
-
-
-function disableNet() {
-
-  onlineSync.checked = false;
-  firebase.firestore().disableNetwork()
-  .then(function() {
-      // Do offline actions
-      onlineSyncLbl.textContent = "البيانات غير متزامنة";
-  });
-
-}
-//disableNetworkd();
-// get data from database
-
-// document.querySelector("#load-btn").addEventListener("click", (e) => {
-//   e.preventDefault();
- 
-  
-//   // loadDataFromFireStore();
- 
-  
-// });
 
 //#region Save Operation
 // save data into database
@@ -897,8 +836,14 @@ function initArrays(){
 
 }
 
+//#region *************** Read data from the DB (Firestore) *********************
+
+// (TODO) Authorization
+// (TODO) Caching
+
 function loadDataFromFireStore() {
-  // to prevent user of clicking too many times load button.
+  
+  // to prevent the user of clicking load button too many times.
   if (_busy) return;
   _busy = true;
 
@@ -1463,4 +1408,4 @@ function registerHandlers() {
   lst_scenes.handler = lst_scenes_handler;
   slide_container.handler = slides_container_handler;
   // items
-}
+}  

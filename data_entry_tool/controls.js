@@ -231,6 +231,9 @@ function addModLstHandlers() {
                 resetAddBtn(lst_modules,txt_module_entry,btn_add_module);
               }
    
+              keepSelectedStyle(lst_modules, e.target);
+              
+              
         });
 
         keyHandlers(lst_modules, txt_module_entry, btn_add_module);
@@ -263,7 +266,7 @@ function addLesLstHandlers() {
           resetAddBtn(lst_lessons, txt_lesson_entry, btn_add_lesson);
         }
         
-      
+        keepSelectedStyle(lst_lessons, e.target);
 
 
   });
@@ -296,6 +299,9 @@ function addSubLstHandlers(){
           resetAddBtn(lst_subjects, txt_subject_entry, btn_add_subject);
         }
 
+        keepSelectedStyle(lst_subjects, e.target);
+
+
   });
   
   keyHandlers(lst_subjects, txt_subject_entry, btn_add_subject);
@@ -325,16 +331,10 @@ function addSceneLstHandlers(){
     }
   
       if (_courses.currentScene != lst_scenes.index) {
-          cleanSlidesStyle("buttons-in-list--selected");
-          e.target.classList.add ("buttons-in-list--selected");
+          keepSelectedStyle(lst_scenes, e.target);
           _courses.currentScene = lst_scenes.index;
       }
         
-      
-     
-
-      
-    
   });
   
   keyHandlers(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
@@ -435,7 +435,7 @@ function updateOptionValue(lst, index, txt){
 
 // change the text  of an item in a list
 function updateListItemText(lst, txt){
-  
+  console.log('lst >> :' + lst.index + '  txt>> : ' + txt.value);
   document.querySelector(`#${lst.index||lst}`).textContent = txt.value || txt;
 }
 
@@ -444,23 +444,36 @@ function updateListItemId(lst, _id){
   document.querySelector(`#${lst.index}`).id = _id;
 }
 
+function updateListBtnTxt(lst, _id, txt){
+  lst.querySelector(`#${_id}`).textContent = txt;
+}
 
 // to clean the clicked style of the slides
 function cleanSlidesStyle(_class){
 
   const allElements = document.getElementsByClassName(_class);
-  if (allElements) {
-    Array.from(allElements).forEach( element => {
+  cleanStyle(allElements, _class);
+}
+//#endregion
+
+function cleanStyleinLst(lst, _class) {
+  const allElements = lst.getElementsByClassName(_class);
+  cleanStyle(allElements,_class);
+}
+
+function cleanStyle(elements, _class) {
+  if (elements) {
+    Array.from(elements).forEach( element => {
       element.classList.remove(_class);
     })
   }
 }
-//#endregion
 
-
-
-
-
+function keepSelectedStyle(lst, obj) {
+  
+  cleanStyleinLst(lst, "buttons-in-list--selected");
+  obj.classList.add ("buttons-in-list--selected");
+}
 //#region  Add / Remove Operation on lists
 // to Add a new course 
 // Add new Course (Button)
@@ -1089,33 +1102,26 @@ function lst_scenes_handler(id){
     // TODO : Check if its possible to delete a Scene and the scene header
     if (removeBtnFromLst(lst_scenes, id)) {
       
-
-      SceneHeaders.find((sc) => sc.sceneID == id)._deleted = true;
-      //SceneHeaders = removeItemFromArr(SceneHeaders, 'sceneID', lst_scenes.index);
-      //ScenesArray=removeItemFromArr(ScenesArray,"",lst_scenes.index)
-
       checkSceneHeaderChanges();
       
-      // TODO: Remove the scene from scene array objects
+      activateAfterDelete(SceneHeaders.filter( sc => sc.LessonID == _courses.currentLesson && sc._deleted == false), id, _courses.currentScene);
+      
+      _courses.removeScene(id);
       resetAddBtn(lst_scenes, txt_sceneTitle_entry, btn_add_scene);
 
-      initAfterDel(lst_scenes, txt_sceneTitle_entry);
-
-    }
-
-    
-    
-    let firstSceneId = _courses.getFirstScene(_courses.currentLesson);
-    
-    if (firstSceneId) {
-      let firstSc = document.getElementById(firstSceneId);
-      if (firstSc) {
-        firstSc.focus();
-        firstSc.click();
+      let condition_a = SceneHeaders.findIndex(sc => sc.LessonID == _courses.currentLesson && !sc._deleted)
+      if (condition_a == -1) {
+        _courses.currentScene = "";
       }
-    }else {
-      _courses.currentScene = "";
+        
+
+
+     
+
     }
+
+
+    
 
 }
 
@@ -1193,7 +1199,7 @@ btn_add_scene.addEventListener("click", () => {
 
 function activateCurrentBtn(_id) {
 
-    document.getElementById(_id)?.click();
+    //document.getElementById(_id)?.click();
     document.getElementById(_id)?.focus();
 
 
@@ -1430,10 +1436,8 @@ function createElements(sub, values, lingType) {
 // return false if there was not found otherwise true
 function removeBtnFromLst(lst, id){
 
-  console.log('id = ' + id) ;
-  console.log('lst' + lst);
-  console.log(' parent node ' + document.getElementById(`${id}`).parentNode);
-
+  // TODO : make it
+  // target.id
   const removed = document.getElementById(`${id}`).parentNode;
 
   if (removed != undefined){
@@ -1662,7 +1666,8 @@ function getId_fromArry(mainId, _arry, _typeChar){
     
 
     let items = _arry.map( function (item) {
-    
+      
+
       if (item.id.indexOf(_typeChar) != -1 ) {
           return item.id.substring(item.id.indexOf(_typeChar) + _typeChar.length, item.id.length );
       }else return 0;
@@ -1938,6 +1943,7 @@ function fillSkills(sk) {
       skill_item.id = element.SkillID;
       const icon_item = document.createElement("i");
       icon_item.className = "skill-icon fas";
+      icon_item.style.color = element.SkillColor;
       icon_item.classList.add(element.SkillIcon);
 
       
@@ -2832,10 +2838,10 @@ function activateLasttBtn(arrObj){
   
 }
 
-function activateAfterDelete(arrObj, _id){
+function activateAfterDelete(arrObj, _id, currentObj = _courses.currentSlide ){
   
   if (arrObj?.length <= 0) return;
-  if (_id != _courses.currentSlide) return;
+  if (_id != currentObj) return;
   
   
 
@@ -2854,7 +2860,7 @@ function activateAfterDelete(arrObj, _id){
 
 
     let requiredId =  lastId.id;
-  
+    console.log('requiredi d> ' + lastId.id);
     if (requiredId) {
       let HTMLElement = document.getElementById(requiredId);
       if (HTMLElement) {

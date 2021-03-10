@@ -1,4 +1,4 @@
-
+ 
 
 // 0-29 Quiz Type
 
@@ -94,621 +94,152 @@ const AddonsType = {
 
 
 
-class SSortingQuiz {
-create(){
+class QuizSkeleton{
+  constructor(quizType){
+    let btnId = "Id-Sorting-add-button";
+    let btnText = "موافق"
+    //reading Data from current Item
+    let currentItem = _courses.getCurrentItem().dataObj;
+    currentItem.type = quizType; //"StatementSorting quiz"; //change to Enum
+    
   
-  let divWrapper = document.createElement("div");
-  let divDataInput = document.createElement("div");
-  let divDataPreview = document.createElement("div");
+    //View Creation
+    //(1) create Main Wrapper Part 
+    let divWrapper = document.createElement("div");
+    divWrapper.classList.add("quiz-wrapper");
   
-  
-  let texareaId ="Id-SSquiz-textarea";
-  let labelTitle="الجملة";
-  let btnId = "Id-Sorting-add-button";
-  let btnText = "موافق"
-  let sidePreviewId="Id-sidepreview";
-  let SidePreviewTitle = "العناصر والمهارات"
-  
-   
-
-  let MsgCom = new messagesComponent();
-  let textareaSS= new TextareaLabelComponent(texareaId,labelTitle,2);
-  let addBtn = new AddBtnWordComponent(btnId,btnText,["add-btn"])
-  let previewList = new PreviewContainer()
-  let sidePreview = new SidePreview(sidePreviewId,SidePreviewTitle)
-  let objectivesCheckBox = new CheckBoxWithHiddenDiv("checkboxId1",false,"عرض تحليل العناصر","")
-  
-  let newObjectiveTab = new ObjectivesTab(ModeOfOperation.SaveDirect);
-  //newObjectiveTab.fillCombo1();
+    //(2) create quizInputView Part
+    let newInputFactory = new FactoryInputView();
+    let quizInputViewReciever = newInputFactory.create(quizType);
+    //let quizPreviewSorting = new SSortingPreviewView(1);
+    quizInputViewReciever.HTMLElement.classList.add("layout-a")
+    let quizDataReciever = new ItemsDataReciever();
+    let quizPreviewSkeleton = new QuizPreviewSkeleton(currentItem);
+    
   
   
-  //Tab1.removeBtnOnClick(tab1_fnRemove)
-
-
-  let hintMessage=MsgCom.createHintMsg("الرجاء ادخال الجمل بالترتيب الصحيح")
+    let quizControl_SSorting = new QuizInputControl(quizDataReciever,quizInputViewReciever);
+    let quizPreviewControl = new QuizPreviewControl(quizType,quizDataReciever,quizPreviewSkeleton);
   
-  //Layout
-  divWrapper.classList.add("component-container--vertical");
-  divDataInput.classList.add("SS-quiz-layout-input");
-  divDataPreview.classList.add("SS-quiz-layout-preview");
   
-
-  hintMessage.classList.add("layout-a");
-  textareaSS.HTMLElement.classList.add("layout-b");
-  addBtn.HTMLElement.classList.add("layout-d");
-  addBtn.HTMLElement.classList.add("item-grid-align-left");
-  objectivesCheckBox.HTMLElement.classList.add("layout-c");
-  previewList.HTMLElement.classList.add("layout-n");
-  sidePreview.HTMLElement.classList.add("layout-m")
-
-  //reading Data from current Item
-  let currentItem = _courses.getCurrentItem().dataObj;
-  currentItem.type = "StatementSorting quiz";
-
+    //(3) create Objective Part
+    let objectivesCheckBox = new CheckBoxWithHiddenDiv("checkboxId1",false,"عرض تحليل العناصر","")
+    let newObjectiveTab = new ObjectivesTab(ModeOfOperation.SaveLater);
+    objectivesCheckBox.HTMLElement.classList.add("layout-b");
+    objectivesCheckBox.addElementToHiddenDiv(newObjectiveTab.HTMLElement);
+    objectivesCheckBox.onClick(()=>{})
+    //(4) create Add SubQuizes Button Part
+    let addBtn = new AddBtnWordComponent(btnId,btnText,["add-btn"])
+    addBtn.HTMLElement.classList.add("layout-c");
+    addBtn.HTMLElement.classList.add("item-grid-align-left");
+    
+    //(5) create quizPreview Part
+    quizPreviewSkeleton.HTMLElement.classList.add("layout-d")
+    
   
-
+    //****************** */
   
-
-  objectivesCheckBox.addElementToHiddenDiv(newObjectiveTab.HTMLElement);
-  objectivesCheckBox.onClick(()=>{})
-
+    
   
-
-
-
-  // class ObjectivesList {
-  //   constructor(objectiveListId){
-  //     this.id =objectiveListId;
-  //     this.Objectives=[]; //add ObjectiveObj
-  //   }
-  // }
+    addBtn.onClick((e)=>{
   
-  // class ObjectiveObj {
-  //     constructor(objectiveId, category, Element,  linkId) {
-  //         this.id = objectiveId;
-  //         this.type = category; //كلمات مفتاحية، تراكيب، صوتيات، قواعد
-  //         this.element = Element // categroyيحفظ هنا العناصر التي يجب أن يتم تدريسها أو تقييمها مصنفة حسب 
-  //         this.skill = []; //الاستماع(استماع لنطق السليم، تمييز النطق السليم)، القراءة، الكتابة(الإملاء، التعبير بالتراكيب اللغوية) ، 
-  //         //المحادثة( النطق السليم، التعبير بالتراكيب اللغوية)
-  //         this.linkId = linkId; // id of the statement - quiz in case of assessment or slide id in case of solution.
-  //     }
-  // }
-
-// class Subject {
-//   constructor(id, subjID, subjText, lesID){
-//     this.id = id;
-//     this.subjectID = subjID;
-//     this.subjectText = subjText;
-//     this.LessonID = lesID;
-//     this.elements = [];
-//   }
-// }
-
-// const LingElementType = {
-//     KeyWords: 0,
-//     Structure: 1,
-//     Vocals: 2,
-//     Grammer: 3,
-// }
-
-
-// class LingElement {
-
-//   constructor(id, subID, text, type){
-//     this.id = id;
-//     this.subjID = q;
-//     this.elementText = text;
-//     this.elementType = type;
-//   }
-
-// }
-
-
-// class Skill {
-//   constructor(id, SkillID, SkillText) {
-//     this.id = id;
-//     this.SkillID = SkillID;
-//     this.SkillText = SkillText;
-//   }
-
-  // getSubjects(_lesId = this.getFirstLesson()) {
+      
+      //save subQuizValues and Asnwers values to DataBase
+      let subQuizId = quizControl_SSorting.saveToDB();
           
-  //   return Subjects.filter( (subj) => subj.id == this.currentCourse && subj.LessonID == _lesId);
-    
-  // }
-
-
-  // getSubject(_subId = this.getFirstSubject()){           //get subject based on Id passed
-  //   return Subjects.find(x=> x.subjectID == _subId); 
-
-  // }
-
-  // getSceneSubjects(_sceneId = this.getFirstScene()){    // return array of Ids of subject
-  
-  //   return SceneHeaders.find( (item) => item.CourseID == this.currentCourse && item.sceneID ==_sceneId )?.Subjects;
-  // }
-
-
-  // fillSceneSubjects(_courses.getSceneSubjects(_courses.currentScene));
-
-  //   updateSceneView();
-
-
-
-  // Loop through the suquizes and create preview list items
-
-//****************** */
-  // function
-  let fillPreviewList=()=>{
-
-    currentItem.subQuizes.forEach((item,index)=>{
-      let previewItemId="Id-previewItem-"+index;
-      let id_c = previewItemId+"_c";
-      let sqTexareaId=item.id;
-      let sqLabelTitle="الجملة"
-      let subquiz = new TextareaLabelComponent(sqTexareaId,sqLabelTitle,2);
-
-      subquiz.textarea.HTMLElement.value=item.statement;
-
-      subquiz.textarea.onEvent("blur",(e)=>{
-        item.statement = subquiz.textarea.HTMLElement.value;
-      });
-
-      let clickOnBtn = ()=>{
-        console.log("Show Objectives related to this Sub Quiz");
+      
+      
+      if (subQuizId!="No-Entry"){
+        //save Objectives to GenItem.Objectives[]
+        newObjectiveTab.saveToObjectiveList(subQuizId);
+        newObjectiveTab.clearTab();
+        quizInputViewReciever.clearValues();       //move it outside
+        //call quizPreviewSkeleton.refresh()
+        console.log(_courses.getCurrentItem());
+        quizPreviewControl.update()
       }
-
-      let clickOnClose = ()=>{
-        //console.log("delete the Item");
-        currentItem.subQuizes.splice(index,1);
-      }
-
-      previewList.addPreviewItem(previewItemId,subquiz.HTMLElement,id_c,clickOnBtn,clickOnClose);
-
-    });
-
-  } 
-
-  //****************** */
-
-  fillPreviewList()
-
-  addBtn.onClick((e)=>{
+      
+  
+     
+   
+    })
+  
+    //**********Initiate the add remove function ****************************** */
     
-    let statementValue = textareaSS.textarea.HTMLElement.value;
-    console.log(statementValue);
-    if (statementValue !==""){
-      let statementId="Id-statement-1"     //check how to generate new Id with Mutaz
-      let newStatement = new statementAnswersObj(statementId,statementValue)
-      currentItem.subQuizes.push(newStatement);
-      previewList.clearPreviewContainer();
-      fillPreviewList();
-    }
-    textareaSS.textarea.HTMLElement.value="";           
-  })
-
-  //**********Initiate the add remove function ****************************** */
-
+    quizPreviewControl.update()
+      
+    divWrapper.appendChild(quizControl_SSorting.buildInputView());
+    divWrapper.appendChild(objectivesCheckBox.HTMLElement);
+    divWrapper.appendChild(addBtn.HTMLElement);
+    //divWrapper.appendChild(quizControl_SSorting.buildPreviewView());
+    divWrapper.appendChild(quizPreviewSkeleton.HTMLElement);
   
+    return divWrapper;
 
-  
-  divDataInput.appendChild(hintMessage);
-  divDataInput.appendChild(textareaSS.HTMLElement);
-  divDataInput.appendChild(addBtn.HTMLElement);
-  divDataInput.appendChild(objectivesCheckBox.HTMLElement);
-  divDataPreview.appendChild(previewList.HTMLElement);
-  divDataPreview.appendChild(sidePreview.HTMLElement)
 
-  divWrapper.appendChild(divDataInput);
-  divWrapper.appendChild(divDataPreview);
-
-  return divWrapper;
-}
-}
-
-class LSorttingQuiz_Interface
-
-{
-  constructor( container_css = "component-container--vertical"){
-    this.divWrapper = document.createElement("div");
-    this.divWrapper.classList.add(container_css);
 
   }
-
- build () {
-
-     let divDataInput = document.createElement("div");
-    
-    //Layout
-    divDataInput.classList.add("Quiz-layout-input");
-    
-  
-    
-    let mobjEntry = new mediaObjEntry('isorting-tabset','isorting-tabpnl');
-    mobjEntry.changeLbl('إدخال الأحرف');
-    
-
-    let inputbox_answer = new TextareaLabelComponent('i-sorting-answerTxt', "الإجابة الصحيحة", 1);
-    
-    let addBtn = new AddBtnWordComponent('add_DragAndDrop','إضافة السؤال',["margin--top-10","add-btn"]);
-    
-
-
-
-    let previewSection = document.createElement("div");
-    previewSection.className = "Quiz-layout-preview";
-  
-    
-    this.prvContainer = new PreviewContainer();
-  
-
-    previewSection.appendChild(this.prvContainer.HTMLElement);
-
-    let prvSide = new SidePreview("id-side-preview","العناصر والمهارات");
-    previewSection.appendChild(prvSide.HTMLElement);
-    previewSection.style.display = "none";
-
-
-    addBtn.onClick(()=> {
-      previewSection.style.display = "flex";
-      this.addItemToPrv(1);
-      this.addItemToPrv(2);
-      this.addItemToPrv(3);
-      this.addItemToPrv(4);
-    });
-
-
-  
-    
-
-
-    divDataInput.appendChild(mobjEntry.HTMLElement);
-    divDataInput.appendChild(inputbox_answer.HTMLElement);
-    divDataInput.appendChild(addBtn.HTMLElement);
-
-
-    this.divWrapper.appendChild(divDataInput);
-
-    this.divWrapper.appendChild(previewSection);
-
-  
-    return this.divWrapper;
-
-    
- }
-  
- addItemToPrv(_number ){
-  // check if its already exist
-
-
-  let divLSquizItem = new previewItemManyToOne(_number)
-
-  this.prvContainer.addPreviewItem("item_id"+_number, divLSquizItem, "item_id_close"+_number,null,null);
-
-
- }
-
 }
+
+
+class SSortingQuiz {
+
+  
+    create(){
+      let SSortingView = new QuizSkeleton(QuizTypes.SSorting);
+    
+      
+      return SSortingView;
+    }
+    
+    
+}
+
 class LSortingQuiz {
   create(){
-    let lsorting_quiz = new LSorttingQuiz_Interface();
-    return lsorting_quiz.build();
+    let LSorting = new QuizSkeleton(QuizTypes.LSorting);
 
-    
+
+    return LSorting;
   }
 }
 
 class TorFQuiz {
   create(){
     
-    // let comboId="TorFquiz-media-Id";
-    // let textareaId="TorFquiz-text-Id";
-    // let comboLabelTitle="ميديا";
-    // let textareaLabelTitle="أدخل النص أو الوصف";
+    let TorFalseQuiz = new QuizSkeleton(QuizTypes.TorF);
 
-    // let tOrFQuiz = new ComboTextLabelComponent(comboId,textareaId,comboLabelTitle,textareaLabelTitle,8);
-    // let values = ["صورة","صوت","مؤثرات صوتية","نص قراءة"];
-
-    // values.forEach((value,index)=>{
-    //   tOrFQuiz.combo.addOptionToCombo(value,value,true);
-
-    // })
-
-    // tOrFQuiz.combo.onChange((e)=>{
-    //   console.log(e.target.value);
-    //   tOrFQuiz.labelTitle.textContent= "أدخل "+e.target.value;
-
-    // })
-
-    // tOrFQuiz.textarea.onEvent("blur",()=>{
-    //   console.log("textarea Saved!!");
-    //   //tOrFQuiz.combo.HTMLElement.selectedIndex="1";
-    // })
-
+    return TorFalseQuiz;
     
-    // tOrFQuiz.labelTitle.textContent= "أدخل "+values[0];
-
-    // return tOrFQuiz.HTMLElement;
-
-    
-    
-  let divWrapper = document.createElement("div");
-  //   let divDataInput = document.createElement("div");
-  //   let divDataPreview = document.createElement("div");
-    
-    
-  
-    
-    let mobjEntry = new mediaObjEntry('tor-tabset','tor-tabpnl');
-  
-  
-    let radioBtns = new ListOfRadioOrCheckBoxComponent('trueFalseQuiz-group',["radioBtns-container"]);
-  
-    radioBtns.addRadio('trueOption', 'trueFalseAnswer', '1','الإجابة صحيحة',()=> { console.log('clicked')});
-    radioBtns.addRadio('falseOption', 'trueFalseAnswer', '0', 'الإجابة خاطئة',()=> { console.log('clicked')});
-    
-    let addBtn = new AddBtnWordComponent('add_trueFalseQuiz','إضافة',["add-btn"]);
-    addBtn.onClick(()=> {console.log('btn clicked')});
-  
-    let actionContainer = document.createElement('div');
-    actionContainer.appendChild(radioBtns.HTMLElement);
-    actionContainer.appendChild(addBtn.HTMLElement);
-    
-    actionContainer.className = "radioBtns-addBtn-container";
-    
-
-    
-    //Layout
-    divWrapper.classList.add("Quiz-layout-input");
-    divWrapper.appendChild(mobjEntry.HTMLElement);
-    divWrapper.appendChild(actionContainer);
-    
-  
-    return divWrapper;
-
-      
   }
 }
 
 class CategoryQuiz {
   create(){
-  //   let comboId="Id-combo-preview";
-  //   let textareaId = "Id-textarea-preview";
-  //   let comboLabelTitle="ميديا";
-  //   let textareaLabelTitle="النص";
-  //   let textareaNumberOfRows=1;
-  //   let previewItemId="previewItem-1"
-  //   let id_c = previewItemId+"_c"
-  //   let sidePreviewId="Id-sidepreview";
-  //   let SidePreviewTitle = "العناصر والمهارات"
+      let cateQuiz = new QuizSkeleton(QuizTypes.Category);
 
-  //   let divWrapper = document.createElement("div");
-  //   divWrapper.classList.add("p-list-group");
-  //   let previewList = new PreviewContainer()
-  //   let sidePreview = new SidePreview(sidePreviewId,SidePreviewTitle)
-  // previewList.HTMLElement.classList.add("preview_main");
-  // sidePreview.HTMLElement.classList.add("preview_side");
-    
-  //   let statementSorting1 = new ComboTextLabelComponent(comboId,textareaId,comboLabelTitle,textareaLabelTitle,textareaNumberOfRows);
-  //   let statementSorting2 = new ComboTextLabelComponent(comboId,textareaId,comboLabelTitle,textareaLabelTitle,textareaNumberOfRows);
-  //   let statementSorting3 = new ComboTextLabelComponent(comboId,textareaId,comboLabelTitle,textareaLabelTitle,textareaNumberOfRows);
-  //   let statementSorting4 = new ComboTextLabelComponent(comboId,textareaId,comboLabelTitle,textareaLabelTitle,textareaNumberOfRows);
-
-
-
-
-  //   function clickOnBtn(){
-  //     console.log("clickOnButton!!!");
-  //   }
-  //   function clickOnClose(){
-  //     console.log("clickOnCloseBox");
-  //   }
-  //   previewList.addPreviewItem(previewItemId,statementSorting1.HTMLElement,id_c,clickOnBtn,clickOnClose);
-  //   previewList.addPreviewItem(previewItemId,statementSorting2.HTMLElement,id_c,clickOnBtn,clickOnClose);
-  //   previewList.addPreviewItem(previewItemId,statementSorting3.HTMLElement,id_c,clickOnBtn,clickOnClose);
-  //   previewList.addPreviewItem(previewItemId,statementSorting4.HTMLElement,id_c,clickOnBtn,clickOnClose);
-
-  //   divWrapper.appendChild(previewList.HTMLElement);
-  //   divWrapper.appendChild(sidePreview.HTMLElement)
-
-  
-  let divWrapper = document.createElement("div");
-
-  let mobjEntry = new mediaObjEntry();
-  mobjEntry.changeLbl('إدخال مكونات الجملة');
-
-  let lstCategory = new ListWithLabelAndInputComponent('categoryLst-id',"إدخال تصنيف الجملة","category_entryTxt","تصنيف الجملة", "addCategory_btn");
-
-
-  let addBtn = new AddBtnWordComponent('add_s-question', 'إضافة السؤال' ,["margin--top-10", "add-btn"]);
-  
-  addBtn.onClick(()=> {console.log('btn clicked')});
-
-  divWrapper.appendChild(mobjEntry.HTMLElement);
-  divWrapper.appendChild(lstCategory.HTMLElement);
-  divWrapper.appendChild(addBtn.HTMLElement);
-  
-    return divWrapper;
+      return cateQuiz;
   }
+
 }
 
 class DragAndDropQuiz {
   create(){
 
+      let ddQuiz = new QuizSkeleton(QuizTypes.dragdrop_quiz);
 
-    
-  let divWrapper = document.createElement("div");
-  //   let divDataInput = document.createElement("div");
-  //   let divDataPreview = document.createElement("div");
-  divWrapper.classList.add("component-container--vertical");
+      return ddQuiz;
 
-    
-  
-    
-    let mobjEntry_1 = new mediaObjEntry('dragdrop-tabset1','dragdrop-tabpnl1');
-    let mobjEntry_2 = new mediaObjEntry('dragdrop-tabset2','dragdrop-tabpnl2');
-    mobjEntry_1.changeLbl('إدخال الجملة الأولى');
-    mobjEntry_2.changeLbl('إدخال الجملة المقابلة');
-
-    
-
-    
-    let addBtn = new AddBtnWordComponent('add_DragAndDrop','إضافة',["margin--top-10", "add-btn"]);
-    addBtn.onClick(()=> {console.log('btn clicked')});
-  
-    
-    
-    
-    
-    
-    
-    
-    //Layout
-    divWrapper.classList.add("component-container--vertical");
-    divWrapper.appendChild(mobjEntry_1.HTMLElement);
-    divWrapper.appendChild(mobjEntry_2.HTMLElement);
-    divWrapper.appendChild(addBtn.HTMLElement);
-    
-    
-  
-    return divWrapper;
-
-    // let divWrapper = document.createElement("div");
-    // let MsgCom = new messagesComponent();
-
-    // divWrapper.classList.add("radio-checkbox")
-
-    // let IncreamentId="Id-increament";
-    // let IncreamentName="Quantity-anything";
-
-    // let increamentElement = new IncreamentComponent(IncreamentId,IncreamentName);
-    
-    // increamentElement.onChange(()=>{
-    //   console.log("increament Changed!!");
-    // })
-
-    // divWrapper.appendChild(increamentElement.HTMLElement);
-
-    
-    // divWrapper.appendChild(MsgCom.createErrorMsg("مرحبا كيفك"))
-    // divWrapper.appendChild(MsgCom.createInfoMsg("مرحبا كيفك"))
-    // divWrapper.appendChild(MsgCom.createSuccessMsg("مرحبا كيفك"))
-    // divWrapper.appendChild(MsgCom.createValidationMsg("مرحبا كيفك"))
-    // divWrapper.appendChild(MsgCom.createWarningMsg("مرحبا كيفك"))
-    // divWrapper.appendChild(MsgCom.createHintMsg("مرحبا كيفك هنت"))
-
-    // return divWrapper;
   }
 }
 
 
 class MChoicesQuiz {
   create(){
-    
-    // let textareaId= "Id-mChoice-textarea";
-    // let labelTitle="الإجابة الثالثة"
 
-    
-    // let textareaLClose = new TextareaLabelWithClose(textareaId,labelTitle,1);
-    // let textarea = textareaLClose.textareaLabel.textarea;
-    // let closeBox = textareaLClose.closeButton;
+    let mChoicesQuiz = new QuizSkeleton(QuizTypes.MChoices);
 
-    
-
-    // textarea.onEvent("blur",(e)=>{
-      
-    //   let textareaValue = document.getElementById(e.target.id).value;
-    //   if (textareaValue !==""){
-    //     e.target.parentNode.querySelector("label").textContent=textareaValue;
-
-    //   }
-      
-    // })
-
-    // textarea.onEvent("click",(e)=>{
-    //   console.log("textarea - clicked");
-    //   console.log(document.getElementById(e.target.id).value)
-      
-    // })
-
-    // closeBox.onClick((e)=>{
-    //   e.preventDefault(); 
-    //   e.stopImmediatePropagation();
-    //   e.target.parentNode.remove()
-    // });
-
-    // return textareaLClose.HTMLElement;
-
-    let maxNoOfAnswers = 5;
-    // let answers_incorrect = [];
-
-    let divWrapper = document.createElement("div");
-    //   let divDataInput = document.createElement("div");
-    //   let divDataPreview = document.createElement("div");
-      
-      
-  
-    
-    let mobjEntry = new mediaObjEntry('mchoice-q-tabset','mchoice-q-tabpnl');
-    mobjEntry.changeLbl('إدخال السؤال');
-    
-    
-
-    let innerWrapper = document.createElement("div");
-    
-    let answersTabset = new TabComponent(["الإجابة الصحيحة"], "answersSet-","answersPnl-");
-    answersTabset.addLabel ("الإجابات");
-
-  
-    let answerPnl_correct = new mediaObjEntry('answerSet-correct','answerPnl-correct');
-    answerPnl_correct.changeLbl("إدخال الإجابة الصحيحة");
-
-    
-    answersTabset.fillTabPanel(1,answerPnl_correct.HTMLElement);
-
-    
-    let addAnswerBtn = new AddBtnWordComponent('add-answer', 'إضافة إجابة',["add-btn"]);
-
-    addAnswerBtn.noOfAnswers = 1 ;
-    
-    addAnswerBtn.onClick(()=> {
-     
-      if (addAnswerBtn.noOfAnswers > maxNoOfAnswers - 1 ) return;
-
-      let answers_incorrect = new mediaObjEntry('ansSet-incorrect-'+ addAnswerBtn.noOfAnswers, 'ansPnl-incorrect-'+ addAnswerBtn.noOfAnswers);
-
-      answers_incorrect.changeLbl(`إدخال الإجابة ${(addAnswerBtn.noOfAnswers + 1)}`);
-
-      answersTabset.addTab(addAnswerBtn.noOfAnswers + 1, "الإجابة " + (addAnswerBtn.noOfAnswers + 1));
-
-      answersTabset.fillTabPanel(addAnswerBtn.noOfAnswers + 1, answers_incorrect.HTMLElement);
-
-      addAnswerBtn.noOfAnswers +=1;
-
-    });
-
-    answersTabset.addControls(addAnswerBtn,["any"]);
-    
-    innerWrapper.appendChild(answersTabset.HTMLElement);
-    
-
-
-
-    
-    let addBtn = new AddBtnWordComponent('add_s-question', 'إضافة السؤال' ,["margin--top-10", "add-btn"]);
-    
-    addBtn.onClick(()=> {console.log('btn clicked')});
-  
-    
-    //Layout
-    divWrapper.classList.add("component-container--vertical");
-    divWrapper.appendChild(mobjEntry.HTMLElement);
-    divWrapper.appendChild(innerWrapper);
-    divWrapper.appendChild(addBtn.HTMLElement);
-    
-    
-  
-    return divWrapper;
+    return mChoicesQuiz;
 
 
   }
@@ -717,208 +248,24 @@ class MChoicesQuiz {
 class FIBQuiz {
   create(){
 
-    // let listId = "Id-list-1111"
-    // let checkboxId="Id-checkbox-test";
-    // let isSwitchType=true;
-    // let labelTxt="هل تريد التسجيل؟"
-    
-    // let checkboxId1="Id-checkbox-test2";
-    // let isSwitchType1=false;
-    // let labelTxt1="افتح يا سمسم";
-
-    // let checkboxId2="Id-checkbox-test3";
-    // let isSwitchType2=false;
-    // let labelTxt2=" هلا بالشباب ";
-
-
-    // let divWrapper = document.createElement("div");
-    // let radioId1="Id-radio-test1";
-    // let radioId2="Id-radio-test2";
-    // let radioId3="Id-radio-test3";
-    // let radioId4="Id-radio-hidden";
-
-    // let testText = document.createTextNode("Hello Hidden Div Test");
-
-    // let radioName="radio1";
-    // let radioValue=1;
-    // let labelTxt22="الاختيار الأول"
-    
-    // let fn = (e)=>{
-    //   console.log("I'm in a list ",e.target)
-    // };
-
-    // let listOfCheckBoxes = new ListOfRadioOrCheckBoxComponent(listId);
-
-    // listOfCheckBoxes.addCheckBox(checkboxId,isSwitchType,labelTxt,"",fn)
-
-    // listOfCheckBoxes.addCheckBox(checkboxId1,isSwitchType1,labelTxt1,"",fn)
-
-    // listOfCheckBoxes.addCheckBox(checkboxId2,isSwitchType2,labelTxt2,"",fn)
-
-    // // add Radios
-    // listOfCheckBoxes.addRadio(radioId1,radioName,radioValue,labelTxt22,fn)
-    // listOfCheckBoxes.addRadio(radioId2,radioName,radioValue,labelTxt22,fn)
-    // listOfCheckBoxes.addRadio(radioId3,radioName,radioValue,labelTxt22,fn)
-
-
-    // return listOfCheckBoxes.HTMLElement;
-
-    
-    let blank_symbols = " [ _____ ] ";
-
-    let divWrapper = document.createElement("div");
-    //   let divDataInput = document.createElement("div");
-    //   let divDataPreview = document.createElement("div");
-    divWrapper.classList.add("component-container--vertical");
-
-    
-    let fibType = new ComboLabelComponent('fibtype-id','طريقة ملء الفراغ');
-    fibType.combo.addOptionToCombo('إدخال كتابي');
-    fibType.combo.addOptionToCombo('drag & drop');
-
-
-    let inputbox_fib = new TextareaLabelComponent('fibQuestionTxt', "إدخال الجملة", 2);
-    inputbox_fib.labelTitle.classList.add('margin--top-10');
-    let fibBtn = new AddBtnWordComponent('addBlankBtn', 'إدخال فراغ', ["add-btn","margin--top-10"]);
-
-    fibBtn.onClick(()=> {
-      
-      if (inputbox_fib.textarea.HTMLElement.value.match(/\[[^\]]*?\]/g)) return;
-
-      if (inputbox_fib.textarea.HTMLElement.selectionStart || inputbox_fib.textarea.HTMLElement.selectionStart === 0) {
-        
-        let startPos = inputbox_fib.textarea.HTMLElement.selectionStart;
-        let endPos = inputbox_fib.textarea.HTMLElement.selectionEnd;
-        inputbox_fib.textarea.HTMLElement.value = inputbox_fib.textarea.HTMLElement.value.substring(0, startPos) +
-        blank_symbols +
-        inputbox_fib.textarea.HTMLElement.value.substring(endPos, inputbox_fib.textarea.HTMLElement.value.length);
-        inputbox_fib.textarea.HTMLElement.selectionStart = startPos + blank_symbols.length;
-        inputbox_fib.textarea.HTMLElement.selectionEnd = startPos + blank_symbols.length;
-      } 
-    else {
-        inputbox_fib.textarea.HTMLElement.value += blank_symbols;
-    }
-
-      
-    });
-
-    let inputbox_answer = new InputLabelComponent('fibAnswerTxt', "إدخال الإجابة", ["textarea-description"]);
-    inputbox_answer.labelTitle.classList.add('margin--top-10');
-
-    inputbox_answer.HTMLElement.addEventListener('change', (e)=> {
-
-      
-      inputbox_fib.textarea.HTMLElement.value = inputbox_fib.textarea.HTMLElement.value.replace(/\[[^\]]*?\]/g, "[ "+ e.target.value +" ]");
-
-    });
-    
-    let addBtn = new AddBtnWordComponent('add_DragAndDrop','إضافة السؤال',["margin--top-10", "add-btn"]);
-    addBtn.onClick(()=> {console.log('btn clicked')});
-    
-    //Layout
-    divWrapper.classList.add("component-container--vertical");
-    divWrapper.appendChild(fibType.HTMLElement);
-    divWrapper.appendChild(inputbox_fib.HTMLElement);
-    divWrapper.appendChild(fibBtn.HTMLElement);
-    divWrapper.appendChild(inputbox_answer.HTMLElement);
-    divWrapper.appendChild(addBtn.HTMLElement);
-    
-    
-  
-    return divWrapper;
+    let fibQuiz = new QuizSkeleton(QuizTypes.FIB);
+    return fibQuiz;
 
   }
 }
 
 class HWordQuiz {
   create(){
-   
-
-    // let checkboxId="Id-checkbox-test";
-    // let isSwitchType=true;
-    // let labelTxt="هل تريد التسجيل؟"
-    
-    // let checkboxId1="Id-checkbox-test1";
-    // let isSwitchType1=false;
-    // let labelTxt1="افتح يا سمسم";
-    // let txtNode = document.createTextNode("اشياء غريبة تظهر");
-
-    // let newCheckBox = new CheckBoxComponent(checkboxId,isSwitchType,labelTxt)
-    // let newCheckBoxHiddenDiv = new CheckBoxWithHiddenDiv(checkboxId1,isSwitchType1,labelTxt1,"anyValue")
-
-    // newCheckBoxHiddenDiv.addElementToHiddenDiv(txtNode);
-
-    // newCheckBox.onClick((e)=>{
-    //   console.log("Hello CheckBox",e.target.id)
-    // })
-
-    // newCheckBoxHiddenDiv.onClick((e)=>{
-    //   console.log("Hi there")
-    // })
-    
-    
-    let divWrapper = document.createElement("div");
-    divWrapper.classList.add("component-container--vertical");
-
-    let inputbox_hword = new TextareaLabelComponent('hwordQuizTxt', "إدخال الجملة", 3);
-    inputbox_hword.labelTitle.classList.add('margin--top-10');
-
-    
-    let lstHword = new ListWithLabelAndInputComponent('lstHword-id',"إدخال الكلمة المراد تعليمها","lstHword_entryTxt","إدخال الكلمة", "lstHword_btn");
-    lstHword.addbutton.HTMLElement.addEventListener('click', ()=> {
-      console.log('clicked');
-    });
-
-
-    let addBtn = new AddBtnWordComponent('add_Hword-question', 'إضافة السؤال' ,["margin--top-10", "add-btn"]);
-    
-    addBtn.onClick(()=> {console.log('btn clicked')});
-
-    divWrapper.appendChild(inputbox_hword.HTMLElement)
-    divWrapper.appendChild(lstHword.HTMLElement);
-    divWrapper.appendChild(addBtn.HTMLElement);
-
-    return divWrapper;
+    let hWordQuiz = new QuizSkeleton(QuizTypes.HWord);
+    return hWordQuiz;
   }
 }
 
 class SQuestionQuiz {
   create(){
+    let simpleQQuiz = new QuizSkeleton(QuizTypes.SQuestion);
 
-  let divWrapper = document.createElement("div");
-  //   let divDataInput = document.createElement("div");
-  //   let divDataPreview = document.createElement("div");
-    
-    
-  
-    
-    let mobjEntry = new mediaObjEntry();
-    mobjEntry.changeLbl('إدخال السؤال');
-    
-
-    let inputbox_answer = new TextareaLabelComponent('s-question-answerTxt', "الإجابة الصحيحة", 1);
-    
-    let addBtn = new AddBtnWordComponent('add_s-question','إضافة',["margin--top-10", "add-btn"]);
-    
-    addBtn.onClick(()=> {console.log('btn clicked')});
-  
-    
-    
-    
-
-    
-    
-    
-    //Layout
-    divWrapper.classList.add("component-container--vertical");
-    divWrapper.appendChild(mobjEntry.HTMLElement);
-    divWrapper.appendChild(inputbox_answer.HTMLElement);
-    divWrapper.appendChild(addBtn.HTMLElement);
-    
-    
-  
-    return divWrapper;
-
+    return simpleQQuiz;
   }
 }
 
@@ -1517,7 +864,7 @@ class ObjectivesGAddons {
     
 
     selectCombo.combo.onChange((e)=>{
-      statementValueTextarea.textarea.HTMLElement.value = e.target.value;
+      statementValueTextarea.textarea.HTMLElement.value = arget.value;
       console.log("textare Value: ",e.target.value);
     })
 

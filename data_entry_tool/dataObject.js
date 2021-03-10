@@ -105,14 +105,15 @@ class LingElement {
 
 
 class Skill {
-  constructor(id, SkillID, SkillText, skillIcon) {
+  constructor(id, SkillID, SkillText, skillIcon, skillColor) {
     this.id = id;
     this.SkillID = SkillID;
     this.SkillText = SkillText;
     this.SkillIcon = skillIcon;
+    this.SkillColor = skillColor;
   }
   toString() {
-    return this.id + ", " + this.SkillID + ", " + this.SkillText + ", " + this.SkillIcon;
+    return this.id + ", " + this.SkillID + ", " + this.SkillText + ", " + this.SkillIcon + ", " + this.SkillColor;
   }
 }
 
@@ -229,11 +230,11 @@ class Item{
 // }
 //****************************************** */
 class Quiz {
-  constructor(quizId, quizType, slideLink) {
+  constructor(quizId, quizType, tagObj) {
       this.id = quizId;
       this.subQuizes = []; // Array of statementAnswersObj
       this.type = quizType; // FiB quiz, DragAndDrop quiz, TorF quiz, StatementSorting quiz, LetterSorting quiz, MultipleChoices quiz, Categories quiz
-      this.link = slideLink; //in case of non-sequential slide scenarios.
+      this.tag=tagObj                     //this.link = slideLink; //in case of non-sequential slide scenarios.// we will save
   }
 }
 
@@ -248,7 +249,7 @@ class SubQuizObj {
 //****************************************** */
 class AnswerObj {
   constructor(answerId, answerMediaWrapper, correct) {
-      this.answerId = answerId;
+      this.id = answerId;
       this.answer = answerMediaWrapper; //Wrapper object Answer {id, mediaObjects[]};
       this.correct = correct; //Boolean
   }
@@ -263,10 +264,11 @@ class MediaObjectsWrapper {
 }
 //****************************************** */
 class mediaObjData {
-  constructor(mediaId, text, type) {
+  constructor(mediaId, text, type, tag="") {
       this.id = mediaId;
       this.text = text; // text [in case of text, reading text], or description [in case of pic, video, sound effect, animation] or text to be recorded [in case recorded Sound] or link [in case of link-to-prev-slide].
       this.type = type; //text-word, text-sentence[text-question-title, text-hint, text-answer], text-read, pic-photo, pic-drawing, video-photography, video-animation, video-slide-show, sound-record, sound-effect, animation[animation-object, animation-interactive, slide-transition], link-to-prev-slide
+      this.tag=tag;
       this.filenames = [];
   }
 }
@@ -463,13 +465,13 @@ class ObjectiveObj {
     }
 }
 
-class SkillObj{
-  constructor(skillId,skillIcon){
-    this.skillId=skillId;
-    this.skillIcon=skillIcon
+// class SkillObj{
+//   constructor(skillId,skillIcon){
+//     this.skillId=skillId;
+//     this.skillIcon=skillIcon
     
-  }
-}
+//   }
+// }
 
 
 //****************************************** */
@@ -651,7 +653,7 @@ function storeDataLocally(id, data, type) {
             case 'lessons':  return new Lesson(id, data['Lesson-ID'], data['Lesson-Title'], data['Module-ID']);
             case "subjects": return new Subject(id, data["subjectID"], data["subjectText"], data["LessonID"]);
             case "elements": return new LingElement(id, data["LingElement-ID"], data["LingElement-Text"], data["LingElement-Type"])
-            case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text'], data['Skill-Icon']);
+            case 'skills':   return new Skill(id, data['Skill-ID'], data['Skill-Text'], data['Skill-Icon'], data['Skill-Color']);
             case 'sceneTypes': return new SceneType(id, data['sceneT-ID'], data['sceneT-Text']);
             case 'sceneHeaders': return new SceneHeader(id, data['Course-ID'], data['Scene-ID'], data['Module-ID'], data['Lesson-ID'], data['Scene-Title'],data['Scene_Desc'], data['Scene-Seq'],
                                                             data['Scene-Type'], data['Send-To-Teacher'], data['Book-Type'] );
@@ -895,6 +897,12 @@ class AppObjects {
       return !(this.c_list.find( x => x.id == _id));
   }
 
+  removeScene(id) {
+        
+        SceneHeaders.find((sc) => sc.sceneID == id)._deleted = true;
+        Scenes = removeItemFromArr(Scenes, "id", id);
+      
+  }
   getSceneDesc( _sId = this.currentScene) {
     let desc = SceneHeaders.find( sid => sid.sceneID == _sId && sid.CourseID == this.currentCourse)?.sceneDesc; 
     if (desc) return desc;

@@ -1,3 +1,6 @@
+
+//#region ****** Firebase Initialization ***********
+
 // Web app's Firebase configuration
 var firebaseConfig = {
     apiKey: "AIzaSyAFpD1e9Y1RSK9PNAQ84WI6lWAJQophybc",
@@ -17,10 +20,15 @@ var firebaseConfig = {
   const auth = firebase.auth();
   const db = firebase.firestore();
   
+  //#endregion
 
+
+//#region ********* Enable Cache **************
   // Enable local cache
-  db.enablePersistence()
-  .then( ()=> {console.log('Persistence Enabled!')})
+  
+  db.enablePersistence().then( ()=> {
+    console.log('Persistence Enabled!')
+  })
   .catch(function(err) {
       if (err.code == 'failed-precondition') {
           // Multiple tabs open, persistence can only be enabled
@@ -33,12 +41,70 @@ var firebaseConfig = {
       }
   });
 
+//#endregion
+
+
+//#region *********** Network State *************************
+
+const onlineSync = document.getElementById('online-switch');
+const onlineSyncLbl = document.getElementById('lbl-online-switch');
+
+
+window.addEventListener('online', function() {
+  onlineSync.checked = true;
+  onlineSyncLbl.textContent = "البيانات متزامنة";
+});
+
+window.addEventListener('offline', function() {
+  disableNet();
+
+});
+
+onlineSync.addEventListener('click', onlineSyncHandler);
+
+
+function onlineSyncHandler() {
+
+  if (this.checked) {
+   
+    firebase.firestore().enableNetwork()
+    .then(function() {
+        // Do online actions
+        onlineSyncLbl.textContent = "البيانات متزامنة";
+    });
+    
+
+  }else {
+    
+    firebase.firestore().disableNetwork()
+    .then(function() {
+        // Do offline actions
+        onlineSyncLbl.textContent = "البيانات غير متزامنة";
+    });
+
+  }
+}
+
+
+function disableNet() {
+
+  onlineSync.checked = false;
+  firebase.firestore().disableNetwork()
+  .then(function() {
+      // Do offline actions
+      onlineSyncLbl.textContent = "البيانات غير متزامنة";
+  });
+
+}
+//#endregion
+
+
+//#region  ******** Authentication Process ***************
 
 // get the current user info
 var _currentUser = undefined;
 
 
-// Authentication Process
 const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 const modals = document.querySelector(".modal");
@@ -58,16 +124,9 @@ const setupUI = (user) => {
 
 
 // listen for auth changes
-
 auth.onAuthStateChanged( user => {
     if (user) {
         setupUI(user);
-
-  
-  // for(var key in auth) {
-  //   var value = auth[key];
-  //   console.log("key = "+ key + "///" + "auth prop" + value);
-  // }  
         _currentUser = auth.currentUser.email;
         console.log('Loading Data from Firestore...')
         loadDataFromFireStore();
@@ -77,7 +136,7 @@ auth.onAuthStateChanged( user => {
     }
 });
 
-// login
+// login Process
 const loginForm = document.querySelector('#login-form');
 
 
@@ -89,13 +148,11 @@ loginForm.addEventListener('submit', (e)=> {
     const email = loginForm['login-email'].value;
     const password = loginForm['login-password'].value;
 
-    auth.signInWithEmailAndPassword(email,password). then ( cred => {
+    auth.signInWithEmailAndPassword(email,password). then ( () => {
 
         _currentUser = auth.currentUser.email;
 
-
         // close the modal form and reset it
-        //const modal = document.querySelector('#modal-login');
         removeLoginProcess();
 
     }).catch (error => {
@@ -105,16 +162,20 @@ loginForm.addEventListener('submit', (e)=> {
 
 
 
-// logout method
+// logout Button
 const logout = document.querySelector('#logout');
+
+// log in Button
+const login = document.querySelector('#login');
+
+// logout 
 logout.addEventListener('click', (e) => {
     e.preventDefault();
     auth.signOut();
 });
 
-const login = document.querySelector('#login');
 
-
+// login 
 login.addEventListener('click', e=> {
     e.preventDefault();
     modalOverlay = document.createElement("div");
@@ -124,9 +185,6 @@ login.addEventListener('click', e=> {
     modalOverlay.style.display= "block";
     modalOverlay.style.opacity = 0.5;
 
-    
-    
-    
     document.body.appendChild(modalOverlay);
     modalOverlay.addEventListener('click', removeLoginProcess);
    
@@ -140,7 +198,9 @@ login.addEventListener('click', e=> {
       
 });
 
+// Remove the log in form
 function removeLoginProcess(){
+
     if (modals) {
         
         loginForm.reset();
@@ -164,4 +224,7 @@ window.addEventListener('keydown', (e) => {
 });
 
 
+//#endregion
 
+
+// Authourization .... (TODO)
