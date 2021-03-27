@@ -163,7 +163,7 @@ const SceneTypeEnums = {
 }
 
 
-// Dialog
+// Template Dialog
 const templateDialog = document.getElementById('template_Dialog');
 const select_values = document.getElementById('template_type');
 const confirmBtn = document.getElementById('confirmBtn');
@@ -360,12 +360,6 @@ function slidesLstHandlers(){
         e.target.classList.add ("buttons-in-slide-menu--selected");
         _courses.currentSlide = slide_container.index;
    
-    
-    
-      
-    console.log(' slide id = ' + _courses.currentSlide);
-     
-      
     
   });
   
@@ -602,33 +596,19 @@ String.prototype.removeChar = function (i) {
 
 show_addNewBtn.addEventListener('click', (e)=> {
 
-    // if (container_addNewBtn.style.display != "block" && container_addNewBtn.style.display != "none") {
-    //   container_addNewBtn.style.display = "none";
-    //   show_addNewBtn.style.transform = "rotate(0deg)";
-    // }
-        
 
     if (container_addNewBtn.classList.contains("sidenav1-container-hidden")) {
-        //container_addNewBtn.style.display = "none";
-        show_addNewBtn.style.transform = "rotate(45deg)";
-        //container_addNewBtn.style.visibility = "hidden";
-        // container_addNewBtn.style.opacity = 0;
-        // container_addNewBtn.style.height = 0;
-        // container_addNewBtn.style.transition= "opacity 1s linear";
-        // container_addNewBtn.style.overflow = "hidden";
-        container_addNewBtn.className = "sidenav1-container-shown";
 
+        show_addNewBtn.style.transform = "rotate(45deg)";
+        container_addNewBtn.className = "sidenav1-container-shown";
 
     }
     else {
-        //container_addNewBtn.style.display = "block";
+
         show_addNewBtn.style.transform = "rotate(0deg)";
         container_addNewBtn.className = "sidenav1-container-hidden";
 
-        
     }
-
-
 
     e.stopPropagation();
 
@@ -724,9 +704,6 @@ function isDeleteLessonPossible(_id, _index){
 function isDeleteModulePossible(_id, _index){
   return !(Lessons.find(les => les.id == _id && les.ModuleID == _index));
 }
-
-
-
 
 
 // Remove Subject (Button)
@@ -3144,3 +3121,8 @@ cancelBtn_template.addEventListener('click', (e) => {
 
   templateDialog.close()
 })
+
+
+function replaceAll(string, search, replace) {
+  return string.split(search).join(replace);
+}

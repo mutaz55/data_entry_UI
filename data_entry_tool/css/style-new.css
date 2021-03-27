@@ -807,6 +807,26 @@ color:#ffffff;
 
 }
 
+/* input box */
+.inputbox-entry {
+  font-family: var(--body-font);
+  font-size: 1.3rem;
+  text-align: right;
+  padding: .75rem 1.25rem;
+  color: var(--color-font);
+  border-bottom-right-radius: 10px;
+  border:1px solid var(--border-color-normal);
+  outline-color: var(--main-color-jgreen);
+  width: 100%;
+}
+
+.inputbox-entry:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: var(--main-color-jgreen);
+  outline: 0;
+  box-shadow: 0 0 0 0.15rem RGBA(0,123,118,0.12);
+}
 
 /* Listbox of buttons */
 /* Container of buttons in a listbox */
@@ -1128,6 +1148,7 @@ input:-webkit-autofill:focus {
 .radiobox-background:hover,
 .list-combo:hover,
 .textarea-description:hover,
+.inputbox-entry:hover,
 .textarea-description-preview:hover,
 .list-items-select:hover,
 .dropdown-subjects:hover,
@@ -1136,6 +1157,7 @@ input:-webkit-autofill:focus {
 {
     border: 1px solid var(--main-color-jgreen);
 } 
+
 
 
 /* two styles of remove button */
@@ -1812,10 +1834,12 @@ overflow: hidden;
   text-align: center; /* Centered text */
   border-radius: 2px; /* Rounded borders */
   padding: 16px; /* Padding */
+  padding-left: 48px;
   position: fixed; /* Sit on top of the screen */
   z-index: 1001; /* Add a z-index if needed */
   left: 50%; /* Center the snackbar */
   bottom: 30px; /* 30px from the bottom */
+  font-size: 1rem;
 }
 
 #toast-msg.toast-sucess {
@@ -2411,6 +2435,9 @@ height: 20rem;
 .margin--top-10 {
   margin-top: 1rem;
 }
+.margin--bottom-10 {
+  margin-bottom: 1rem;
+}
 /* ListOfRadioOrCheckBoxComponent */
 .radioBtns-container {
   border: none;
@@ -2721,9 +2748,13 @@ position: relative;
   background-image: url('../img/warningIcon.png');
 }
 .error{
+
   color: #D8000C;
   background-color: #FFBABA;
   background-image: url('../img/errorIcon.png');
+  /* background-position: right; */
+  
+
 }
 .validation{
   color: #D63301;

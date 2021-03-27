@@ -1,24 +1,38 @@
-
+// Max number of characters can be inserted within a textarea component.
+const maxLengthOfTextarea = 1000;
+const maxLengthInputBox = 150;
 //**************** component's classes */
 
 //Level 0 components
 
+
+// Textarea: @version: 1.0.0 (@lastupdated: 22.03.2021)
+// @parameters: 
+// textareaId : the (html) textarea id
+// rowNumber: how many rows would textarea has
+// CssArr : array of css classes would be applied on the textarea; It has default value
+// @returns: textarea node (html) to be added.
+
 class TextareaComponent {
   constructor(textareaId,rowNumber, cssArr = ["textarea-description", "textarea-resize-vertically"]){
     
-    let textareaElement =document.createElement("textarea");
-    textareaElement.id=textareaId;
-    textareaElement.rows=rowNumber;
+    let textareaElement = document.createElement("textarea");
+    textareaElement.id = textareaId;
+    textareaElement.rows = rowNumber;
 
+    textareaElement.maxLength = maxLengthOfTextarea;
     
     cssArr.forEach( cssClass => {
       textareaElement.classList.add(cssClass);
     });
     
     
-    this.HTMLElement= textareaElement;
+    this.HTMLElement = textareaElement;
+
+
   }
 
+  // register an event
   onEvent(eventName,fn){
     this.HTMLElement.addEventListener(eventName,fn);
   }
@@ -29,29 +43,184 @@ class TextareaComponent {
   setTextValue(_value){
     this.HTMLElement.value = _value;
   }
-  clearValues(){
+  clearValue(){
     this.HTMLElement.value="";
   }
+
+  // Add new css class and keep the current ones, append or overwrite the current css classes
+  addCssClass(cssClass, overwrite = false){
+    if (overwrite) {
+      this.HTMLElement.className = '';
+      if (Array.isArray(cssClass)) {
+          cssClass.forEach( _cssClass => {
+            this.HTMLElement.classList.add(_cssClass);
+          });
+      }else {
+        this.HTMLElement.className = cssClass;
+      }
+
+    }else {
+      this.HTMLElement.classList.add(cssClass);
+    }
+    
+  }
+
+  //Sets whether the contents of a text area is read-only
+  readOnly(value){
+    this.HTMLElement.readOnly = value;
+  }
+  
+  // Sets the placeholder property
+  setPlaceHolder(txt){
+    this.HTMLElement.placeholder = txt;
+  }
+
+  selectAll(){
+    this.HTMLElement.select();
+  }
+
+  // insert a specific string into the current cursor position
+  insertAt(str){
+               
+    let startPos = this.HTMLElement.selectionStart;
+    let endPos = this.HTMLElement.selectionEnd;
+
+    this.HTMLElement.value = this.HTMLElement.value.substring(0, startPos) + str + this.HTMLElement.value.substring(endPos, this.HTMLElement.value.length);
+
+  }
+
+  // replace a value _val (all) within the component text with a new value _newVal
+  replaceAll( _val, _newVal){
+    
+    this.HTMLElement.value =  this.HTMLElement.value.split(_val).join(_newVal);
+
+  }
+  // get an object made of the id of the node and the text content
+  getObj (){
+    return {id:this.HTMLElement.id, txt:this.HTMLElement.value};
+  }
 }
+
+
+
+// InputBox
+// @parameters: 
+// textareaId : the (html) textarea id
+// rowNumber: how many rows would textarea has
+// CssArr : array of css classes would be applied on the textarea; It has default value
+// @returns: textarea node (html) to be added.
+class InputBoxComponent {
+  constructor(inputBoxId, cssArr = ["inputbox-entry"]){
+
+    let inputBoxElement =document.createElement("input");
+    inputBoxElement.type = "text";
+    inputBoxElement.id = inputBoxId;
+    inputBoxElement.maxLength = maxLengthInputBox;
+    
+    cssArr.forEach( cssClass => {
+      inputBoxElement.classList.add(cssClass);
+    });
+     
+    this.HTMLElement = inputBoxElement;
+  }
+
+  // register an event
+  onEvent(eventName,fn){
+    this.HTMLElement.addEventListener(eventName,fn);
+  }
+
+  getTextValue(){
+    return this.HTMLElement.value;
+  }
+  setTextValue(_value){
+    this.HTMLElement.value = _value;
+  }
+  clearValue(){
+    this.HTMLElement.value="";
+  }
+
+  // Add new css class and keep the current ones, append or overwrite the current css classes
+  addCssClass(cssClass, overwrite = false){
+    if (overwrite) {
+
+      this.HTMLElement.className = '';
+      if (Array.isArray(cssClass)) {
+          cssClass.forEach( _cssClass => {
+            this.HTMLElement.classList.add(_cssClass);
+          });
+      }else {
+        this.HTMLElement.className = cssClass;
+      }
+      
+    }else {
+      this.HTMLElement.classList.add(cssClass);
+    }
+    
+  }
+
+  //Sets whether the contents of a text area is read-only
+  readOnly(value){
+    this.HTMLElement.readOnly = value;
+  }
+  
+  // Sets the placeholder property
+  setPlaceHolder(txt){
+    this.HTMLElement.placeholder = txt;
+  }
+
+  selectAll(){
+    this.HTMLElement.select();
+  }
+
+  // get an object made of the id of the node and the text content
+  getObj (){
+    return {id:this.HTMLElement.id, txt:this.HTMLElement.value};
+  }
+
+}
+
+
+
 
 class LabelComponent {
   constructor(labelTitle,forId, cssArr = ["label-component"]){
 
-    this.labeltitle=document.createElement("label");
+    let labeltitle=document.createElement("label");
 
     cssArr.forEach( cssClass => {
-      this.labeltitle.classList.add(cssClass);
+      labeltitle.classList.add(cssClass);
     });
 
-    this.labeltitle.for=forId;
-    this.labeltitle.textContent=labelTitle;
-    this.HTMLElement= this.labeltitle;
+    labeltitle.for = forId;
+    labeltitle.textContent = labelTitle;
+    this.HTMLElement = labeltitle;
   }
 
   changeLblTxt(newTxt) {
-    this.labeltitle.textContent = newTxt;
+    this.HTMLElement.textContent = newTxt;
+  }
+
+  // Add new css class and keep the current ones, append or overwrite the current css classes
+  addCssClass(cssClass, overwrite = false){
+    if (overwrite) {
+
+      this.HTMLElement.className = '';
+      if (Array.isArray(cssClass)) {
+          cssClass.forEach( _cssClass => {
+            this.HTMLElement.classList.add(_cssClass);
+          });
+      }else {
+        this.HTMLElement.className = cssClass;
+      }
+      
+    }else {
+      this.HTMLElement.classList.add(cssClass);
+    }
+    
   }
 } 
+
+
 
 class CloseBoxComponent {
   constructor(id_c){
@@ -625,6 +794,14 @@ class ComboComponent {
       })
     }
 
+    setSelectedItem(_id) {
+      Array.from(this.comboSelect.options).forEach((element,index) => {
+        
+        if(element.value==_id) {
+          this.comboSelect.selectedIndex = index;
+        }
+      });
+    }
 
 }
 
@@ -653,35 +830,50 @@ class TextareaLabelComponent {
     return this.textarea.getTextValue();
   }
   setTextValue(_value){
-    this.text.setTextValue(_value);
+    this.textarea.setTextValue(_value);
   }
   clearValue(){
-    this.textarea.clearValues();
+    this.textarea.clearValue();
   }
   
 }
 
 
 class InputLabelComponent {
-  constructor(inputId, labelTitle, cssArr){
-    let divWrapper = document.createElement("div");
-    let labeltitle = new LabelComponent(labelTitle,inputId);
-    this.labelTitle = labeltitle.HTMLElement;
 
-    this.inputBox = document.createElement("INPUT");
-    this.inputBox.setAttribute("type", "text");
+  constructor(inputId, labelTitle){
+
+    let divWrapper = document.createElement("div");
     
-    cssArr.forEach( cssClass => {
-      this.inputBox.classList.add(cssClass);
-    });
+    this.labelTitle = new LabelComponent(labelTitle,inputId);
+    
+    this.inputBox = new InputBoxComponent(inputId);
     
     divWrapper.classList.add("component-container--vertical");
      
-    divWrapper.appendChild(this.labelTitle);
-    divWrapper.appendChild(this.inputBox);
+    divWrapper.appendChild(this.labelTitle.HTMLElement);
+    divWrapper.appendChild(this.inputBox.HTMLElement);
 
     this.HTMLElement = divWrapper;
 
+  }
+   // Add new css class and keep the current ones, append or overwrite the current css classes
+   addCssClass(cssClass, overwrite = false){
+    if (overwrite) {
+
+      this.HTMLElement.className = '';
+      if (Array.isArray(cssClass)) {
+          cssClass.forEach( _cssClass => {
+            this.HTMLElement.classList.add(_cssClass);
+          });
+      }else {
+        this.HTMLElement.className = cssClass;
+      }
+      
+    }else {
+      this.HTMLElement.classList.add(cssClass);
+    }
+    
   }
  
 }
@@ -781,7 +973,6 @@ class mediaObjPreview {
   
   activateOnEvent(event,subQuizId){
     
-                  
     this.tabPanel1.HTMLElement.addEventListener(event,(e)=>{
       
       let saveSubQuiz1 = new SaveSubQuizToDB(subQuizId,e.target.value,MediaType.Text_sentence)
@@ -892,14 +1083,15 @@ class mediaObjEntry {
     
   }
   clearEntry(){
-    this.tabPanel1.clearValues();
-    this.tabPanel2.clearValues();
-    this.tabPanel3.clearValues();
-    this.tabPanel4.clearValues();
+    this.tabPanel1.clearValue();
+    this.tabPanel2.clearValue();
+    this.tabPanel3.clearValue();
+    this.tabPanel4.clearValue();
   }
 
 
 }
+
 class ComboLabelComponent{
 
   constructor(comboId,comboTitle){
@@ -1045,7 +1237,7 @@ class ListWithLabelAndInputComponent{
     this.lstCatObj = [];
     this.currentValue = "-1";
     this.listElement.HTMLElement.mode = "normal";
-    // this.addLstHandler(this, this.listElement.HTMLElement);
+    //this.addLstHandler(this, this.listElement.HTMLElement);
     this.keyHandlers(this, this.listElement,this.inputText,this.addbutton.HTMLElement);
 
 
@@ -1089,7 +1281,7 @@ class ListWithLabelAndInputComponent{
           lst.mode = "update";
 
       }else {
-        resetAddBtn(this.listElement, _super.inputText.HTMLElement, _super.addbutton.HTMLElement);
+        resetAddBtn(lst, _super.inputText.HTMLElement, _super.addbutton.HTMLElement);
 
       }
 
@@ -1124,6 +1316,8 @@ class ListWithLabelAndInputComponent{
       _super.currentValue = e.target.id;
     //}
 
+    
+
   }
 
   clkOnClose(e, _super){
@@ -1140,10 +1334,10 @@ class ListWithLabelAndInputComponent{
   }
 
   // Reset the add button (switch from update mode)
-  reset_AddBtn(lst, txt,btn){
-    lst.mode = "normal";
-    txt.HTMLElement.value = "";
-    btn.textContent = "إضافة";
+  reset_AddBtn(){
+    this.listElement.HTMLElement.mode = "normal";
+    this.clearTxtBox();
+    this.addbutton.HTMLElement.textContent = "إضافة";
   }
 
   keyHandlers(_super, lst, txt_entry, btn_add){
@@ -1178,7 +1372,24 @@ class ListWithLabelAndInputComponent{
   }
 
 
+  addItemtoLst(passed_txt, _id){
+      
+      
+    this.lstCatObj.push({'txt':passed_txt, 'id': _id})
 
+    this.listElement.addButtonWithCloseBoxToList(passed_txt, _id, _id, this.clickOnLstBtn, this.clkOnClose, this);
+    this.currentValue = _id;
+
+
+    activateCurrentBtn(_id);
+  }
+
+  clearList(){
+    this.lstCatObj = [];
+    this.currentValue = "-1";
+    this.listElement.HTMLElement.mode = "normal";
+    this.listElement.clearList();
+  }
 }
 
 
@@ -1721,7 +1932,7 @@ class TabComponent{
   }
   clearTabs(){
     while (this.divTabset.childNodes.length > 1) {
-        this.divTabset.removeChild(this.divTabset.lastChild);
+          this.divTabset.removeChild(this.divTabset.lastChild);
     } 
     while ( this.divTapanels.childNodes.length > 1) {
         this.divTapanels.removeChild(this.divTapanels.lastChild);

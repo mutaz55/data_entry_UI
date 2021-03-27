@@ -48,8 +48,9 @@ const fibOptions = {
   fib_mchoice: "fib-multiple-words"
 }
 
-// max no of answer to be inserted in multiple choice quiz
+// Max no of answers to be inserted in multiple choice quiz
 const MaxNoOfAnswers = 5;
+
 //Input View Abstruct Class
 class InputViewClass {
 
@@ -534,7 +535,7 @@ class LSortingInputView extends InputViewClass{
     this.mobjEntry.changeLbl('إدخال الأحرف');
     
 
-    this.inputbox_answer = new TextareaLabelComponent('i-sorting-answerTxt', "الإجابة الصحيحة", 1);
+    this.inputbox_answer = new InputLabelComponent('i-sorting-answerTxt', "الإجابة الصحيحة");
     
     divDataInput.appendChild(this.mobjEntry.HTMLElement);
     divDataInput.appendChild(this.inputbox_answer.HTMLElement);
@@ -544,8 +545,8 @@ class LSortingInputView extends InputViewClass{
   }
 
   getValues(){
-
-    let _Ans = this.inputbox_answer.getTextValue();
+    
+    let _Ans = this.inputbox_answer.inputBox.getTextValue();
     let _result = this.mobjEntry.getEntries();
     
     let mediaWrapper = new MediaObjectsWrapper('none');
@@ -561,12 +562,13 @@ class LSortingInputView extends InputViewClass{
     answerMediaWrapper.mediaObjects.push(answerMedia);
     subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
 
+
     return subQuizResult;
 
   }
   clearValues(){
     this.mobjEntry.clearEntry();
-    this.inputbox_answer.clearValue();
+    this.inputbox_answer.inputBox.clearValue();
   }
 }
 
@@ -644,14 +646,24 @@ class TorFInputView extends InputViewClass{
       
         //Layout
         divDataInput.classList.add("Quiz-layout-input");
-        
-
+                
         let divWrapper = document.createElement("div");
 
-        let mobjEntry = new mediaObjEntry();
-        mobjEntry.changeLbl('إدخال مكونات الجملة');
+        this.mobjEntry = new mediaObjEntry();
+        this.mobjEntry.changeLbl('إدخال مكونات الجملة');
 
         this.lstCategory = new ListWithLabelAndInputComponent('categoryLst-id',"إدخال تصنيف الجملة","category_entryTxt","تصنيف الجملة", "addCategory_btn", ()=>{});
+
+
+        
+        let _data = new ItemsDataReciever();
+        
+        let currentQuiz = _data.getCurrentQuiz();
+        if (currentQuiz.subQuizes.length > 0) {
+            currentQuiz.subQuizes[0].Answers.forEach( (_Ans) => {
+              this.lstCategory.addItemtoLst(_Ans.answer.mediaObjects[0].text, _Ans.answer.id);
+            });
+        }
 
 
         this.lstCategory.addbutton.onClick( ()=> {
@@ -663,18 +675,7 @@ class TorFInputView extends InputViewClass{
             if (this.lstCategory.listElement.HTMLElement.mode == "normal") {
         
               
-                let _id = getId_fromArry("btnLstItem",this.lstCategory.lstCatObj,'_');
-                
-
-                let _txt =  this.lstCategory.getTextValue();
-                
-                this.lstCategory.lstCatObj.push({'txt':_txt, 'id': _id})
-
-                this.lstCategory.listElement.addButtonWithCloseBoxToList(_txt, _id, _id, this.lstCategory.clickOnLstBtn,this.lstCategory.clkOnClose, this.lstCategory);
-                this.lstCategory.currentValue = _id;
-
-            
-                activateCurrentBtn(_id);
+              this.lstCategory.addItemtoLst(this.lstCategory.getTextValue(), getId_fromArry("btnLstItem",this.lstCategory.lstCatObj,'_'));
             
             }
             // Update mode
@@ -698,13 +699,50 @@ class TorFInputView extends InputViewClass{
           
 
 
-        divWrapper.appendChild(mobjEntry.HTMLElement);
+        divWrapper.appendChild(this.mobjEntry.HTMLElement);
         divWrapper.appendChild(this.lstCategory.HTMLElement);
         divDataInput.appendChild(divWrapper);
         
         this.HTMLElement = divDataInput;
 
     }
+    getValues(){
+
+      let _Ans = this.lstCategory;
+
+      let _question = this.mobjEntry.getEntries();
+      
+      let mediaWrapper = new MediaObjectsWrapper('none');
+  
+      _question.forEach ( (QItem) => {
+        mediaWrapper.mediaObjects.push(new mediaObjData('none', QItem.text, QItem.type));
+      });
+  
+      let subQuizResult = new SubQuizObj('none', mediaWrapper);
+  
+      
+      _Ans.lstCatObj.forEach ( (AItem) => {
+
+        let answerMediaWrapper = new MediaObjectsWrapper('none');
+
+        answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.txt, 'text-sentence'));
+
+        if (AItem.id == _Ans.currentValue) {
+            subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+        }else {
+            subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, false));
+        }
+        
+
+      });
+  
+        return subQuizResult;
+    }
+    clearValues(){
+        this.mobjEntry.clearEntry();
+
+    }
+   
   }
 
   class DragAndDropInputView extends InputViewClass{
@@ -755,8 +793,7 @@ class TorFInputView extends InputViewClass{
     
         subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
     
-        console.log('result>>>');
-        console.log(subQuizResult);
+
 
         return subQuizResult;
   
@@ -919,9 +956,20 @@ class TorFInputView extends InputViewClass{
     constructor(){
         super();
 
-              
-          let blank_symbols = [" [  1  ] ", "{  2  }", "(  3  )"];
+          let maximumNoBlanks = 5;
+          let blank_symbols = " [  $  ] ";
           
+
+          this.currentBlankNo = 1;
+          this.curentBlankNo_multiple = 1;
+
+          let _data = new ItemsDataReciever();
+        
+          let currentQuizId = _data.getCurrentQuiz().id.slice(-7) + '_B';
+
+          this.blanks = [];
+
+
           let divDataInput = document.createElement("div");
       
           //Layout
@@ -937,51 +985,173 @@ class TorFInputView extends InputViewClass{
           fibType.combo.addOptionToCombo('إدخال كتابي',fibOptions.fib_words);
           fibType.combo.addOptionToCombo('drag & drop', fibOptions.fib_dragdrop, true);
           fibType.combo.addOptionToCombo('خيارات متعددة',fibOptions.fib_mchoice, true);
+          
+          fibType.combo.HTMLElement.selectedIndex = 0;
 
 
+          this.inputbox_fib = new TextareaLabelComponent('fibQuestionTxt', "إدخال الجملة", 6);
+          this.inputbox_fib.labelTitle.classList.add('margin--top-10');
 
-          let inputbox_fib = new TextareaLabelComponent('fibQuestionTxt', "إدخال الجملة", 2);
-          inputbox_fib.labelTitle.classList.add('margin--top-10');
-          let fibBtn = new AddBtnWordComponent('addBlankBtn', 'إدخال فراغ', ["add-btn","margin--top-10"]);
+          this.inputbox_fib_multiple = new TextareaLabelComponent('fibQMTxt', "إدخال الجملة", 6);
+          this.inputbox_fib_multiple.labelTitle.classList.add('margin--top-10');
+
+
+          let fibBtn = new AddBtnWordComponent('addBlankBtn', 'إدخال فراغ', ["add-btn","margin--top-10","margin--bottom-10"]);
 
           fibBtn.onClick(()=> {
             
-            if (inputbox_fib.textarea.HTMLElement.value.match(/\[[^\]]*?\]/g)) return;
+            if (fibType.combo.HTMLElement.selectedIndex  == 0 || fibType.combo.HTMLElement.selectedIndex  == 1) {
 
-            if (inputbox_fib.textarea.HTMLElement.selectionStart || inputbox_fib.textarea.HTMLElement.selectionStart === 0) {
-              
-              let startPos = inputbox_fib.textarea.HTMLElement.selectionStart;
-              let endPos = inputbox_fib.textarea.HTMLElement.selectionEnd;
-              inputbox_fib.textarea.HTMLElement.value = inputbox_fib.textarea.HTMLElement.value.substring(0, startPos) +
-              blank_symbols[0] +
-              inputbox_fib.textarea.HTMLElement.value.substring(endPos, inputbox_fib.textarea.HTMLElement.value.length);
-              inputbox_fib.textarea.HTMLElement.selectionStart = startPos + blank_symbols[0].length;
-              inputbox_fib.textarea.HTMLElement.selectionEnd = startPos + blank_symbols[0].length;
-            } 
-          else {
-              inputbox_fib.textarea.HTMLElement.value += blank_symbols[0];
-          }
+              if (this.currentBlankNo <= 5) {
 
+                let blankNo = replaceAll(blank_symbols,'$', this.currentBlankNo);
+                
+                this.inputbox_fib.textarea.insertAt(blankNo);
+
+                this.blanks.push({tokenTxt:blankNo , token: currentQuizId + this.currentBlankNo, answer: ""});
+
+                this.currentBlankNo++;
+              }else {
+                showError("Can't insert more than 5 blanks");
+              }
+
+                
+
+            }else if (fibType.combo.HTMLElement.selectedIndex == 2) {
+
+
+                if (this.curentBlankNo_multiple > 5) return;
+
+                if (this.curentBlankNo_multiple > 1) {
+                  this.answersTabset.addTab("الفراغ " + this.curentBlankNo_multiple, null,"tab-label-Incorrect-answer");
+                }
+                
+                let currentBlankId = currentQuizId + this.curentBlankNo_multiple;
+           
+                let answerPnl_correct = new TabComponent(['الإجابة الصحيحة'],'ans-correct-'+ currentBlankId,'ansPnl-correct-'+ currentBlankId);
+                    answerPnl_correct.changeTabLblCss(['tab-label-correct-answer']);
+
+                let addAnswerBtn = new AddBtnWordComponent('addBtn-ans-' + currentBlankId, 'إضافة إجابة',["add-btn"]);
+
+                let inputbox_correct = new TextareaComponent('correct-txt-' + currentBlankId,1);
+                answerPnl_correct.fillTabPanel(0, inputbox_correct.HTMLElement);
+                answerPnl_correct.addControls(addAnswerBtn,["any"]);
+
+                this.answersTabset.fillTabPanel(this.curentBlankNo_multiple - 1, answerPnl_correct.HTMLElement);
+
+                
+
+                this.answersTabset.tabSets[this.curentBlankNo_multiple - 1].HTMLElement.dispatchEvent(new Event('click'));
+                answerPnl_correct.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
+
+                this.answersTabset.tabSets.index += 1;
+
+                this.curentBlankNo_multiple++;
+            }
             
+
           });
 
-          let inputbox_answer = new InputLabelComponent('fibAnswerTxt', "إدخال الإجابة", ["textarea-description"]);
-          inputbox_answer.labelTitle.classList.add('margin--top-10');
 
-          inputbox_answer.HTMLElement.addEventListener('change', (e)=> {
+          // let inputbox_answer = new InputLabelComponent('fibAnswerTxt', "إدخال الإجابات", ["textarea-description"]);
+
+          // inputbox_answer.labelTitle.classList.add('margin--top-10');
+
+          // inputbox_answer.HTMLElement.addEventListener('change', (e)=> {
 
             
-            inputbox_fib.textarea.HTMLElement.value = inputbox_fib.textarea.HTMLElement.value.replace(/\[[^\]]*?\]/g, "[ "+ e.target.value +" ]");
+          //   this.inputbox_fib.textarea.HTMLElement.value = this.inputbox_fib.textarea.HTMLElement.value.replace(/\[[^\]]*?\]/g, "[ "+ e.target.value +" ]");
 
-          });
+          // });
           
+          this.answersLst = new ListWithLabelAndInputComponent('fib_ans_lst',"إدخال الإجابات",'entry_ans_txt',"إجابة الفراغ",'fib_ans_lst_addBtn');
+          // this.answersLst.HTMLElement.style.display = "none";
          
+          this.answersLst.addbutton.onClick( ()=> {
+            
+               
+                //TODO: Validation Conditions...
+                if (this.answersLst.listElement.HTMLElement.mode == 'update') {
+
+                  let _id = this.answersLst.currentValue;
+                  
+                  let _ans = this.answersLst.getTextValue();
+                
+                  let _oldValue = this.answersLst.HTMLElement.querySelector(`#${_id}`).textContent;
+                
+
+                  this.answersLst.HTMLElement.querySelector(`#${_id}`).textContent = _ans;
+                  this.blanks.find( blank => blank.token == _id).answer = _ans;
+                  this.inputbox_fib.textarea.replaceAll(`[ ${_oldValue} ]`,`[ ${ _ans } ]`);
+
+                  this.answersLst.reset_AddBtn();
+
+                }else {
+
+                  if (this.answersLst.listElement.HTMLElement.childNodes.length >= 5 ) return;
+                
+                  let _index = this.blanks.findIndex( blank => blank.answer == "");
+                  
+                  //
+                  if (_index < 0) return;
+  
+  
+                  let _answer = this.answersLst.getTextValue();
+                  this.blanks[_index].answer = _answer;
+                  
+                  this.answersLst.addItemtoLst(_answer, this.blanks[_index].token);
+                  this.answersLst.clearTxtBox();
+                  this.inputbox_fib.textarea.replaceAll(this.blanks[_index].tokenTxt,` [ ${ _answer} ] `);
+                
+
+                }
+                
+               
+          });
+
+
+
+          this.answersTabset = new TabComponent(["الفراغ 1"], 4,  "answersSet-","answersPnl-");
+          this.answersTabset.addLabel ("الإجابات");
+          
+          // this.answersTabset.changeTabLblCss(['tab-label-correct-answer']);
+
+
+          this.answersTabset.HTMLElement.style.display = "none";
+          this.inputbox_fib_multiple.HTMLElement.style.display = "none";
+          
+
+
+          fibType.combo.HTMLElement.addEventListener('change', (e)=> {
+
+            
+            if (e.target.value == 'fib-missing-words' || e.target.value == 'fib-dragdrop-words') {
+
+              this.inputbox_fib.HTMLElement.style.display = "flex";
+              this.answersLst.HTMLElement.style.display = "flex";
+              this.inputbox_fib_multiple.HTMLElement.style.display = "none";
+              this.answersTabset.HTMLElement.style.display = "none";
+            }
+            else if (e.target.value == 'fib-multiple-words') {
+
+              this.inputbox_fib.HTMLElement.style.display = "none";
+              this.inputbox_fib_multiple.HTMLElement.style.display = "flex";
+              this.answersLst.HTMLElement.style.display = "none";
+              this.answersTabset.HTMLElement.style.display = "flex";
+            }
+
+          });
+
+
           //Layout
           divWrapper.classList.add("component-container--vertical");
           divWrapper.appendChild(fibType.HTMLElement);
-          divWrapper.appendChild(inputbox_fib.HTMLElement);
+          divWrapper.appendChild(this.inputbox_fib.HTMLElement);
+          divWrapper.appendChild(this.inputbox_fib_multiple.HTMLElement);
           divWrapper.appendChild(fibBtn.HTMLElement);
-          divWrapper.appendChild(inputbox_answer.HTMLElement);
+          divWrapper.appendChild(this.answersTabset.HTMLElement);
+          divWrapper.appendChild(this.answersLst.HTMLElement);
+          // divWrapper.appendChild(inputbox_answer.HTMLElement);
          
           
           
@@ -998,7 +1168,7 @@ class TorFInputView extends InputViewClass{
     constructor(){
         super();
 
-        
+      
     
         let divDataInput = document.createElement("div");
       
@@ -1008,24 +1178,102 @@ class TorFInputView extends InputViewClass{
         let divWrapper = document.createElement("div");
         divWrapper.classList.add("component-container--vertical");
 
-        let inputbox_hword = new TextareaLabelComponent('hwordQuizTxt', "إدخال الجملة", 3);
-        inputbox_hword.labelTitle.classList.add('margin--top-10');
+        this.inputbox_hword = new TextareaLabelComponent('hwordQuizTxt', "إدخال الجملة", 3);
+        this.inputbox_hword.labelTitle.classList.add('margin--top-10');
 
         
-        let lstHword = new ListWithLabelAndInputComponent('lstHword-id',"إدخال الكلمة المراد تعليمها","lstHword_entryTxt","إدخال الكلمة", "lstHword_btn");
-        lstHword.addbutton.HTMLElement.addEventListener('click', ()=> {
-          console.log('clicked');
+        this.lstHword = new ListWithLabelAndInputComponent('lstHword-id',"إدخال الكلمة المراد تعليمها","lstHword_entryTxt","إدخال الكلمة", "lstHword_btn");
+        
+        this.lstHword.addbutton.onClick( ()=> {
+
+
+          if (checkValidation(this.lstHword.getTextValue(), this.lstHword.listElement.HTMLElement)) {
+          
+
+            if (this.lstHword.listElement.HTMLElement.mode == "normal") {
+        
+              
+                this.lstHword.addItemtoLst(this.lstHword.getTextValue(), getId_fromArry("btnLstItem",this.lstHword.lstCatObj,'_'));
+            
+            }
+            // Update mode
+            else {
+              
+              // update list item text Tab1
+              updateListBtnTxt(this.lstHword.listElement.HTMLElement , this.lstHword.currentValue, this.lstHword.getTextValue());
+              this.lstHword.lstCatObj.find( item => item.id == this.lstHword.currentValue).txt = this.lstHword.getTextValue();
+              // Back to normal mode
+              resetAddBtn(this.lstHword.listElement.HTMLElement,this.lstHword.inputText.HTMLElement,this.lstHword.addbutton.HTMLElement);
+        
+              activateCurrentBtn(this.lstHword.listElement.HTMLElement.index);
+            }
+
+            this.lstHword.clearTxtBox();
+        
+          }
+
         });
 
+        this.lstHword.listElement.HTMLElement.addEventListener('click', (e)=> {
+          console.log('tag>>>>');
+          
+          if (e.target.tagName == 'BUTTON'){
+            let selectedHWord  = this.lstHword.lstCatObj.find( item => item.id == this.lstHword.currentValue).txt;
+            let _txt =  this.clearTxtFormat(this.inputbox_hword.getTextValue());
+            console.log(selectedHWord);
+            this.inputbox_hword.setTextValue(replaceAll(_txt ,selectedHWord, `[ ${selectedHWord} ]`));
+          }
+          
+          
+      
+  
+        });
 
-
-        divWrapper.appendChild(inputbox_hword.HTMLElement)
-        divWrapper.appendChild(lstHword.HTMLElement);
+        divWrapper.appendChild(this.inputbox_hword.HTMLElement)
+        divWrapper.appendChild(this.lstHword.HTMLElement);
 
         divDataInput.appendChild(divWrapper);
         
         this.HTMLElement = divDataInput;
     
+    }
+    getValues(){
+
+      let _Ans = this.lstHword;
+
+      let _question = this.clearTxtFormat(this.inputbox_hword.getTextValue());
+      
+      let mediaWrapper = new MediaObjectsWrapper('none');
+  
+      mediaWrapper.mediaObjects.push(new mediaObjData('none', _question, 'text-sentence'));
+        
+      let subQuizResult = new SubQuizObj('none', mediaWrapper);
+  
+      console.log(_Ans.lstCatObj);
+
+      _Ans.lstCatObj.forEach ( (AItem) => {
+
+        let answerMediaWrapper = new MediaObjectsWrapper('none');
+
+        answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.txt, 'text-sentence'));
+
+        subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+
+      });
+  
+      console.log('ans >>> '); console.log(subQuizResult);
+        return subQuizResult;
+
+
+    }
+    clearValues(){
+        this.inputbox_hword.clearValue();
+        this.lstHword.clearTxtBox();
+        this.lstHword.clearList();
+    }
+    clearTxtFormat(_value){
+      return replaceAll( replaceAll( _value, '[ ', '') , ' ]', '' );
+
     }
   }
 
@@ -1081,6 +1329,7 @@ class TorFInputView extends InputViewClass{
 
   }
   clearValues(){
+
     this.mobjEntry.clearEntry();
     this.inputbox_answer.clearValue();
   }
@@ -1168,8 +1417,59 @@ class TorFPreviewView extends PreviewViewClass{
 }
 
 class CategoryPreviewView extends PreviewViewClass{
-  constructor(){
+  constructor(_number, _subQuizObj){
     super();
+
+      let divLSquizItem =  document.createElement("div");
+
+      let mObjPreview = new mediaObjPreview( _number,"q-tabset-id-" + _number, "q-tabpnl-id-" + _number);
+      mObjPreview.setEntries(_subQuizObj.subQuiz);
+      mObjPreview.activateOnEvent("blur",_subQuizObj.id);
+      mObjPreview.assignQuizNo(_number);
+      
+      let answerPreviewCombo = new ComboComponent('combo-prv-' +  _number);
+      this.correctId = "";
+
+      if (_subQuizObj.Answers.length > 0) {
+        _subQuizObj.Answers.forEach( (_Ans) => {
+          answerPreviewCombo.addOptionToCombo(_Ans.answer.mediaObjects[0].text, _Ans.id,true);
+          
+          if (_Ans.answer.correct) {
+            this.correctId = _Ans.id;
+          }
+
+        });
+      }
+
+      answerPreviewCombo.setSelectedItem(this.correctId);
+
+      answerPreviewCombo.onChange( (e)=> {
+        // if (e.target.value == this.correctId) return;
+        
+        // let answer_ = _subQuizObj.Answers.find( _ans => _ans.answer.id == this.correctId);
+
+        // console.log('Ans>>>');
+        // console.log(this.correctId);
+        // console.log(_subQuizObj.Answers);
+        // console.log(answer_);
+
+        // if (answer_)
+        //   answer_.answer.correct = false;
+         _subQuizObj.Answers.find( _ans => _ans.id == e.target.value).correct = true;
+         this.correctId = e.target.value;
+          console.log('Ans>>>');
+          console.log(this.correctId);
+         console.log(_subQuizObj.Answers);
+      });
+
+      // answerPreview.setEntries(_subQuizObj.Answers[0].answer);
+      // answerPreview.activateOnEvent("blur", _subQuizObj.Answers[0].id )
+
+      divLSquizItem.appendChild(mObjPreview.HTMLElement);
+      divLSquizItem.appendChild(answerPreviewCombo.HTMLElement);
+      
+      
+      this.HTMLElement=divLSquizItem;
 
     
   }
@@ -1289,8 +1589,93 @@ class FIBPreviewView extends PreviewViewClass{
 }
 
 class HWordPreviewView extends PreviewViewClass{
-  constructor(){
+  constructor(_number, _subQuizObj){
     super();
+
+    let divLSquizItem =  document.createElement("div");
+
+
+    let quizId = _subQuizObj.id;
+    
+    let shortQ_id = quizId.slice(-6);
+
+    this.mObjPreview = new mediaObjPreview(_number,shortQ_id,"tbset-q" + shortQ_id + _number, "tbpnl-" + shortQ_id + _number);
+    this.mObjPreview.setEntries(_subQuizObj.subQuiz);
+
+    this.mObjPreview.tabPanel1.HTMLElement.addEventListener('blur',(e)=>{
+      
+      let txt = replaceAll( replaceAll( e.target.value, '[ ', '') , ' ]', '' );
+      let saveSubQuiz1 = new SaveSubQuizToDB(quizId,txt,MediaType.Text_sentence)
+      saveSubQuiz1.execute();
+    
+    });
+
+    this.mObjPreview.mObjPreviewTab.clearTabs();
+
+    
+    this.mObjPreview.assignQuizNo(_number);
+
+
+    let answerPreviewLst = new ListWithLabelAndInputComponent('HWlst-prv-' +  _number,"",'HWlst-txt' + _number,"إدخال الكلمة", "lstHword_btn");
+    
+    
+    if (_subQuizObj.Answers.length > 0) {
+      _subQuizObj.Answers.forEach( (_Ans) => {
+        answerPreviewLst.addItemtoLst(_Ans.answer.mediaObjects[0].text, _Ans.id,true);
+        
+
+      });
+    }
+
+    answerPreviewLst.addbutton.onClick( ()=> {
+
+
+      if (checkValidation(answerPreviewLst.getTextValue(),answerPreviewLst.listElement.HTMLElement)) {
+      
+
+        if (answerPreviewLst.listElement.HTMLElement.mode == "normal") {
+    
+          
+            answerPreviewLst.addItemtoLst(answerPreviewLst.getTextValue(), getId_fromArry("btnLstItem",answerPreviewLst.lstCatObj,'_'));
+        
+        }
+        // Update mode
+        else {
+          
+          // update list item text Tab1
+          updateListBtnTxt(answerPreviewLst.listElement.HTMLElement , answerPreviewLst.currentValue, answerPreviewLst.getTextValue());
+          answerPreviewLst.lstCatObj.find( item => item.id == answerPreviewLst.currentValue).txt = answerPreviewLst.getTextValue();
+          // Back to normal mode
+          resetAddBtn(answerPreviewLst.listElement.HTMLElement,answerPreviewLst.inputText.HTMLElement,answerPreviewLst.addbutton.HTMLElement);
+    
+          activateCurrentBtn(answerPreviewLst.listElement.HTMLElement.index);
+        }
+
+        answerPreviewLst.clearTxtBox();
+    
+      }
+
+      });
+
+      // let questionTxt =_subQuizObj.subQuiz.mediaObjects[0].text;
+
+      answerPreviewLst.listElement.HTMLElement.addEventListener('click', (e)=> {
+        
+    
+        let selectedHWord = answerPreviewLst.lstCatObj.find( item => item.id == answerPreviewLst.currentValue).txt;
+        
+    
+        this.mObjPreview.tabPanel1.setTextValue(replaceAll(_subQuizObj.subQuiz.mediaObjects[0].text ,selectedHWord, `[ ${selectedHWord} ]`));
+        console.log(_subQuizObj.subQuiz.mediaObjects[0].text);
+
+
+      });
+
+    divLSquizItem.appendChild(this.mObjPreview.HTMLElement);
+    divLSquizItem.appendChild(answerPreviewLst.HTMLElement);
+    
+    
+    this.HTMLElement=divLSquizItem;
 
     
   }

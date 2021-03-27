@@ -1,5 +1,3 @@
-
-
 var user_settings = new Settings();
 var _busy;
 var save_busy;
