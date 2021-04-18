@@ -105,34 +105,33 @@ const interfaceContainer = document.getElementById("interface-container");
 
 
 // Toast Msgs
+// function showError(msg) {
+//   console.log('Erorr: ' + msg);
+//   showToast(msg, "error");
 
-function showError(msg) {
-  console.log('Erorr: ' + msg);
-  showToast(msg, "error");
+// }
 
-}
-
-function showSuccess(msg){
-  console.log('Sucess: ' + msg);
-  showToast(msg, "toast-sucess");
+// function showSuccess(msg){
+//   console.log('Sucess: ' + msg);
+//   showToast(msg, "toast-sucess");
   
-}
+// }
 
-function showToast(msg, classes) {
-  var x = document.getElementById("toast-msg");
+// function showToast(msg, classes) {
+//   var x = document.getElementById("toast-msg");
   
-  x.textContent = msg;
-  x.classList.add(classes);
-  // Add the "show" class to DIV
-  x.classList.add("show");
+//   x.textContent = msg;
+//   x.classList.add(classes);
+//   // Add the "show" class to DIV
+//   x.classList.add("show");
   
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function(){ 
-    x.className = x.className.replace("show", ""); 
-    x.className = x.className.replace(classes, ""); 
-  }, 3000);
+//   // After 3 seconds, remove the show class from DIV
+//   setTimeout(function(){ 
+//     x.className = x.className.replace("show", ""); 
+//     x.className = x.className.replace(classes, ""); 
+//   }, 3000);
 
-}
+// }
 
 // Observable Variables
 var Scene_change = new Observable();
@@ -450,18 +449,18 @@ function cleanSlidesStyle(_class){
 }
 //#endregion
 
-function cleanStyleinLst(lst, _class) {
-  const allElements = lst.getElementsByClassName(_class);
-  cleanStyle(allElements,_class);
-}
+// function cleanStyleinLst(lst, _class) {
+//   const allElements = lst.getElementsByClassName(_class);
+//   cleanStyle(allElements,_class);
+// }
 
-function cleanStyle(elements, _class) {
-  if (elements) {
-    Array.from(elements).forEach( element => {
-      element.classList.remove(_class);
-    })
-  }
-}
+// function cleanStyle(elements, _class) {
+//   if (elements) {
+//     Array.from(elements).forEach( element => {
+//       element.classList.remove(_class);
+//     })
+//   }
+// }
 
 function keepSelectedStyle(lst, obj) {
   
@@ -1112,7 +1111,7 @@ function slides_container_handler(id){
   if (removeBtnFromLst(slide_container, id)) {
 
 
-       activateAfterDelete(_courses.getSlides(), id);
+       activateAfterDelete(_courses.getSlides(), id, _courses.currentSlide);
       _courses.removeSlide(id);
       if (_courses.getSlides().length == 0)  _courses.currentSlide = "";
 
@@ -1413,9 +1412,7 @@ function createElements(sub, values, lingType) {
 // return false if there was not found otherwise true
 function removeBtnFromLst(lst, id){
 
-  // TODO : make it
-  // target.id
-  const removed = document.getElementById(`${id}`).parentNode;
+  const removed = lst.querySelector(`#${id}`).parentNode;
 
   if (removed != undefined){
     
@@ -1762,16 +1759,16 @@ function clearScenesLst() {
 }
 
 
-function removeAllChildNodes(parent) {
+// function removeAllChildNodes(parent) {
 
-  if (parent.firstChild) {
-      while (parent.firstChild) {
-         parent.removeChild(parent.firstChild);
-    }
-  }
+//   if (parent?.firstChild) {
+//       while (parent.firstChild) {
+//          parent.removeChild(parent.firstChild);
+//     }
+//   }
   
   
-}
+// }
 
 
 function clearSubjectsTab2(){
@@ -2815,40 +2812,40 @@ function activateLasttBtn(arrObj){
   
 }
 
-function activateAfterDelete(arrObj, _id, currentObj = _courses.currentSlide ){
+// function activateAfterDelete(arrObj, _id, currentObj = _courses.currentSlide ){
   
-  if (arrObj?.length <= 0) return;
-  if (_id != currentObj) return;
+//   if (arrObj?.length <= 0) return;
+//   if (_id != currentObj) return;
   
   
 
-  let currentId_index = arrObj.findIndex( arrObjItem => arrObjItem.id == _id);
+//   let currentId_index = arrObj.findIndex( arrObjItem => arrObjItem.id == _id);
 
-  if (currentId_index  >= 0) {
+//   if (currentId_index  >= 0) {
 
-    let lastId = "";
-    if (((currentId_index - 1) < 0) &&  (arrObj[1]))
-        lastId = arrObj[1];
-    else if ((currentId_index - 1) == 0) 
-        lastId = arrObj[0];
-    else if ((currentId_index - 1) > 0) 
-        lastId = arrObj[currentId_index - 1];
-    else return;
+//     let lastId = "";
+//     if (((currentId_index - 1) < 0) &&  (arrObj[1]))
+//         lastId = arrObj[1];
+//     else if ((currentId_index - 1) == 0) 
+//         lastId = arrObj[0];
+//     else if ((currentId_index - 1) > 0) 
+//         lastId = arrObj[currentId_index - 1];
+//     else return;
 
 
-    let requiredId =  lastId.id;
-    console.log('requiredi d> ' + lastId.id);
-    if (requiredId) {
-      let HTMLElement = document.getElementById(requiredId);
-      if (HTMLElement) {
-          HTMLElement.focus();
-          HTMLElement.click();
-      }
-    }
-  }
+//     let requiredId =  lastId.id;
+//     console.log('requiredi d> ' + lastId.id);
+//     if (requiredId) {
+//       let HTMLElement = document.getElementById(requiredId);
+//       if (HTMLElement) {
+//           HTMLElement.focus();
+//           HTMLElement.click();
+//       }
+//     }
+//   }
 
   
-}
+// }
 
 
 function activateAfterDelete2(arrObj, _id){

@@ -1,21 +1,21 @@
 //Enums
 //text-word, text-sentence[text-question-title, text-hint, text-subquiz,text-answer], text-read, pic-photo, pic-drawing, video-photography, video-animation, video-slide-show, sound-record, sound-effect, animation[animation-object, animation-interactive, slide-transition], 
-const MediaType = {                
-    Text_word: "text-word",
-    Text_sentence: "text-sentence",
-    text_read: "text-read",
-    pic_photo: "pic-photo",
-    pic_drawing: "pic-drawing",
-    video_photography: "video-photography",
-    video_animation: "video-animation",
-    video_slide_show: "video-slide-show",
-    sound_record: "sound-record",
-    sound_effect: "sound-effect",
-    animation_object:"animation-object",
-    animation_interactive:"animation-interactive",
-    slide_transition:"slide-transition"
+// const MediaType = {                
+//     Text_word: "text-word",
+//     Text_sentence: "text-sentence",
+//     text_read: "text-read",
+//     pic_photo: "pic-photo",
+//     pic_drawing: "pic-drawing",
+//     video_photography: "video-photography",
+//     video_animation: "video-animation",
+//     video_slide_show: "video-slide-show",
+//     sound_record: "sound-record",
+//     sound_effect: "sound-effect",
+//     animation_object:"animation-object",
+//     animation_interactive:"animation-interactive",
+//     slide_transition:"slide-transition"
        
-}
+// }
 const TextSentence = {              //save this values in mediaObject.tag
     text_question_title: "text-question-title",
     text_hint: "text-hint",
@@ -476,27 +476,20 @@ class QuizPreviewControl{
 class SSortingInputView extends InputViewClass{
   constructor(){
       super();
-    let divDataInput = document.createElement("div");
-    // let texareaId ="Id-SSquiz-textarea";
-    // let labelTitle="الجملة";
-    let tabsetId = "Id-SSorting-tabset_1";
-    let tabpnId = "Id-SSorting-tabpn_1"
-    let MsgCom = new messagesComponent();
-    this.mobjEntry= new mediaObjEntry(tabsetId,tabpnId,TxtEntryPostfix.SubQuizInput);
-    let hintMessage=MsgCom.createHintMsg("الرجاء ادخال الجمل بالترتيب الصحيح")
-    divDataInput.classList.add("quiz-input");
-    divDataInput.classList.add("quiz-input__SS-layout");
+    
+      let divDataInput = document.createElement("div");
+      let MsgCom = new messagesComponent();
+      this.mobjEntry= new mediaObjEntry();
+      let hintMessage = MsgCom.createHintMsg("الرجاء ادخال الجمل بالترتيب الصحيح")
+      
+      addCssClass(divDataInput, ["quiz-input","quiz-input__SS-layout"], false)
+      addCssClass(hintMessage, ["layout-a"], false)
+      addCssClass(this.mobjEntry.HTMLElement, "layout-b", false)
 
-    //Layout grid-template-areas: "a a ."
-    //                            "b b b"
-    //                            "b b b";
+      divDataInput.appendChild(hintMessage);
+      divDataInput.appendChild(this.mobjEntry.HTMLElement);
 
-    hintMessage.classList.add("layout-a");
-    this.mobjEntry.HTMLElement.classList.add("layout-b");
-
-    divDataInput.appendChild(hintMessage);
-    divDataInput.appendChild(this.mobjEntry.HTMLElement);
-    this.HTMLElement=divDataInput;
+      this.HTMLElement=divDataInput;
   }
 
   getValues(){
@@ -531,7 +524,7 @@ class LSortingInputView extends InputViewClass{
     //Layout
     divDataInput.classList.add("Quiz-layout-input");
     
-    this.mobjEntry = new mediaObjEntry('isorting-tabset','isorting-tabpnl');
+    this.mobjEntry = new mediaObjEntry('isorting-tab');
     this.mobjEntry.changeLbl('إدخال الأحرف');
     
 
@@ -586,19 +579,18 @@ class TorFInputView extends InputViewClass{
         
         
           
-          this.mobjEntry = new mediaObjEntry('tor-tabset','tor-tabpnl');
+          this.mobjEntry = new mediaObjEntry();
         
         
           
-          this.answer_box = new ContainerLabelComponent('TF_quiz_container',"الإجابة الصحيحة",[]);
+          this.answer_box = new ContainerWithLabel('TF_quiz_container',"الإجابة الصحيحة");
 
           
 
-          this.radioBtns = new ListOfRadioOrCheckBoxComponent('trueFalseQuiz-group',["radioBtns-addBtn-container"]);
-        
-          
+          this.radioBtns = new ListOfRadioOrCheckBoxComponent('trueFalseQuiz-group');
+          addCssClass(this.radioBtns.HTMLElement, ["radioBtns-addBtn-container"], true)
 
-          this.radioBtns.addRadio('trueOption', 'trueFalseAnswer', 0,'الإجابة صحيحة', ()=> { });
+          this.radioBtns.addRadio('trueOption', 'trueFalseAnswer', 0,'الإجابة صحيحة', ()=> {});
           this.radioBtns.addRadio('falseOption', 'trueFalseAnswer', 0, 'الإجابة خاطئة',()=> {});
           
           this.answer_box.addControl(this.radioBtns.HTMLElement);
@@ -613,7 +605,7 @@ class TorFInputView extends InputViewClass{
 
     getValues(){
 
-      let _Ans = this.radioBtns.Radios.find( radio => radio.inputRadio.id == 'trueOption').inputRadio.checked;
+      let _Ans = this.radioBtns.Radios.find( RadioBtn => RadioBtn.radio.HTMLElement.id == 'trueOption').radio.HTMLElement.checked;
       
       let _result = this.mobjEntry.getEntries();
       
@@ -630,710 +622,721 @@ class TorFInputView extends InputViewClass{
       answerMediaWrapper.mediaObjects.push(answerMedia);
       subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
   
-      return subQuizResult;
-    }
-    clearValues(){
-      this.mobjEntry.clearEntry();
-      this.radioBtns.clearRadiosState();
-    }
-}
-
-  class CategoryInputView extends InputViewClass{
-    constructor(){
-        super();
-
-        let divDataInput = document.createElement("div");
-      
-        //Layout
-        divDataInput.classList.add("Quiz-layout-input");
-                
-        let divWrapper = document.createElement("div");
-
-        this.mobjEntry = new mediaObjEntry();
-        this.mobjEntry.changeLbl('إدخال مكونات الجملة');
-
-        this.lstCategory = new ListWithLabelAndInputComponent('categoryLst-id',"إدخال تصنيف الجملة","category_entryTxt","تصنيف الجملة", "addCategory_btn", ()=>{});
-
-
-        
-        let _data = new ItemsDataReciever();
-        
-        let currentQuiz = _data.getCurrentQuiz();
-        if (currentQuiz.subQuizes.length > 0) {
-            currentQuiz.subQuizes[0].Answers.forEach( (_Ans) => {
-              this.lstCategory.addItemtoLst(_Ans.answer.mediaObjects[0].text, _Ans.answer.id);
-            });
-        }
-
-
-        this.lstCategory.addbutton.onClick( ()=> {
-
-
-          if (checkValidation(this.lstCategory.getTextValue(), this.lstCategory.listElement.HTMLElement)) {
-          
-
-            if (this.lstCategory.listElement.HTMLElement.mode == "normal") {
-        
-              
-              this.lstCategory.addItemtoLst(this.lstCategory.getTextValue(), getId_fromArry("btnLstItem",this.lstCategory.lstCatObj,'_'));
-            
-            }
-            // Update mode
-            else {
-              
-              // update list item text Tab1
-              updateListBtnTxt(this.lstCategory.listElement.HTMLElement , this.lstCategory.currentValue, this.lstCategory.getTextValue());
-              this.lstCategory.lstCatObj.find( item => item.id == this.lstCategory.currentValue).txt = this.lstCategory.getTextValue();
-              // Back to normal mode
-              resetAddBtn(this.lstCategory.listElement.HTMLElement,this.lstCategory.inputText.HTMLElement,this.lstCategory.addbutton.HTMLElement);
-        
-              activateCurrentBtn(this.lstCategory.listElement.HTMLElement.index);
-            }
-
-            this.lstCategory.clearTxtBox();
-        
-          }
-
-        });
-
-          
-
-
-        divWrapper.appendChild(this.mobjEntry.HTMLElement);
-        divWrapper.appendChild(this.lstCategory.HTMLElement);
-        divDataInput.appendChild(divWrapper);
-        
-        this.HTMLElement = divDataInput;
-
-    }
-    getValues(){
-
-      let _Ans = this.lstCategory;
-
-      let _question = this.mobjEntry.getEntries();
-      
-      let mediaWrapper = new MediaObjectsWrapper('none');
-  
-      _question.forEach ( (QItem) => {
-        mediaWrapper.mediaObjects.push(new mediaObjData('none', QItem.text, QItem.type));
-      });
-  
-      let subQuizResult = new SubQuizObj('none', mediaWrapper);
-  
-      
-      _Ans.lstCatObj.forEach ( (AItem) => {
-
-        let answerMediaWrapper = new MediaObjectsWrapper('none');
-
-        answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.txt, 'text-sentence'));
-
-        if (AItem.id == _Ans.currentValue) {
-            subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
-        }else {
-            subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, false));
-        }
-        
-
-      });
-  
-        return subQuizResult;
-    }
-    clearValues(){
-        this.mobjEntry.clearEntry();
-
-    }
-   
-  }
-
-  class DragAndDropInputView extends InputViewClass{
-    constructor(){
-        super();
-        let divDataInput = document.createElement("div");
-      
-          //Layout
-          divDataInput.classList.add("Quiz-layout-input");
-          
-    
-          let divWrapper = document.createElement("div");
-          divWrapper.classList.add("component-container--vertical");
-
-          
-          this.mobjEntry_1 = new mediaObjEntry('dragdrop-tabset1','dragdrop-tabpnl1');
-          this.mobjEntry_2 = new mediaObjEntry('dragdrop-tabset2','dragdrop-tabpnl2');
-          this.mobjEntry_1.changeLbl('إدخال الجملة الأولى');
-          this.mobjEntry_2.changeLbl('إدخال الجملة المقابلة');
-
-    
-  
-          divWrapper.appendChild(this.mobjEntry_1.HTMLElement);
-          divWrapper.appendChild(this.mobjEntry_2.HTMLElement);
-        
-          divDataInput.appendChild(divWrapper);
-        
-          this.HTMLElement = divDataInput;
-    }
-
-    getValues(){
-
-        let _Ans = this.mobjEntry_2.getEntries();
-        let _question = this.mobjEntry_1.getEntries();
-        
-        let mediaWrapper = new MediaObjectsWrapper('none');
-    
-        _question.forEach ( (QItem) => {
-          mediaWrapper.mediaObjects.push(new mediaObjData('none', QItem.text, QItem.type));
-        });
-    
-        let subQuizResult = new SubQuizObj('none', mediaWrapper);
-    
-        let answerMediaWrapper = new MediaObjectsWrapper('none')
-        _Ans.forEach ( (AItem) => {
-          answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.text, AItem.type));
-        });
-    
-        subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
-    
-
-
-        return subQuizResult;
-  
-    }
-    clearValues(){
-      this.mobjEntry_1.clearEntry();
-      this.mobjEntry_2.clearEntry();
-    }
-  }
-
-  class MChoiceInputView extends InputViewClass{
-    constructor(maxNoOfAnswers){
-        super();
-
-              
-          let divDataInput = document.createElement("div");
-      
-          //Layout
-          divDataInput.classList.add("Quiz-layout-input");
-          
-
-          let divWrapper = document.createElement("div");
-  
-          //Layout
-          divWrapper.classList.add("component-container--vertical");
-            
-        
-          
-          this.mobjEntry = new mediaObjEntry('mchoice-q-tabset','mchoice-q-tabpnl','mch-q');
-          this.mobjEntry.changeLbl('إدخال السؤال');
-          
-          
-          let innerWrapper = document.createElement("div");
-          
-          let answersTabset = new TabComponent(["الإجابة الصحيحة"],maxNoOfAnswers,  "answersSet-","answersPnl-");
-          this.ansTabsets = answersTabset;
-          answersTabset.addLabel ("الإجابات");
-          
-          answersTabset.changeTabLblCss(['tab-label-correct-answer']);
-
-          this.answerPnl_correct = new mediaObjEntry('answerSet-correct','answerPnl-correct','mch-ansT');
-          this.answerPnl_correct.changeLbl("إدخال الإجابة الصحيحة");
-
-          
-          answersTabset.fillTabPanel(0,this.answerPnl_correct.HTMLElement);
-
-          
-          answersTabset.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
-
-
-          let addAnswerBtn = new AddBtnWordComponent('add-answer', 'إضافة إجابة',["add-btn"]);
-
-
-          this.answers_incorrect = [];
-         
-          
-        let remove_tab = ()=> {
-
-            this.answers_incorrect.splice(answersTabset.tabSets.index - 1, 1);
-           
-            
-            if ((answersTabset.tabSets.index - 1) <= 0)
-                answersTabset.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
-            else if (answersTabset.tabSets.index == 1) 
-                answersTabset.tabSets[1].HTMLElement.dispatchEvent(new Event('click'));
-            else if ((answersTabset.tabSets.index - 1) > 0) 
-                answersTabset.tabSets[answersTabset.tabSets.index - 1].HTMLElement.dispatchEvent(new Event('click'));
-
-            
-        }
-
-
-          addAnswerBtn.onClick(()=> {
-            
-            console.log(this.answers_incorrect);
-            // if (addAnswerBtn.noOfAnswers > maxNoOfAnswers - 2 ) return;
-            if (answersTabset.tabSets.index >= maxNoOfAnswers) return;
-
-            this.answers_incorrect.push (new mediaObjEntry( 'ansSet-incorrect-'+ (answersTabset.tabSets.index + 1), 
-                                                            'ansPnl-incorrect-' + (answersTabset.tabSets.index + 1),
-                                                            'mch-ansF'+ (answersTabset.tabSets.index + 1)));
-
-            this.answers_incorrect[this.answers_incorrect.length - 1].changeLbl(`إدخال الإجابة ${(answersTabset.tabSets.index + 1)}`);
-
-            answersTabset.addTab( "الإجابة " + (answersTabset.tabSets.index + 1), remove_tab,"tab-label-Incorrect-answer");
-
-            answersTabset.fillTabPanel(answersTabset.tabSets.index, this.answers_incorrect[answersTabset.tabSets.index - 1].HTMLElement);
-
-            answersTabset.tabSets[answersTabset.tabSets.index].HTMLElement.dispatchEvent(new Event('click'));
-
-            answersTabset.tabSets.index += 1;
-
-          });
-
-          answersTabset.addControls(addAnswerBtn,["any"]);
-          
-          innerWrapper.appendChild(answersTabset.HTMLElement);
-          
-
-
-
-          divWrapper.appendChild(this.mobjEntry.HTMLElement);
-          divWrapper.appendChild(innerWrapper);
-
-          divDataInput.appendChild(divWrapper);
-        
-          this.HTMLElement = divDataInput;
-          
-    }
-    getValues(){
-
-      let _Ans_correct = this.answerPnl_correct.getEntries();
-
-      let _question = this.mobjEntry.getEntries();
-      
-      let mediaWrapper = new MediaObjectsWrapper('none');
-  
-      _question.forEach ( (QItem) => {
-        mediaWrapper.mediaObjects.push(new mediaObjData('none', QItem.text, QItem.type));
-      });
-  
-      let subQuizResult = new SubQuizObj('none', mediaWrapper);
-  
-
-
-      let answerMediaWrapper_correct = new MediaObjectsWrapper('none')
-      _Ans_correct.forEach ( (AItem) => {
-        answerMediaWrapper_correct.mediaObjects.push(new mediaObjData('none', AItem.text, AItem.type));
-      });
-  
-
-      subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper_correct, true));
-  
-
-      this.answers_incorrect.forEach ( (ans_incorrect) => {
-        let answerMediaWrapper_Incorrect = new MediaObjectsWrapper('none');
-        ans_incorrect.getEntries().forEach ( (AItem) => {
-          answerMediaWrapper_Incorrect.mediaObjects.push(new mediaObjData('none', AItem.text, AItem.type));
-        })
-        subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper_Incorrect, false));
-
-      });
-
-
-      console.log('result>>>');
+      console.log('true false question >> ');
       console.log(subQuizResult);
 
       return subQuizResult;
     }
     clearValues(){
       this.mobjEntry.clearEntry();
-      this.answerPnl_correct.clearEntry();
-      this.ansTabsets.clearTabs();
-      this.answers_incorrect = [];
-
+      this.radioBtns.resetRadiosState();
     }
+}
+
+  
+class CategoryInputView extends InputViewClass{
+  constructor(){
+      super();
+
+      let divDataInput = document.createElement("div");
+    
+      //Layout
+      divDataInput.classList.add("Quiz-layout-input");
+              
+      let divWrapper = document.createElement("div");
+
+      this.mobjEntry = new mediaObjEntry();
+      this.mobjEntry.changeLbl('إدخال مكونات الجملة');
+
+      this.lstCategory = new ListWithLabelAndInputComponent('categoryLst-id',"إدخال تصنيف الجملة","category_entryTxt","تصنيف الجملة", "addCategory_btn");
+
+
+      
+      let _data = new ItemsDataReciever();
+      
+      let currentQuiz = _data.getCurrentQuiz();
+      if (currentQuiz.subQuizes.length > 0) {
+          currentQuiz.subQuizes[0].Answers.forEach( (_Ans) => {
+            this.lstCategory.addItemtoLst(_Ans.answer.mediaObjects[0].text, _Ans.answer.id);
+          });
+      }
+
+
+      this.lstCategory.HTMLElement.addEventListener('added', ()=> {
+            
+        this.lstCategory.addItemtoLst(this.lstCategory.getTextValue(), getId_fromArry("btnLstItem",this.lstCategory.lstCatObj,'_'));
+          
+      });
+
+        
+
+      divWrapper.appendChild(this.mobjEntry.HTMLElement);
+      divWrapper.appendChild(this.lstCategory.HTMLElement);
+      divDataInput.appendChild(divWrapper);
+      
+      this.HTMLElement = divDataInput;
+
+  }
+  getValues(){
+
+    let _Ans = this.lstCategory;
+
+    let _question = this.mobjEntry.getEntries();
+    
+    let mediaWrapper = new MediaObjectsWrapper('none');
+
+    _question.forEach ( (QItem) => {
+      mediaWrapper.mediaObjects.push(new mediaObjData('none', QItem.text, QItem.type));
+    });
+
+    let subQuizResult = new SubQuizObj('none', mediaWrapper);
+
+    
+    _Ans.lstCatObj.forEach ( (AItem) => {
+
+      let answerMediaWrapper = new MediaObjectsWrapper('none');
+
+      answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.txt, 'text-sentence'));
+
+      if (AItem.id == _Ans.currentValue) {
+          subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+      }else {
+          subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, false));
+      }
+      
+
+    });
+
+      return subQuizResult;
+  }
+  clearValues(){
+      this.mobjEntry.clearEntry();
+
+  }
+  
+}
+
+class DragAndDropInputView extends InputViewClass{
+  constructor(){
+      super();
+      let divDataInput = document.createElement("div");
+    
+        //Layout
+        divDataInput.classList.add("Quiz-layout-input");
+        
+  
+        let divWrapper = document.createElement("div");
+        divWrapper.classList.add("component-container--vertical");
+
+        
+        this.mobjEntry_1 = new mediaObjEntry('tab1');
+        this.mobjEntry_2 = new mediaObjEntry('tab2');
+        this.mobjEntry_1.changeLbl('إدخال الجملة الأولى');
+        this.mobjEntry_2.changeLbl('إدخال الجملة المقابلة');
+
+  
+
+        divWrapper.appendChild(this.mobjEntry_1.HTMLElement);
+        divWrapper.appendChild(this.mobjEntry_2.HTMLElement);
+      
+        divDataInput.appendChild(divWrapper);
+      
+        this.HTMLElement = divDataInput;
   }
 
-  class FIBInputView extends InputViewClass{
-    constructor(){
-        super();
+  getValues(){
 
-          let maximumNoBlanks = 5;
-          let blank_symbols = " [  $  ] ";
-          
-
-          this.currentBlankNo = 1;
-          this.curentBlankNo_multiple = 1;
-
-          let _data = new ItemsDataReciever();
-        
-          let currentQuizId = _data.getCurrentQuiz().id.slice(-7) + '_B';
-
-          this.blanks = [];
-
-
-          let divDataInput = document.createElement("div");
+      let _Ans = this.mobjEntry_2.getEntries();
+      let _question = this.mobjEntry_1.getEntries();
       
-          //Layout
-          divDataInput.classList.add("Quiz-layout-input");
-          
-          let divWrapper = document.createElement("div");
-          //   let divDataInput = document.createElement("div");
-          //   let divDataPreview = document.createElement("div");
-          divWrapper.classList.add("component-container--vertical");
-
-          
-          let fibType = new ComboLabelComponent('fibtype-id','طريقة ملء الفراغ');
-          fibType.combo.addOptionToCombo('إدخال كتابي',fibOptions.fib_words);
-          fibType.combo.addOptionToCombo('drag & drop', fibOptions.fib_dragdrop, true);
-          fibType.combo.addOptionToCombo('خيارات متعددة',fibOptions.fib_mchoice, true);
-          
-          fibType.combo.HTMLElement.selectedIndex = 0;
-
-
-          this.inputbox_fib = new TextareaLabelComponent('fibQuestionTxt', "إدخال الجملة", 6);
-          this.inputbox_fib.labelTitle.classList.add('margin--top-10');
-
-          this.inputbox_fib_multiple = new TextareaLabelComponent('fibQMTxt', "إدخال الجملة", 6);
-          this.inputbox_fib_multiple.labelTitle.classList.add('margin--top-10');
+      let mediaWrapper = new MediaObjectsWrapper('none');
+  
+      _question.forEach ( (QItem) => {
+        mediaWrapper.mediaObjects.push(new mediaObjData('none', QItem.text, QItem.type));
+      });
+  
+      let subQuizResult = new SubQuizObj('none', mediaWrapper);
+  
+      let answerMediaWrapper = new MediaObjectsWrapper('none')
+      _Ans.forEach ( (AItem) => {
+        answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.text, AItem.type));
+      });
+  
+      subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+  
 
 
-          let fibBtn = new AddBtnWordComponent('addBlankBtn', 'إدخال فراغ', ["add-btn","margin--top-10","margin--bottom-10"]);
+      return subQuizResult;
 
-          fibBtn.onClick(()=> {
-            
-            if (fibType.combo.HTMLElement.selectedIndex  == 0 || fibType.combo.HTMLElement.selectedIndex  == 1) {
+  }
+  clearValues(){
+    this.mobjEntry_1.clearEntry();
+    this.mobjEntry_2.clearEntry();
+  }
+}
 
-              if (this.currentBlankNo <= 5) {
-
-                let blankNo = replaceAll(blank_symbols,'$', this.currentBlankNo);
-                
-                this.inputbox_fib.textarea.insertAt(blankNo);
-
-                this.blanks.push({tokenTxt:blankNo , token: currentQuizId + this.currentBlankNo, answer: ""});
-
-                this.currentBlankNo++;
-              }else {
-                showError("Can't insert more than 5 blanks");
-              }
-
-                
-
-            }else if (fibType.combo.HTMLElement.selectedIndex == 2) {
-
-
-                if (this.curentBlankNo_multiple > 5) return;
-
-                if (this.curentBlankNo_multiple > 1) {
-                  this.answersTabset.addTab("الفراغ " + this.curentBlankNo_multiple, null,"tab-label-Incorrect-answer");
-                }
-                
-                let currentBlankId = currentQuizId + this.curentBlankNo_multiple;
-           
-                let answerPnl_correct = new TabComponent(['الإجابة الصحيحة'],'ans-correct-'+ currentBlankId,'ansPnl-correct-'+ currentBlankId);
-                    answerPnl_correct.changeTabLblCss(['tab-label-correct-answer']);
-
-                let addAnswerBtn = new AddBtnWordComponent('addBtn-ans-' + currentBlankId, 'إضافة إجابة',["add-btn"]);
-
-                let inputbox_correct = new TextareaComponent('correct-txt-' + currentBlankId,1);
-                answerPnl_correct.fillTabPanel(0, inputbox_correct.HTMLElement);
-                answerPnl_correct.addControls(addAnswerBtn,["any"]);
-
-                this.answersTabset.fillTabPanel(this.curentBlankNo_multiple - 1, answerPnl_correct.HTMLElement);
-
-                
-
-                this.answersTabset.tabSets[this.curentBlankNo_multiple - 1].HTMLElement.dispatchEvent(new Event('click'));
-                answerPnl_correct.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
-
-                this.answersTabset.tabSets.index += 1;
-
-                this.curentBlankNo_multiple++;
-            }
-            
-
-          });
-
-
-          // let inputbox_answer = new InputLabelComponent('fibAnswerTxt', "إدخال الإجابات", ["textarea-description"]);
-
-          // inputbox_answer.labelTitle.classList.add('margin--top-10');
-
-          // inputbox_answer.HTMLElement.addEventListener('change', (e)=> {
+class MChoiceInputView extends InputViewClass{
+  constructor(maxNoOfAnswers){
+      super();
 
             
-          //   this.inputbox_fib.textarea.HTMLElement.value = this.inputbox_fib.textarea.HTMLElement.value.replace(/\[[^\]]*?\]/g, "[ "+ e.target.value +" ]");
+        let divDataInput = document.createElement("div");
+    
+        //Layout
+        divDataInput.classList.add("Quiz-layout-input");
+        
 
-          // });
+        let divWrapper = document.createElement("div");
+
+        //Layout
+        divWrapper.classList.add("component-container--vertical");
           
-          this.answersLst = new ListWithLabelAndInputComponent('fib_ans_lst',"إدخال الإجابات",'entry_ans_txt',"إجابة الفراغ",'fib_ans_lst_addBtn');
-          // this.answersLst.HTMLElement.style.display = "none";
-         
-          this.answersLst.addbutton.onClick( ()=> {
-            
-               
-                //TODO: Validation Conditions...
-                if (this.answersLst.listElement.HTMLElement.mode == 'update') {
+      
+        
+        this.mobjEntry = new mediaObjEntry();
+        this.mobjEntry.changeLbl('إدخال نص السؤال');
+        
+        
+        let innerWrapper = document.createElement("div");
+        
+        let answersTabset = new TabComponent('M-tab',maxNoOfAnswers);
 
-                  let _id = this.answersLst.currentValue;
-                  
-                  let _ans = this.answersLst.getTextValue();
-                
-                  let _oldValue = this.answersLst.HTMLElement.querySelector(`#${_id}`).textContent;
-                
+        this.ansTabsets = answersTabset;
+        answersTabset.addLabel ("الإجابات");
+        
 
-                  this.answersLst.HTMLElement.querySelector(`#${_id}`).textContent = _ans;
-                  this.blanks.find( blank => blank.token == _id).answer = _ans;
-                  this.inputbox_fib.textarea.replaceAll(`[ ${_oldValue} ]`,`[ ${ _ans } ]`);
+        this.answerPnl_correct = new mediaObjEntry('correctAns-');
+        this.answerPnl_correct.changeLbl("إدخال الإجابة الصحيحة");
+        addCssClass(this.answerPnl_correct.HTMLElement,["tab-panel-component-media"],false);
 
-                  this.answersLst.reset_AddBtn();
+        this.answerPnl_correct.mediaObjTab.tabLabel.HTMLElement.style.display = "block";
 
-                }else {
+        this.addCorrectTab(answersTabset, this.answerPnl_correct);
 
-                  if (this.answersLst.listElement.HTMLElement.childNodes.length >= 5 ) return;
+
+        let addAnswerBtn = new ButtonComponent('add-answer', 'إضافة إجابة');
+
+
+        this.answers_incorrect = [];
+        
+        
+      let remove_tab = ()=> {
+
+          this.answers_incorrect.splice(answersTabset.tabSets.index - 1, 1);
+          
+          for (let index = 1; index <answersTabset.index ; index++) {
+              answersTabset.tabSets[index].changeLbl('الإجابة ' + (index + 1));
+              answersTabset.tabPanels[index].changeLbl(`إدخال الإجابة ${(index + 1)}`);
+          }
+  
+      }
+
+
+        addAnswerBtn.onClick(()=> {
+          
+          console.log(this.answers_incorrect);
+
+          if (answersTabset.index >= maxNoOfAnswers) return;
+
+          let incorrectAns = new mediaObjEntry('incorrectAns-' + answersTabset.index);
+          addCssClass(incorrectAns.HTMLElement,["tab-panel-component-media"],false);
+          incorrectAns.mediaObjTab.tabLabel.HTMLElement.style.display = "block";
+
+          
+          this.answers_incorrect.push (incorrectAns);
+
+          incorrectAns.changeLbl(`إدخال الإجابة ${(answersTabset.index + 1)}`);
+
+          let incorrectBtn = new TabsetClass("الإجابة " + (answersTabset.index + 1),'incorrectBtn-'+answersTabset.index + 1);
+          addCssClass(incorrectBtn.HTMLElement, ["tab-label-Incorrect-answer"], true);
+
+          answersTabset.addTab( incorrectBtn,incorrectAns, remove_tab);
+
+
+
+        });
+
+        answersTabset.addControl(addAnswerBtn);
+        
+        innerWrapper.appendChild(answersTabset.HTMLElement);
+        
+
+
+
+        divWrapper.appendChild(this.mobjEntry.HTMLElement);
+        divWrapper.appendChild(innerWrapper);
+
+        divDataInput.appendChild(divWrapper);
+      
+        this.HTMLElement = divDataInput;
+        
+  }
+  addCorrectTab(tabSet, tabpnl){
+    let correctAnsBtn = new TabsetClass('الإجابة الصحيحة','ans-btn');
+
+    tabSet.addTab(correctAnsBtn,tabpnl);
+
+    tabSet.changeTabLblCss(['tab-label-correct-answer']);
+
+    tabSet.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
+
+  }
+
+  getValues(){
+
+    let _Ans_correct = this.answerPnl_correct.getEntries();
+
+    let _question = this.mobjEntry.getEntries();
+    
+    let mediaWrapper = new MediaObjectsWrapper('none');
+
+    _question.forEach ( (QItem) => {
+      mediaWrapper.mediaObjects.push(new mediaObjData('none', QItem.text, QItem.type));
+    });
+
+    let subQuizResult = new SubQuizObj('none', mediaWrapper);
+
+
+
+    let answerMediaWrapper_correct = new MediaObjectsWrapper('none')
+    _Ans_correct.forEach ( (AItem) => {
+      answerMediaWrapper_correct.mediaObjects.push(new mediaObjData('none', AItem.text, AItem.type));
+    });
+
+
+    subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper_correct, true));
+
+
+    this.answers_incorrect.forEach ( (ans_incorrect) => {
+      let answerMediaWrapper_Incorrect = new MediaObjectsWrapper('none');
+      ans_incorrect.getEntries().forEach ( (AItem) => {
+        answerMediaWrapper_Incorrect.mediaObjects.push(new mediaObjData('none', AItem.text, AItem.type));
+      })
+      subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper_Incorrect, false));
+
+    });
+
+
+
+
+    return subQuizResult;
+  }
+
+  clearValues(){
+    
+    this.mobjEntry.clearEntry();
+    this.answerPnl_correct.clearEntry();
+    this.ansTabsets.clearTabs();
+    this.addCorrectTab( this.ansTabsets , this.answerPnl_correct);
+    this.answers_incorrect = [];
+
+  }
+
+}
+
+class FIBInputView extends InputViewClass{
+  constructor(){
+      super();
+
+        let maximumNoBlanks = 5;
+        let blank_symbols = " [  $  ] ";
+        
+
+        this.currentBlankNo = 1;
+
+        let _data = new ItemsDataReciever();
+      
+        let currentQuizId = _data.getCurrentQuiz().id.slice(-7) + '_B';
+
+        this.blanks = [];
+
+
+        let divDataInput = document.createElement("div");
+    
+        //Layout
+        divDataInput.classList.add("Quiz-layout-input");
+        
+        let divWrapper = document.createElement("div");
+        divWrapper.classList.add("component-container--vertical");
+
+        
+        let fibType = new ComboLabelComponent('fibtype-id','طريقة ملء الفراغ');
+        fibType.combo.addOptionToCombo('إدخال كتابي',fibOptions.fib_words);
+        fibType.combo.addOptionToCombo('drag & drop', fibOptions.fib_dragdrop, true);
+        fibType.combo.addOptionToCombo('خيارات متعددة',fibOptions.fib_mchoice, true);
+        
+        fibType.combo.HTMLElement.selectedIndex = 0;
+
+
+        this.inputbox_fib = new TextareaWithLabel('fibQuestionTxt', "إدخال الجملة", 6);
+
+        this.inputbox_fib.lbltitle.HTMLElement.classList.add('margin--top-10');
+
+        let fibBtn = new ButtonComponent('addBlankBtn', 'إدخال فراغ');
+        addCssClass(fibBtn.HTMLElement, ["add-btn","margin--top-10","margin--bottom-10"], false);
+
+
+        let divBlanks = document.createElement('div');
+        divBlanks.classList.add("component-container--vertical");
+
+
+        let removedTab = ()=> { 
+          this.currentBlankNo--;
+          console.log('removed');
+        }
+
+
+        fibBtn.onClick(()=> {
+          
+          if (fibType.combo.HTMLElement.selectedIndex  == 0 || fibType.combo.HTMLElement.selectedIndex  == 1) {
+
+            if (this.currentBlankNo <= maximumNoBlanks) {
+
+              let blankNo = replaceAll(blank_symbols,'$', this.currentBlankNo);
+              
+              this.inputbox_fib.txt.insertAt(blankNo);
+
+              this.blanks.push({tokenTxt:blankNo , token: currentQuizId + this.currentBlankNo, answer: "", mulitple: false });
+
+              
+              if (this.currentBlankNo == 1 && divBlanks.childNodes.length == 0) {
+
+                let answersLst = new ListWithLabelAndInputComponent('fib_ans_lst',"إدخال الإجابات",'entry_ans_txt',"إجابة الفراغ",'fib_ans_lst_addBtn');
+
+        
+                answersLst.HTMLElement.addEventListener('added', ()=> {
+                      
+                  if (answersLst.listElement.HTMLElement.childNodes.length >= maximumNoBlanks ) return;
                 
                   let _index = this.blanks.findIndex( blank => blank.answer == "");
                   
                   //
                   if (_index < 0) return;
   
+                  let _answer = answersLst.getTextValue();
   
-                  let _answer = this.answersLst.getTextValue();
-                  this.blanks[_index].answer = _answer;
+                  let _found = this.blanks.findIndex(blank => blank.answer == _answer);
+  
+                  if ( _found == -1 ) {
+  
+                    this.blanks[_index].answer = _answer;
                   
-                  this.answersLst.addItemtoLst(_answer, this.blanks[_index].token);
-                  this.answersLst.clearTxtBox();
-                  this.inputbox_fib.textarea.replaceAll(this.blanks[_index].tokenTxt,` [ ${ _answer} ] `);
-                
-
-                }
-                
-               
-          });
-
-
-
-          this.answersTabset = new TabComponent(["الفراغ 1"], 4,  "answersSet-","answersPnl-");
-          this.answersTabset.addLabel ("الإجابات");
-          
-          // this.answersTabset.changeTabLblCss(['tab-label-correct-answer']);
-
-
-          this.answersTabset.HTMLElement.style.display = "none";
-          this.inputbox_fib_multiple.HTMLElement.style.display = "none";
-          
-
-
-          fibType.combo.HTMLElement.addEventListener('change', (e)=> {
-
+                    answersLst.addItemtoLst(answersLst.getTextValue(), this.blanks[_index].token);
             
-            if (e.target.value == 'fib-missing-words' || e.target.value == 'fib-dragdrop-words') {
-
-              this.inputbox_fib.HTMLElement.style.display = "flex";
-              this.answersLst.HTMLElement.style.display = "flex";
-              this.inputbox_fib_multiple.HTMLElement.style.display = "none";
-              this.answersTabset.HTMLElement.style.display = "none";
-            }
-            else if (e.target.value == 'fib-multiple-words') {
-
-              this.inputbox_fib.HTMLElement.style.display = "none";
-              this.inputbox_fib_multiple.HTMLElement.style.display = "flex";
-              this.answersLst.HTMLElement.style.display = "none";
-              this.answersTabset.HTMLElement.style.display = "flex";
-            }
-
-          });
-
-
-          //Layout
-          divWrapper.classList.add("component-container--vertical");
-          divWrapper.appendChild(fibType.HTMLElement);
-          divWrapper.appendChild(this.inputbox_fib.HTMLElement);
-          divWrapper.appendChild(this.inputbox_fib_multiple.HTMLElement);
-          divWrapper.appendChild(fibBtn.HTMLElement);
-          divWrapper.appendChild(this.answersTabset.HTMLElement);
-          divWrapper.appendChild(this.answersLst.HTMLElement);
-          // divWrapper.appendChild(inputbox_answer.HTMLElement);
-         
-          
-          
-        
-          
-          divDataInput.appendChild(divWrapper);
-        
-          this.HTMLElement = divDataInput;
-          
-    }
-  }
-
-  class HWordInputView extends InputViewClass{
-    constructor(){
-        super();
-
-      
-    
-        let divDataInput = document.createElement("div");
-      
-        //Layout
-        divDataInput.classList.add("Quiz-layout-input");
-
-        let divWrapper = document.createElement("div");
-        divWrapper.classList.add("component-container--vertical");
-
-        this.inputbox_hword = new TextareaLabelComponent('hwordQuizTxt', "إدخال الجملة", 3);
-        this.inputbox_hword.labelTitle.classList.add('margin--top-10');
-
-        
-        this.lstHword = new ListWithLabelAndInputComponent('lstHword-id',"إدخال الكلمة المراد تعليمها","lstHword_entryTxt","إدخال الكلمة", "lstHword_btn");
-        
-        this.lstHword.addbutton.onClick( ()=> {
-
-
-          if (checkValidation(this.lstHword.getTextValue(), this.lstHword.listElement.HTMLElement)) {
-          
-
-            if (this.lstHword.listElement.HTMLElement.mode == "normal") {
-        
-              
-                this.lstHword.addItemtoLst(this.lstHword.getTextValue(), getId_fromArry("btnLstItem",this.lstHword.lstCatObj,'_'));
-            
-            }
-            // Update mode
-            else {
-              
-              // update list item text Tab1
-              updateListBtnTxt(this.lstHword.listElement.HTMLElement , this.lstHword.currentValue, this.lstHword.getTextValue());
-              this.lstHword.lstCatObj.find( item => item.id == this.lstHword.currentValue).txt = this.lstHword.getTextValue();
-              // Back to normal mode
-              resetAddBtn(this.lstHword.listElement.HTMLElement,this.lstHword.inputText.HTMLElement,this.lstHword.addbutton.HTMLElement);
-        
-              activateCurrentBtn(this.lstHword.listElement.HTMLElement.index);
-            }
-
-            this.lstHword.clearTxtBox();
-        
-          }
-
-        });
-
-        this.lstHword.listElement.HTMLElement.addEventListener('click', (e)=> {
-          console.log('tag>>>>');
-          
-          if (e.target.tagName == 'BUTTON'){
-            let selectedHWord  = this.lstHword.lstCatObj.find( item => item.id == this.lstHword.currentValue).txt;
-            let _txt =  this.clearTxtFormat(this.inputbox_hword.getTextValue());
-            console.log(selectedHWord);
-            this.inputbox_hword.setTextValue(replaceAll(_txt ,selectedHWord, `[ ${selectedHWord} ]`));
-          }
-          
-          
-      
+                    this.inputbox_fib.txt.replaceAll(this.blanks[_index].tokenTxt,` [ ${ _answer} ] `);
   
+                  }
+  
+                });
+  
+                answersLst.HTMLElement.addEventListener('updated', ()=> {
+  
+                  let _id = answersLst.getSelectedId();
+                          
+                  let _ans = answersLst.getSelectedTxt();
+                  
+                  let _oldValue =  this.blanks.find( blank => blank.token == _id).answer;
+  
+                  this.blanks.find( blank => blank.token == _id).answer = _ans;
+                  this.inputbox_fib.txt.replaceAll(`[ ${_oldValue} ]`,`[ ${ _ans } ]`);
+  
+                });
+  
+                answersLst.HTMLElement.addEventListener('removed', (e)=> {
+            
+                  
+                  let indx =  this.blanks.findIndex( blank => blank.token == e.detail);
+  
+                  this.inputbox_fib.txt.replaceAll(`[ ${this.blanks[indx].answer} ]`,'');
+  
+                  this.blanks[indx] = null;
+                  this.blanks = this.blanks.filter( item => item != null);
+  
+                  this.currentBlankNo--;
+  
+                });
+  
+                divBlanks.appendChild(answersLst.HTMLElement);
+              }
+            
+
+              this.currentBlankNo++;
+
+
+            }else {
+
+              showError("Can't insert more than 5 blanks");
+
+            }
+
+              
+
+          
+          }else if (fibType.combo.HTMLElement.selectedIndex == 2) {
+
+
+              if (this.currentBlankNo > maximumNoBlanks) return;
+
+             
+              
+              if (this.currentBlankNo == 1 && divBlanks.childNodes.length == 0) {
+                this.answersTabset = new TabComponent('mainTab');
+                this.answersTabset.addLabel ("الإجابات");
+                 divBlanks.appendChild(this.answersTabset.HTMLElement);
+              }
+
+              let tabSet = new TabsetClass("الفراغ " + this.currentBlankNo, "tab-label-blank-" + this.currentBlankNo);
+              
+              let answersTab = new TabComponent("tab-answers-"+this.currentBlankNo, 2);
+
+              let tabPnl = new TabPanelClass( "tab-pnl-blank-" + this.currentBlankNo, answersTab);
+
+              this.answersTabset.addTab(tabSet, tabPnl, removedTab);
+              
+              
+              let currentBlankId = currentQuizId + this.currentBlankNo;
+          
+              let answerTabset_correct = new TabsetClass('الإجابة الصحيحة','ans-correct-'+ currentBlankId);
+              addCssClass(answerTabset_correct.HTMLElement,['tab-label-correct-answer'], true);
+              
+              let inputbox_correct = new InputBoxComponent('correct-txt-' + currentBlankId);
+              let answerPnl_correct = new TabPanelClass('ans-correct-pnl-'+ currentBlankId, inputbox_correct);
+
+              answersTab.addTab(answerTabset_correct, answerPnl_correct);
+              
+              let answerTabset_Incorrect = new TabsetClass('الإجابات الخاطئة', 'ans-incorrect-'+currentBlankId);
+              addCssClass(answerTabset_Incorrect.HTMLElement, ["tab-label-Incorrect-answer"], true);
+
+              let incorrectAnsLst = new ListWithLabelAndInputComponent('inc-ans-lst'+currentBlankId,'','add-inc-ans-'+currentBlankId,"إدخال الإجابات الخاطئة",'addBtn-inc-'+currentBlankId);
+              let answerPnl_incorrect = new TabPanelClass('ans-incorrect-pnl-'+currentBlankId,incorrectAnsLst);
+
+              
+              answersTab.addTab(answerTabset_Incorrect,answerPnl_incorrect);
+
+
+              incorrectAnsLst.HTMLElement.addEventListener('added', ()=> {
+            
+                if (incorrectAnsLst.listElement.HTMLElement.childNodes.length >= maximumNoBlanks ) return;
+              
+                let _index = this.blanks.findIndex( blank => blank.answer == "");
+                
+                //
+                // if (_index < 0) return;
+        
+                let _answer = incorrectAnsLst.getTextValue();
+            
+                
+                let _found = this.blanks.findIndex(blank => blank.answer == _answer);
+        
+                // if ( _found == -1 ) {
+        
+                  // this.blanks[_index].answer = _answer;
+                
+                  incorrectAnsLst.addItemtoLst(_answer,' this.blanks[_index].token');
+                  
+
+                  this.inputbox_fib.txt.replaceAll(this.blanks[_index].tokenTxt,` [ ${ _answer} ] `);
+        
+                // }
+                
+              });
+
+
+              let blankNo = replaceAll(blank_symbols,'$', this.currentBlankNo);
+              
+              this.inputbox_fib.txt.insertAt(blankNo);
+
+              this.blanks.push({tokenTxt:blankNo , token: currentQuizId + this.currentBlankNo, answer: "", mulitple: true, incAnswers:[] });
+
+           
+
+              this.currentBlankNo++;
+
+              
+          }
+          
+
         });
 
-        divWrapper.appendChild(this.inputbox_hword.HTMLElement)
-        divWrapper.appendChild(this.lstHword.HTMLElement);
+
+      
+
+
+        // this.answersTabset = new TabComponent(["الفراغ 1"], 4,  "answersSet-","answersPnl-");
+     
+        
+        
+    
+
+        fibType.combo.HTMLElement.addEventListener('change', (e)=> {
+
+          removeAllChildNodes(divBlanks);
+          this.inputbox_fib.txt.clearValues();
+          this.currentBlankNo = 1;
+          this.blanks.length = 0;
+
+          // if (e.target.value == 'fib-missing-words' || e.target.value == 'fib-dragdrop-words') {
+
+         
+          // }
+          // else if (e.target.value == 'fib-multiple-words') {
+
+         
+          // }
+
+        });
+
+
+        //Layout
+        divWrapper.appendChild(fibType.HTMLElement);
+        divWrapper.appendChild(this.inputbox_fib.HTMLElement);
+        divWrapper.appendChild(fibBtn.HTMLElement);
+        // divWrapper.appendChild(this.answersTabset.HTMLElement);
+        // divWrapper.appendChild(this.answersLst.HTMLElement);
+        divWrapper.appendChild(divBlanks);
 
         divDataInput.appendChild(divWrapper);
-        
-        this.HTMLElement = divDataInput;
-    
-    }
-    getValues(){
-
-      let _Ans = this.lstHword;
-
-      let _question = this.clearTxtFormat(this.inputbox_hword.getTextValue());
       
-      let mediaWrapper = new MediaObjectsWrapper('none');
-  
-      mediaWrapper.mediaObjects.push(new mediaObjData('none', _question, 'text-sentence'));
+        this.HTMLElement = divDataInput;
         
-      let subQuizResult = new SubQuizObj('none', mediaWrapper);
+  }
+}
+
+class HWordInputView extends InputViewClass{
+  constructor(){
+      super();
+
+    
   
-      console.log(_Ans.lstCatObj);
+      let divDataInput = document.createElement("div");
+    
+      //Layout
+      divDataInput.classList.add("Quiz-layout-input");
 
-      _Ans.lstCatObj.forEach ( (AItem) => {
+      let divWrapper = document.createElement("div");
+      divWrapper.classList.add("component-container--vertical");
 
-        let answerMediaWrapper = new MediaObjectsWrapper('none');
+      this.inputbox_hword = new TextareaWithLabel('hwordQuizTxt', "إدخال الجملة", 3);
+      addCssClass(this.inputbox_hword.lbltitle.HTMLElement, ['margin--top-10'], false)
 
-        answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.txt, 'text-sentence'));
-
-        subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+      
+      this.lstHword = new ListWithLabelAndInputComponent('lstHword-id',"إدخال الكلمة المراد تعليمها","lstHword_entryTxt","إدخال الكلمة", "lstHword_btn");
+      
+      this.lstHword.HTMLElement.addEventListener('added', ()=> {
+           
+         this.lstHword.addItemtoLst(this.lstHword.getTextValue(), getId_fromArry("btnLstItem",this.lstHword.lstCatObj,'_'));
 
       });
-  
-      console.log('ans >>> '); console.log(subQuizResult);
-        return subQuizResult;
 
-
-    }
-    clearValues(){
-        this.inputbox_hword.clearValue();
-        this.lstHword.clearTxtBox();
-        this.lstHword.clearList();
-    }
-    clearTxtFormat(_value){
-      return replaceAll( replaceAll( _value, '[ ', '') , ' ]', '' );
-
-    }
-  }
-
-  class SimpleQuestionInputView extends InputViewClass{
-    constructor(){
-
-    super();
+      let handler = (e) => {
         
-    let divDataInput = document.createElement("div");
+        let selectedHWord  = this.lstHword.lstCatObj.find( item => item.id == e.detail)?.txt;
+        let _txt =  this.clearTxtFormat(this.inputbox_hword.txt.getTextValue());
+        this.inputbox_hword.txt.setTextValue(replaceAll(_txt ,selectedHWord, `[ ${selectedHWord} ]`));
+      };
 
-    //Layout
-    divDataInput.classList.add("Quiz-layout-input");
-    
-    this.mobjEntry = new mediaObjEntry();
-    this.mobjEntry.changeLbl('إدخال السؤال');
-    
+      this.lstHword.HTMLElement.addEventListener(('changed'), handler);
 
-    this.inputbox_answer = new TextareaLabelComponent('s-question-answerTxt', "الإجابة الصحيحة", 1);
+      this.lstHword.HTMLElement.addEventListener(('updated'), handler);
 
+      divWrapper.appendChild(this.inputbox_hword.HTMLElement);
+      divWrapper.appendChild(this.lstHword.HTMLElement);
 
-    this.mobjEntry = new mediaObjEntry('s-question-tabset','s-question-tabpnl');
-    this.mobjEntry.changeLbl('إدخال الإجابة');
-    
-
-    this.inputbox_answer = new TextareaLabelComponent('i-sorting-answerTxt', "الإجابة الصحيحة", 1);
-    
-    divDataInput.appendChild(this.mobjEntry.HTMLElement);
-    divDataInput.appendChild(this.inputbox_answer.HTMLElement);
-    
-
-    this.HTMLElement=divDataInput;
+      divDataInput.appendChild(divWrapper);
+      
+      this.HTMLElement = divDataInput;
+  
   }
-
   getValues(){
 
-    let _Ans = this.inputbox_answer.getTextValue();
-    let _result = this.mobjEntry.getEntries();
+    let _Ans = this.lstHword;
+
+    let _question = this.clearTxtFormat(this.inputbox_hword.txt.getTextValue());
     
     let mediaWrapper = new MediaObjectsWrapper('none');
 
-    _result.forEach ( (resultItem) => {
-      mediaWrapper.mediaObjects.push(new mediaObjData('none',resultItem.text,resultItem.type));
-    })
-
+    mediaWrapper.mediaObjects.push(new mediaObjData('none', _question, 'text-sentence'));
+      
     let subQuizResult = new SubQuizObj('none', mediaWrapper);
 
-    let answerMedia = new mediaObjData('none',_Ans,MediaType.Text_sentence,TextSentence.text_answer);
-    let answerMediaWrapper = new MediaObjectsWrapper('none')
-    answerMediaWrapper.mediaObjects.push(answerMedia);
-    subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
 
-    return subQuizResult;
+    _Ans.lstCatObj.forEach ( (AItem) => {
+
+      let answerMediaWrapper = new MediaObjectsWrapper('none');
+
+      answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.txt, 'text-sentence'));
+
+      subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+
+    });
+
+      return subQuizResult;
+
 
   }
   clearValues(){
+      this.inputbox_hword.txt.clearValues();
+      this.lstHword.clearTxtBox();
+      this.lstHword.clearList();
+  }
+  clearTxtFormat(_value){
+    return replaceAll( replaceAll( _value, '[ ', '') , ' ]', '' );
 
-    this.mobjEntry.clearEntry();
-    this.inputbox_answer.clearValue();
   }
-  }
+}
+
+class SimpleQuestionInputView extends InputViewClass{
+  constructor(){
+
+  super();
+      
+  let divDataInput = document.createElement("div");
+
+  //Layout
+  divDataInput.classList.add("Quiz-layout-input");
+  
+  this.mobjEntry = new mediaObjEntry();
+  this.mobjEntry.changeLbl('إدخال السؤال');
+  
+
+  this.inputbox_answer = new InputLabelComponent('s-question-answerTxt', "الإجابة الصحيحة");
+
+
+  
+  divDataInput.appendChild(this.mobjEntry.HTMLElement);
+  divDataInput.appendChild(this.inputbox_answer.HTMLElement);
+  
+
+  this.HTMLElement=divDataInput;
+}
+
+getValues(){
+
+  let _Ans = this.inputbox_answer.inputBox.getTextValue();
+  let _result = this.mobjEntry.getEntries();
+  
+  let mediaWrapper = new MediaObjectsWrapper('none');
+
+  _result.forEach ( (resultItem) => {
+    mediaWrapper.mediaObjects.push(new mediaObjData('none',resultItem.text,resultItem.type));
+  })
+
+  let subQuizResult = new SubQuizObj('none', mediaWrapper);
+
+  let answerMedia = new mediaObjData('none',_Ans,MediaType.Text_sentence,TextSentence.text_answer);
+  let answerMediaWrapper = new MediaObjectsWrapper('none')
+  answerMediaWrapper.mediaObjects.push(answerMedia);
+  subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+
+  return subQuizResult;
+
+}
+clearValues(){
+
+  this.mobjEntry.clearEntry();
+  this.inputbox_answer.inputBox.clearValue();
+}
+}
 
 
 
@@ -1342,10 +1345,9 @@ class TorFInputView extends InputViewClass{
 class SSortingPreviewView extends PreviewViewClass{
   constructor(_number,_subQuizObj){
     super();
-    // let divLSquizItem =  document.createElement("div");
-    // divLSquizItem.className = "SL-quizItemsPreview--container";
 
-    let mObjPreview = new mediaObjPreview( _number,TxtEntryPostfix.SubQuizPreview,"tabset-id-" + _number, "tabpnl-id-" + _number);
+
+    let mObjPreview = new mediaObjPreview('tabPrv-'+ _number);
     
     mObjPreview.setEntries(_subQuizObj.subQuiz);
     mObjPreview.activateOnEvent("blur",_subQuizObj.id);
@@ -1363,7 +1365,7 @@ class LSortingPreviewView extends PreviewViewClass{
        let divLSquizItem =  document.createElement("div");
 
        
-       let mObjPreview = new mediaObjPreview( _number,"tabset-id-" + _number, "tabpnl-id-" + _number);
+       let mObjPreview = new mediaObjPreview("tab-id-" + _number);
        mObjPreview.setEntries(_subQuizObj.subQuiz);
        mObjPreview.activateOnEvent("blur",_subQuizObj.id);
        mObjPreview.assignQuizNo(_number);
@@ -1390,14 +1392,16 @@ class TorFPreviewView extends PreviewViewClass{
        let divLSquizItem =  document.createElement("div");
        //divLSquizItem.className = "SL-quizItemsPreview--container";
  
-       let mObjPreview = new mediaObjPreview( _number,"tabset-id-" + _number, "tabpnl-id-" + _number);
+       let mObjPreview = new mediaObjPreview("tab-prv-" + _number);
        mObjPreview.setEntries(_subQuizObj.subQuiz);
        mObjPreview.activateOnEvent("blur",_subQuizObj.id);
        mObjPreview.assignQuizNo(_number);
        
        
 
-       let answerPreview = new ListOfRadioOrCheckBoxComponent('trueFalseQuiz-preview'+_number,["radioBtns-addBtn-container"]);
+       let answerPreview = new ListOfRadioOrCheckBoxComponent('trueFalseQuiz-preview'+_number);
+       addCssClass(answerPreview.HTMLElement,["radioBtns-addBtn-container"], true);
+
        let _correct = Number(_subQuizObj.Answers[0].answer.mediaObjects[0].text);
        let _incorrect = Number(!_subQuizObj.Answers[0].answer.mediaObjects[0].text);
        let changeRadioValue = () => {
@@ -1422,7 +1426,7 @@ class CategoryPreviewView extends PreviewViewClass{
 
       let divLSquizItem =  document.createElement("div");
 
-      let mObjPreview = new mediaObjPreview( _number,"q-tabset-id-" + _number, "q-tabpnl-id-" + _number);
+      let mObjPreview = new mediaObjPreview("tabPrv-" + _number);
       mObjPreview.setEntries(_subQuizObj.subQuiz);
       mObjPreview.activateOnEvent("blur",_subQuizObj.id);
       mObjPreview.assignQuizNo(_number);
@@ -1441,20 +1445,8 @@ class CategoryPreviewView extends PreviewViewClass{
         });
       }
 
-      answerPreviewCombo.setSelectedItem(this.correctId);
 
       answerPreviewCombo.onChange( (e)=> {
-        // if (e.target.value == this.correctId) return;
-        
-        // let answer_ = _subQuizObj.Answers.find( _ans => _ans.answer.id == this.correctId);
-
-        // console.log('Ans>>>');
-        // console.log(this.correctId);
-        // console.log(_subQuizObj.Answers);
-        // console.log(answer_);
-
-        // if (answer_)
-        //   answer_.answer.correct = false;
          _subQuizObj.Answers.find( _ans => _ans.id == e.target.value).correct = true;
          this.correctId = e.target.value;
           console.log('Ans>>>');
@@ -1462,9 +1454,7 @@ class CategoryPreviewView extends PreviewViewClass{
          console.log(_subQuizObj.Answers);
       });
 
-      // answerPreview.setEntries(_subQuizObj.Answers[0].answer);
-      // answerPreview.activateOnEvent("blur", _subQuizObj.Answers[0].id )
-
+     
       divLSquizItem.appendChild(mObjPreview.HTMLElement);
       divLSquizItem.appendChild(answerPreviewCombo.HTMLElement);
       
@@ -1481,20 +1471,22 @@ class DragAndDropPreviewView extends PreviewViewClass{
 
       let divLSquizItem =  document.createElement("div");
 
-      let mObjPreview = new mediaObjPreview( _number,"q-tabset-id-" + _number, "q-tabpnl-id-" + _number);
+      let mObjPreview = new mediaObjPreview('Qtab-prv-' + _number);
       mObjPreview.setEntries(_subQuizObj.subQuiz);
       mObjPreview.activateOnEvent("blur",_subQuizObj.id);
       mObjPreview.assignQuizNo(_number);
       
-      let answerPreview = new mediaObjPreview( _number,"ans-tabset-id-" + _number, "ans-tabpnl-id-" + _number);
+      let answerPreview = new mediaObjPreview("Ans-tabPrv-" + _number);
 
+      
       answerPreview.setEntries(_subQuizObj.Answers[0].answer);
       answerPreview.activateOnEvent("blur", _subQuizObj.Answers[0].id )
 
       divLSquizItem.appendChild(mObjPreview.HTMLElement);
       divLSquizItem.appendChild(answerPreview.HTMLElement);
       
-      
+   
+
       this.HTMLElement=divLSquizItem;
     
   }
@@ -1503,16 +1495,14 @@ class DragAndDropPreviewView extends PreviewViewClass{
 class MChoicePreviewView extends PreviewViewClass{
   constructor(_number, _subQuizObj){
     super();
-    console.log('subquiz>>>');
-    console.log(_subQuizObj);
-
+ 
     let divLSquizItem =  document.createElement("div");
 
     let quizId = _subQuizObj.id;
     
     let shortQ_id = quizId.slice(-6);
 
-    let mObjPreview = new mediaObjPreview(_number,shortQ_id,"tbset-q" + shortQ_id + _number, "tbpnl-" + shortQ_id + _number);
+    let mObjPreview = new mediaObjPreview('tab' + shortQ_id + _number,[0,1,2,3]);
     mObjPreview.setEntries(_subQuizObj.subQuiz);
     mObjPreview.activateOnEvent("blur",quizId);
     mObjPreview.assignQuizNo(_number);
@@ -1523,15 +1513,18 @@ class MChoicePreviewView extends PreviewViewClass{
     let ansId = _subQuizObj.Answers[0].id;
     let shortA_id = ansId.slice(-6);
     
-    let answersTabset = new TabComponent(["الإجابة الصحيحة"],MaxNoOfAnswers, "ansPrvSet-" + shortA_id,"ansPrvPnl-" + shortA_id);
-    answersTabset.changeTabLblCss(['tab-label-correct-answer']);
+    let answersTabset = new TabComponent('ansPrvSet-' + shortA_id, MaxNoOfAnswers);
 
-    
-    let answerPnl_correct = new mediaObjPreview(_number,shortA_id,'AP-Set-c' + shortA_id ,'AP-Pnl-c' + shortA_id);
+    let correctAnsBtn = new TabsetClass('الإجابة الصحيحة','ans-btn' + shortA_id);
+    addCssClass(correctAnsBtn.HTMLElement,['tab-label-correct-answer'], true);
+
+    let answerPnl_correct = new mediaObjPreview('AP-Set-c' + shortA_id + _number);
+    addCssClass(answerPnl_correct.HTMLElement,["tab-panel-component-media"],false);
+
     answerPnl_correct.setEntries(_subQuizObj.Answers[0].answer) 
     answerPnl_correct.activateOnEvent("blur", ansId)
     
-    answersTabset.fillTabPanel(0,answerPnl_correct.HTMLElement);
+    answersTabset.addTab(correctAnsBtn,answerPnl_correct);
 
        
     let answers_incorrect = _subQuizObj.Answers.slice(1);
@@ -1540,29 +1533,28 @@ class MChoicePreviewView extends PreviewViewClass{
     let remove_tab = ()=> {
 
       _subQuizObj.Answers.splice(answersTabset.tabSets.index, 1);
-     
-      
-      if ((answersTabset.tabSets.index - 1) <= 0)
-          answersTabset.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
-      else if (answersTabset.tabSets.index == 1) 
-          answersTabset.tabSets[1].HTMLElement.dispatchEvent(new Event('click'));
-      else if ((answersTabset.tabSets.index - 1) > 0) 
-          answersTabset.tabSets[answersTabset.tabSets.index - 1].HTMLElement.dispatchEvent(new Event('click'));
 
-      
+      for (let index = 1; index <answersTabset.index ; index++) {
+        answersTabset.tabSets[index].changeLbl('الإجابة ' + (index + 1));
+      }
     }
+
     answers_incorrect.forEach( (inc_ans, index)=> {
 
       let shortA_inc_id = inc_ans.id.slice(-6);
 
-      let ans_incorrect =  new mediaObjPreview( index, shortA_inc_id ,'ASet-inc'+ shortA_inc_id, 'APnl-inc'+ shortA_inc_id);
-  
-      answersTabset.addTab("الإجابة " + (index + 2),remove_tab,"tab-label-Incorrect-answer");
+      let ans_incorrect =  new mediaObjPreview( 'incorrectAns-'+  shortA_inc_id , [0,1,2,3]);
+      addCssClass(ans_incorrect.HTMLElement,["tab-panel-component-media"],false);
+
+      let incorrectBtn = new TabsetClass("الإجابة " + (answersTabset.index + 1),'incorrectBtn-'+answersTabset.index + 1);
+      addCssClass(incorrectBtn.HTMLElement, ["tab-label-Incorrect-answer"], true);
+
+      answersTabset.addTab( incorrectBtn,ans_incorrect, remove_tab);
+
       answersTabset.tabSets.index +=1;
 
       ans_incorrect.setEntries(inc_ans.answer);
-      ans_incorrect.activateOnEvent('blue', inc_ans.id)
-      answersTabset.fillTabPanel(index + 1, ans_incorrect.HTMLElement);
+      ans_incorrect.activateOnEvent('blur', inc_ans.id)
 
 
     });
@@ -1594,15 +1586,19 @@ class HWordPreviewView extends PreviewViewClass{
 
     let divLSquizItem =  document.createElement("div");
 
+    console.log('Hword >> _subQuizObj');
+    console.log(_subQuizObj);
 
     let quizId = _subQuizObj.id;
     
     let shortQ_id = quizId.slice(-6);
 
-    this.mObjPreview = new mediaObjPreview(_number,shortQ_id,"tbset-q" + shortQ_id + _number, "tbpnl-" + shortQ_id + _number);
+    this.mObjPreview = new mediaObjPreview('tab-' + shortQ_id + _number, [0]);
     this.mObjPreview.setEntries(_subQuizObj.subQuiz);
 
-    this.mObjPreview.tabPanel1.HTMLElement.addEventListener('blur',(e)=>{
+    let quiz_txt = this.mObjPreview.mObjPreviewTab.tabPanels[0].component;
+
+    quiz_txt.HTMLElement.addEventListener('blur',(e)=>{
       
       let txt = replaceAll( replaceAll( e.target.value, '[ ', '') , ' ]', '' );
       let saveSubQuiz1 = new SaveSubQuizToDB(quizId,txt,MediaType.Text_sentence)
@@ -1610,8 +1606,7 @@ class HWordPreviewView extends PreviewViewClass{
     
     });
 
-    this.mObjPreview.mObjPreviewTab.clearTabs();
-
+    
     
     this.mObjPreview.assignQuizNo(_number);
 
@@ -1621,55 +1616,28 @@ class HWordPreviewView extends PreviewViewClass{
     
     if (_subQuizObj.Answers.length > 0) {
       _subQuizObj.Answers.forEach( (_Ans) => {
-        answerPreviewLst.addItemtoLst(_Ans.answer.mediaObjects[0].text, _Ans.id,true);
+        answerPreviewLst.addItemtoLst(_Ans.answer.mediaObjects[0].text, _Ans.id);
         
 
       });
     }
 
-    answerPreviewLst.addbutton.onClick( ()=> {
-
-
-      if (checkValidation(answerPreviewLst.getTextValue(),answerPreviewLst.listElement.HTMLElement)) {
-      
-
-        if (answerPreviewLst.listElement.HTMLElement.mode == "normal") {
-    
-          
-            answerPreviewLst.addItemtoLst(answerPreviewLst.getTextValue(), getId_fromArry("btnLstItem",answerPreviewLst.lstCatObj,'_'));
+    answerPreviewLst.HTMLElement.addEventListener('added', ()=> {
         
-        }
-        // Update mode
-        else {
-          
-          // update list item text Tab1
-          updateListBtnTxt(answerPreviewLst.listElement.HTMLElement , answerPreviewLst.currentValue, answerPreviewLst.getTextValue());
-          answerPreviewLst.lstCatObj.find( item => item.id == answerPreviewLst.currentValue).txt = answerPreviewLst.getTextValue();
-          // Back to normal mode
-          resetAddBtn(answerPreviewLst.listElement.HTMLElement,answerPreviewLst.inputText.HTMLElement,answerPreviewLst.addbutton.HTMLElement);
-    
-          activateCurrentBtn(answerPreviewLst.listElement.HTMLElement.index);
-        }
-
-        answerPreviewLst.clearTxtBox();
-    
-      }
-
-      });
-
-      // let questionTxt =_subQuizObj.subQuiz.mediaObjects[0].text;
-
-      answerPreviewLst.listElement.HTMLElement.addEventListener('click', (e)=> {
+            answerPreviewLst.addItemtoLst(answerPreviewLst.getTextValue(), getId_fromArry("btnLstItem"+_number,answerPreviewLst.lstCatObj,'_'));
         
-    
-        let selectedHWord = answerPreviewLst.lstCatObj.find( item => item.id == answerPreviewLst.currentValue).txt;
-        
-    
-        this.mObjPreview.tabPanel1.setTextValue(replaceAll(_subQuizObj.subQuiz.mediaObjects[0].text ,selectedHWord, `[ ${selectedHWord} ]`));
-        console.log(_subQuizObj.subQuiz.mediaObjects[0].text);
+  
+    });
 
 
-      });
+    let handler = (e) => {
+      let selectedHWord = answerPreviewLst.lstCatObj.find( item => item.id == e.detail).txt;
+      quiz_txt.setTextValue(replaceAll(_subQuizObj.subQuiz.mediaObjects[0].text ,selectedHWord, `[ ${selectedHWord} ]`));
+    };
+
+
+    answerPreviewLst.HTMLElement.addEventListener('changed', handler);
+    answerPreviewLst.HTMLElement.addEventListener('updated', handler);
 
     divLSquizItem.appendChild(this.mObjPreview.HTMLElement);
     divLSquizItem.appendChild(answerPreviewLst.HTMLElement);
@@ -1688,13 +1656,14 @@ class SimpleQuestionPreviewView extends PreviewViewClass{
     let divLSquizItem =  document.createElement("div");
     //divLSquizItem.className = "SL-quizItemsPreview--container";
 
-    let mObjPreview = new mediaObjPreview( _number,"tabset-id-" + _number, "tabpnl-id-" + _number);
+    let mObjPreview = new mediaObjPreview( 'tab' + _number);
     mObjPreview.setEntries(_subQuizObj.subQuiz);
     mObjPreview.activateOnEvent("blur",_subQuizObj.id);
     mObjPreview.assignQuizNo(_number);
     
-    let answerPreview = new TextareaComponent("answer-SQ-quiz-Id-" + _number , 2,["SL-quizAnswerPreview"]);
-    console.log("subQuiz to be set: ",_subQuizObj)
+    let answerPreview = new TextareaComponent("answer-SQ-quiz-Id-" + _number , 2);
+    addCssClass(answerPreview.HTMLElement,["SL-quizAnswerPreview"])
+    
     answerPreview.setTextValue(_subQuizObj.Answers[0].answer.mediaObjects[0].text);
     answerPreview.onEvent("blur",(e)=>{
      _subQuizObj.Answers[0].answer.mediaObjects[0].text=e.target.value;

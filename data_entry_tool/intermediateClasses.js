@@ -292,7 +292,7 @@ this.tapPanels=[];
 build(){
 
 let arrObjectiveType = ["الكلمات المفتاحية","التراكيب اللغوية","الأصوات اللغوية","القواعد اللغوية"];
-this.newObjectiveTab = new TabComponent(arrObjectiveType);
+this.newObjectiveTab = new TabComponent();
 
 //fix the CSS
 this.newObjectiveTab.divTabset.classList.add("padding__meduim");
@@ -301,6 +301,7 @@ arrTabPanelsSection.forEach((item)=>{
 item.classList.add("padding__zero");
 });
 //***** */
+
 
 //create comboList add remove 
 let tabPanel1 = new ComboListAddRemoveComponent("combo1_tab1_Id","combo2_tab1_Id",arrObjectiveType[0],"btnAddId_tab1","btnRemoveId_tab1");
@@ -311,11 +312,17 @@ let tabPanel4 = new ComboListAddRemoveComponent("combo1_tab4_Id","combo2_tab4_Id
 
 // add Label and Tab Panel to the Tab
 this.newObjectiveTab.addLabel("اختيار عناصر المواضيع")
+
 // insert tabPanel to Tab
-this.newObjectiveTab.fillTabPanel(0,tabPanel1.HTMLElement);
-this.newObjectiveTab.fillTabPanel(1,tabPanel2.HTMLElement);
-this.newObjectiveTab.fillTabPanel(2,tabPanel3.HTMLElement);
-this.newObjectiveTab.fillTabPanel(3,tabPanel4.HTMLElement);
+this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[0],'tset-1'),new TabPanelClass('tpnl-1', tabPanel1));
+this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[1],'tset-2'),new TabPanelClass('tpnl-2', tabPanel2));
+this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[2],'tset-3'),new TabPanelClass('tpnl-3', tabPanel3));
+this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[3],'tset-4'),new TabPanelClass('tpnl-4', tabPanel4));
+
+// this.newObjectiveTab.fillTabPanel(0,tabPanel1.HTMLElement);
+// this.newObjectiveTab.fillTabPanel(1,tabPanel2.HTMLElement);
+// this.newObjectiveTab.fillTabPanel(2,tabPanel3.HTMLElement);
+// this.newObjectiveTab.fillTabPanel(3,tabPanel4.HTMLElement);
 
 //Save reference to tabPanels.
 
@@ -324,7 +331,7 @@ this.tapPanels.push(tabPanel2);
 this.tapPanels.push(tabPanel3);
 this.tapPanels.push(tabPanel4);
 
-this.newObjectiveTab.tabSets[0].HTMLElement.dispatchEvent(new Event('click'));
+this.newObjectiveTab.tabSets[0].HTMLElement.click();
 
 
 }
@@ -370,7 +377,7 @@ clearCombo2(tabNumber){
 this.tapPanels[tabNumber-1].combo2.clearCombo();
 }
 resetCheckBoxValues(tabNumber){
-this.tapPanels[tabNumber-1].listOfCheckBox.resetCheckBoxValues();
+this.tapPanels[tabNumber-1].listOfCheckBox.resetCheckBoxState();
 }
 
 updateAllCheckBoxValues(tabNumber,arrSkills){
@@ -570,13 +577,12 @@ this.dataReciever.addObjective(objectiveId, lingElement);
 
 this.dataReciever.setCurrentObjective(lingElement.elementText);
 let arrSkills = this.dataReciever.getCurrentObjectiveSkills();
-this.viewReciever.resetCheckBoxValues(tabNumber)
+this.viewReciever.resetCheckBoxState(tabNumber)
 this.viewReciever.updateAllCheckBoxValues(tabNumber,arrSkills);
-console.log(this.dataReciever.ListOfObjectives);
 }
 
 this.viewReciever.tapPanels.forEach((tapPanel)=>{
-tapPanel.addBtnOnClick(tab_Addfn);
+// tapPanel.addBtnOnClick(tab_Addfn);
 });
 
 
@@ -620,7 +626,7 @@ console.log(this.dataReciever.ListOfObjectives);
 }
 
 this.viewReciever.tapPanels.forEach((tapPanel)=>{
-tapPanel.removeBtnOnClick(tab_RemoveFn);
+// tapPanel.removeBtnOnClick(tab_RemoveFn);
 });
 
 

@@ -25,6 +25,8 @@
     
 }
 
+/* -( color to try rgb(86 105 118)) */
+
 /* Header */
 
 *,
@@ -48,8 +50,6 @@ body {
     flex-direction: column;
     align-items: center;
     width: 95%;
-    /* margin-top: 2rem; */
-
 }
 
 
@@ -61,12 +61,8 @@ body {
   flex-direction: row;
   font-size: 1.2rem;
   background-color:rgb(243, 244, 245);
-  
-  
-
   box-shadow: inset 0px -6px 5px -7px #000000, inset 0px 5px 10px -7px #000000;
   overflow: hidden;
- 
 }
 
 .nav-list {
@@ -711,13 +707,14 @@ color:#ffffff;
     outline: none;
     border: 1px solid var(--border-color-normal);
     border-bottom-right-radius: 10px;
-    font-size: 0.8rem;
+    font-size: 1.3rem;
     padding: 0px 5px 0px 0px;
-    font-family: var(--input-placeholder-font);
+    font-family: var(--body-font);
     line-height: 2;
     color: var(--color-font);
     transition: box-shadow .3s, border .3s, -webkit-box-shadow .3s;
 }
+
 
 /* new course label */
 .sidenav1-labels {
@@ -1522,7 +1519,7 @@ overflow: hidden;
 
 }
 .item-menu__items {
-  height: 80%;
+  height: 80%; 
 }
 
 .item-menu_labels {
@@ -1556,6 +1553,71 @@ overflow: hidden;
 }
 
 
+.tab2{
+  direction: ltr;
+  display: grid;
+  gap: 0px;
+  grid-template-areas:  "v v v v v v v v v v h"
+                        "v v v v v v v v v v h"
+                        "v v v v v v v v v v h"
+                        "v v v v v v v v v v h"
+                        "v v v v v v v v v v ."
+                        "v v v v v v v v v v .";
+                          
+}
+
+.buttons-container {
+  grid-area: h;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.tab-panels-- {
+  grid-area: v;
+  margin: 0;
+}
+
+.textarea-description-- {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  resize: both;
+}
+
+.buttons-panelHeader--{
+  appearance: none;
+  background-color: white; /* #ecf0f1; */
+  border: 1px solid #2fa091;
+    /* border-right: 1px solid #2fa091;
+    border-bottom: 1px solid #2fa091; */
+  /* border-left: none; */
+  color: #167070;
+  width: auto;
+  border-bottom-right-radius: .25rem;
+  border-top-right-radius: .25rem;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: .1rem;
+  outline: none;
+  position: relative;
+  transition: all ease-out .3s;
+}
+
+.buttons-panelHeader--selected{
+  /* border-color: transparent; */
+  /* box-shadow: 0 0 0 3px; */
+  background-color: #fff; 
+  /* background-color: #105f5f; */
+  /* color: #fafafa; */
+  color: red;
+  border-left: 2px solid white;
+  position: relative;
+  left: -2px;
+  z-index: 1000;
+  
+  
+}
 
 .item-menu-buttons-wrapper {
   position: relative;
@@ -1647,6 +1709,13 @@ overflow: hidden;
   
 }
 
+/* .buttons-in-item-menu--selected {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px;
+   background-color: #fff; 
+  background-color: #105f5f;
+  color: #fafafa;
+} */
 
 .icon-name {
   font-size:   .8rem;;
@@ -1978,7 +2047,7 @@ padding: 15px 20px;
 }
 
 .quiz-input__SS-layout{
-  grid-template-areas:"a a ."
+  grid-template-areas:". a ."
                       "b b b"
                       "b b b";
 }
@@ -2140,7 +2209,12 @@ padding: 15px 20px;
  position: relative;
 
 }
-
+/* .component-container--horizontal{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  
+ } */
 .align-right{
   justify-content: right;
 }
@@ -2178,7 +2252,7 @@ height: 20rem;
 
 
 /* True False Quiz */
-
+/* 
 .radioBtns-addBtn-container {
   border: 1px solid var(--border-color-normal);
   border-bottom-right-radius: 10px;
@@ -2188,17 +2262,30 @@ height: 20rem;
   flex-direction: row;
   justify-content: space-evenly;
   margin-top: -2px;
-}
+} */
 
 .radioBtns-container {
   border: none;
 }
 
 
+.radioBtns-addBtn-container {
+  border: none;
+  border-bottom: 2px solid var(--border-color-normal);
+  padding-top: 2rem;
+  padding-right: 1rem;
+  background-color: #fcfcfd;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+}
+
+
 /* TabClasses */
 
 
-#tab-number-label {
+.tab-number-label {
   font-family: 'Almarai';
   font-size: 1.3rem;
   color: gray;
@@ -2243,6 +2330,7 @@ height: 20rem;
   transition: .3s; */
 
   appearance: none;
+  position: relative;
   outline:none;
   border: 1px solid transparent;
   cursor:pointer;
@@ -2355,6 +2443,7 @@ height: 20rem;
   outline: none;
   margin: 4px;
   position: relative;
+  z-index:1;
   transition: all ease-out .3s;
 }
 .buttons-panelHeader--preview--selected,
@@ -2398,7 +2487,7 @@ height: 20rem;
 
 .tab-panel-show{
   
-  display:block;
+  display:grid;
 }
 
 .textarea-resize-vertically{
@@ -2481,6 +2570,7 @@ height: 20rem;
   appearance: none;
   outline:none;
   cursor: pointer;
+  
 
 }
 .tab-labels-mObjPrv span {
@@ -2492,8 +2582,11 @@ height: 20rem;
 .tab-labels-mObjPrv--selected {
   color: #fb3265;
     background-color: white;
-    width: 108%;
+    width: 103%;
     border-right: 5px solid #fb3265;
+    border-left: none;
+    position: relative;
+    z-index: 1;
 }
 
 /*********************** Preview container******************************/
@@ -3257,6 +3350,47 @@ outline:  #b98707;
 
 }
 
+
+.collapsible {
+  color: var(--color-font-headers);
+  cursor: pointer;
+  padding: 18px 0;
+  width: 100%;
+  border: none;
+  text-align: right;
+  font-size: 1.5rem;
+}
+/* collapsible label */
+.collapsible:after {
+
+
+  font-family: "Font Awesome 5 Free";
+  font-size: 1.2rem;
+  content: '\f151';
+  transform: rotate(-90deg);
+  color: var(--color-font-headers);
+  font-weight: bold;
+  float: right;
+  cursor: pointer;
+  margin: 3px 3px 0 12px;
+  color: #1ab8a9;
+  
+}
+
+.active:after {
+  transform: rotate(180deg);
+
+/*  content: "\2212";  */
+}
+
+.div-contents {
+
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+
+
+}
 
 
 /* skills icon */

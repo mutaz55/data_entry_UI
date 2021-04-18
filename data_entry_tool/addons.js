@@ -129,7 +129,8 @@ class QuizSkeleton{
     objectivesCheckBox.addElementToHiddenDiv(newObjectiveTab.HTMLElement);
     objectivesCheckBox.onClick(()=>{})
     //(4) create Add SubQuizes Button Part
-    let addBtn = new AddBtnWordComponent(btnId,btnText,["add-btn"])
+    // let addBtn = new AddBtnWordComponent(btnId,btnText,["add-btn"])
+    let addBtn = new ButtonComponent(btnId,btnText);
     addBtn.HTMLElement.classList.add("layout-c");
     addBtn.HTMLElement.classList.add("item-grid-align-left");
     
