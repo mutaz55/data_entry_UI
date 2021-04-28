@@ -465,6 +465,14 @@ class ObjectiveObj {
     }
 }
 
+class ScoreObj {
+  constructor(subQuizId,score){
+    this.subQuizId=subQuizId;
+    this.score=score;
+    
+  }
+}
+
 // class SkillObj{
 //   constructor(skillId,skillIcon){
 //     this.skillId=skillId;
@@ -1122,5 +1130,3 @@ register(plugin) {
  
 
 }
-
-

@@ -49,7 +49,8 @@ this.objectiveInvoker.setCommand(addEventToCombo2);
 this.objectiveInvoker.press();
 
 this.objectiveInvoker.setUpdateCommands(UpdateCombo2PerLinkId);
-this.objectiveInvoker.pressUpdate(ShowType.All,"Slide-Id");
+let currentSlide = _courses.getCurrentSlideObj();
+this.objectiveInvoker.pressUpdate(currentSlide,ShowType.All,"All-Slide");
 
 
 this.objectiveInvoker.setOperationMode(newOperationMode);
@@ -60,8 +61,8 @@ this.HTMLElement=this.viewReciever.newObjectiveTab.HTMLElement;
 
 }
 
-updateLinkId(linkId){
-this.objectiveInvoker.pressUpdate(ShowType.SubQuizId,linkId);
+updateLinkId(slideObj,showType,linkId){
+this.objectiveInvoker.pressUpdate(slideObj,showType,linkId);
 }
 
 saveToObjectiveList(LinkId){
@@ -83,7 +84,9 @@ this.objectiveInvoker.press();
 
 }
 
-
+setObjectiveList(operationMode,slideId){
+this.dataReciever.setObjectiveList(operationMode,slideId)
+}
 
 }
 
@@ -100,7 +103,50 @@ constructor(){
 this.ListOfObjectives = [];
 this.currentObjective=null;
 this.objectiveLinkId="";
+this.saveFrom=0;
+this.linkId = "All-Slide";
 }
+
+getSlidceIds(){
+let slideIds = _courses.getSlides().map((slide)=>slide.id);
+//console.log("slide Ids: ",slideIds);
+return slideIds;
+
+}
+getLinkId(){
+return this.linkId;
+}
+getSlideById(slideId){
+let slideObj =_courses.getCurrentSlideObj(slideId);
+return slideObj;
+
+}
+getSubQuizesArrayfromSlide(slideObj){
+
+let arrSubQuizes=[];
+slideObj.Items.forEach((item) => {
+    
+  let viewAction = item.viewAction
+  let viewType = viewAction.slice(viewAction.length-4);
+  if(viewType=="quiz"){ 
+    console.log("item.subQuiz: ", item, item.dataObj.subQuizes);
+    arrSubQuizes.push(item.dataObj.subQuizes);
+              
+  } 
+});
+arrSubQuizes=arrSubQuizes.flat();
+console.log("slideObj",slideObj);
+console.log("arrSubQuizes: ",arrSubQuizes);
+
+return arrSubQuizes;
+
+}
+
+getSubQuizByIdFromSubQuizArray(arrSubQuiz,subQuizId){
+let subQuiz = arrSubQuiz.find((subQuiz)=>subQuiz.id==subQuizId);
+return subQuiz;
+}
+
 clearObjectiveList(){
 
 this.ListOfObjectives.length = 0;
@@ -115,7 +161,7 @@ if (modeOfOperation==ModeOfOperation.SaveLater){
   let objectiveListDirect = this.getObjectiveList();
 
   this.ListOfObjectives=objectiveListDirect.Objectives;
-  console.log("SaveDirect: ",this.ListOfObjectives)
+  //console.log("SaveDirect: ",this.ListOfObjectives)
   
 }
 }
@@ -132,9 +178,9 @@ if (this.currentObjective!=null){
 
 }
 
-setCurrentObjective(lingElementText){
-console.log("inside set Current Objective: ",this.ListOfObjectives,lingElementText);
-this.currentObjective=this.ListOfObjectives.find((item)=> item.lingElement.elementText == lingElementText);
+setCurrentObjective(objectiveId){
+
+this.currentObjective=this.ListOfObjectives.find((item)=> item.id == objectiveId);
 }
 
 
@@ -152,8 +198,9 @@ return requiredSkill;
 addObjective(objectiveId, lingElement){
 
   let newObjective_Dobj = new ObjectiveObj(objectiveId, lingElement, this.linkId);
+  console.log("inside add Objective: ",this.ListOfObjectives)
   this.ListOfObjectives.push(newObjective_Dobj);
-       console.log("inside add Objective: ",this.ListOfObjectives)
+       
 }
 
 addSkill(SkillObj) {
@@ -183,43 +230,45 @@ let selectedObjective=this.ListOfObjectives.find((item)=> item.lingElement.eleme
 return selectedObjective;
 }
 
-getObjectiveList(){
-  let currentSlide = _courses.getCurrentSlideObj();
+getObjectiveList(slideId){
+  let currentSlide = _courses.getCurrentSlideObj(slideId);
   let objectiveList = currentSlide.GenItems.find((item)=> item.name == "Objectives_GAddons").dataObj;
   
     
   return objectiveList;
 }
 
-setObjectiveList(operationMode){
+setObjectiveList(operationMode,slideId){
 
 if (operationMode==ModeOfOperation.SaveLater){
-  this.ListOfObjectives=this.cloneObjectiveList();
+  this.ListOfObjectives=this.cloneObjectiveList(slideId);
 
 } else if (operationMode==ModeOfOperation.SaveDirect) {
 
-  let objectiveListDirect = this.getObjectiveList();
+  let objectiveListDirect = this.getObjectiveList(slideId);
   this.ListOfObjectives=objectiveListDirect.Objectives;
     
 }
 
 }
 
-getUniqueSubQuizesId(){
+getObjectiveUniqueSubQuizesId(slideId){
 
-let objectivesL = _courses.getCurrentSlideObj().Items
+let objectivesL = this.getObjectiveList(slideId)
+//objectivesL=[...objectivesL]
+  //console.log(objectivesL);
+let arrLinkId = objectivesL.Objectives.map((item) => {
+
   
-let arrSubQuizes = objectivesL.map((item) => {
-
-  let viewAction = item.viewAction
-  let viewType = viewAction.slice(viewAction.length-4);
-  if(viewType=="quiz"){ return item.dataObj.subQuizes; } 
+  return item.linkId; 
 });
 
-  console.log(arrSubQuizes);
-  //let arrLinkIdUnique = arrLinkId.filter((value,index,self)=>self.indexOf(value)===index);
-  return arrSubQuizes;
+  console.log(arrLinkId);
+  let arrLinkIdUnique = arrLinkId.filter((value,index,self)=>self.indexOf(value)===index);
+  console.log(arrLinkIdUnique);
+  return arrLinkIdUnique;
 }
+
 
 getSceneSubjects(){
 let arrSceneSubjectsIds = _courses.getSceneSubjects();
@@ -257,21 +306,27 @@ return objectiveId;
 
 }
 
-cloneObjectiveList(){
+cloneObjectiveList(slideId){
 
 //Clone ObjectiveList and save it in the class
-let objectiveList = this.getObjectiveList();
+let objectiveList = this.getObjectiveList(slideId);
 this.ListOfObjectives=JSON.parse(JSON.stringify(objectiveList.Objectives));;
+this.saveFrom=this.ListOfObjectives.length;
+console.log("clonned List of Objectives: ",this.ListOfObjectives," Save From: ",this.saveFrom);
 }
 
 
 saveToSlideObjectiveList(LinkId){
 let objectiveList = this.getObjectiveList();
-this.ListOfObjectives.forEach((item)=>{
-item.linkId = LinkId;
-objectiveList.Objectives.push(item)
+this.ListOfObjectives.forEach((item,ind)=>{
+if(ind>=this.saveFrom){
+  item.linkId = LinkId;
+  objectiveList.Objectives.push(item)
+}
+
 });
-this.ListOfObjectives=[];
+this.cloneObjectiveList();
+
 }
 
 
@@ -302,7 +357,6 @@ item.classList.add("padding__zero");
 });
 //***** */
 
-
 //create comboList add remove 
 let tabPanel1 = new ComboListAddRemoveComponent("combo1_tab1_Id","combo2_tab1_Id",arrObjectiveType[0],"btnAddId_tab1","btnRemoveId_tab1");
 let tabPanel2 = new ComboListAddRemoveComponent("combo1_tab2_Id","combo2_tab2_Id",arrObjectiveType[1],"btnAddId_tab2","btnRemoveId_tab2");
@@ -315,14 +369,14 @@ this.newObjectiveTab.addLabel("اختيار عناصر المواضيع")
 
 // insert tabPanel to Tab
 this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[0],'tset-1'),new TabPanelClass('tpnl-1', tabPanel1));
-this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[1],'tset-2'),new TabPanelClass('tpnl-2', tabPanel2));
-this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[2],'tset-3'),new TabPanelClass('tpnl-3', tabPanel3));
-this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[3],'tset-4'),new TabPanelClass('tpnl-4', tabPanel4));
-
-// this.newObjectiveTab.fillTabPanel(0,tabPanel1.HTMLElement);
-// this.newObjectiveTab.fillTabPanel(1,tabPanel2.HTMLElement);
-// this.newObjectiveTab.fillTabPanel(2,tabPanel3.HTMLElement);
-// this.newObjectiveTab.fillTabPanel(3,tabPanel4.HTMLElement);
+  this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[1],'tset-2'),new TabPanelClass('tpnl-2', tabPanel2));
+  this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[2],'tset-3'),new TabPanelClass('tpnl-3', tabPanel3));
+  this.newObjectiveTab.addTab(new TabsetClass(arrObjectiveType[3],'tset-4'),new TabPanelClass('tpnl-4', tabPanel4));
+  
+  // this.newObjectiveTab.fillTabPanel(0,tabPanel1.HTMLElement);
+  // this.newObjectiveTab.fillTabPanel(1,tabPanel2.HTMLElement);
+  // this.newObjectiveTab.fillTabPanel(2,tabPanel3.HTMLElement);
+  // this.newObjectiveTab.fillTabPanel(3,tabPanel4.HTMLElement);
 
 //Save reference to tabPanels.
 
@@ -368,7 +422,7 @@ arrLingElements.forEach((LingItem)=>{
 
 fillCombo2(arrObjectives){
 arrObjectives.forEach((objective)=>{
-console.log("Objective is here: ",objective.id);
+console.log("Objective is here: ",objective.id);   
 this.tapPanels[objective.lingElement.elementType].combo2.addOptionToCombo(objective.lingElement.elementText,objective.id,true);
     
 });
@@ -377,7 +431,7 @@ clearCombo2(tabNumber){
 this.tapPanels[tabNumber-1].combo2.clearCombo();
 }
 resetCheckBoxValues(tabNumber){
-this.tapPanels[tabNumber-1].listOfCheckBox.resetCheckBoxState();
+  this.tapPanels[tabNumber-1].listOfCheckBox.resetCheckBoxState();
 }
 
 updateAllCheckBoxValues(tabNumber,arrSkills){
@@ -414,7 +468,12 @@ let combo2Text = combo2Element.options[combo2Element.selectedIndex].text;
 
 return combo2Text;
 }
+getCombo2Value(tabNumber) {
+let combo2Element = this.tapPanels[tabNumber-1].combo2.HTMLElement;
+let combo2Value = combo2Element.options[combo2Element.selectedIndex].value;
 
+return combo2Value;
+}
 
 }
 
@@ -499,6 +558,53 @@ this.viewReciever.resetCheckBoxValues(this.tabNumber)
 }  
 }
 
+class GetObjectiveUniqueSubQuizesId {
+constructor(DataReciever){
+this.dataReciever=DataReciever;
+
+
+}
+execute(slideId){
+
+let uniqueSubQuizValues = this.dataReciever.getObjectiveUniqueSubQuizesId(slideId);
+return uniqueSubQuizValues;
+
+}  
+}
+
+class GetSubQuizesArrayfromSlide {
+constructor(DataReciever){
+this.dataReciever=DataReciever;
+
+
+}
+execute(slideId){
+let slideObj=this.dataReciever.getSlideById(slideId);
+let arrSubQuizes = this.dataReciever.getSubQuizesArrayfromSlide(slideObj);
+return arrSubQuizes;
+
+}  
+}
+
+class GetSubQuizesIdsArrayfromSlide {
+constructor(DataReciever){
+this.dataReciever=DataReciever;
+
+
+}
+execute(slideId){
+let arrSubQuizesId =[];
+let slideObj=this.dataReciever.getSlideById(slideId);
+let arrSubQuizes = this.dataReciever.getSubQuizesArrayfromSlide(slideObj);
+arrSubQuizesId=arrSubQuizes.map((item)=> item.id);
+return arrSubQuizesId;
+
+}  
+}
+
+
+
+
 
 class AddSkillsCheckBox {
 constructor(ViewReciever,DataReciever){
@@ -513,6 +619,8 @@ if(this.dataReciever.currentObjective!=null){
   if (e.target.checked){
 
     let skillObj = this.dataReciever.getSkillFromSkillarrayById(e.target.value);
+    console.log(e.target.value);
+    console.log(skillObj);
     this.dataReciever.addSkill(skillObj)
 
     console.log(this.dataReciever.currentObjective);
@@ -541,8 +649,8 @@ execute(){
 this.viewReciever.tapPanels.forEach((item,index)=>{
   item.combo2.onChange((e)=>{
     //Refresh: set current Objective and update checkBoxes Skill Value
-    let lingElementText=e.target.options[e.target.selectedIndex].text;
-    this.dataReciever.setCurrentObjective(lingElementText);
+    let objectiveId=e.target.options[e.target.selectedIndex].value;
+    this.dataReciever.setCurrentObjective(objectiveId);
     let arrSkills = this.dataReciever.getCurrentObjectiveSkills();
     this.viewReciever.resetCheckBoxValues(index+1)
     this.viewReciever.updateAllCheckBoxValues(index+1,arrSkills);
@@ -562,27 +670,33 @@ this.viewReciever=ViewReciever;
 this.dataReciever = DataReciever;
 }
 execute(){
-let tab_Addfn = (e,txtOption,OptionValue)=>{
+let tab_Addfn = (e)=>{
 
 let tabNumber = this.viewReciever.getTabNumberFromId(e);
 let objectiveId =this.dataReciever.generateObjectiveId();
+console.log(objectiveId);
 
 //get array of all SceneLingElements
 let arrSceneSubjects = this.dataReciever.getSceneSubjects()
 let arrElementLing = this.dataReciever.getSceneElements(arrSceneSubjects)
+console.log("we are her in add Action see arrElementLing: ",e.detail)
 
-let lingElement = this.dataReciever.getLingElementById(OptionValue,arrElementLing)
+let lingElement = this.dataReciever.getLingElementById(e.detail,arrElementLing)
 console.log("we are her in add Action: ",lingElement)
 this.dataReciever.addObjective(objectiveId, lingElement);
 
-this.dataReciever.setCurrentObjective(lingElement.elementText);
+this.dataReciever.setCurrentObjective(objectiveId);
+console.log(this.dataReciever.currentObjective,": ",objectiveId);
 let arrSkills = this.dataReciever.getCurrentObjectiveSkills();
-this.viewReciever.resetCheckBoxState(tabNumber)
+this.viewReciever.resetCheckBoxValues(tabNumber)
 this.viewReciever.updateAllCheckBoxValues(tabNumber,arrSkills);
+console.log(this.dataReciever.ListOfObjectives);
+return objectiveId;
 }
 
 this.viewReciever.tapPanels.forEach((tapPanel)=>{
-// tapPanel.addBtnOnClick(tab_Addfn);
+tapPanel.addButton.HTMLElement.addEventListener("added",tab_Addfn);
+//tapPanel.addBtnOnClick(tab_Addfn);
 });
 
 
@@ -609,9 +723,9 @@ let numberOfInsertedSkills = this.viewReciever.getCombo2Length(tabNumber);
 
 // check if > 0
 if(numberOfInsertedSkills>0){
-  let lingElementText = this.viewReciever.getCombo2Text(tabNumber); 
-  console.log("current LingElementText: ",lingElementText);
-  this.dataReciever.setCurrentObjective(lingElementText);
+  let objectiveId = this.viewReciever.getCombo2Value(tabNumber); 
+  console.log("current LingElementText: ",objectiveId);
+  this.dataReciever.setCurrentObjective(objectiveId);
   let arrSkills = this.dataReciever.getCurrentObjectiveSkills();
   console.log("Array of skills: ",arrSkills);
 
@@ -626,7 +740,8 @@ console.log(this.dataReciever.ListOfObjectives);
 }
 
 this.viewReciever.tapPanels.forEach((tapPanel)=>{
-// tapPanel.removeBtnOnClick(tab_RemoveFn);
+tapPanel.addButton.HTMLElement.addEventListener("removed",tab_RemoveFn);
+//tapPanel.removeBtnOnClick(tab_RemoveFn);
 });
 
 
@@ -649,6 +764,8 @@ this.operationModeCommand=null;
 
 
 }
+
+
 clearCommand(){
 this.commands=[];
 }
@@ -670,8 +787,8 @@ this.commands.forEach((item)=>item.execute());
 
 }
 
-pressUpdate(showType,subQuizId){
-this.updateCommands.forEach((item)=>item.execute(showType,subQuizId));
+pressUpdate(slideObj,showType,subQuizId){
+this.updateCommands.forEach((item)=>item.execute(slideObj,showType,subQuizId));
 }
 
 pressSave(){

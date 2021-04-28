@@ -172,20 +172,62 @@ function removeAllChildNodes(parent) {
 
 //Enums
 //text-word, text-sentence[text-question-title, text-hint, text-subquiz,text-answer], text-read, pic-photo, pic-drawing, video-photography, video-animation, video-slide-show, sound-record, sound-effect, animation[animation-object, animation-interactive, slide-transition], 
+
 const MediaType = {                
-    Text_word: "text-word",
-    Text_sentence: "text-sentence",
-    text_read: "text-read",
-    pic_photo: "pic-photo",
-    pic_drawing: "pic-drawing",
-    video_photography: "video-photography",
-    video_animation: "video-animation",
-    video_slide_show: "video-slide-show",
-    sound_record: "sound-record",
-    sound_effect: "sound-effect",
-    animation_object:"animation-object",
-    animation_interactive:"animation-interactive",
-    slide_transition:"slide-transition"
-       
+  Text_word: "text-word",
+  Text_sentence: "text-sentence",
+  text_read: "text-read",
+  pic_photo: "pic-photo",
+  pic_drawing: "pic-drawing",
+  video_photography: "video-photography",
+  video_animation: "video-animation",
+  video_slide_show: "video-slide-show",
+  sound_record: "sound-record",
+  sound_effect: "sound-effect",
+  animation_object:"animation-object",
+  animation_interactive:"animation-interactive",
+  slide_transition:"slide-transition",
+  Time_obj:"time_obj",
+  degree_score:"degree_score"
+     
 }
 
+const TextSentence = {              //save this values in mediaObject.tag
+  text_question_title: "text-question-title",
+  text_hint: "text-hint",
+  text_subquiz: "text-subquiz",
+  text_answer: "text-answer",
+  text_time:"text_time"
+}
+
+const QuizTypes = {
+SSorting: "SSorting",
+LSorting: "LSorting",
+TorF: "TorF",
+Category: "Category",
+DragDrop: "DragDrop",
+MChoices: "MChoices",
+FIB: "FIB",
+HWord: "HWord",
+SQuestion: "SQuestion"
+}
+const TxtEntryPostfix = {        // old SubQuizPostfix
+  SubQuizInput: "SI",
+  AnswerInput: "AI",
+  SubQuizPreview:"SP",
+  AnswerPreview:"AP"
+
+}
+const SaveType = {
+SubQuiz:0,
+Answer:1
+}
+
+const fibOptions = {
+fib_words: "fib-missing-words",
+fib_dragdrop: "fib-dragdrop-words",
+fib_mchoice: "fib-multiple-words"
+}
+
+// Max no of answers to be inserted in multiple choice quiz
+const MaxNoOfAnswers = 5;
