@@ -93,7 +93,6 @@ const AddonsType = {
 // }
 
 
-
 class QuizSkeleton{
   constructor(quizType){
     let btnId = "Id-Sorting-add-button";
@@ -183,17 +182,13 @@ class QuizSkeleton{
 }
 
 
-class SSortingQuiz {
-
-  
+class SSortingQuiz {  
     create(){
       let SSortingView = new QuizSkeleton(QuizTypes.SSorting);
     
       
       return SSortingView;
-    }
-    
-    
+    }  
 }
 
 class LSortingQuiz {
@@ -787,28 +782,106 @@ class OnineClassAddons {
 
 class AnimSlideTransGAddons {
   create(){
-    let classLabel=document.createElement("label");
-    classLabel.textContent="AnimSlideTrans_GAddons";
-    classLabel.classList.add("label-class");
-    return classLabel;
+
+    let divWrapper = document.createElement("div");
+    let comboId="ani-slide-combo-Id";
+    let imgId = "ani-slide-img-Id";
+    let comboLabelTitle= "اختر الحركة"
+    let animAddons = new ComboShowGifComponent(comboId,imgId,comboLabelTitle)
+    console.log(_projLib);
+    
+    let listId = "Id-list-slideTransition";
+    let inputSlideLabel="حركة الانتقال بين المشاهد";
+    let inputTextId ="Id-text-slideTransition";
+    let inputPlaceholder="أدخل حركة جديدة";
+    let addBtnId ="Id-addBtn-slideTransition";
+
+    let insertSlideTransitionList = new ListWithLabelAndInputComponent(listId,inputSlideLabel,inputTextId,inputPlaceholder,addBtnId);
+
+    divWrapper.appendChild(animAddons.HTMLElement);
+    divWrapper.appendChild(insertSlideTransitionList.HTMLElement);
+        // let fn = (e)=>{
+        //   console.log("function",e.target)
+        //   animAddons.image.src = e.target.value;
+        // }
+
+        // values.forEach((value)=>{
+
+        //   animAddons.combo.addOptionToCombo(value.name, value.link, true);
+        // });
+
+        // animAddons.combo.onChange(fn)
+          
+        
+        
+        // if (values.length !== 0) {
+        //   animAddons.image.src=values[0].link;
+        // }
+
+
+
+
+
+
+    return divWrapper;
   }
 }
 
 class QuestionTitleGAddons {
   create(){
-    let classLabel=document.createElement("label");
-    classLabel.textContent="Question_title_GAddons";
-    classLabel.classList.add("label-class");
-    return classLabel;
+    // should be changed to General Title that cover Question or any slide.
+    //think about changing the text to mediaObjEntry if needed.
+
+   
+    let textareaId = "Id-textarea-questionTitle";
+    let labelTitle="ادخال صيغة السؤال";
+    let numberOfRow = 8;
+    let dataControl = new ItemsDataReciever();
+    let mediaType = MediaType.Text_sentence;
+    let tag = TextSentence.text_question_title;
+            
+    let currentItem = _courses.getCurrentItem().dataObj;
+    currentItem.type=mediaType;
+    
+    let questionTitleAdddons = new TextareaLabelComponent(textareaId,labelTitle,numberOfRow);
+    
+
+    questionTitleAdddons.textarea.HTMLElement.value=currentItem.text;
+
+    questionTitleAdddons.textarea.onEvent("blur",(e)=>{
+      let mediaText=e.target.value;
+      dataControl.updateMediaObj(currentItem,"No-Change",mediaText,mediaType,tag)
+    });
+
+
+    return questionTitleAdddons.HTMLElement;  
   }
 }
 
 class QuestionHitGAddons {
   create(){
-    let classLabel=document.createElement("label");
-    classLabel.textContent="Question_hint_GAddons";
-    classLabel.classList.add("label-class");
-    return classLabel;
+    let textareaId = "Id-textarea-questionHint";
+    let labelTitle="ادخال مساعدة للطالب لحل السؤال";
+    let numberOfRow = 8;
+    let dataControl = new ItemsDataReciever();
+    let mediaType = MediaType.Text_sentence;
+    let tag = TextSentence.text_hint;
+            
+    let currentItem = _courses.getCurrentItem().dataObj;
+    currentItem.type=mediaType;
+    
+    let questionHintAdddons = new TextareaLabelComponent(textareaId,labelTitle,numberOfRow);
+    
+
+    questionHintAdddons.textarea.HTMLElement.value=currentItem.text;
+
+    questionHintAdddons.textarea.onEvent("blur",(e)=>{
+      let mediaText=e.target.value;
+      dataControl.updateMediaObj(currentItem,"No-Change",mediaText,mediaType,tag)
+    });
+
+
+    return questionHintAdddons.HTMLElement;
   }
 }
 
@@ -829,46 +902,121 @@ class ObjectivesGAddons {
   create(){
 
     let divWrapper = document.createElement("div");
+    let comboSlidId ="Id-Objective-slide-combo";
     let comboId = "Id-Objective-combo"
     let textareaId= "";
     let textareaLabel="عرض محتوى السؤال الفرعي";
-    let selectCombo = new ComboLabelComponent(comboId,"اختيار");
+    let dataItemReciever = new ItemsDataReciever();
+    
+    let slideCombo = new ComboLabelComponent(comboSlidId,"اختيار السلايد");
+    let selectCombo = new ComboLabelComponent(comboId,"تحديد الكل أو السؤال الفرعي");
     let statementValueTextarea = new TextareaLabelComponent(textareaId,textareaLabel,3)
     let newObjectiveTab = new ObjectivesTab(ModeOfOperation.SaveDirect);
-    let arrUniqueLinkId = newObjectiveTab.getUniqueLinkId()
+    
+    let dataObjectiveReciever = new ObjectiveDataReciever();
+    let getUniqueSubQuizesCommand = new GetSubQuizesIdsArrayfromSlide(dataObjectiveReciever);     
+    //let fillCombo2Command = new 
+    let arrSlidesIds = dataObjectiveReciever.getSlidceIds();
+    let arrUniqueLinkId=[];
+
+      
+    
     
     //Layout
-    // grid-template-areas:"a a a"
+    // grid-template-areas:
+    //                     "a a a"
     //                     "b b b"
     //                     "c c c"
-    //                     "d d d"; for Table
+    //                     "d d d"
+    //                     "e e e"; for Table
     divWrapper.classList.add("objective-view");
-    selectCombo.HTMLElement.classList.add("layout-a");
-    statementValueTextarea.HTMLElement.classList.add("layout-b");
-    newObjectiveTab.HTMLElement.classList.add("layout-c");
+    slideCombo.HTMLElement.classList.add("layout-a")
+    selectCombo.HTMLElement.classList.add("layout-b");
+    statementValueTextarea.HTMLElement.classList.add("layout-c");
+    newObjectiveTab.HTMLElement.classList.add("layout-d");
 
 
-
-    newObjectiveTab.fillCombo2(ShowType.All,"");
-    if (arrUniqueLinkId.length>0) {
-      arrUniqueLinkId.forEach((item)=>{
-        item.forEach((value)=>{
-          selectCombo.combo.addOptionToCombo(value.id,value.statement,true);
-        })
-        
-      })
+    if(arrSlidesIds.length>0){
+      arrUniqueLinkId = getUniqueSubQuizesCommand.execute(arrSlidesIds[0]);
     }
 
-    if (selectCombo.combo.HTMLElement.options.length>0){
-      statementValueTextarea.textarea.HTMLElement.value = selectCombo.combo.HTMLElement.value;
-    }
     
-
-    selectCombo.combo.onChange((e)=>{
-      statementValueTextarea.textarea.HTMLElement.value = arget.value;
-      console.log("textare Value: ",e.target.value);
+    arrSlidesIds.forEach((item,ind)=>{
+      slideCombo.combo.addOptionToCombo("السلايد رقم: "+(ind+1), item, true)
     })
 
+
+    selectCombo.combo.addOptionToCombo("عرض عناصر السلايد كامل مع الأسئلة", "All-Slide", true)
+    
+    arrUniqueLinkId.forEach((item,ind)=>{
+      selectCombo.combo.addOptionToCombo("السؤال الفرعي رقم: "+(ind+1), item, true)
+    })
+   
+    slideCombo.combo.onChange((e)=>{
+      selectCombo.combo.clearCombo();
+      selectCombo.combo.addOptionToCombo("عرض عناصر السلايد كامل مع الأسئلة", "All-Slide", true)
+      statementValueTextarea.textarea.HTMLElement.value="";
+      arrUniqueLinkId = getUniqueSubQuizesCommand.execute(e.target.value);
+      newObjectiveTab.setObjectiveList(ModeOfOperation.SaveDirect,e.target.value);
+      
+      arrUniqueLinkId.forEach((item,ind)=>{
+        selectCombo.combo.addOptionToCombo("السؤال الفرعي رقم: "+(ind+1), item, true)
+      })
+
+      if(selectCombo.combo.HTMLElement.options.length>0){
+        updateSelectCombo(selectCombo.combo.HTMLElement.value);
+      }
+
+    })
+    
+    
+    let updateSelectCombo = (selectComboValue)=>{
+      if(selectComboValue!="All-Slide"){
+        let slideObj = dataObjectiveReciever.getSlideById(slideCombo.combo.HTMLElement.value);
+        let arrSubQuizes = dataObjectiveReciever.getSubQuizesArrayfromSlide(slideObj);
+        let subQuizObj =dataObjectiveReciever.getSubQuizByIdFromSubQuizArray(arrSubQuizes,selectComboValue);
+       
+        statementValueTextarea.textarea.HTMLElement.value =dataItemReciever.getSubQuizData(subQuizObj,MediaType.Text_sentence);
+        newObjectiveTab.clearTab();
+        newObjectiveTab.updateLinkId(ShowType.SubQuizId,selectComboValue);
+      } else {
+        newObjectiveTab.clearTab();
+        newObjectiveTab.updateLinkId(ShowType.All,selectComboValue);
+      }
+      
+        
+       
+
+    }
+    selectCombo.combo.onChange((e)=>{
+      updateSelectCombo(e.target.value);
+      
+           
+    });
+
+    if(selectCombo.combo.HTMLElement.options.length>0){
+      updateSelectCombo(selectCombo.combo.HTMLElement.value);
+    }
+
+    // if (selectCombo.combo.HTMLElement.options.length>0){
+      
+    //   let slideObj = dataObjectiveReciever.getSlideById(slideCombo.combo.HTMLElement.value);
+    //   console.log("slideObj: ",slideObj);
+    //   let arrSubQuizes = dataObjectiveReciever.getSubQuizesArrayfromSlide(slideObj);
+    //   console.log(arrSubQuizes);
+    //   console.log("selectCombo Value",selectCombo.combo.HTMLElement.value);
+    //   let subQuizObj =dataObjectiveReciever.getSubQuizByIdFromSubQuizArray(arrSubQuizes,selectCombo.combo.HTMLElement.value);
+    //   console.log("subQuizObj: ",subQuizObj);
+      
+
+    //   statementValueTextarea.textarea.HTMLElement.value =dataItemReciever.getSubQuizData(subQuizObj,MediaType.Text_sentence);
+    // }
+
+
+
+
+
+    divWrapper.appendChild(slideCombo.HTMLElement);
     divWrapper.appendChild(selectCombo.HTMLElement);
     divWrapper.appendChild(statementValueTextarea.HTMLElement);
     divWrapper.appendChild(newObjectiveTab.HTMLElement);
@@ -879,19 +1027,168 @@ class ObjectivesGAddons {
 
 class TestTimeGAddons {
   create(){
-    let classLabel=document.createElement("label");
-    classLabel.textContent="TestTime_GAddons";
-    classLabel.classList.add("label-class");
-    return classLabel;
+    
+    let setTimeCom = new setTime();
+    let dataControl = new ItemsDataReciever();
+    let mediaType = MediaType.Time_obj;
+    
+            
+    let currentItem = _courses.getCurrentItem().dataObj;
+    currentItem.type=mediaType;
+
+
+    if(currentItem.text!=""){
+      let timeDuration = dataControl.getTime(currentItem);
+
+      setTimeCom.setValue(timeDuration.hour,timeDuration.min);
+    }
+
+    dataControl.saveTime(currentItem,setTimeCom.getValue());
+
+
+    let changeValue = ()=>{
+      dataControl.saveTime(currentItem,setTimeCom.getValue());      
+      
+    }
+
+    setTimeCom.onChange(changeValue);
+
+    return setTimeCom.HTMLElement;
   }
 }
 
 class QuestionScoreGAddons {
   create(){
-    let classLabel=document.createElement("label");
-    classLabel.textContent="qustion_score_GAddons";
-    classLabel.classList.add("label-class");
-    return classLabel;
+    let divWrapper = document.createElement("div");
+    let listId = "Id-questionScore";
+    let listSubQuizesTitle="الأسئلة";
+    let textareaId = "Id-text-quiz-score"
+    let subQuizLabelTitle="صيغة السؤال الفرعي";
+    let scoreId="Id-score";
+    let scoreName="quizScore";
+    let scoreMinValue=1;
+    let scoreMaxValue=100;
+    this.scoreDefaultValue=5;
+    
+    let listOfSubQuiz = new ListWithLabelComponent(listId,listSubQuizesTitle);
+    let subQuizTitle = new TextareaLabelComponent(textareaId,subQuizLabelTitle,8);
+    let subQuizScore = new IncreamentComponent(scoreId,scoreName,scoreMinValue,scoreMaxValue,this.scoreDefaultValue);
+    let dataObjectiveReciever = new ObjectiveDataReciever();
+    
+    let dataControl = new ItemsDataReciever();
+    let getUniqueSubQuizesCommand = new GetSubQuizesIdsArrayfromSlide(dataObjectiveReciever); 
+    let currentItem = _courses.getCurrentItem().dataObj;
+    let currentSlide = _courses.getCurrentSlideObj();
+    let currentSubQuizId ="";
+
+    this.scoreObjects =[];
+
+    currentItem.type=MediaType.degree_score;
+
+    divWrapper.classList.add("set-score");
+    listOfSubQuiz.HTMLElement.classList.add("layout-a");
+    subQuizTitle.HTMLElement.classList.add("layout-b");
+    subQuizScore.HTMLElement.classList.add("layout-c");
+
+
+    let arrSubQuizes = getUniqueSubQuizesCommand.execute(currentSlide.id);
+    
+    if (arrSubQuizes.length>0){
+      currentSubQuizId=arrSubQuizes[0]
+
+    }
+
+
+    if(currentItem.text!=""){
+      let savedScoreObjects = dataControl.getScore(currentItem);
+      this.scoreObjects=savedScoreObjects;
+      let subQuizArrayFSO = this.getSubQuizArrayFromScoreObjects(this.scoreObjects);
+      let scoreObjectsChanged =this.adjustScoreObjectsSubQuizes(subQuizArrayFSO,arrSubQuizes);
+
+      if(scoreObjectsChanged){
+        dataControl.saveScore(currentItem,this.scoreObjects);
+      }
+      
+    } else {
+      arrSubQuizes.forEach((item,ind)=>{
+        let scoreObj = new ScoreObj(item,this.scoreDefaultValue);
+        this.scoreObjects.push(scoreObj);
+      });
+      dataControl.saveScore(currentItem,this.scoreObjects);
+    }
+
+    let fnSubQuizClick = (btnId)=>{
+      console.log("btnId : ",btnId);
+      currentSubQuizId=btnId;
+      let arrSubQuizes = dataObjectiveReciever.getSubQuizesArrayfromSlide(currentSlide);
+      let subQuizObj =dataObjectiveReciever.getSubQuizByIdFromSubQuizArray(arrSubQuizes,currentSubQuizId);
+      subQuizTitle.textarea.HTMLElement.value =dataControl.getSubQuizData(subQuizObj,MediaType.Text_sentence);
+
+      let scoreValue = this.getScoreBySubQuizId(currentSubQuizId).score;
+      subQuizScore.setValue(scoreValue);
+      
+    }
+
+    arrSubQuizes.forEach((item,ind)=>{
+      console.log(item);
+      listOfSubQuiz.listElement.addButtonToList("السؤال الفرعي رقم: "+(ind+1), item,fnSubQuizClick,false);
+      
+    })
+    
+    
+
+
+    let changeValue = ()=>{
+      
+      let newScore=subQuizScore.getValue();
+      this.changeScore(currentSubQuizId,newScore);
+      dataControl.saveScore(currentItem,this.scoreObjects);      
+      
+    }
+
+    subQuizScore.onChange(changeValue);
+
+    divWrapper.appendChild(listOfSubQuiz.HTMLElement);
+    divWrapper.appendChild(subQuizTitle.HTMLElement);
+    divWrapper.appendChild(subQuizScore.HTMLElement);
+
+    return divWrapper;
+  }
+
+  changeScore(subQuizId,newScore){
+    let modifiedScoreObj = this.scoreObjects.find(scoreObj=>scoreObj.subQuizId==subQuizId);
+    modifiedScoreObj.score=newScore;
+
+  }
+  getScoreBySubQuizId(subQuizId){
+    let _scoreObj = this.scoreObjects.find(scoreObj=>scoreObj.subQuizId==subQuizId);
+    return _scoreObj;
+  }
+
+  getSubQuizArrayFromScoreObjects(scoreObjects){
+    let subQuizArrayFSO=scoreObjects.map((item)=>item.subQuizId);
+    return subQuizArrayFSO;
+  }
+
+  adjustScoreObjectsSubQuizes(subQuizArrayFSO,arrSubQuizes){
+    let changed = false;
+
+    arrSubQuizes.forEach((item)=>{
+      if(subQuizArrayFSO.indexOf(item)==-1){
+        let scoreObj = new ScoreObj(item,this.scoreDefaultValue);
+        this.scoreObjects.push(scoreObj);
+        changed=true;
+      }
+    })
+
+    subQuizArrayFSO.forEach((item)=>{
+      if(arrSubQuizes.indexOf(item)==-1){
+        let indexToDelete = this.scoreObjects.indexOf(item);
+        this.scoreObjects.splice(indexToDelete,1);
+        changed=true;
+      }
+    })
+    return changed;
   }
 }
 

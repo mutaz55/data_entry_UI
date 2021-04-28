@@ -715,7 +715,6 @@ color:#ffffff;
     transition: box-shadow .3s, border .3s, -webkit-box-shadow .3s;
 }
 
-
 /* new course label */
 .sidenav1-labels {
     position: relative;
@@ -2021,13 +2020,13 @@ overflow: hidden;
   grid-template-areas:"a a a"
                       "b b b"
                       "c c c"
-                      "d d d";
+                      "d d d"
+                      "e e e";
                                          
 margin-bottom: 15px;
 padding: 15px 20px;
 
 }
-
 
 
 .quiz-input{
@@ -2045,14 +2044,11 @@ padding: 15px 20px;
   padding: 15px 20px;
 
 }
-
 .quiz-input__SS-layout{
   grid-template-areas:". a ."
                       "b b b"
                       "b b b";
 }
-
-
 .SS-quiz-layout-input{
   border: 1px solid var(--main-color-darkblue);
   border-radius: 10px;
@@ -2091,6 +2087,51 @@ padding: 15px 20px;
 
 }
 
+
+.label-time {
+  
+  background-color: #dce9ec;
+  border: 2px solid #2fa091;
+  font-family: 'Almarai', sans-serif;
+  color:#167070;
+  width: auto;
+  border-radius: .25rem;
+   text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  padding: 5px 10px;
+  position: relative;
+  
+}
+
+
+.set-time{
+  border: 3px solid #2fa091;;
+  border-radius: 10px;  
+  direction: rtl;
+  display: grid;
+  gap:1rem;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  grid-template-rows: .1hv .1hv ;
+  grid-template-areas:"a b"
+                      "c d";
+  padding: 15px 20px;
+  width:50%;
+}
+
+.set-score{
+  border: 3px solid #2fa091;;
+  border-radius: 10px;  
+  direction: rtl;
+  display: grid;
+  gap:1rem;
+  
+  grid-template-rows: .1hv .1hv ;
+  grid-template-areas:"a b"
+                      "a c";
+  padding: 15px 20px;
+ 
+}
 .layout-a{
   grid-area: a;
   
@@ -2113,6 +2154,10 @@ padding: 15px 20px;
 
 .layout-d{
   grid-area: d;
+  
+}
+.layout-e{
+  grid-area: e;
   
 }
 .layout-f{
@@ -2160,7 +2205,6 @@ padding: 15px 20px;
 .padding__zero{
   padding:0px !important;
 }
-
 .padding__meduim{
   padding: 15px !important;
 }
@@ -2203,8 +2247,7 @@ padding: 15px 20px;
   display: block;
 }
 .component-container--horizontal{
- display: inline-flex;
- 
+ display: inline-flex; 
  width: 100%;
  position: relative;
 
@@ -2281,6 +2324,10 @@ height: 20rem;
 
 }
 
+.radioBtns-container {
+  border: none;
+}
+
 
 /* TabClasses */
 
@@ -2294,7 +2341,6 @@ height: 20rem;
   margin: 0 auto;
   
 }
-
 
 .tabset-component {
   /* padding-top:10px;
@@ -2345,7 +2391,6 @@ height: 20rem;
   margin:0 13px;
   transition: .3s;
 }
-
 
 .tab-label-component:hover{
 

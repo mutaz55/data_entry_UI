@@ -15,19 +15,14 @@ const maxLengthInputBox = 150;
 
 
 class TextareaComponent {
-
-  constructor(textareaId,rowNumber){
-    
+  constructor(textareaId,rowNumber){    
     let textareaElement = document.createElement("textarea");
     textareaElement.id = textareaId;
     textareaElement.rows = rowNumber;
-
     textareaElement.maxLength = maxLengthOfTextarea;
-    
     textareaElement.className = "textarea-description textarea-resize-vertically"
-      
+     
     this.HTMLElement = textareaElement;
-
 
   }
 
@@ -192,7 +187,6 @@ class CloseBoxComponent {
 
 
 class RadioComponent {
-
   constructor(radioId,radioName,checked){
   
   let inputRadio = document.createElement("input");
@@ -211,7 +205,7 @@ class RadioComponent {
   this.HTMLElement = inputRadio;
   
   }
- 
+
   onChange(fn) {
     this.HTMLElement.addEventListener('change', function (e) {
       fn(e);
@@ -311,19 +305,14 @@ class ListComponent {
  
   constructor(listId){
 
-    let divList = document.createElement("div");
-    
+    let divList = document.createElement("div");    
     divList.classList.add("list-group");
-
-    divList.id=listId;
-    
+    divList.id=listId;    
     this.selectedId = -1;
     this.selectedTxt = '';
-
     this.HTMLElement= divList;
   }
 
- 
   // remove all items from the list
   clearList(){
     if (this.HTMLElement.firstChild) {
@@ -381,7 +370,7 @@ class ListComponent {
               this.HTMLElement.dispatchEvent(changedSelectedEvent);
 
               if (fnOnClick){
-                  fnOnClick(btn.id);
+                  fnOnClick(btn.HTMLElement.id);
               }
 
           }
@@ -442,20 +431,17 @@ class ComboComponent {
     comboSelect.id = comboId;
     this.HTMLElement = comboSelect;
   }
-
-  clearCombo() {
+  clearCombo(){
     removeAllChildNodes(this.HTMLElement);
   }
 
-  addOptionToCombo(txtOption, OptionValue, addToEnd) {
+  addOptionToCombo(txtOption, OptionValue, addToEnd){
     let newOption = document.createElement("option");
     let optionText = document.createTextNode(txtOption);
-
-    // and option value
-    newOption.setAttribute("value", OptionValue);
     // set option text
     newOption.appendChild(optionText);
-
+    // and option value
+    newOption.setAttribute("value", OptionValue);  
     // add the option to the select box
     addToEnd
       ? this.HTMLElement.appendChild(newOption)
@@ -476,8 +462,8 @@ class ComboComponent {
 
   checkIfAdded(OptionValue) {
     let available = false;
-
     Array.from(this.HTMLElement.options).forEach((element) => {
+
       if (element.value == OptionValue) {
         available = true;
       }
@@ -672,10 +658,7 @@ class messagesComponent{
     divMsg.appendChild(spanMsg);
     return divMsg;
 
-
-
 }
-
 
 }
 
@@ -719,76 +702,110 @@ class messagesComponent{
 
 
 
-
-// class IncreamentComponent {
-//  constructor(IncreamentId,IncreamentName){
-
-//   let divWrapper= document.createElement("div");
-//   let btnStepDown = document.createElement("button");
-//   let btnStepUp = document.createElement("button");
-//   let strongStepDown = document.createElement("strong");
-//   this.increamentInput = document.createElement("input");
-
-//   btnStepDown.id=IncreamentId+"_down";
-//   btnStepUp.id=IncreamentId+"_up";
-
-
-//   let stepUpTxt = encodeURI("+");
-//   strongStepDown.appendChild(document.createTextNode(encodeURI("-")));
-
-//   this.increamentInput.type="number";
-//   this.increamentInput.min=0;
-//   this.increamentInput.value=1;
-//   this.increamentInput.id=IncreamentId;
-//   this.increamentInput.name=IncreamentName;
-
-//   divWrapper.classList.add("number-input");
-//   btnStepDown.classList.add("remove-btn-increment");
-//   btnStepUp.className="plus add-btn-increment";
-//   this.increamentInput.classList.add("quantity");
-
-
-//   btnStepDown.appendChild(strongStepDown);
-//   btnStepUp.appendChild(document.createTextNode(stepUpTxt));
-
-//   btnStepDown.addEventListener("click",()=>{
-    
-//   let inputIncreament =document.getElementById(IncreamentId);
-//   let valueNumber=parseInt(inputIncreament.value);
-
-//   if (Number.isInteger(valueNumber)&&valueNumber>0){
-//     inputIncreament.value=valueNumber-1;
-    
-//   }
-//   })
-
-//   btnStepUp.addEventListener("click",()=>{
-    
-//     let inputIncreament =document.getElementById(IncreamentId);
-//     let valueNumber=parseInt(inputIncreament.value);
-    
-//     if (Number.isInteger(valueNumber)){
-//       inputIncreament.value=valueNumber+1;
+class IncreamentComponent {
+  constructor(IncreamentId,IncreamentName,minValue,maxValue,defaultValue){
+ 
+   let divWrapper= document.createElement("div");
+   let btnStepDown = document.createElement("button");
+   let btnStepUp = document.createElement("button");
+   let strongStepDown = document.createElement("strong");
+   this.increamentInput = document.createElement("input");
+ 
+   btnStepDown.id=IncreamentId+"_down";
+   btnStepUp.id=IncreamentId+"_up";
+ 
+ 
+   let stepUpTxt = encodeURI("+");
+   strongStepDown.appendChild(document.createTextNode(encodeURI("-")));
+ 
+   this.increamentInput.type="number";
+   this.increamentInput.min=minValue;
+   this.increamentInput.max=maxValue;
+   this.increamentInput.value=defaultValue;
+   this.increamentInput.id=IncreamentId;
+   this.increamentInput.name=IncreamentName;
+ 
+   divWrapper.classList.add("number-input");
+   btnStepDown.classList.add("remove-btn-increment");
+   btnStepUp.className="plus add-btn-increment";
+   this.increamentInput.classList.add("quantity");
+ 
+ 
+   btnStepDown.appendChild(strongStepDown);
+   btnStepUp.appendChild(document.createTextNode(stepUpTxt));
+ 
+   this.increamentInput.addEventListener("blur",()=>{
+ 
+    if(this.checkIfValueLessMin()){this.increamentInput.value=this.increamentInput.min;};
+    if(this.checkIfValueMoreMax()){this.increamentInput.value=this.increamentInput.max;};
+ 
+   })
+ 
+   btnStepDown.addEventListener("click",()=>{
+     let valueNumber=parseInt(this.increamentInput.value);
+   if(!this.checkIfValueLessMin()){
+     this.increamentInput.value=valueNumber-1;
+   } else {
+     this.increamentInput.value=this.increamentInput.min;
+ 
+   }
+         
+   })
+ 
+   btnStepUp.addEventListener("click",()=>{
+ 
+     let valueNumber=parseInt(this.increamentInput.value);
+     
+    if(!this.checkIfValueMoreMax()){
+     this.increamentInput.value=valueNumber+1;
+    } else {
+     this.increamentInput.value=this.increamentInput.max;
+    }
       
-//     }
-//   })
-
-//   divWrapper.appendChild(btnStepDown);
-//   divWrapper.appendChild(this.increamentInput);
-//   divWrapper.appendChild(btnStepUp);
-
-//   this.HTMLElement=divWrapper;
-
-//  }
-
-//  onChange(fn){
-   
-//   this.HTMLElement.querySelector("#"+this.increamentInput.id+"_down").addEventListener("click",fn);
-//   this.HTMLElement.querySelector("#"+this.increamentInput.id+"_up").addEventListener("click",fn);
-//  }
-
-// }
-
+   })
+ 
+   divWrapper.appendChild(btnStepDown);
+   divWrapper.appendChild(this.increamentInput);
+   divWrapper.appendChild(btnStepUp);
+ 
+   this.HTMLElement=divWrapper;
+ 
+  }
+   checkIfValueLessMin(){
+     let valueNumber=parseInt(this.increamentInput.value);
+ 
+       if (Number.isInteger(valueNumber)&&valueNumber>this.increamentInput.min){
+         return false;
+         
+       } else {
+         return true;
+       }
+   }
+   checkIfValueMoreMax(){
+     let valueNumber=parseInt(this.increamentInput.value);
+       
+     if (Number.isInteger(valueNumber)&&valueNumber<this.increamentInput.max){
+       return false;
+       
+     } else {
+       return true;
+     }
+ 
+   }
+ 
+  onChange(fn){
+    
+   this.HTMLElement.querySelector("#"+this.increamentInput.id+"_down").addEventListener("click",fn);
+   this.HTMLElement.querySelector("#"+this.increamentInput.id+"_up").addEventListener("click",fn);
+   this.increamentInput.addEventListener("blur",fn);
+  }
+  getValue(){
+    return this.increamentInput.value;
+  }
+  setValue(valueNumber){
+    this.increamentInput.value=valueNumber;
+  }
+  }
 
 
 class BtnInListComponent {
@@ -855,7 +872,6 @@ constructor(TextValue,listButtonId){
 
 
 // }
-
 
 class TextareaWithLabel {
 
@@ -1020,8 +1036,7 @@ class CheckBoxWithHiddenDiv {
   }
   
   onClick(fn){
-  
-    this.checkbox.onClick((e)=>{
+     this.checkbox.onClick((e)=>{
          
       if(e.target.checked){
   
@@ -1037,8 +1052,7 @@ class CheckBoxWithHiddenDiv {
   addElementToHiddenDiv(htmlElement){
       this.hiddenDiv.appendChild(htmlElement);
     }
-  
-  
+    
   }
 
 class ContainerWithLabel {
@@ -1113,56 +1127,56 @@ class ComboLabelComponent{
 
 
 //??
-// class ComboTextLabelComponent {
-//   constructor(comboId,textareaId,comboLabelTitle,textareaLabelTitle,textareaNumberOfRows ){
-//     let divWrapper = document.createElement("div");
-//     let comboComponent=new ComboLabelComponent (comboId,comboLabelTitle);
-//     let textareaComponent=new TextareaLabelComponent(textareaId,textareaLabelTitle,textareaNumberOfRows);
-//     this.combo= comboComponent.combo;
-//     this.textarea = textareaComponent.textarea;
-//     this.labelTitle = textareaComponent.labelTitle;
+class ComboTextLabelComponent {
+  constructor(comboId,textareaId,comboLabelTitle,textareaLabelTitle,textareaNumberOfRows ){
+    let divWrapper = document.createElement("div");
+    let comboComponent=new ComboLabelComponent (comboId,comboLabelTitle);
+    let textareaComponent=new TextareaLabelComponent(textareaId,textareaLabelTitle,textareaNumberOfRows);
+    this.combo= comboComponent.combo;
+    this.textarea = textareaComponent.textarea;
+    this.labelTitle = textareaComponent.labelTitle;
 
-//     comboComponent.HTMLElement.style.width="20%";
-//     comboComponent.HTMLElement.style.marginLeft="10px";
-//     textareaComponent.HTMLElement.style.width="80%";
-//     divWrapper.classList.add("component-container--horizontal");
+    comboComponent.HTMLElement.style.width="20%";
+    comboComponent.HTMLElement.style.marginLeft="10px";
+    textareaComponent.HTMLElement.style.width="80%";
+    divWrapper.classList.add("component-container--horizontal");
   
-//     divWrapper.appendChild(comboComponent.HTMLElement);
-//     divWrapper.appendChild(textareaComponent.HTMLElement);
-//     this.HTMLElement=divWrapper;
-//   }
+    divWrapper.appendChild(comboComponent.HTMLElement);
+    divWrapper.appendChild(textareaComponent.HTMLElement);
+    this.HTMLElement=divWrapper;
+  }
   
-// }
+}
 
-// class ComboShowGifComponent {
-//    constructor(comboId,imgId,comboLabelTitle){
-//     let divWrapper = document.createElement("div");
-//     let comboComponent=new ComboLabelComponent(comboId,comboLabelTitle);
-//     let ImageComponent=new ImageBoxComponent(imgId);
+class ComboShowGifComponent {
+   constructor(comboId,imgId,comboLabelTitle){
+    let divWrapper = document.createElement("div");
+    let comboComponent=new ComboLabelComponent(comboId,comboLabelTitle);
+    let ImageComponent=new ImageBoxComponent(imgId);
 
-//     this.combo= comboComponent.combo;
-//     this.image=ImageComponent.HTMLElement;
-//     comboComponent.HTMLElement.style.width="60%";
-//     comboComponent.HTMLElement.style.marginLeft="10px";
+    this.combo= comboComponent.combo;
+    this.image=ImageComponent.HTMLElement;
+    comboComponent.HTMLElement.style.width="60%";
+    comboComponent.HTMLElement.style.marginLeft="10px";
     
-//     divWrapper.classList.add("component-container--horizontal");
+    divWrapper.classList.add("component-container--horizontal");
   
-//     divWrapper.appendChild(comboComponent.HTMLElement);
-//     divWrapper.appendChild(ImageComponent.HTMLElement);
-//     this.HTMLElement=divWrapper;
-//   }
-// }
+    divWrapper.appendChild(comboComponent.HTMLElement);
+    divWrapper.appendChild(ImageComponent.HTMLElement);
+    this.HTMLElement=divWrapper;
+  }
+}
 
 
-// class ImageBoxComponent{
-//   constructor(ImageId){
-//     let imageElement = document.createElement("img");
-//     imageElement.id = ImageId;
-//     imageElement.classList.add("box-show-gif")
-//     this.HTMLElement=imageElement;
-//   }
+class ImageBoxComponent{
+  constructor(ImageId){
+    let imageElement = document.createElement("img");
+    imageElement.id = ImageId;
+    imageElement.classList.add("box-show-gif")
+    this.HTMLElement=imageElement;
+  }
 
-// } 
+} 
 // class InputTextWithAddBtnForListComponent {
 //   constructor(inputTextId,placeholder,btnId) {
 
@@ -1188,8 +1202,7 @@ class ComboLabelComponent{
 class ListWithLabelComponent {
   constructor(listId,labelTitle){
 
-    let divWrapper = document.createElement("div");
-    
+    let divWrapper = document.createElement("div");    
     this.labelListTitle = new LabelComponent(labelTitle,listId);
     this.listElement = new ListComponent(listId);
     
@@ -1669,7 +1682,8 @@ addListofCheckBoxs(listId,arrInputValues,tabNumber,isSwitchType,arrOnClickfn){
   this.listOfCheckBox = new ListOfRadioOrCheckBoxComponent(listId);
 
   arrInputValues.forEach((item,index)=>{
-    this.listOfCheckBox.addCheckBox(item.id+tabNumber,isSwitchType,item.text,item.value,arrOnClickfn)
+    this.listOfCheckBox.addCheckBox(item.id+tabNumber,item.value,isSwitchType,item.text,arrOnClickfn)
+    console.log("checkbox Value: ",item.value);
   });
     
   this.combo2DivWrapper.appendChild(this.listOfCheckBox.HTMLElement);
@@ -1694,7 +1708,7 @@ EnabelCheckboxes(){
      item.disabled=false;
    })
 }
-updateCheckboxeValue(checkBoxId,value){
+updateCheckboxValue(checkBoxId,value){
   let checkboxItem = this.HTMLElement.querySelector("#"+checkBoxId);
     console.log(checkboxItem);
 
@@ -1704,11 +1718,8 @@ updateCheckboxeValue(checkBoxId,value){
 
 } 
 
-
 class ToggleLabelWithContainer {
-
   constructor(lblId, labelTxt){
-  
     let divWrapper = document.createElement("div");
     
     this.hiddenDiv = document.createElement("div");
@@ -1735,9 +1746,7 @@ class ToggleLabelWithContainer {
       } else {
 
         this.hiddenDiv.style.maxHeight = this.hiddenDiv.scrollHeight + "px";
-
       } 
-    
     
     });
 
@@ -1754,6 +1763,10 @@ class ToggleLabelWithContainer {
   
 }
   
+
+
+
+
 class TabComponent {
 
   constructor(tabId = "tab-", maxTabNo = 5) {
@@ -2305,7 +2318,7 @@ class PreviewContainer {
 
     clearItems(){
 
-      removeAllChildNodes(this.divList);
+      removeAllChildNodes(this.divlist);
 
     }
   
@@ -2424,3 +2437,109 @@ class TableComponent {
 
     // newTable.generateTable(data, requiredFields);
     // container.appendChild(newTable.HTMLElement);
+
+
+    //*****************new added 20-4-2021 by Taha */
+ 
+  class setTime{
+      constructor(){
+        let divWrapper = document.createElement("div");
+        let hourId = "Id-hour";
+        let minId = "Id-min";
+        let hourName= "hour";
+        let minName = "min";
+        let hourMinValue = 0;
+        let hourMaxValue = 99;
+        let minMinValue =0;
+        let minMaxValue =59;
+        let hourDefaultValue = 0;
+        let minDefaultValue = 5;
+    
+        this.hourInc = new IncreamentComponent(hourId,hourName,hourMinValue,hourMaxValue,hourDefaultValue);
+        this.minInc = new IncreamentComponent(minId,minName,minMinValue,minMaxValue,minDefaultValue);
+        let hourLabel = new LabelComponent("الساعات ");
+        let minLabel = new LabelComponent("الدقائق ");
+        let iHour = document.createElement("i");
+        let iMin = document.createElement("i");
+    
+        iHour.classList.add("far");
+        iHour.classList.add("fa-clock");
+    
+        iMin.classList.add("fas");
+        iMin.classList.add("fa-stopwatch");
+       
+    
+        //buttons-panelHeader buttons-panelHeader--selected
+        addCssClass(hourLabel.HTMLElement, "label-time", true);
+        addCssClass(minLabel.HTMLElement, "label-time", true);
+        // hourLabel.changeCssClass("label-time");
+        // minLabel.changeCssClass("label-time");
+    
+        divWrapper.classList.add("set-time");
+    
+        hourLabel.HTMLElement.appendChild(iHour);
+        minLabel.HTMLElement.appendChild(iMin);
+    
+    
+        hourLabel.HTMLElement.classList.add("layout-a");
+        this.hourInc.HTMLElement.classList.add("layout-b");
+          
+        minLabel.HTMLElement.classList.add("layout-c");
+        this.minInc.HTMLElement.classList.add("layout-d");
+    
+        
+    
+        divWrapper.appendChild(hourLabel.HTMLElement);
+        divWrapper.appendChild(this.hourInc.HTMLElement);
+        divWrapper.appendChild(minLabel.HTMLElement);
+        divWrapper.appendChild(this.minInc.HTMLElement);
+        this.HTMLElement = divWrapper;
+      }
+      onChange(fn){
+        this.hourInc.onChange(fn);
+        this.minInc.onChange(fn);
+          }
+      getValue(){
+        let timeDuration = {
+          hour: this.hourInc.getValue(),
+          min: this.minInc.getValue()
+        }
+    
+        return timeDuration;
+      }
+          setValue(hour,min){
+        this.hourInc.setValue(hour);
+        this.minInc.setValue(min);
+      }
+    
+    }
+
+
+    class TextareaLabelComponent {
+      constructor (textareaId, labelTitle,rowNumber){
+        
+        let divWrapper = document.createElement("div");
+        let labeltitle=new LabelComponent(labelTitle,textareaId);
+        this.textarea =new TextareaComponent(textareaId,rowNumber);
+        
+        this.labelTitle=labeltitle.HTMLElement; //to pass it to next Compoenet
+        divWrapper.classList.add("component-container--vertical");
+         
+        divWrapper.appendChild(labeltitle.HTMLElement);
+        divWrapper.appendChild(this.textarea.HTMLElement);
+      
+        this.HTMLElement= divWrapper;
+      
+        
+      }
+      getTextValue(){
+        return this.textarea.getTextValue();
+    
+      }
+      setTextValue(_value){
+        this.text.setTextValue(_value);
+      }
+      clearValue(){
+        this.textarea.clearValues();
+      }
+    }

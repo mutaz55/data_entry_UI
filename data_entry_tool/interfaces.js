@@ -1,55 +1,4 @@
-//Enums
-//text-word, text-sentence[text-question-title, text-hint, text-subquiz,text-answer], text-read, pic-photo, pic-drawing, video-photography, video-animation, video-slide-show, sound-record, sound-effect, animation[animation-object, animation-interactive, slide-transition], 
-// const MediaType = {                
-//     Text_word: "text-word",
-//     Text_sentence: "text-sentence",
-//     text_read: "text-read",
-//     pic_photo: "pic-photo",
-//     pic_drawing: "pic-drawing",
-//     video_photography: "video-photography",
-//     video_animation: "video-animation",
-//     video_slide_show: "video-slide-show",
-//     sound_record: "sound-record",
-//     sound_effect: "sound-effect",
-//     animation_object:"animation-object",
-//     animation_interactive:"animation-interactive",
-//     slide_transition:"slide-transition"
-       
-// }
-const TextSentence = {              //save this values in mediaObject.tag
-    text_question_title: "text-question-title",
-    text_hint: "text-hint",
-    text_subquiz: "text-subquiz",
-    text_answer: "text-answer"
-}
 
-const QuizTypes = {
-  SSorting: "SSorting",
-  LSorting: "LSorting",
-  TorF: "TorF",
-  Category: "Category",
-  DragDrop: "DragDrop",
-  MChoices: "MChoices",
-  FIB: "FIB",
-  HWord: "HWord",
-  SQuestion: "SQuestion"
-}
-const TxtEntryPostfix = {        // old SubQuizPostfix
-    SubQuizInput: "SI",
-    AnswerInput: "AI",
-    SubQuizPreview:"SP",
-    AnswerPreview:"AP"
-
-}
-
-const fibOptions = {
-  fib_words: "fib-missing-words",
-  fib_dragdrop: "fib-dragdrop-words",
-  fib_mchoice: "fib-multiple-words"
-}
-
-// Max no of answers to be inserted in multiple choice quiz
-const MaxNoOfAnswers = 5;
 
 //Input View Abstruct Class
 class InputViewClass {
@@ -134,7 +83,7 @@ class QuizInputControl{
         let answerId = this.dataItemReciever.generateAnswerId(newSubQuiz);
 
         answerObj.answer.mediaObjects.forEach((answerMedia)=>{
-          let answerCommand=new SaveAnswersToDB(newSubQuiz,answerId,answerMedia.text,answerMedia.type);
+          let answerCommand=new SaveAnswersToDB(newSubQuiz,answerId,answerMedia.text,answerMedia.type,answerObj.correct);
           answerCommand.execute();
 
         });
@@ -154,7 +103,6 @@ class QuizInputControl{
   }
   
 }
-
 
 
 
@@ -203,9 +151,7 @@ class SaveSubQuizToDB {
   
 }
 
-
 class SaveAnswersToDB{
-
   constructor(subQuiz,answerId,answerText,answerType,correct){
     this.dataItemReciever = new ItemsDataReciever();
     this.subQuiz  = subQuiz;
@@ -344,7 +290,6 @@ class TableElementsControl {
 
 
 
-
 //preview Control Class
 class QuizPreviewControl{
   constructor(quizType,dataItemReciever,quizPreviewSkeleton){
@@ -357,7 +302,7 @@ class QuizPreviewControl{
     
 
     
-  //  console.log(this.objectivesTable)
+  //console.log(this.objectivesTable)
    
 
   }
@@ -392,9 +337,7 @@ class QuizPreviewControl{
     currentQuiz.subQuizes.forEach((item,index)=>{
       //create for subQuizPreview
       preViewItem=this.previewFactory.create(this.quizType,(index+1),item);
-      console.log('item ?? update Quiz preview');
-      console.log(item);
-      
+            
       this.quizPreviewSkeleton.addPreview(item.id,preViewItem.HTMLElement,previewFnClick,previewFnDelete);
       
 
@@ -469,14 +412,11 @@ class QuizPreviewControl{
 }
 
 
-
-
 //Input View Concreate Classes
 
 class SSortingInputView extends InputViewClass{
   constructor(){
-      super();
-    
+      super();    
       let divDataInput = document.createElement("div");
       let MsgCom = new messagesComponent();
       this.mobjEntry= new mediaObjEntry();
@@ -706,7 +646,7 @@ class CategoryInputView extends InputViewClass{
       
 
     });
-
+      console.log("subQuizResult: ",subQuizResult);
       return subQuizResult;
   }
   clearValues(){
@@ -1770,6 +1710,7 @@ class QuizPreviewSkeleton{
     generateAnswerId(subQuiz){
         let subQuizId =subQuiz.id;
         let answerId = getId_fromArry(subQuizId, subQuiz.Answers,"N");
+        
         return answerId;
     }
   
@@ -1820,11 +1761,8 @@ class QuizPreviewSkeleton{
     UpdateAnswerMedia(mediaObj,answerObj){
       //Add or Update Values of mediaObj 
       
-    let mediaObjIndex = answerObj.answer.mediaObjects.findIndex((item)=>item.type.trim()==mediaObj.type.trim());
-    console.log('updateAnswerObj');
-    console.log(mediaObjIndex);
-    console.log(mediaObj);
-    console.log(answerObj);
+    let mediaObjIndex = answerObj.answer.mediaObjects.findIndex((item)=>item.type.trim()==mediaObj.type.trim());   
+    console.log(mediaObjIndex);    
     
     if (mediaObjIndex==-1){
       answerObj.answer.mediaObjects.push(mediaObj)
@@ -1887,6 +1825,36 @@ class QuizPreviewSkeleton{
     subQuiz.Answers.push(answerObj);
   }
   
+  updateMediaObj(mediaObj, mediaId,mediaText,mediaType,mediaTag){
+    if(mediaId!="No-Change"){
+      mediaObj.id=mediaId;
+    }
+    
+    mediaObj.text=mediaText;
+    mediaObj.type=mediaType;
+    mediaObj.tag=mediaTag;
+    
+  }
+
+  getTime(currentItem){
+    let timeDuration = JSON.parse(currentItem.text);
+    return timeDuration;
+  }
+
+  getScore(currentItem){
+    let score = JSON.parse(currentItem.text);
+    return score;
+  }
+
+  saveTime(currentItem,timeObj){
+    let testTime = JSON.stringify(timeObj);      
+    currentItem.text = testTime;
+  }
+
+  saveScore(currentItem,ScoreObj){
+    let score = JSON.stringify(ScoreObj);      
+    currentItem.text = score;
+  }
   
   }
 
