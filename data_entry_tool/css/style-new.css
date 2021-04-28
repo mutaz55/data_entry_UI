@@ -1063,7 +1063,7 @@ input:-webkit-autofill:focus {
     border: 1px solid var(--main-color-jgreen);
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    margin: 0px 2px;
+    margin: 5px 2px;
     padding: 0.25rem  0.75rem 0.2rem 0.75rem;
     line-height: 1.5;
     font-size: 0.9rem;
@@ -1390,8 +1390,8 @@ input:-webkit-autofill:focus {
 }
 .icons-container ul li{
  
-  color: #666;
-  font-size: 1rem;
+  color: rgb(116, 115, 115);
+  font-size: 0.9rem;
   line-height: 2.5;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 600;
@@ -1932,14 +1932,14 @@ overflow: hidden;
 
 /*  Sorting Letter Quiz Layout */
 .Quiz-layout-input {
-  border: 1px solid #a3a5a6;
+  /* border: 1px solid #a3a5a6;
   border-top-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-bottom-right-radius: 10px; */
   background-color: #ecf0f1;
-  box-shadow: rgb(158 158 158 / 29%) 2px 2px, rgb(173 171 171 / 29%) -2px -2px;
-  margin-bottom: 1rem;
+  /* box-shadow: rgb(158 158 158 / 29%) 2px 2px, rgb(173 171 171 / 29%) -2px -2px; */
+  /* margin-bottom: 1rem;
   padding: 1rem;
-  margin-top:2rem;
+  margin-top:2rem; */
 }
 
 .Quiz-layout-preview {
@@ -1991,12 +1991,13 @@ overflow: hidden;
 
 
 .quiz-wrapper{
-  border: 1px solid var(--main-color-darkblue);
+  /* border: 1px solid var(--main-color-darkblue);
   border-radius: 10px;
-  box-shadow: 2px 2px rgba(128, 128, 128, 0.294);
+  box-shadow: 2px 2px rgba(128, 128, 128, 0.294); */
   direction: rtl;
   display: grid;
-  padding: 15px 20px;
+  /* padding: 15px 20px; */
+  padding: 5px 5px;
   grid-template-columns: 1fr 1fr 1fr;
   /*grid-template-rows: .1hv .1hv .1hv .1hv;*/
   gap:1rem;
@@ -2141,17 +2142,28 @@ padding: 15px 20px;
 
 
 .label-component {
-  font-family: var(--label-header-font);
+  /* font-family: var(--label-header-font);
   font-size: 1rem;
   color: var(--control-bk-color);
   /* background-color: #908f8f; */
   /* background-color: rgb(42 80 99); */
-  background-color: rgb(55 71 79);
+  /* background-color: rgb(55 71 79);
   border-radius: 10px 0px 0px 0px;
   line-height: 2;
   padding-right: 1rem;
+  text-align: right; */ 
+  font-family: var(--label-header-font);
+  font-size: 1rem;
+  color: #37474f;
+  /* background-color: #908f8f; */
+  /* background-color: rgb(42 80 99); */
+  /* background-color: rgb(55 71 79); */
+  /* border-radius: 10px 0px 0px 0px; */
+  line-height: 2.5;
+  padding-right: 2px;
   text-align: right;
- 
+  margin-top: 10px;
+  border-bottom: 2px solid #37474f;
 
 
 }
@@ -2367,32 +2379,34 @@ height: 20rem;
 .tab-label-correct-answer {
     
   appearance: none;
-  outline:none;
+  outline: none;
   border: 1px solid transparent;
-  cursor:pointer;
+  cursor: pointer;
   font-family: var(--label-header-font);
   font-size: 1rem;
-  color: var(--control-bk-color);
-  background-color: #47697a;
-  border-radius: 10px 0px 10px 0px;
+  color: #105f5f;
+  background-color: #efefef;
+  /* border-radius: 10px 0px 10px 0px; */
   line-height: 1.5;
   padding: .5rem 1rem;
   text-align: right;
-  margin:0 13px;
+  /* margin: 0 13px; */
   transition: .3s;
 }
 
 .tab-label-correct-answer:hover {
     background-color: #175822;
+    color: #fff;
 }
 
 .tab-label-correct-answer--selected {
-    background-color: #027e16;
+    background-color: #338a36;
+    color: #fff;
 
 }
 
 .tab-label-Incorrect-answer {
-    position: relative;
+    /* position: relative;
     appearance: none;
     outline:none;
     border: 1px solid transparent;
@@ -2406,14 +2420,31 @@ height: 20rem;
     padding: .5rem 1rem;
     text-align: right;
     margin:0 13px;
-    transition: .3s;
+    transition: .3s; */
+    position: relative;
+    appearance: none;
+    outline: none;
+    border: 1px solid #afb4b7;
+    cursor: pointer;
+    font-family: var(--label-header-font);
+    font-size: 1rem;
+    color: #47697a;
+    /* background-color: #47697a; */
+    /* border-radius: 10px 0px 10px 0px; */
+    line-height: 1.5;
+    padding: 0.5rem 2rem;
+    text-align: right;
+    margin: 0 13px;
 }
 
 .tab-label-Incorrect-answer:hover {
-    background-color: #0f618b;
+    background-color:  #105f5f;
+    color: #fff;
+
 }
 .tab-label-Incorrect-answer--selected {
-    background-color: #1a85bb;
+    background-color: #105f5f;
+    color: #fff;
 }
 
 .tab-panels-component{

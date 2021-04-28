@@ -1168,28 +1168,31 @@ function loadDataFromFireStore() {
 function SortObjArrays(){
 
   if (Lessons.length > 0) {
-      Lessons = Lessons.sort((a,b) => compareObjID( ConvertToDec(a.LessonID), ConvertToDec(b.LessonID)));
+
+      Lessons = Lessons.sort((a,b) => compareObjID( ConvertToDec(a.LessonID, a.LessonID.indexOf('L')), ConvertToDec(b.LessonID,b.LessonID.indexOf('L'))));
   }
 
   if (Modules.length > 0) {
-      Modules = Modules.sort((a,b) => compareObjID(ConvertToDec(a.ModuleID), ConvertToDec(b.ModuleID)));
+      Modules = Modules.sort((a,b) => compareObjID(ConvertToDec(a.ModuleID, a.ModuleID.indexOf('M')), ConvertToDec(b.ModuleID, b.ModuleID.indexOf('M'))));
   }
 
   if (Subjects.length > 0) {
-      Subjects = Subjects.sort((a,b) => compareObjID(ConvertToDec(a.subjectID), ConvertToDec(b.subjectID)));
+      Subjects = Subjects.sort((a,b) => compareObjID(ConvertToDec(a.subjectID, a.subjectID.indexOf('J')), ConvertToDec(b.subjectID, b.subjectID.indexOf('J'))));
   }
 
   if (addOns.length > 0) {
-      addOns = addOns.sort((a,b) => compareObjID(ConvertToDec(a.id), ConvertToDec(b.id)));
+      addOns = addOns.sort((a,b) => compareObjID(ConvertToDec(a.id,10), ConvertToDec(b.id,10)));
   }
 
   if (quizs.length > 0) {
-      quizs = quizs.sort((a,b) =>  compareObjID(ConvertToDec(a.id), ConvertToDec(b.id)));
+      quizs = quizs.sort((a,b) =>  compareObjID(ConvertToDec(a.id,10), ConvertToDec(b.id,10)));
   }
 
   
   
 }
+
+
 
 // The Compare function being used
 function compareObjID( a, b ) {
@@ -1211,8 +1214,8 @@ function ConvertToHexa(id){
 
 // Convert the passed id to an equivalent number (base 10) - when id has invalid characters
 // to be represent in 10 system
-function ConvertToDec(id){
-  return parseInt(id.slice(10));
+function ConvertToDec(id, start){
+  return parseInt(id.slice(start));
 }
 
 // Clear drop down items (Combobox Courses)
