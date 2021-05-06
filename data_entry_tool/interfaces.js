@@ -644,8 +644,8 @@ class CategoryInputView extends InputViewClass{
       let answerMediaWrapper = new MediaObjectsWrapper('none');
 
       answerMediaWrapper.mediaObjects.push(new mediaObjData('none', AItem.txt, 'text-sentence'));
-
-      if (AItem.id == _Ans.currentValue) {
+      
+      if (AItem.id == _Ans.getSelectedId()) {
           subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
       }else {
           subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, false));
@@ -653,8 +653,8 @@ class CategoryInputView extends InputViewClass{
       
 
     });
-      console.log("subQuizResult: ",subQuizResult);
-      return subQuizResult;
+
+    return subQuizResult;
   }
   clearValues(){
       this.mobjEntry.clearEntry();
@@ -914,6 +914,7 @@ class FIBInputView extends InputViewClass{
         
         fibType.combo.HTMLElement.selectedIndex = 0;
 
+        this.fibType = fibType;
 
         this.inputbox_fib = new TextareaWithLabel('fibQuestionTxt', "إدخال الجملة", 6);
 
@@ -925,17 +926,19 @@ class FIBInputView extends InputViewClass{
 
         let divBlanks = document.createElement('div');
         divBlanks.classList.add("component-container--vertical");
-
+        this.divBlanks = divBlanks;
 
         let removedTab = ()=> { 
           this.currentBlankNo--;
-          console.log('removed');
         }
 
 
         fibBtn.onClick(()=> {
           
-          if (fibType.combo.HTMLElement.selectedIndex  == 0 || fibType.combo.HTMLElement.selectedIndex  == 1) {
+          let comboIndex = fibType.combo.HTMLElement.selectedIndex;
+          
+          if (comboIndex  == 0 || comboIndex  == 1) {
+
 
             if (this.currentBlankNo <= maximumNoBlanks) {
 
@@ -943,7 +946,7 @@ class FIBInputView extends InputViewClass{
               
               this.inputbox_fib.txt.insertAt(blankNo);
 
-              this.blanks.push({tokenTxt:blankNo , token: currentQuizId + this.currentBlankNo, answer: "", mulitple: false });
+              this.blanks.push({tokenTxt:blankNo , token: currentQuizId + comboIndex + this.currentBlankNo, answer: "", mulitple: false });
 
               
               if (this.currentBlankNo == 1 && divBlanks.childNodes.length == 0) {
@@ -1019,7 +1022,7 @@ class FIBInputView extends InputViewClass{
               
 
           
-          }else if (fibType.combo.HTMLElement.selectedIndex == 2) {
+          }else if (comboIndex == 2) {
 
 
               if (this.currentBlankNo > maximumNoBlanks) return;
@@ -1046,7 +1049,7 @@ class FIBInputView extends InputViewClass{
               let answerTabset_correct = new TabsetClass('الإجابة الصحيحة','ans-correct-'+ currentBlankId);
               addCssClass(answerTabset_correct.HTMLElement,['tab-label-correct-answer'], true);
               
-              let inputbox_correct = new InputBoxComponent('correct-txt-' + currentBlankId);
+              let inputbox_correct = new InputBoxComponent(`inp-${currentQuizId}${comboIndex}${this.currentBlankNo}`);
               let answerPnl_correct = new TabPanelClass('ans-correct-pnl-'+ currentBlankId, inputbox_correct);
 
               answersTab.addTab(answerTabset_correct, answerPnl_correct);
@@ -1054,37 +1057,34 @@ class FIBInputView extends InputViewClass{
               let answerTabset_Incorrect = new TabsetClass('الإجابات الخاطئة', 'ans-incorrect-'+currentBlankId);
               addCssClass(answerTabset_Incorrect.HTMLElement, ["tab-label-Incorrect-answer"], true);
 
-              let incorrectAnsLst = new ListWithLabelAndInputComponent('inc-ans-lst'+currentBlankId,'','add-inc-ans-'+currentBlankId,"إدخال الإجابات الخاطئة",'addBtn-inc-'+currentBlankId);
+              let incorrectAnsLst = new ListWithLabelAndInputComponent(`lst-${currentQuizId}${comboIndex}${this.currentBlankNo}`,'','add-inc-ans-'+currentBlankId,"إدخال الإجابات الخاطئة",'addBtn-inc-'+currentBlankId);
               let answerPnl_incorrect = new TabPanelClass('ans-incorrect-pnl-'+currentBlankId,incorrectAnsLst);
 
               
               answersTab.addTab(answerTabset_Incorrect,answerPnl_incorrect);
 
 
+
+              inputbox_correct.onEvent('blur', (e)=> {
+                
+                let _index = this.blanks.findIndex( blank => blank.token == e.target.id.slice(4));
+                if (_index != -1)
+                    this.blanks[_index].answer = inputbox_correct.getTextValue();
+
+              });
+
               incorrectAnsLst.HTMLElement.addEventListener('added', ()=> {
             
                 if (incorrectAnsLst.listElement.HTMLElement.childNodes.length >= maximumNoBlanks ) return;
               
-                let _index = this.blanks.findIndex( blank => blank.answer == "");
-                
-                //
-                // if (_index < 0) return;
-        
+                let _index = this.blanks.findIndex( blank => blank.token == incorrectAnsLst.listElement.HTMLElement.id.slice(4));
+            
                 let _answer = incorrectAnsLst.getTextValue();
             
+                this.blanks[_index].incAnswers.push(_answer);
+               
                 
-                let _found = this.blanks.findIndex(blank => blank.answer == _answer);
-        
-                // if ( _found == -1 ) {
-        
-                  // this.blanks[_index].answer = _answer;
-                
-                  incorrectAnsLst.addItemtoLst(_answer,' this.blanks[_index].token');
-                  
-
-                  this.inputbox_fib.txt.replaceAll(this.blanks[_index].tokenTxt,` [ ${ _answer} ] `);
-        
-                // }
+                  incorrectAnsLst.addItemtoLst(_answer, this.blanks[_index].token+this.blanks[_index].incAnswers.length);
                 
               });
 
@@ -1093,7 +1093,7 @@ class FIBInputView extends InputViewClass{
               
               this.inputbox_fib.txt.insertAt(blankNo);
 
-              this.blanks.push({tokenTxt:blankNo , token: currentQuizId + this.currentBlankNo, answer: "", mulitple: true, incAnswers:[] });
+              this.blanks.push({tokenTxt:blankNo , token: currentQuizId + comboIndex + this.currentBlankNo, answer: "", mulitple: true, incAnswers:[] });
 
            
 
@@ -1106,30 +1106,14 @@ class FIBInputView extends InputViewClass{
         });
 
 
-      
-
-
-        // this.answersTabset = new TabComponent(["الفراغ 1"], 4,  "answersSet-","answersPnl-");
-     
-        
-        
-    
 
         fibType.combo.HTMLElement.addEventListener('change', (e)=> {
 
-          removeAllChildNodes(divBlanks);
           this.inputbox_fib.txt.clearValues();
           this.currentBlankNo = 1;
           this.blanks.length = 0;
+          removeAllChildNodes(divBlanks);
 
-          // if (e.target.value == 'fib-missing-words' || e.target.value == 'fib-dragdrop-words') {
-
-         
-          // }
-          // else if (e.target.value == 'fib-multiple-words') {
-
-         
-          // }
 
         });
 
@@ -1138,14 +1122,70 @@ class FIBInputView extends InputViewClass{
         divWrapper.appendChild(fibType.HTMLElement);
         divWrapper.appendChild(this.inputbox_fib.HTMLElement);
         divWrapper.appendChild(fibBtn.HTMLElement);
-        // divWrapper.appendChild(this.answersTabset.HTMLElement);
-        // divWrapper.appendChild(this.answersLst.HTMLElement);
         divWrapper.appendChild(divBlanks);
-
         divDataInput.appendChild(divWrapper);
       
         this.HTMLElement = divDataInput;
         
+  }
+
+  getValues(){
+    
+    
+    let _question = this.inputbox_fib.txt.getTextValue();
+    
+    let mediaWrapper = new MediaObjectsWrapper('none');
+
+    mediaWrapper.mediaObjects.push(new mediaObjData('none', _question, 'text-sentence'));
+      
+    let subQuizResult = new SubQuizObj('none', mediaWrapper);
+
+    const fill_blank = (context) => {
+        context.blanks.forEach( (blank) => {
+        let answerMediaWrapper = new MediaObjectsWrapper('none');
+        answerMediaWrapper.mediaObjects.push(new mediaObjData('none', blank.answer, 'text-sentence',blank.token));
+        subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+      });
+    };
+
+    switch (this.fibType.combo.HTMLElement.selectedIndex) {
+      case 0: subQuizResult.subQuiz.mediaObjects[0].tag = "fib_text";
+              fill_blank(this);
+              break;
+      case 1: subQuizResult.subQuiz.mediaObjects[0].tag = "fib_dragdrop";
+              fill_blank(this);
+              break;
+      case 2: subQuizResult.subQuiz.mediaObjects[0].tag = "fib_multiple";
+              this.blanks.forEach( (blank) => {
+              let answerMediaWrapper = new MediaObjectsWrapper('none');
+              answerMediaWrapper.mediaObjects.push(new mediaObjData('none', blank.answer, 'text-sentence',blank.token));
+              subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
+
+                blank.incAnswers.forEach( (inAns) => {
+                  let answerMediaWrapper = new MediaObjectsWrapper('none');
+                  answerMediaWrapper.mediaObjects.push(new mediaObjData('none', inAns, 'text-sentence',blank.token));
+                  subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, false));
+                })
+              });
+              break;
+    }
+      console.log('subquiz fib data entry', subQuizResult);
+      return subQuizResult;
+  }
+
+  clearValues(){
+    if (this.fibType.combo.HTMLElement.selectedIndex != 0){
+      this.fibType.combo.HTMLElement.selectedIndex = 0;
+    }
+    else {
+      this.inputbox_fib.txt.clearValues();
+      this.currentBlankNo = 1;
+      this.blanks.length = 0;
+      removeAllChildNodes(this.divBlanks);
+
+    }
+      
+
   }
 }
 
@@ -1352,7 +1392,8 @@ class TorFPreviewView extends PreviewViewClass{
        let _correct = Number(_subQuizObj.Answers[0].answer.mediaObjects[0].text);
        let _incorrect = Number(!_subQuizObj.Answers[0].answer.mediaObjects[0].text);
        let changeRadioValue = () => {
-          _subQuizObj.Answers[0].answer.mediaObjects[0].text =  answerPreview.getRadioValue('truePrev'+_number);
+          _subQuizObj.Answers[0].correct =  answerPreview.getRadioValue('truePrev'+_number);
+          console.log('subQuiz>>',_subQuizObj.Answers);
 
         };
 
@@ -1385,20 +1426,25 @@ class CategoryPreviewView extends PreviewViewClass{
         _subQuizObj.Answers.forEach( (_Ans) => {
           answerPreviewCombo.addOptionToCombo(_Ans.answer.mediaObjects[0].text, _Ans.id,true);
           
-          if (_Ans.answer.correct) {
+          if (_Ans.correct) {
             this.correctId = _Ans.id;
           }
 
         });
       }
-
+      answerPreviewCombo.setSelectedItem(this.correctId);
 
       answerPreviewCombo.onChange( (e)=> {
-         _subQuizObj.Answers.find( _ans => _ans.id == e.target.value).correct = true;
-         this.correctId = e.target.value;
-          console.log('Ans>>>');
-          console.log(this.correctId);
-         console.log(_subQuizObj.Answers);
+
+        _subQuizObj.Answers.forEach( _ans => {
+          if (_ans.id == e.target.value) {
+            _ans.correct = true;
+            this.correctId = e.target.value;
+          }else {
+            _ans.correct = false;
+          }
+        });
+         
       });
 
      
@@ -1520,10 +1566,41 @@ class MChoicePreviewView extends PreviewViewClass{
 }
 
 class FIBPreviewView extends PreviewViewClass{
-  constructor(){
+  constructor(_number, _subQuizObj){
     super();
 
     
+    let divLSquizItem =  document.createElement("div");
+
+
+    let quizId = _subQuizObj.id;
+    
+    let shortQ_id = quizId.slice(-6);
+
+    this.mObjPreview = new mediaObjPreview('tab-' + shortQ_id + _number, [0]);
+    this.mObjPreview.setEntries(_subQuizObj.subQuiz);
+
+    let quiz_txt = this.mObjPreview.mObjPreviewTab.tabPanels[0].component;
+
+    quiz_txt.HTMLElement.addEventListener('blur',(e)=>{
+      // TODO: add validation
+      let txt =  e.target.value;
+      let saveSubQuiz1 = new SaveSubQuizToDB(quizId,txt,MediaType.Text_sentence)
+      saveSubQuiz1.execute();
+    
+    });
+
+    
+    
+    this.mObjPreview.assignQuizNo(_number);
+
+    
+
+    let answerPrv = new TabComponent()
+
+    divLSquizItem.appendChild(this. mObjPreview.HTMLElement);
+    this.HTMLElement=divLSquizItem;
+
   }
 }
 
@@ -1533,8 +1610,6 @@ class HWordPreviewView extends PreviewViewClass{
 
     let divLSquizItem =  document.createElement("div");
 
-    console.log('Hword >> _subQuizObj');
-    console.log(_subQuizObj);
 
     let quizId = _subQuizObj.id;
     

@@ -478,23 +478,21 @@ class ComboComponent {
     });
   }
 
-  setSelectedItem(OptionValue) {
-    console.log('option value >>>>>>>>');
-    console.log(OptionValue);
-    if (this.checkIfAdded(OptionValue)) {
+  setSelectedItem(optionValue) {
+
       Array.from(this.HTMLElement.options).forEach((element, index) => {
-        if (element.value == _id) {
+
+
+        if (element.value == optionValue) {
           this.HTMLElement.selectedIndex = index;
         }
       });
-    } else {
-      throw new Error("Value does not exist!");
-    }
+
   }
 
-  getSelectedValue(){
+  getSelectedValue(_id = this.HTMLElement.selectedIndex){
       if (this.HTMLElement.selectedIndex < 0) return;
-      return this.HTMLElement.options[this.HTMLElement.selectedIndex].value;
+      return this.HTMLElement.options[_id].value;
   }
   getSelectedText(){
     if (this.HTMLElement.selectedIndex < 0) return;
@@ -1267,7 +1265,7 @@ class ListWithLabelAndInputComponent{
             let event = new CustomEvent('updated', {detail: this.getSelectedId()});
             this.HTMLElement.dispatchEvent(event);
         } else {
-          showError('duplicate text!');
+          showError('duplicate text!!');
         }
         
 
@@ -2185,7 +2183,6 @@ class mediaObjPreview {
   
   activateOnEvent(event,subQuizId){
     
-    
     this.mObjPreviewTab.tabPanels[0].component.HTMLElement.addEventListener(event,(e)=>{
        let saveSubQuiz1 = new SaveSubQuizToDB(subQuizId,e.target.value,MediaType.Text_sentence)
        saveSubQuiz1.execute();
@@ -2238,13 +2235,7 @@ class PreviewContainer {
    
     removeAllChildNodes(this.divContainer);
 
-    // let PreviewContainer = document.getElementById("id-preview-list")
-    // let PreviewListItems = PreviewContainer.children;
-    // let arrPreviewListItems = [...PreviewListItems];
-  
-    // arrPreviewListItems.forEach((item) => {
-    //     item.remove();
-    // });
+    
   }
   
    resetAllpreviewWrapperBorder() {

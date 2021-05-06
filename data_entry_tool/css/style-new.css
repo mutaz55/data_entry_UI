@@ -1960,10 +1960,11 @@ overflow: hidden;
   background-color: #ecf0f1;
   padding: 1rem;
 }
-
+/* 
 .SL-quizItemsPreview--container {
 
-}
+} */
+
 .SL-quizAnswerPreview {
   font-family: var(--body-font);
   font-size: 1.3rem;
