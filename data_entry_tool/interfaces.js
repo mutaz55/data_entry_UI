@@ -114,10 +114,13 @@ class SaveSubQuizToDB {
     this.subQuizType = subQuizType;
 
     if (subQuizType ==MediaType.Text_sentence){
-      this.tag=TextSentence.text_subquiz;
-    } else {
-      this.tag="";
-    }
+
+      this.tag.push({
+        key:"text_type" ,
+        value: TextSentence.text_subquiz
+      });
+        
+    } 
     
     
   }
@@ -161,10 +164,14 @@ class SaveAnswersToDB{
     this.correct=correct;
     
     if (answerType ==MediaType.Text_sentence){
-      this.tag=TextSentence.text_answer;
-    } else {
-      this.tag="";
-    }
+
+      this.tag.push({
+        key:"text_type" ,
+        value: TextSentence.text_answer
+      });
+
+      
+    } 
    
   }
   execute(){
@@ -1625,7 +1632,7 @@ class QuizPreviewSkeleton{
  
   this.previewSection = document.createElement("div");
   let sidePreviewId="id-side-preview";
-  let SidePreviewTitle = "العناصر والمهارات"
+  let SidePreviewTitle = "العناصر والمهارات";
 
 
   this.prvContainer = new PreviewContainer();
@@ -1635,10 +1642,10 @@ class QuizPreviewSkeleton{
   this.previewSection.classList.add("Quiz-layout-preview");
   //previewSection.className = "Quiz-layout-preview";
   this.prvContainer.HTMLElement.classList.add("layout-n");
-  this.prvSide.HTMLElement.classList.add("layout-m")
+  this.prvSide.HTMLElement.classList.add("layout-m");
  
   this.previewSection.appendChild(this.prvContainer.HTMLElement);
-  this.previewSection.appendChild(this.prvSide.HTMLElement)
+  this.previewSection.appendChild(this.prvSide.HTMLElement);
   this.HTMLElement=this.previewSection;
  
   //previewSection.style.display = "none";

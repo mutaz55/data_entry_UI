@@ -926,7 +926,7 @@ color:#ffffff;
 }
 
 .buttons-in-list--selected {
-  /*background-color:  rgb(245, 247, 255); */
+  background-color:  rgb(245, 247, 255);
   color: #0d4761;
   border-color:#1e9ad2;
 }

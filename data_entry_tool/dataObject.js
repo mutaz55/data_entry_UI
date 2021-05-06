@@ -264,11 +264,11 @@ class MediaObjectsWrapper {
 }
 //****************************************** */
 class mediaObjData {
-  constructor(mediaId, text, type, tag="") {
+  constructor(mediaId, text, type) {
       this.id = mediaId;
       this.text = text; // text [in case of text, reading text], or description [in case of pic, video, sound effect, animation] or text to be recorded [in case recorded Sound] or link [in case of link-to-prev-slide].
       this.type = type; //text-word, text-sentence[text-question-title, text-hint, text-answer], text-read, pic-photo, pic-drawing, video-photography, video-animation, video-slide-show, sound-record, sound-effect, animation[animation-object, animation-interactive, slide-transition], link-to-prev-slide
-      this.tag=tag;
+      this.tag=[];        //key: "", value: ""
       this.filenames = [];
   }
 }
