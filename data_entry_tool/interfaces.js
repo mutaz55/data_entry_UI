@@ -66,7 +66,7 @@ class QuizInputControl{
     
       console.log("SubQuizResult: ",subQuizResult);
       subQuizResult.subQuiz.mediaObjects.forEach((subQuiz)=>{
-
+        console.log("subQuiz FIB: ",subQuiz)
         let subQuizSaveCommand = new SaveSubQuizToDB(subQuizId,subQuiz);
         subQuizSaveCommand.execute();
       
@@ -112,7 +112,9 @@ class SaveSubQuizToDB {
     this.subQuizId  = subQuizId;
     this.subQuizValue = subQuiz.text;
     this.subQuizType = subQuiz.type;
+    
     this.tag=subQuiz.tag.slice();
+    console.log("clone Tag: ",this.tag);
 
     if (this.subQuizType == MediaType.Text_sentence){
 
@@ -1592,6 +1594,7 @@ class FIBPreviewView extends PreviewViewClass{
       // TODO: add validation
       
       let modifiedSubQuiz = this.dataItemReciever.getSubQuiz(quizId);
+      //console.log("Modified SubQuiz: ",modifiedSubQuiz.subQuiz.mediaObjects[0])
       modifiedSubQuiz.subQuiz.mediaObjects[0].text=e.target.value;
       modifiedSubQuiz.subQuiz.mediaObjects[0].type=MediaType.Text_sentence;
       
@@ -1908,7 +1911,8 @@ class QuizPreviewSkeleton{
       
         let mediaId = this.generateSubQuizMediaId(subQuizId,mediaType)
         //create mediaObj
-        let mediaObj = new mediaObjData(mediaId,txtEntry,mediaType,tag);
+        let mediaObj = new mediaObjData(mediaId,txtEntry,mediaType);
+        mediaObj.tag=tag.slice();
             
         return(mediaObj);
        
