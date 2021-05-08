@@ -67,7 +67,7 @@ class QuizInputControl{
       console.log("SubQuizResult: ",subQuizResult);
       subQuizResult.subQuiz.mediaObjects.forEach((subQuiz)=>{
 
-        let subQuizSaveCommand = new SaveSubQuizToDB(subQuizId,subQuiz.text,subQuiz.type);
+        let subQuizSaveCommand = new SaveSubQuizToDB(subQuizId,subQuiz);
         subQuizSaveCommand.execute();
       
 
@@ -83,7 +83,7 @@ class QuizInputControl{
         let answerId = this.dataItemReciever.generateAnswerId(newSubQuiz);
 
         answerObj.answer.mediaObjects.forEach((answerMedia)=>{
-          let answerCommand=new SaveAnswersToDB(newSubQuiz,answerId,answerMedia.text,answerMedia.type,answerObj.correct);
+          let answerCommand=new SaveAnswersToDB(newSubQuiz,answerId,answerMedia,answerObj.correct);
           answerCommand.execute();
 
         });
@@ -107,17 +107,17 @@ class QuizInputControl{
 
 
 class SaveSubQuizToDB { 
-  constructor(subQuizId,subQuizValue,subQuizType){
+  constructor(subQuizId,subQuiz){
     this.dataItemReciever = new ItemsDataReciever();
     this.subQuizId  = subQuizId;
-    this.subQuizValue = subQuizValue;
-    this.subQuizType = subQuizType;
+    this.subQuizValue = subQuiz.text;
+    this.subQuizType = subQuiz.type;
+    this.tag=subQuiz.tag.slice();
 
-    if (subQuizType ==MediaType.Text_sentence){
+    if (this.subQuizType == MediaType.Text_sentence){
 
       this.tag.push({
-        key:"text_type" ,
-        value: TextSentence.text_subquiz
+        text_type: TextSentence.text_subquiz
       });
         
     } 
@@ -155,19 +155,20 @@ class SaveSubQuizToDB {
 }
 
 class SaveAnswersToDB{
-  constructor(subQuiz,answerId,answerText,answerType,correct){
+  constructor(subQuiz,answerId,answerMedia,correct){
     this.dataItemReciever = new ItemsDataReciever();
     this.subQuiz  = subQuiz;
     this.id=answerId;
-    this.answerText=answerText;
-    this.answerType=answerType;
+    this.answerText=answerMedia.text;
+    this.answerType=answerMedia.type;
+    this.tag=answerMedia.tag.slice();
     this.correct=correct;
     
-    if (answerType ==MediaType.Text_sentence){
+    if (this.answerType ==MediaType.Text_sentence){
 
       this.tag.push({
-        key:"text_type" ,
-        value: TextSentence.text_answer
+       
+        text_type: TextSentence.text_answer
       });
 
       
@@ -181,6 +182,7 @@ class SaveAnswersToDB{
     let newAnswer=null;      
 
     let answerMedia = this.dataItemReciever.createAnswerMediaObj(this.id,this.answerText,this.answerType,this.tag);
+    console.log("answerMedia :", answerMedia);
     let oldAnswer = this.dataItemReciever.getAnswer(this.subQuiz,this.id);
 
 
@@ -1149,16 +1151,20 @@ class FIBInputView extends InputViewClass{
     };
 
     switch (this.fibType.combo.HTMLElement.selectedIndex) {
-      case 0: subQuizResult.subQuiz.mediaObjects[0].tag = "fib_text";
+      case 0: subQuizResult.subQuiz.mediaObjects[0].tag.push({fib_type:"fib_text"});
               fill_blank(this);
               break;
-      case 1: subQuizResult.subQuiz.mediaObjects[0].tag = "fib_dragdrop";
+      case 1: subQuizResult.subQuiz.mediaObjects[0].tag.push({fib_type:"fib_dragdrop"});
               fill_blank(this);
               break;
-      case 2: subQuizResult.subQuiz.mediaObjects[0].tag = "fib_multiple";
+      case 2: subQuizResult.subQuiz.mediaObjects[0].tag.push({fib_type:"fib_multiple"}) ;
               this.blanks.forEach( (blank) => {
               let answerMediaWrapper = new MediaObjectsWrapper('none');
-              answerMediaWrapper.mediaObjects.push(new mediaObjData('none', blank.answer, 'text-sentence',blank.token));
+
+              let mdObj = new mediaObjData('none', blank.answer, 'text-sentence')
+              mdObj.tag.push(blank.token);
+              answerMediaWrapper.mediaObjects.push(mdObj);
+
               subQuizResult.Answers.push(new AnswerObj('none', answerMediaWrapper, true));
 
                 blank.incAnswers.forEach( (inAns) => {
@@ -1569,7 +1575,7 @@ class FIBPreviewView extends PreviewViewClass{
   constructor(_number, _subQuizObj){
     super();
 
-    
+    this.dataItemReciever=new ItemsDataReciever(); 
     let divLSquizItem =  document.createElement("div");
 
 
@@ -1584,8 +1590,12 @@ class FIBPreviewView extends PreviewViewClass{
 
     quiz_txt.HTMLElement.addEventListener('blur',(e)=>{
       // TODO: add validation
-      let txt =  e.target.value;
-      let saveSubQuiz1 = new SaveSubQuizToDB(quizId,txt,MediaType.Text_sentence)
+      
+      let modifiedSubQuiz = this.dataItemReciever.getSubQuiz(quizId);
+      modifiedSubQuiz.subQuiz.mediaObjects[0].text=e.target.value;
+      modifiedSubQuiz.subQuiz.mediaObjects[0].type=MediaType.Text_sentence;
+      
+      let saveSubQuiz1 = new SaveSubQuizToDB(quizId,modifiedSubQuiz.subQuiz.mediaObjects[0])
       saveSubQuiz1.execute();
     
     });
@@ -1598,7 +1608,7 @@ class FIBPreviewView extends PreviewViewClass{
 
     let answerPrv = new TabComponent()
 
-    divLSquizItem.appendChild(this. mObjPreview.HTMLElement);
+    divLSquizItem.appendChild(this.mObjPreview.HTMLElement);
     this.HTMLElement=divLSquizItem;
 
   }
@@ -1609,7 +1619,7 @@ class HWordPreviewView extends PreviewViewClass{
     super();
 
     let divLSquizItem =  document.createElement("div");
-
+    let modifiedSubQuiz = new dataItemReciever();
 
     let quizId = _subQuizObj.id;
     
@@ -1623,7 +1633,16 @@ class HWordPreviewView extends PreviewViewClass{
     quiz_txt.HTMLElement.addEventListener('blur',(e)=>{
       
       let txt = replaceAll( replaceAll( e.target.value, '[ ', '') , ' ]', '' );
-      let saveSubQuiz1 = new SaveSubQuizToDB(quizId,txt,MediaType.Text_sentence)
+
+      
+      let modifiedSubQuiz = this.dataItemReciever.getSubQuiz(quizId);
+      
+      modifiedSubQuiz.subQuiz.mediaObjects[0].text=txt;
+      modifiedSubQuiz.subQuiz.mediaObjects[0].type=MediaType.Text_sentence;
+
+      let saveSubQuiz1 = new SaveSubQuizToDB(quizId,modifiedSubQuiz.subQuiz.mediaObjects[0])
+
+
       saveSubQuiz1.execute();
     
     });
@@ -1898,7 +1917,8 @@ class QuizPreviewSkeleton{
       
       let mediaId = this.generateAnswerMediaId(answerId,mediaType);
       //create mediaObj
-      let mediaObj = new mediaObjData(mediaId,txtEntry,mediaType,tag);
+      let mediaObj = new mediaObjData(mediaId,txtEntry,mediaType);
+      mediaObj.tag=tag.slice();
           
       return(mediaObj);
      
